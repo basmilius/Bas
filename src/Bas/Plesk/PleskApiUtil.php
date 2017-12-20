@@ -8,7 +8,7 @@ use PleskX\Api\XmlResponse;
 /**
  * Class PleskApiUtil
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Bas\Plesk
  * @since 1.0.0
  */
@@ -21,7 +21,7 @@ final class PleskApiUtil
 	 * @param string[] ...$sets
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function createDataSet (string ...$sets): array
@@ -42,7 +42,7 @@ final class PleskApiUtil
 	 * @param string $valueKey
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function nameValuesToArray (array $properties, string $nameKey = 'name', string $valueKey = 'value'): array
@@ -73,7 +73,7 @@ final class PleskApiUtil
 	 * @param XmlResponse $response
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function xmlResponseToArray (XmlResponse $response): array

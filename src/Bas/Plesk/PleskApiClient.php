@@ -10,7 +10,7 @@ use SimpleXMLElement;
 /**
  * Class PleskApiClient
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Bas\Plesk
  * @since 1.0.0
  */
@@ -35,7 +35,7 @@ final class PleskApiClient
 	 * @param null|string $password
 	 * @param array       $requestOptions
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public function __construct (string $hostname, string $usernameOrSecretKey, ?string $password = null, array $requestOptions = [])
@@ -56,7 +56,7 @@ final class PleskApiClient
 	 * @param bool  $full
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function request (array $request, bool $full = true): array
@@ -75,7 +75,7 @@ final class PleskApiClient
 	 * @param SimpleXMLElement|null $xml
 	 * @param string|null           $parentKey
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function arrayToSimpleXML (array $arr, ?SimpleXMLElement &$xml = null, ?string $parentKey = ''): void

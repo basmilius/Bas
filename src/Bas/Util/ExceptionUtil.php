@@ -12,7 +12,7 @@ use Throwable;
 /**
  * Class ExceptionUtil
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Bas\Util
  * @since 1.0.0
  */
@@ -25,7 +25,7 @@ final class ExceptionUtil
 	 * @param Throwable $exception
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function exceptionToArray (Throwable $exception): array
@@ -62,7 +62,7 @@ final class ExceptionUtil
 	 * @param Throwable $exception
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function exceptionToExceptions (Throwable $exception): array
@@ -83,7 +83,7 @@ final class ExceptionUtil
 	 * @param array $item
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function traceItemToArray (array $item): array

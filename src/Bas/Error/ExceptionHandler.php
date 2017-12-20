@@ -12,7 +12,7 @@ use Throwable;
 /**
  * Class ExceptionHandler
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Bas\Error
  * @since 1.0.0
  */
@@ -24,7 +24,7 @@ final class ExceptionHandler
 	 *
 	 * @param Throwable $err
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 * @internal
 	 */
@@ -41,7 +41,7 @@ final class ExceptionHandler
 	 *
 	 * @param Throwable $err
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function handleWithCappuccino (Throwable $err): void
@@ -68,7 +68,7 @@ final class ExceptionHandler
 	 *
 	 * @param Throwable $err
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function handleWithoutCappuccino (Throwable $err): void
@@ -83,7 +83,7 @@ final class ExceptionHandler
 	 * Gets our basic Cappuccino template.
 	 *
 	 * @return string
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function getCappuccinoTemplate (): string
@@ -107,7 +107,7 @@ CAPPUCCINO;
 	 * Returns TRUE if Cappuccino is available.
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function isCappuccinoAvailable (): bool
@@ -118,7 +118,7 @@ CAPPUCCINO;
 	/**
 	 * Registers the exception handler.
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public static function register (): void

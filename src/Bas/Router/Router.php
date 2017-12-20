@@ -284,7 +284,7 @@ class Router
 	 * @param array|null            $arguments
 	 *
 	 * @throws RouteExecutionException
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	private function parseArguments (array $reflectionArguments, array $params, ?array &$arguments): void
