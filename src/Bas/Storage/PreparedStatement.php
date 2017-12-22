@@ -54,7 +54,7 @@ final class PreparedStatement
 	 */
 	public final function bind (string $param, $value, int $paramType): void
 	{
-		$this->statement->bindParam($param, $value, $paramType);
+		$this->statement->bindValue($param, $value, $paramType);
 	}
 
 	/**
