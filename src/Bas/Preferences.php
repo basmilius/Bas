@@ -13,7 +13,7 @@ use Iterator;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Bas
- * @since 3.0.0
+ * @since 1.0.0
  */
 final class Preferences implements ArrayAccess, Countable, Iterator
 {
