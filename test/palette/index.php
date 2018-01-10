@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Bas\Util\ColorUtil;
+use Bas\Color\ColorUtil;
 
-require_once __DIR__ . '/../../src/Bas/Util/ColorUtil.php';
+require_once __DIR__ . '/../../src/Bas/Color/Color.php';
+require_once __DIR__ . '/../../src/Bas/Color/ColorUtil.php';
 require_once __DIR__ . '/../../src/Bas/Util/MathUtil.php';
 
 header('Content-Type: text/plain; charset=UTF-8');

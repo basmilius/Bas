@@ -1,13 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Util;
+namespace Bas\Color;
+
+use Bas\Util\MathUtil;
 
 /**
  * Class ColorUtil
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Util
+ * @package Bas\Color
  * @since 1.1.0
  */
 final class ColorUtil
