@@ -53,6 +53,98 @@ class Color
 	}
 
 	/**
+	 * Gets the luminance of this {@see Color}.
+	 *
+	 * @return float
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getLuminance (): float
+	{
+		return ColorUtil::luminance($this->r, $this->g, $this->b);
+	}
+
+	/**
+	 * Returns TRUE if this is a dark {@see Color}.
+	 *
+	 * @param float $delta
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function isDark (float $delta = 0.5): bool
+	{
+		return $this->getLuminance() < $delta;
+	}
+
+	/**
+	 * Returns TRUE if this is a light {@see Color}.
+	 *
+	 * @param float $delta
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function isLight (float $delta = 0.5): bool
+	{
+		return $this->getLuminance() >= $delta;
+	}
+
+	/**
+	 * Blends with another {@see Color}.
+	 *
+	 * @param Color $other
+	 * @param int   $weight
+	 *
+	 * @return Color
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function blend (self $other, int $weight): self
+	{
+		if ($weight === 0)
+			return $this;
+
+		[$r, $g, $b] = ColorUtil::blend([$this->r, $this->g, $this->b], [$other->r, $other->g, $other->b], $weight);
+
+		return self::fromRgba($r, $g, $b, $this->a);
+	}
+
+	/**
+	 * Gets a shade by {@see $weight} from this {@see Color}.
+	 *
+	 * @param int $weight
+	 *
+	 * @return Color
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function shade (int $weight): self
+	{
+		[$r, $g, $b] = ColorUtil::shade([$this->r, $this->g, $this->b], $weight);
+
+		return self::fromRgba($r, $g, $b, $this->a);
+	}
+
+	/**
+	 * Gets a tint by {@see $weight} from this {@see Color}.
+	 *
+	 * @param int $weight
+	 *
+	 * @return Color
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function tint (int $weight): self
+	{
+		[$r, $g, $b] = ColorUtil::tint([$this->r, $this->g, $this->b], $weight);
+
+		return self::fromRgba($r, $g, $b, $this->a);
+	}
+
+	/**
 	 * Gets the HSL value of this {@see Color}.
 	 *
 	 * @return array
@@ -96,7 +188,7 @@ class Color
 	 * @param float $l
 	 *
 	 * @return Color
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public static function fromHsl (float $h, float $s, float $l): self
@@ -114,7 +206,7 @@ class Color
 	 * @param int $b
 	 *
 	 * @return Color
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public static function fromRgb (int $r, int $g, int $b): self
@@ -131,7 +223,7 @@ class Color
 	 * @param float $a
 	 *
 	 * @return Color
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public static function fromRgba (int $r, int $g, int $b, float $a): self
