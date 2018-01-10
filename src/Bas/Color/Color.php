@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Bas\Color;
 
+use JsonSerializable;
+
 /**
  * Class Color
  *
@@ -10,7 +12,7 @@ namespace Bas\Color;
  * @package Bas\Color
  * @since 1.1.0
  */
-class Color
+class Color implements JsonSerializable
 {
 
 	/**
@@ -145,6 +147,72 @@ class Color
 	}
 
 	/**
+	 * Gets the R color channel value.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getR (): int
+	{
+		return $this->r;
+	}
+
+	/**
+	 * Gets the G color channel value.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getG (): int
+	{
+		return $this->g;
+	}
+
+	/**
+	 * Gets the B color channel value.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getB (): int
+	{
+		return $this->b;
+	}
+
+	/**
+	 * Gets the A color channel value.
+	 *
+	 * @return float
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getA (): float
+	{
+		return $this->a;
+	}
+
+	/**
+	 * Gets the HEX value of this {@see Color}.
+	 *
+	 * @param bool $includeHashtag
+	 * @param bool $withAlpha
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function getHex (bool $includeHashtag = false, bool $withAlpha = false): string
+	{
+		if ($withAlpha)
+			return ColorUtil::rgbaToHex($this->r, $this->g, $this->b, $this->a, $includeHashtag);
+
+		return ColorUtil::rgbToHex($this->r, $this->g, $this->b, $includeHashtag);
+	}
+
+	/**
 	 * Gets the HSL value of this {@see Color}.
 	 *
 	 * @return array
@@ -229,6 +297,26 @@ class Color
 	public static function fromRgba (int $r, int $g, int $b, float $a): self
 	{
 		return new self($r, $g, $b, $a);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function jsonSerialize (): array
+	{
+		return [
+			'alpha' => $this->r,
+			'red' => $this->r,
+			'green' => $this->g,
+			'blue' => $this->b,
+			'hex' => $this->getHex(true),
+			'hexa' => $this->getHex(true, true),
+			'hsl' => $this->getHsl(),
+			'rgb' => [$this->r, $this->g, $this->b],
+			'rgba' => [$this->r, $this->g, $this->b, $this->a]
+		];
 	}
 
 }

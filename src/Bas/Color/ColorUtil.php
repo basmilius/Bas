@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bas\Color;
 
 use Bas\Util\MathUtil;
+use InvalidArgumentException;
 
 /**
  * Class ColorUtil
@@ -48,23 +49,33 @@ final class ColorUtil
 	}
 
 	/**
-	 * Returns {@see $dark} if {@see $color} is a light color, otherwise it returns {@see $light}.
+	 * Returns a shade of {@see $color} with {@see $weight}.
 	 *
 	 * @param array $color
-	 * @param array $dark
-	 * @param array $light
-	 * @param float $delta
+	 * @param int   $weight
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function lightOrDark (array $color, array $dark = [0, 0, 0], array $light = [255, 255, 255], float $delta = 0.5): array
+	public static function shade (array $color, int $weight = 0): array
 	{
-		if (self::luminance(...$color) < $delta)
-			return $light;
+		return self::blend([0, 0, 0], $color, $weight);
+	}
 
-		return $dark;
+	/**
+	 * Returns a tint of {@see $color} with {@see $weight}.
+	 *
+	 * @param array $color
+	 * @param int   $weight
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function tint (array $color, int $weight = 0): array
+	{
+		return self::blend([255, 255, 255], $color, $weight);
 	}
 
 	/**
@@ -95,6 +106,113 @@ final class ColorUtil
 		[$r, $g, $b] = $rgb;
 
 		return ($r * .2126) + ($g * .7152) + ($b * .0722);
+	}
+
+	/**
+	 * Calculates the YIQ of RGB.
+	 *
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
+	 *
+	 * @return float
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function yiq (int $r, int $g, int $b): float
+	{
+		return (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+	}
+
+	/**
+	 * Returns {@see $dark} if {@see $color} is a light color, otherwise it returns {@see $light}.
+	 *
+	 * @param array $color
+	 * @param array $dark
+	 * @param array $light
+	 * @param float $delta
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function lightOrDark (array $color, array $dark = [0, 0, 0], array $light = [255, 255, 255], float $delta = 0.5): array
+	{
+		if (self::luminance(...$color) < $delta)
+			return $light;
+
+		return $dark;
+	}
+
+	/**
+	 * Converts HEX to RGB.
+	 *
+	 * @param string $hex
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function hexToRgb (string $hex): array
+	{
+		[$r, $g, $b] = self::hexToRgba($hex);
+
+		return [$r, $g, $b];
+	}
+
+	/**
+	 * Converts HEX to RGBA.
+	 *
+	 * @param string $hex
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function hexToRgba (string $hex): array
+	{
+		$hex = trim($hex);
+
+		$isHashtagHex = substr($hex, 0, 1) === '#';
+		$hex = $isHashtagHex ? substr($hex, 1) : $hex;
+
+		if (strlen($hex) === 8) // RRGGBBAA
+		{
+			preg_match('#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})#i', $hex, $matches);
+
+			array_shift($matches);
+			$matches = array_map('hexdec', $matches);
+
+			[$r, $g, $b, $a] = $matches;
+
+			return [$r, $g, $b, $a / 255];
+		}
+
+		if (strlen($hex) === 6)
+		{
+			preg_match('#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})#i', $hex, $matches);
+
+			array_shift($matches);
+			$matches = array_map('hexdec', $matches);
+
+			[$r, $g, $b] = $matches;
+
+			return [$r, $g, $b, 1];
+		}
+
+		if (strlen($hex) === 3)
+		{
+			preg_match('#([0-9a-f])([0-9a-f])([0-9a-f])#i', $hex, $matches);
+
+			array_shift($matches);
+			$matches = array_map('hexdec', $matches);
+
+			[$r, $g, $b] = $matches;
+
+			return [($r / 0xF) * 255, ($g / 0xF) * 255, ($b / 0xF) * 255, 1];
+		}
+
+		throw new InvalidArgumentException("Could not parse hex {$hex} to rgba.");
 	}
 
 	/**
@@ -167,6 +285,41 @@ final class ColorUtil
 	}
 
 	/**
+	 * Converts RGBA to HEX.
+	 *
+	 * @param int   $r
+	 * @param int   $g
+	 * @param int   $b
+	 * @param float $a
+	 * @param bool  $includeHashtag
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function rgbaToHex (int $r, int $g, int $b, float $a, bool $includeHashtag = false): string
+	{
+		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT) . str_pad(dechex($a * 255), 2, '0', STR_PAD_LEFT);
+	}
+
+	/**
+	 * Converts RGB to HEX.
+	 *
+	 * @param int  $r
+	 * @param int  $g
+	 * @param int  $b
+	 * @param bool $includeHashtag
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function rgbToHex (int $r, int $g, int $b, bool $includeHashtag = false): string
+	{
+		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
+	}
+
+	/**
 	 * Converts a RGB value to HSL.
 	 *
 	 * @param int $r
@@ -223,36 +376,6 @@ final class ColorUtil
 			round($s, 3),
 			round($l, 3)
 		];
-	}
-
-	/**
-	 * Returns a shade of {@see $color} with {@see $weight}.
-	 *
-	 * @param array $color
-	 * @param int   $weight
-	 *
-	 * @return array
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public static function shade (array $color, int $weight = 0): array
-	{
-		return self::blend([0, 0, 0], $color, $weight);
-	}
-
-	/**
-	 * Returns a tint of {@see $color} with {@see $weight}.
-	 *
-	 * @param array $color
-	 * @param int   $weight
-	 *
-	 * @return array
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public static function tint (array $color, int $weight = 0): array
-	{
-		return self::blend([255, 255, 255], $color, $weight);
 	}
 
 }

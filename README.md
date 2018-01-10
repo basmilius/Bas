@@ -1,5 +1,7 @@
 # `Bas\*`
 
+Stuff that I personally use a lot in other projects.
+
 - `Bas\Autoloader` - Ready for production.
 - `Bas\Enumeration` - Ready for production.
 - `Bas\Error` - Not ready.
