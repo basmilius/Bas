@@ -285,6 +285,43 @@ final class ColorUtil
 	}
 
 	/**
+	 * Converts an int color to RGB.
+	 *
+	 * @param int $color
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function intToRgb (int $color): array
+	{
+		$r = $color >> 16 & 0xFF;
+		$g = $color >> 8 & 0xFF;
+		$b = $color >> 0 & 0xFF;
+
+		return [$r, $g, $b];
+	}
+
+	/**
+	 * Converts an int color to RGBA.
+	 *
+	 * @param int $color
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function intToRgba (int $color): array
+	{
+		$a = $color >> 24 & 0xFF;
+		$r = $color >> 16 & 0xFF;
+		$g = $color >> 8 & 0xFF;
+		$b = $color >> 0 & 0xFF;
+
+		return [$r, $g, $b, $a];
+	}
+
+	/**
 	 * Converts RGBA to HEX.
 	 *
 	 * @param int   $r
@@ -317,6 +354,22 @@ final class ColorUtil
 	public static function rgbToHex (int $r, int $g, int $b, bool $includeHashtag = false): string
 	{
 		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
+	}
+
+	/**
+	 * Converts a RGB value to int.
+	 *
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function rgbToInt (int $r, int $g, int $b): int
+	{
+		return ($r << 16) | ($g << 8) | ($b << 0);
 	}
 
 	/**

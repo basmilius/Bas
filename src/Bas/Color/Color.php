@@ -283,20 +283,17 @@ class Color implements JsonSerializable
 	}
 
 	/**
-	 * Creates a new instance of {@see Color} from RGBA values.
+	 * Returns TRUE if {@see $other} is the same {@see Color}.
 	 *
-	 * @param int   $r
-	 * @param int   $g
-	 * @param int   $b
-	 * @param float $a
+	 * @param Color $other
 	 *
-	 * @return Color
+	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function fromRgba (int $r, int $g, int $b, float $a): self
+	public final function equals (self $other): bool
 	{
-		return new self($r, $g, $b, $a);
+		return $this->r === $other->r && $this->g === $other->g && $this->b === $other->b && $this->a === $other->a;
 	}
 
 	/**
@@ -317,6 +314,23 @@ class Color implements JsonSerializable
 			'rgb' => [$this->r, $this->g, $this->b],
 			'rgba' => [$this->r, $this->g, $this->b, $this->a]
 		];
+	}
+
+	/**
+	 * Creates a new instance of {@see Color} from RGBA values.
+	 *
+	 * @param int   $r
+	 * @param int   $g
+	 * @param int   $b
+	 * @param float $a
+	 *
+	 * @return Color
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public static function fromRgba (int $r, int $g, int $b, float $a): self
+	{
+		return new self($r, $g, $b, $a);
 	}
 
 }
