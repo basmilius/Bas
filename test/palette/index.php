@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../src/Bas/Util/MathUtil.php';
 
 //header('Content-Type: text/plain; charset=UTF-8');
 
-$image = '9.jpg';
+$image = '8.jpg';
 
 try
 {
