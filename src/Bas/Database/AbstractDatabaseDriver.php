@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 use PDO;
 use PDOException;
 use PDOStatement;
 
 /**
- * Class AbstractStorageDriver
+ * Class AbstractDatabaseDriver
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
-abstract class AbstractStorageDriver
+abstract class AbstractDatabaseDriver
 {
 
 	/**
-	 * @var StorageDriver
+	 * @var DatabaseDriver
 	 */
 	protected $driver;
 
@@ -28,14 +28,14 @@ abstract class AbstractStorageDriver
 	private $pdo = null;
 
 	/**
-	 * AbstractStorageDriver constructor.
+	 * AbstractDatabaseDriver constructor.
 	 *
-	 * @param StorageDriver $driver
+	 * @param DatabaseDriver $driver
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function __construct (StorageDriver $driver)
+	protected function __construct (DatabaseDriver $driver)
 	{
 		$this->driver = $driver;
 
@@ -274,7 +274,7 @@ abstract class AbstractStorageDriver
 	 * Returns the amount of found rows. SQL_CALC_FOUND_ROWS must be present in previous query.
 	 *
 	 * @return int
-	 * @throws StorageException
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -318,7 +318,7 @@ abstract class AbstractStorageDriver
 	 * @param array  $options
 	 *
 	 * @return PreparedStatement
-	 * @throws StorageException
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -338,7 +338,7 @@ abstract class AbstractStorageDriver
 		}
 		catch (PDOException $err)
 		{
-			throw new StorageException('Query failed!', StorageException::ERR_QUERY_FAILED, $err, $query);
+			throw new DatabaseException('Query failed!', DatabaseException::ERR_QUERY_FAILED, $err, $query);
 		}
 	}
 

@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
-use Bas\Storage\Lexer\Lexer;
+use Bas\Database\Lexer\Lexer;
 use PDOException;
 
 /**
- * Class StorageException
+ * Class DatabaseException
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
-final class StorageException extends \Exception
+final class DatabaseException extends \Exception
 {
 
 	public const ERR_CLASS_NOT_FOUND = 0xDBA0019;
@@ -21,7 +21,7 @@ final class StorageException extends \Exception
 	public const ERR_QUERY_FAILED = 0xDBA04039;
 
 	/**
-	 * StorageException constructor.
+	 * DatabaseException constructor.
 	 *
 	 * @param string            $message
 	 * @param int               $code
@@ -52,13 +52,20 @@ final class StorageException extends \Exception
 	 */
 	private function handleQuerySyntaxError (PDOException $err, string $query): void
 	{
-		$lexer = new Lexer($query);
-		$lexer->setDatabase('admin_intranet');
-		$lexer->setException($err);
-		$lexer->lex();
-		$tokens = $lexer->getTokens();
+		try
+		{
+			$lexer = new Lexer($query);
+			$lexer->setDatabase('admin_intranet');
+			$lexer->setException($err);
+			$lexer->lex();
+			$tokens = $lexer->getTokens();
 
-		$this->message = $tokens->getHtml();
+			$this->message = $tokens->getHtml();
+		}
+		catch (\ReflectionException $err)
+		{
+			$this->message = $err->getMessage();
+		}
 	}
 
 }

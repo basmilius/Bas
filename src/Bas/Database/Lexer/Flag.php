@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage\Lexer;
+namespace Bas\Database\Lexer;
 
 /**
  * Class Flag
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage\Lexer
+ * @package Bas\Database\Lexer
  * @since 1.0.0
  */
 final class Flag

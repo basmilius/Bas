@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 use PDO;
 use PDOException;
@@ -10,7 +10,7 @@ use PDOException;
  * Class QueryBuilder
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
 final class QueryBuilder
@@ -20,7 +20,7 @@ final class QueryBuilder
 	private const DEFAULT_INDENT = "    ";
 
 	/**
-	 * @var AbstractStorageDriver
+	 * @var AbstractDatabaseDriver
 	 */
 	private $driver;
 
@@ -52,12 +52,12 @@ final class QueryBuilder
 	/**
 	 * QueryBuilder constructor.
 	 *
-	 * @param AbstractStorageDriver|null $driver
+	 * @param AbstractDatabaseDriver|null $driver
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (?AbstractStorageDriver $driver)
+	public function __construct (?AbstractDatabaseDriver $driver)
 	{
 		$this->driver = $driver;
 	}
@@ -157,7 +157,7 @@ final class QueryBuilder
 	 * Executes the query.
 	 *
 	 * @return ResultSet
-	 * @throws StorageException
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage\Lexer;
+namespace Bas\Database\Lexer;
 
 use ReflectionClass;
 
@@ -9,7 +9,7 @@ use ReflectionClass;
  * Class Token
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage\Lexer
+ * @package Bas\Database\Lexer
  * @since 1.0.0
  */
 final class Token
@@ -80,6 +80,7 @@ final class Token
 	 * Gets the HTML string.
 	 *
 	 * @return string
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -141,6 +142,7 @@ final class Token
 	 * Gets the type name.
 	 *
 	 * @return string|null
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

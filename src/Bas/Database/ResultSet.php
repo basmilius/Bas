@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 use ArrayAccess;
 use Countable;
@@ -15,7 +15,7 @@ use PDOStatement;
  * Class ResultSet
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
 final class ResultSet implements ArrayAccess, Countable, Iterator
@@ -189,21 +189,21 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @param string $className
 	 *
 	 * @return array
-	 * @throws StorageException
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function into (string $className): array
 	{
 		if (!class_exists($className))
-			throw new StorageException("Class $className not found!", StorageException::ERR_CLASS_NOT_FOUND);
+			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
 
 		$rows = [];
 
 		foreach ($this->results as $result)
 		{
 			if (!isset($result['id']))
-				throw new StorageException("Field `id` is not found! Cannot transform into class.", StorageException::ERR_FIELD_NOT_FOUND);
+				throw new DatabaseException("Field `id` is not found! Cannot transform into class.", DatabaseException::ERR_FIELD_NOT_FOUND);
 
 			$rows[] = new $className($result['id'], $result);
 		}
@@ -217,7 +217,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @param string $className
 	 *
 	 * @return mixed|null
-	 * @throws StorageException
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

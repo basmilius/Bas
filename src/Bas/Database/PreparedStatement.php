@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 use PDO;
 use PDOException;
@@ -11,14 +11,14 @@ use PDOStatement;
  * Class PreparedStatement
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
 final class PreparedStatement
 {
 
 	/**
-	 * @var AbstractStorageDriver
+	 * @var AbstractDatabaseDriver
 	 */
 	private $driver;
 
@@ -30,13 +30,13 @@ final class PreparedStatement
 	/**
 	 * PreparedStatement constructor.
 	 *
-	 * @param AbstractStorageDriver $driver
-	 * @param PDOStatement          $statement
+	 * @param AbstractDatabaseDriver $driver
+	 * @param PDOStatement           $statement
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (AbstractStorageDriver $driver, PDOStatement $statement)
+	public function __construct (AbstractDatabaseDriver $driver, PDOStatement $statement)
 	{
 		$this->driver = $driver;
 		$this->statement = $statement;

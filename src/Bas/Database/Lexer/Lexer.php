@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage\Lexer;
+namespace Bas\Database\Lexer;
 
-use Bas\Storage\QueryBuilder;
+use Bas\Database\QueryBuilder;
 use PDOException;
 
 /**
  * Class Lexer
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage\Lexer
+ * @package Bas\Database\Lexer
  * @since 1.0.0
  */
 final class Lexer

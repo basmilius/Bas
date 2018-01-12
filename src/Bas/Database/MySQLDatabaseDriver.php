@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 /**
- * Class StorageDriverMySQL
+ * Class MySQLDatabaseDriver
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
-final class StorageDriverMySQL extends StorageDriver
+final class MySQLDatabaseDriver extends DatabaseDriver
 {
 
 	/**
-	 * StorageDriverMySQL constructor.
+	 * MySQLDatabaseDriver constructor.
 	 *
 	 * @param string $database
 	 * @param string $host

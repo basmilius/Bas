@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 /**
  * Class Transaction
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
-final class Transaction extends AbstractStorageDriver
+final class Transaction extends AbstractDatabaseDriver
 {
 
 	/**
 	 * Transaction constructor.
 	 *
-	 * @param StorageDriver $driver
+	 * @param DatabaseDriver $driver
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (StorageDriver $driver)
+	public function __construct (DatabaseDriver $driver)
 	{
 		parent::__construct($driver);
 

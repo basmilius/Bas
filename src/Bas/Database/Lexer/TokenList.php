@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage\Lexer;
+namespace Bas\Database\Lexer;
 
 use ArrayAccess;
 use Countable;
@@ -11,7 +11,7 @@ use Iterator;
  * Class TokenList
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage\Lexer
+ * @package Bas\Database\Lexer
  * @since 1.0.0
  */
 final class TokenList implements ArrayAccess, Countable, Iterator
@@ -71,6 +71,14 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 		$this->tokens[$this->count++] = $token;
 	}
 
+	/**
+	 * Gets the HTML for this {@see TokenList}.
+	 *
+	 * @return string
+	 * @throws \ReflectionException
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.1.0
+	 */
 	public final function getHtml (): string
 	{
 		$tokens = [];

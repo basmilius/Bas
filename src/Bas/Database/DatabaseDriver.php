@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Bas\Storage;
+namespace Bas\Database;
 
 use PDO;
 
 /**
- * Class StorageDriver
+ * Class DatabaseDriver
  *
  * @author Bas Milius <bas@mili.us>
- * @package Bas\Storage
+ * @package Bas\Database
  * @since 1.0.0
  */
-abstract class StorageDriver extends AbstractStorageDriver
+abstract class DatabaseDriver extends AbstractDatabaseDriver
 {
 
 	/**
@@ -36,7 +36,7 @@ abstract class StorageDriver extends AbstractStorageDriver
 	private $options;
 
 	/**
-	 * StorageDriver constructor.
+	 * DatabaseDriver constructor.
 	 *
 	 * @param string $dsn
 	 * @param string $username
