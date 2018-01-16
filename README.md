@@ -11,7 +11,7 @@ Stuff that I personally use a lot in other projects.
 - `Bas\Event` - Not ready.
 - `Bas\Image` - Not ready.
 - `Bas\Pagination` - Ready for production.
-- `Bas\Palette` - Not ready, but usable.
+- `Bas\Palette` - Ready for production.
 - `Bas\Plesk` - Not ready, but usable.
 - `Bas\Preferences` - Ready for production.
 - `Bas\Router` - Ready for production.
