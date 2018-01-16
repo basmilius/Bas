@@ -34,14 +34,14 @@ final class Autoloader
 	 *
 	 * @param string      $directory
 	 * @param string|null $namespace
-	 * @param bool        $isFakeNamespace
+	 * @param bool        $isVirtualNamespace
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function addDirectory (string $directory, ?string $namespace = null, bool $isFakeNamespace = false): void
+	public final function addDirectory (string $directory, ?string $namespace = null, bool $isVirtualNamespace = false): void
 	{
-		$this->definitions[] = [realpath($directory), $namespace, $isFakeNamespace];
+		$this->definitions[] = [realpath($directory), $namespace, $isVirtualNamespace];
 	}
 
 	/**
@@ -94,19 +94,19 @@ final class Autoloader
 	 *
 	 * @param string      $directory
 	 * @param string|null $namespace
-	 * @param bool        $isFakeNamespace
+	 * @param bool        $isVirtualNamespace
 	 * @param string      $object
 	 *
 	 * @return string|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function file (string $directory, ?string $namespace, bool $isFakeNamespace, string $object): ?string
+	private function file (string $directory, ?string $namespace, bool $isVirtualNamespace, string $object): ?string
 	{
 		if ($namespace !== null && substr($object, 0, strlen($namespace)) !== $namespace)
 			return null;
 
-		if ($isFakeNamespace && $namespace !== null)
+		if ($isVirtualNamespace && $namespace !== null)
 			$object = str_replace($namespace, '', $object);
 
 		$object = str_replace('\\', DIRECTORY_SEPARATOR, $object);
