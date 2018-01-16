@@ -76,7 +76,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 *
 	 * @return string
 	 * @throws \ReflectionException
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public final function getHtml (): string
