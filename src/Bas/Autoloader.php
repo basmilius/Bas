@@ -16,7 +16,7 @@ final class Autoloader
 	/**
 	 * @var mixed[][]
 	 */
-	private $definitions = [];
+	private $definitions;
 
 	/**
 	 * Autoloader constructor.
