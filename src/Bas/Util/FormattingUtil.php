@@ -13,6 +13,71 @@ namespace Bas\Util;
 final class FormattingUtil
 {
 
+	/**
+	 * Formats {@see $bytes} into a string representation.
+	 *
+	 * @param int  $bytes
+	 * @param int  $decimals
+	 * @param bool $siMode
+	 * @param bool $bits
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public static function formatBytes (int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
+	{
+		$si = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+		$iec = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
+
+		if ($siMode)
+		{
+			$factor = 1024;
+			$symbols = $si;
+		}
+		else
+		{
+			$factor = 1024;
+			$symbols = $iec;
+		}
+
+		if ($bits)
+		{
+			$bytes *= 8;
+		}
+
+		for ($i = 0; $i < count($symbols) - 1 && $bytes >= $factor; $i++)
+			$bytes /= $factor;
+
+		return round($bytes, $decimals) . ' ' . $symbols[$i] . ($bits ? 'b' : 'B');
+	}
+
+	/**
+	 * Formats {@see $bytes} into a string representation with /s suffix.
+	 *
+	 * @param int  $bytes
+	 * @param int  $decimals
+	 * @param bool $siMode
+	 * @param bool $bits
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public static function formatBytesPerSecond (int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
+	{
+		return self::formatBytes($bytes, $decimals, $siMode, $bits) . '/s';
+	}
+
+	/**
+	 * Converts minutes to HH:mm.
+	 *
+	 * @param int $minutes
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
 	public static function formatHoursMinutesFromMinutes (int $minutes): string
 	{
 		if ($minutes === 0)
