@@ -32,6 +32,7 @@ abstract class Enumeration implements JsonSerializable
 	 *
 	 * @param mixed $value
 	 *
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -47,6 +48,7 @@ abstract class Enumeration implements JsonSerializable
 	 * Returns the key.
 	 *
 	 * @return string
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -73,6 +75,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @param $value
 	 *
 	 * @return bool
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -87,6 +90,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @param string $key
 	 *
 	 * @return bool
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -103,6 +107,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @param $value
 	 *
 	 * @return string|null
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -120,6 +125,7 @@ abstract class Enumeration implements JsonSerializable
 	 * Gets the enum values as an array.
 	 *
 	 * @return array
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

@@ -364,7 +364,10 @@ abstract class AbstractDatabaseDriver
 	 */
 	public final function printErrors (): void
 	{
-		pre_die($this->pdo()->errorCode(), $this->pdo()->errorInfo());
+		if (function_exists('pre_die'))
+			pre_die($this->pdo()->errorCode(), $this->pdo()->errorInfo());
+		else
+			print_r([$this->pdo()->errorCode(), $this->pdo()->errorInfo()]);
 	}
 
 }
