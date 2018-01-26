@@ -13,17 +13,19 @@ namespace Bas\Router;
 final class AccessDeniedException extends \Exception
 {
 
+	public const ERR_ACCESS_DENIED = 0xFA00AC1;
+
 	/**
 	 * AccessDeniedException constructor.
 	 *
-	 * @param string $capability
+	 * @param string $message
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $capability)
+	public function __construct (string $message)
 	{
-		parent::__construct("De functie '$capability' is niet geactiveerd in jouw account.", 0xFA00AC1);
+		parent::__construct($message, self::ERR_ACCESS_DENIED);
 	}
 
 }
