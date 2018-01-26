@@ -252,7 +252,10 @@ final class Lexer
 	 */
 	private function error (string $message, string $char, int $lastIndex): void
 	{
-		pre_die(...func_get_args());
+		if (function_exists('pre_die'))
+			pre_die(...func_get_args());
+		else
+			print_r(func_get_args());
 	}
 
 	/**

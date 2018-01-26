@@ -25,6 +25,7 @@ final class ExceptionUtil
 	 * @param Throwable $exception
 	 *
 	 * @return array
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -62,6 +63,7 @@ final class ExceptionUtil
 	 * @param Throwable $exception
 	 *
 	 * @return array
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -83,6 +85,7 @@ final class ExceptionUtil
 	 * @param array $item
 	 *
 	 * @return array
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

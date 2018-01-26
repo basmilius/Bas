@@ -462,7 +462,7 @@ final class QueryBuilder
 		$this->init();
 		$this->add('INSERT IGNORE INTO', $this->escapeField($table), 0, 1, 1);
 		$this->parenthesisOpen();
-		$this->add('', $fields, 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
+		$this->add('', $this->escapeFields($fields), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 		$this->parenthesisClose();
 
 		return $this;
