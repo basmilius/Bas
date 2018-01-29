@@ -17,10 +17,11 @@ interface IOnParameters
 	 * Invoked when parameters are complete before handle.
 	 *
 	 * @param array $parameters
+	 * @param array $rawParameters
 	 *
 	 * @author Bas Milius <bas@ideemedia.nl>
 	 * @since 1.1.0
 	 */
-	function onParameters (array $parameters): void;
+	function onParameters (array $parameters, array $rawParameters): void;
 
 }

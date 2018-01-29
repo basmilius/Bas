@@ -243,7 +243,7 @@ class Router
 
 						/** @var IOnParameters $instance */
 						if ($reflection instanceof ReflectionMethod && ($instance = $handler[0]) instanceof IOnParameters)
-							$instance->onParameters($arguments);
+							$instance->onParameters($arguments, $params);
 
 						$data = call_user_func_array($handler, $arguments);
 						$response->print($data);
