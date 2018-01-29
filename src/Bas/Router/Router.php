@@ -241,6 +241,10 @@ class Router
 						$reflection = !($handler instanceof Closure) ? new ReflectionMethod($handler[0], $handler[1]) : new ReflectionFunction($handler);
 						$this->parseArguments($reflection->getParameters(), $params, $arguments);
 
+						/** @var IOnParameters $instance */
+						if ($reflection instanceof ReflectionMethod && ($instance = $handler[0]) instanceof IOnParameters)
+							$instance->onParameters($arguments);
+
 						$data = call_user_func_array($handler, $arguments);
 						$response->print($data);
 
