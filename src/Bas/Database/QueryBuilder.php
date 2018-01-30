@@ -1,9 +1,7 @@
 <?php
 /**
  * This file is part of the Bas package.
- *
  * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -131,7 +129,7 @@ final class QueryBuilder
 	 */
 	public final function escapeField (string $field): string
 	{
-		if (stristr($field, ' '))
+		if (strpos($field, ' ') || strpos($field, '(') || strpos($field, ')'))
 			return $field; // To hard to handle.
 
 		$ignore = ['1', '*'];
@@ -389,6 +387,8 @@ final class QueryBuilder
 	}
 
 	/**
+	 * Creates a DELETE query.
+	 *
 	 * @param string $table
 	 *
 	 * @return QueryBuilder
@@ -690,14 +690,14 @@ final class QueryBuilder
 	{
 		$fields = array_map(function ($field): string
 		{
-			if (stristr($field, ' ASC'))
+			if (strpos($field, ' ASC'))
 			{
 				$field = str_replace(' ASC', '', $field);
 
 				return $this->escapeField($field) . ' ASC';
 			}
 
-			if (stristr($field, ' DESC'))
+			if (strpos($field, ' DESC'))
 			{
 				$field = str_replace(' DESC', '', $field);
 
