@@ -61,6 +61,23 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Creates a DELETE query.
+	 *
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.1.0
+	 */
+	public final function delete (string $table): QueryBuilder
+	{
+		$builder = new QueryBuilder($this);
+		$builder->delete($table);
+
+		return $builder;
+	}
+
+	/**
 	 * Creates a DELETE FROM query.
 	 *
 	 * @param string $table

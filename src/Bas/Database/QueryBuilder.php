@@ -380,6 +380,21 @@ final class QueryBuilder
 	}
 
 	/**
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.1.0
+	 */
+	public final function delete (string $table): self
+	{
+		$this->init();
+		$this->add('DELETE', $this->escapeField($table), 0, 1, 1);
+
+		return $this;
+	}
+
+	/**
 	 * Creates a DELETE FROM query.
 	 *
 	 * @param string $table
