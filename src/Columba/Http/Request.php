@@ -62,7 +62,7 @@ final class Request
 	{
 		$this->body = null;
 		$this->headers = [];
-		$this->userAgent = 'BasHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
+		$this->userAgent = 'ColumbaHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
 
 		$this->requestMethod = $requestMethod;
 		$this->requestUrl = $requestUrl;

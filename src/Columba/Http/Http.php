@@ -1,9 +1,7 @@
 <?php
 /**
  * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
  * This file is part of the Columba package.
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -45,6 +43,30 @@ final class Http
 	}
 
 	/**
+	 * Performs a POST request.
+	 *
+	 * @param string        $url
+	 * @param string        $body
+	 * @param callable|null $manipulator
+	 * @param Request|null  $request
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function post (string $url, string $body, ?callable $manipulator = null, ?Request &$request = null): Response
+	{
+		$request = new Request($url, RequestMethod::POST);
+		$request->setBody($body);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
 	 * Performs the request.
 	 *
 	 * @param Request $request
@@ -69,7 +91,12 @@ final class Http
 		curl_setopt($handle, CURLOPT_URL, $request->getRequestUrl());
 		curl_setopt($handle, CURLOPT_USERAGENT, $request->getUserAgent());
 
+		if ($request->getBody() !== null)
+			curl_setopt($handle, CURLOPT_POSTFIELDS, $request->getBody());
+
 		$response = new Response($request, $handle);
+
+		// TODO (Bas): Some checks on $response.
 
 		return $response;
 	}
