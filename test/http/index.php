@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-use Bas\Http\Http;
+use Columba\Http\Http;
 
-require_once __DIR__ . '/../../src/Bas/Bas.php';
-require_once __DIR__ . '/../../src/Bas/Http/Http.php';
-require_once __DIR__ . '/../../src/Bas/Http/HttpException.php';
-require_once __DIR__ . '/../../src/Bas/Http/HttpUtil.php';
-require_once __DIR__ . '/../../src/Bas/Http/Request.php';
-require_once __DIR__ . '/../../src/Bas/Http/RequestMethod.php';
-require_once __DIR__ . '/../../src/Bas/Http/Response.php';
-require_once __DIR__ . '/../../src/Bas/Util/ArrayUtil.php';
+require_once __DIR__ . '/../../src/Columba/Columba.php';
+require_once __DIR__ . '/../../src/Columba/Http/Http.php';
+require_once __DIR__ . '/../../src/Columba/Http/HttpException.php';
+require_once __DIR__ . '/../../src/Columba/Http/HttpUtil.php';
+require_once __DIR__ . '/../../src/Columba/Http/Request.php';
+require_once __DIR__ . '/../../src/Columba/Http/RequestMethod.php';
+require_once __DIR__ . '/../../src/Columba/Http/Response.php';
+require_once __DIR__ . '/../../src/Columba/Util/ArrayUtil.php';
 
 header('Content-Type: text/plain');
 

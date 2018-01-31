@@ -1,0 +1,196 @@
+<?php
+/**
+ * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
+ *
+ * This file is part of the Columba package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Columba\Http;
+
+use Columba\Columba;
+
+/**
+ * Class Request
+ *
+ * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
+ * @since 1.2.0
+ */
+final class Request
+{
+
+	/**
+	 * @var string|null
+	 */
+	protected $body;
+
+	/**
+	 * @var string[]
+	 */
+	protected $headers;
+
+	/**
+	 * @var string|null
+	 */
+	protected $requestMethod;
+
+	/**
+	 * @var string|null
+	 */
+	protected $requestUrl;
+
+	/**
+	 * @var string
+	 */
+	protected $userAgent;
+
+	/**
+	 * Request constructor.
+	 *
+	 * @param string|null $requestUrl
+	 * @param string|null $requestMethod
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public function __construct (?string $requestUrl = null, ?string $requestMethod = null)
+	{
+		$this->body = null;
+		$this->headers = [];
+		$this->userAgent = 'BasHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
+
+		$this->requestMethod = $requestMethod;
+		$this->requestUrl = $requestUrl;
+	}
+
+	/**
+	 * Gets the body.
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function getBody (): ?string
+	{
+		return $this->body;
+	}
+
+	/**
+	 * Sets the body.
+	 *
+	 * @param string $body
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function setBody (string $body): void
+	{
+		$this->body = $body;
+	}
+
+	/**
+	 * Gets the headers.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function getHeaders (): array
+	{
+		return $this->headers;
+	}
+
+	/**
+	 * Sets the headers.
+	 *
+	 * @param array $headers
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function setHeaders (array $headers): void
+	{
+		$this->headers = $headers;
+	}
+
+	/**
+	 * Gets the request method.
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function getRequestMethod (): ?string
+	{
+		return $this->requestMethod;
+	}
+
+	/**
+	 * Sets the request method.
+	 *
+	 * @param string $requestMethod
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function setRequestMethod (string $requestMethod): void
+	{
+		$this->requestMethod = $requestMethod;
+	}
+
+	/**
+	 * Gets the request url.
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function getRequestUrl (): ?string
+	{
+		return $this->requestUrl;
+	}
+
+	/**
+	 * Sets the request url.
+	 *
+	 * @param string $requestUrl
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function setRequestUrl (string $requestUrl): void
+	{
+		$this->requestUrl = $requestUrl;
+	}
+
+	/**
+	 * Gets the user agent.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function getUserAgent (): string
+	{
+		return $this->userAgent;
+	}
+
+	/**
+	 * Sets the user agent.
+	 *
+	 * @param string $userAgent
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function setUserAgent (string $userAgent): void
+	{
+		$this->userAgent = $userAgent;
+	}
+
+}

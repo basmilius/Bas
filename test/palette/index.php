@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-use Bas\Image\Image;
-use Bas\Palette\Palette;
+use Columba\Image\Image;
+use Columba\Palette\Palette;
 
-require_once __DIR__ . '/../../src/Bas/Color/Color.php';
-require_once __DIR__ . '/../../src/Bas/Color/ColorUtil.php';
-require_once __DIR__ . '/../../src/Bas/Image/Image.php';
-require_once __DIR__ . '/../../src/Bas/Palette/ColorCutQuantizer.php';
-require_once __DIR__ . '/../../src/Bas/Palette/ColorHistogram.php';
-require_once __DIR__ . '/../../src/Bas/Palette/Palette.php';
-require_once __DIR__ . '/../../src/Bas/Palette/Swatch.php';
-require_once __DIR__ . '/../../src/Bas/Palette/Vbox.php';
-require_once __DIR__ . '/../../src/Bas/Util/MathUtil.php';
+require_once __DIR__ . '/../../src/Columba/Color/Color.php';
+require_once __DIR__ . '/../../src/Columba/Color/ColorUtil.php';
+require_once __DIR__ . '/../../src/Columba/Image/Image.php';
+require_once __DIR__ . '/../../src/Columba/Palette/ColorCutQuantizer.php';
+require_once __DIR__ . '/../../src/Columba/Palette/ColorHistogram.php';
+require_once __DIR__ . '/../../src/Columba/Palette/Palette.php';
+require_once __DIR__ . '/../../src/Columba/Palette/Swatch.php';
+require_once __DIR__ . '/../../src/Columba/Palette/Vbox.php';
+require_once __DIR__ . '/../../src/Columba/Util/MathUtil.php';
 
 //header('Content-Type: text/plain; charset=UTF-8');
 
