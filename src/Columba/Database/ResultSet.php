@@ -196,13 +196,14 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * Tries to convert our results into {@see $className}.
 	 *
 	 * @param string $className
+	 * @param array  $arguments
 	 *
 	 * @return array
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function into (string $className): array
+	public final function into (string $className, ...$arguments): array
 	{
 		if (!class_exists($className))
 			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
@@ -214,7 +215,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 			if (!isset($result['id']))
 				throw new DatabaseException("Field `id` is not found! Cannot transform into class.", DatabaseException::ERR_FIELD_NOT_FOUND);
 
-			$rows[] = new $className($result['id'], $result);
+			$rows[] = new $className($result['id'], $result, ...$arguments);
 		}
 
 		return $rows;
@@ -224,15 +225,16 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * Tries to convert our results into {@see $className} and returns the first result.
 	 *
 	 * @param string $className
+	 * @param array  $arguments
 	 *
 	 * @return mixed|null
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function intoSingle (string $className)
+	public final function intoSingle (string $className, ...$arguments)
 	{
-		$all = $this->into($className);
+		$all = $this->into($className, ...$arguments);
 
 		return $all[0] ?? null;
 	}
