@@ -75,7 +75,7 @@ abstract class AbstractDatabaseDriver
 	 * @param string $table
 	 *
 	 * @return QueryBuilder
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public final function delete (string $table): QueryBuilder
@@ -106,8 +106,8 @@ abstract class AbstractDatabaseDriver
 	/**
 	 * Creates an INSERT IGNORE INTO query.
 	 *
-	 * @param string   $table
-	 * @param string[] ...$fields
+	 * @param string $table
+	 * @param string ...$fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -124,8 +124,8 @@ abstract class AbstractDatabaseDriver
 	/**
 	 * Creates an INSERT INTO query.
 	 *
-	 * @param string   $table
-	 * @param string[] ...$fields
+	 * @param string $table
+	 * @param string ...$fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -142,8 +142,8 @@ abstract class AbstractDatabaseDriver
 	/**
 	 * Creates an INSERT INTO (...) VALUES (...) query.
 	 *
-	 * @param string  $table
-	 * @param array[] ...$data
+	 * @param string $table
+	 * @param array  ...$data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -160,7 +160,7 @@ abstract class AbstractDatabaseDriver
 	/**
 	 * Creates an OPTIMIZE TABLE query.
 	 *
-	 * @param string[] ...$table
+	 * @param string ...$table
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>

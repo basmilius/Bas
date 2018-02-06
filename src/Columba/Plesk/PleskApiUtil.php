@@ -27,7 +27,7 @@ final class PleskApiUtil
 	/**
 	 * Creates an dataset array.
 	 *
-	 * @param string[] ...$sets
+	 * @param string ...$sets
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>

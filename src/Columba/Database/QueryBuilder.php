@@ -394,7 +394,7 @@ final class QueryBuilder
 	 * @param string $table
 	 *
 	 * @return QueryBuilder
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public final function delete (string $table): self
@@ -441,7 +441,7 @@ final class QueryBuilder
 	/**
 	 * Adds a GROUP BY clause.
 	 *
-	 * @param string[] ...$fields
+	 * @param string ...$fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -518,8 +518,8 @@ final class QueryBuilder
 	/**
 	 * Creates an INSERT INTO {@see $table} (...) VALUES (...) query.
 	 *
-	 * @param string  $table
-	 * @param array[] ...$data
+	 * @param string $table
+	 * @param array  ...$data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -625,7 +625,7 @@ final class QueryBuilder
 	/**
 	 * Adds an ON DUPLICATE KEY UPDATE clause.
 	 *
-	 * @param string[] ...$fields
+	 * @param string ...$fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -646,7 +646,7 @@ final class QueryBuilder
 	/**
 	 * Creates an OPTIMIZE TABLE query.
 	 *
-	 * @param string[] ...$table
+	 * @param string ...$table
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -682,7 +682,7 @@ final class QueryBuilder
 	/**
 	 * Adds an ORDER BY clause.
 	 *
-	 * @param string[] ...$fields
+	 * @param string ...$fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>

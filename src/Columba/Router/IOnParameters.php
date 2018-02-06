@@ -15,7 +15,7 @@ namespace Columba\Router;
 /**
  * Interface IOnParameters
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Columba\Router
  * @since 1.1.0
  */
@@ -28,7 +28,7 @@ interface IOnParameters
 	 * @param array $parameters
 	 * @param array $rawParameters
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	function onParameters (array $parameters, array $rawParameters): void;

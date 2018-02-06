@@ -51,7 +51,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function __construct (array $data, ?self $parent = null)
+	private function __construct (array $data, ?Preferences $parent = null)
 	{
 		$this->current = 0;
 		$this->data = $data;

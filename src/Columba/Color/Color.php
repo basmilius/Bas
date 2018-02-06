@@ -113,7 +113,7 @@ class Color implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function blend (self $other, int $weight): self
+	public final function blend (Color $other, int $weight): self
 	{
 		if ($weight === 0)
 			return $this;
@@ -300,7 +300,7 @@ class Color implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function equals (self $other): bool
+	public final function equals (Color $other): bool
 	{
 		return $this->r === $other->r && $this->g === $other->g && $this->b === $other->b && $this->a === $other->a;
 	}

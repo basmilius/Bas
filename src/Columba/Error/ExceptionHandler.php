@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use Columba\Cappuccino\Cappuccino;
-use Columba\Cappuccino\Loader\ArrayLoader;
+use Cappuccino\Cappuccino;
+use Cappuccino\Loader\ArrayLoader;
 use Columba\Util\ExceptionUtil;
 use Exception;
 use Throwable;

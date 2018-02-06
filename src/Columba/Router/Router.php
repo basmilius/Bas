@@ -541,7 +541,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setParent (self $parent): void
+	public final function setParent (Router $parent): void
 	{
 		$this->parent = $parent;
 

@@ -314,7 +314,7 @@ final class Palette
 	/**
 	 * Some Googly calculation.
 	 *
-	 * @param float[] ...$values
+	 * @param float ...$values
 	 *
 	 * @return float
 	 * @author Bas Milius <bas@mili.us>

@@ -1,9 +1,7 @@
 <?php
 /**
  * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
  * This file is part of the Columba package.
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -125,7 +123,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function equals (self $other): bool
+	public final function equals (Swatch $other): bool
 	{
 		return $this->color->equals($other->color) && $this->population === $other->population;
 	}
