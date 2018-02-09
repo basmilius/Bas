@@ -25,14 +25,23 @@ final class JsonResponse extends AbstractResponse
 {
 
 	/**
+	 * @var bool
+	 */
+	private $withTemplate;
+
+	/**
 	 * JsonResponse constructor.
+	 *
+	 * @param bool $withTemplate
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct ()
+	public function __construct (bool $withTemplate = true)
 	{
 		ExecutionTime::start(self::class);
+
+		$this->withTemplate = true;
 	}
 
 	/**
@@ -60,6 +69,10 @@ final class JsonResponse extends AbstractResponse
 		if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS')
 		{
 			http_response_code(200);
+		}
+		else if (!$this->withTemplate)
+		{
+			echo json_encode($data, self::jsonOptions());
 		}
 		else
 		{
