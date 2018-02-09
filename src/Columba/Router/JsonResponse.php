@@ -41,7 +41,7 @@ final class JsonResponse extends AbstractResponse
 	{
 		ExecutionTime::start(self::class);
 
-		$this->withTemplate = true;
+		$this->withTemplate = $withTemplate;
 	}
 
 	/**
