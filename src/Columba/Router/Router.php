@@ -461,10 +461,10 @@ class Router
 	 */
 	public final function render (string $template, array $context = []): string
 	{
-		if ($this->renderer === null)
+		if ($this->getRenderer() === null)
 			throw new RouteExecutionException('Cannot render template without an Columba\\AbstractRenderer instance!');
 
-		return $this->renderer->render($template, $context);
+		return $this->getRenderer()->render($template, $context);
 	}
 
 	/**
@@ -482,11 +482,8 @@ class Router
 		if ($response !== null)
 			$this->response = $response;
 
-		if ($this->response !== null)
-			return $this->response;
-
-		if ($this->parent !== null)
-			return $this->parent->response();
+		if ($this->getResponse() !== null)
+			return $this->getResponse();
 
 		return new HtmlResponse();
 	}
@@ -528,7 +525,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getParent (): ?self
+	public final function getParent (): ?Router
 	{
 		return $this->parent;
 	}
@@ -544,9 +541,6 @@ class Router
 	public final function setParent (Router $parent): void
 	{
 		$this->parent = $parent;
-
-		$this->renderer = $this->renderer ?? $parent->renderer;
-		$this->response = $this->response ?? $parent->response;
 	}
 
 	/**
@@ -571,6 +565,42 @@ class Router
 	protected function onNotFound (): void
 	{
 		$this->response->print('Route not found!');
+	}
+
+	/**
+	 * Gets the recursive renderer instance.
+	 *
+	 * @return AbstractRenderer|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 3.0.0
+	 */
+	protected final function getRenderer (): ?AbstractRenderer
+	{
+		if ($this->renderer !== null)
+			return $this->renderer;
+
+		if ($this->parent !== null)
+			return $this->parent->getRenderer();
+
+		return null;
+	}
+
+	/**
+	 * Gets the recursive response instance.
+	 *
+	 * @return AbstractRenderer|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 3.0.0
+	 */
+	protected final function getResponse (): ?AbstractResponse
+	{
+		if ($this->response !== null)
+			return $this->response;
+
+		if ($this->parent !== null)
+			return $this->parent->getResponse();
+
+		return null;
 	}
 
 }
