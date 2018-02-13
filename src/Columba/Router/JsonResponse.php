@@ -62,7 +62,6 @@ final class JsonResponse extends AbstractResponse
 		header('X-Author: bas@mili.us');
 		header('X-Content-Type-Options: nosniff');
 		header('X-Frame-Options: deny');
-		header('X-Provider: ideemedia.nl');
 
 		$response = [];
 
