@@ -153,6 +153,7 @@ abstract class Enumeration implements JsonSerializable
 
 	/**
 	 * {@inheritdoc}
+	 * @throws \ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

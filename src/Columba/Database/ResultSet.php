@@ -138,6 +138,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * {@inheritdoc}
+	 * @throws ErrorException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -151,6 +152,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * {@inheritdoc}
+	 * @throws ErrorException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -164,6 +166,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * {@inheritdoc}
+	 * @throws ErrorException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -174,6 +177,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * {@inheritdoc}
+	 * @throws ErrorException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
