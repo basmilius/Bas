@@ -69,6 +69,32 @@ final class Http
 	}
 
 	/**
+	 * Performs a PUT request.
+	 *
+	 * @param string        $url
+	 * @param string        $body
+	 * @param callable|null $manipulator
+	 * @param Request|null  $request
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function put (string $url, ?string $body = null, ?callable $manipulator = null, ?Request &$request = null): Response
+	{
+		$request = new Request($url, RequestMethod::PUT);
+
+		if ($body !== null)
+			$request->setBody($body);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
 	 * Performs the request.
 	 *
 	 * @param Request $request
