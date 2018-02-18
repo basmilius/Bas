@@ -16,6 +16,7 @@ use ArrayAccess;
 use Columba\Util\ArrayUtil;
 use Countable;
 use Iterator;
+use JsonSerializable;
 
 /**
  * Class Preferences
@@ -24,7 +25,7 @@ use Iterator;
  * @package Columba
  * @since 1.0.0
  */
-final class Preferences implements ArrayAccess, Countable, Iterator
+final class Preferences implements ArrayAccess, Countable, Iterator, JsonSerializable
 {
 
 	/**
@@ -184,6 +185,16 @@ final class Preferences implements ArrayAccess, Countable, Iterator
 	public final function count (): int
 	{
 		return count($this->data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function jsonSerialize (): array
+	{
+		return $this->data;
 	}
 
 	/**
