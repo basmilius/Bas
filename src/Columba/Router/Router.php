@@ -335,9 +335,9 @@ class Router
 	/**
 	 * Adds a GET route handler.
 	 *
-	 * @param string                $path
-	 * @param Router|callable       $route
-	 * @param AbstractResponse|null $overrideResponse
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -351,9 +351,9 @@ class Router
 	/**
 	 * Adds a DELETE route handler.
 	 *
-	 * @param string                $path
-	 * @param Router|callable       $route
-	 * @param AbstractResponse|null $overrideResponse
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -367,9 +367,9 @@ class Router
 	/**
 	 * Adds a PATCH route handler.
 	 *
-	 * @param string                $path
-	 * @param Router|callable       $route
-	 * @param AbstractResponse|null $overrideResponse
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -383,9 +383,9 @@ class Router
 	/**
 	 * Adds a POST route handler.
 	 *
-	 * @param string                $path
-	 * @param Router|callable       $route
-	 * @param AbstractResponse|null $overrideResponse
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -399,9 +399,9 @@ class Router
 	/**
 	 * Adds a PUT route handler.
 	 *
-	 * @param string                $path
-	 * @param Router|callable       $route
-	 * @param AbstractResponse|null $overrideResponse
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -431,16 +431,19 @@ class Router
 	/**
 	 * Adds a route handler on a {@see $path}.
 	 *
-	 * @param string                 $path
-	 * @param Router|callable|string $route
-	 * @param string|null            $requestMethod
-	 * @param AbstractResponse|null  $overrideResponse
+	 * @param string                            $path
+	 * @param Router|IGetRouter|callable|string $route
+	 * @param string|null                       $requestMethod
+	 * @param AbstractResponse|null             $overrideResponse
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function use (string $path, $route, ?string $requestMethod = null, ?AbstractResponse $overrideResponse = null): void
 	{
+		if ($route instanceof IGetRouter)
+			$route = $route->getRouter();
+
 		if ($route instanceof self)
 			$route->setParent($this);
 
