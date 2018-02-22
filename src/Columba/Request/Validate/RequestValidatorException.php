@@ -35,6 +35,7 @@ final class RequestValidatorException extends Exception
 	public const ERR_NOT_AN_EMAIL = 0xBFBF009;
 	public const ERR_TOO_LONG = 0xBFBF010;
 	public const ERR_TOO_SHORT = 0xBFBF011;
+	public const ERR_DIDNT_MATCH = 0xBFBF012;
 
 	/**
 	 * RequestValidatorException constructor.

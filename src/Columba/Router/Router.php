@@ -19,6 +19,13 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 
+define('HTTP_DELETE', 'DELETE');
+define('HTTP_GET', 'GET');
+define('HTTP_OPTIONS', 'OPTIONS');
+define('HTTP_PATCH', 'PATCH');
+define('HTTP_POST', 'POST');
+define('HTTP_PUT', 'PUT');
+
 /**
  * Class Router
  *
@@ -28,6 +35,8 @@ use ReflectionParameter;
  */
 class Router
 {
+
+	private const ALLOWED_METHODS = [HTTP_DELETE, HTTP_GET, HTTP_OPTIONS, HTTP_PATCH, HTTP_POST, HTTP_PUT];
 
 	/**
 	 * @var Router
@@ -333,6 +342,22 @@ class Router
 	}
 
 	/**
+	 * Adds a DELETE route handler.
+	 *
+	 * @param string                     $path
+	 * @param Router|IGetRouter|callable $route
+	 * @param AbstractResponse|null      $overrideResponse
+	 *
+	 * @see Router::use()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function delete (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	{
+		$this->use($path, $route, 'DELETE', $overrideResponse);
+	}
+
+	/**
 	 * Adds a GET route handler.
 	 *
 	 * @param string                     $path
@@ -349,7 +374,7 @@ class Router
 	}
 
 	/**
-	 * Adds a DELETE route handler.
+	 * Adds a OPTIONS route handler.
 	 *
 	 * @param string                     $path
 	 * @param Router|IGetRouter|callable $route
@@ -359,9 +384,9 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function delete (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function options (string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
-		$this->use($path, $route, 'DELETE', $overrideResponse);
+		$this->use($path, $route, 'OPTIONS', $overrideResponse);
 	}
 
 	/**
@@ -426,6 +451,34 @@ class Router
 	public final function redirect (string $path, string $newPath, ?string $requestMethod = null): void
 	{
 		$this->use($path, $newPath, $requestMethod);
+	}
+
+	/**
+	 * Adds a route with handlers for multiple request methods.
+	 * @param string $path
+	 * @param array  $handlers
+	 *
+	 * @see Router::use()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function for (string $path, array $handlers): void
+	{
+		foreach ($handlers as $requestMethod => $handler)
+		{
+			if (!in_array($requestMethod, self::ALLOWED_METHODS))
+				continue;
+
+			$overrideResponse = null;
+
+			if (is_array($handler) && !is_callable($handler))
+			{
+				$overrideResponse = $handler[1];
+				$handler = $handler[0];
+			}
+
+			$this->use($path, $handler, $requestMethod, $overrideResponse);
+		}
 	}
 
 	/**

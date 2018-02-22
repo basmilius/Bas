@@ -88,6 +88,27 @@ final class RequestValidatorOption
 	}
 
 	/**
+	 * Ensures that {@see $value} matches {@see $pattern}.
+	 * @param string $pattern
+	 *
+	 * @return RequestValidatorOption
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function matchesWith (string $pattern): RequestValidatorOption
+	{
+		$this->validators[] = function ($value) use($pattern): array
+		{
+			if (preg_match($pattern, $value))
+				return [$value, null];
+
+			return [null, RequestValidatorException::ERR_DIDNT_MATCH];
+		};
+
+		return $this;
+	}
+
+	/**
 	 * Ensures that {@see $value} succeeds {@see $validator}.
 	 *
 	 * @param callable $validator
@@ -335,10 +356,10 @@ final class RequestValidatorOption
 	{
 		$this->validators[] = function (string $value) use ($min, $max): array
 		{
-			if ($min !== null && strlen($value) < $min)
+			if ($min !== null && mb_strlen($value) < $min)
 				return [null, RequestValidatorException::ERR_TOO_SHORT];
 
-			if ($max !== null && strlen($value) > $max)
+			if ($max !== null && mb_strlen($value) > $max)
 				return [null, RequestValidatorException::ERR_TOO_LONG];
 
 			return [$value, null];
