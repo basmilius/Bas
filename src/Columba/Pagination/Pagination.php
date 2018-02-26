@@ -277,4 +277,25 @@ final class Pagination
 		$this->sizeMid = $sizeMid;
 	}
 
+	/**
+	 * Create a pagination instance, the simple way.
+	 * @param int $offset
+	 * @param int $limit
+	 * @param int $total
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public static function simple (int $offset, int $limit, int $total): array
+	{
+		$pagination = new Pagination('');
+		$pagination->setItems($total);
+		$pagination->setCurrent((int)ceil(($offset + $limit) / $limit));
+		$pagination->setItemsPerPage($limit);
+		$pagination->make();
+
+		return $pagination->get();
+	}
+
 }
