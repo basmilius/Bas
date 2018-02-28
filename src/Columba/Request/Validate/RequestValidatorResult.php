@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Request\Validate;
 
+use ArrayAccess;
+use ErrorException;
+
 /**
  * Class RequestValidatorResult
  *
@@ -19,7 +22,7 @@ namespace Columba\Request\Validate;
  * @package Columba\Request\Validate
  * @since 1.2.0
  */
-final class RequestValidatorResult
+final class RequestValidatorResult implements ArrayAccess
 {
 
 	/**
@@ -105,6 +108,48 @@ final class RequestValidatorResult
 	public final function isValid (): bool
 	{
 		return count($this->errors) === 0;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function offsetExists ($offset): bool
+	{
+		return isset($this->params[$offset]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function offsetGet ($offset)
+	{
+		return $this->params[$offset];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws ErrorException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function offsetSet ($offset, $value)
+	{
+		throw new ErrorException('Altering validated parameters is not permitted.');
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws ErrorException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function offsetUnset ($offset)
+	{
+		throw new ErrorException('Altering validated parameters is not permitted.');
 	}
 
 }
