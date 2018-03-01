@@ -236,6 +236,26 @@ final class RequestValidatorOption
 	}
 
 	/**
+	 * Ensures that {@see $value} is a float.
+	 *
+	 * @return RequestValidatorOption
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function toBeFloat (): RequestValidatorOption
+	{
+		$this->validators[] = function ($value): array
+		{
+			if (is_numeric($value))
+				return [floatval($value), null];
+
+			return [null, RequestValidatorException::ERR_NEEDS_TO_BE_FLOAT];
+		};
+
+		return $this;
+	}
+
+	/**
 	 * Ensures that {@see $value} is an integer.
 	 *
 	 * @return RequestValidatorOption
