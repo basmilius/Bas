@@ -71,6 +71,18 @@ final class Image
 	}
 
 	/**
+	 * Gets the image resource.
+	 *
+	 * @return resource
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function getResource ()
+	{
+		return $this->imageResource;
+	}
+
+	/**
 	 * Gets the {@see $height} of the {@see Image}.
 	 *
 	 * @return int
