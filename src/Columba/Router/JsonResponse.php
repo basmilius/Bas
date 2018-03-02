@@ -102,7 +102,7 @@ final class JsonResponse extends AbstractResponse
 	 */
 	public static function jsonOptions (): int
 	{
-		return JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRESERVE_ZERO_FRACTION;
+		return JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRESERVE_ZERO_FRACTION;
 	}
 
 }
