@@ -74,7 +74,7 @@ final class Image
 	 * Gets the image resource.
 	 *
 	 * @return resource
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function getResource ()
