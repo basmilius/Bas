@@ -13,6 +13,11 @@ declare(strict_types=1);
 namespace Columba\Router;
 
 use Closure;
+use Columba\Router\Exception\AccessDeniedException;
+use Columba\Router\Exception\RouteExecutionException;
+use Columba\Router\Renderer\AbstractRenderer;
+use Columba\Router\Response\AbstractResponse;
+use Columba\Router\Response\HtmlResponse;
 use Exception;
 use ReflectionClass;
 use ReflectionFunction;
