@@ -209,6 +209,9 @@ class Router
 
 			try
 			{
+				if ($handler instanceof LateInitRouter)
+					$handler = $handler->createRouter();
+
 				if ($handler instanceof self)
 				{
 					if (!$handler->canAccess())
@@ -350,7 +353,7 @@ class Router
 	 * Adds a DELETE route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -366,7 +369,7 @@ class Router
 	 * Adds a GET route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -382,7 +385,7 @@ class Router
 	 * Adds a OPTIONS route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -398,7 +401,7 @@ class Router
 	 * Adds a PATCH route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -414,7 +417,7 @@ class Router
 	 * Adds a POST route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -430,7 +433,7 @@ class Router
 	 * Adds a PUT route handler.
 	 *
 	 * @param string                     $path
-	 * @param Router|IGetRouter|callable $route
+	 * @param Router|LateInitRouter|IGetRouter|callable $route
 	 * @param AbstractResponse|null      $overrideResponse
 	 *
 	 * @see Router::use()
@@ -460,6 +463,7 @@ class Router
 
 	/**
 	 * Adds a route with handlers for multiple request methods.
+	 *
 	 * @param string $path
 	 * @param array  $handlers
 	 *
@@ -489,10 +493,10 @@ class Router
 	/**
 	 * Adds a route handler on a {@see $path}.
 	 *
-	 * @param string                            $path
-	 * @param Router|IGetRouter|callable|string $route
-	 * @param string|null                       $requestMethod
-	 * @param AbstractResponse|null             $overrideResponse
+	 * @param string                                           $path
+	 * @param Router|LateInitRouter|IGetRouter|callable|string $route
+	 * @param string|null                                      $requestMethod
+	 * @param AbstractResponse|null                            $overrideResponse
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -502,7 +506,7 @@ class Router
 		if ($route instanceof IGetRouter)
 			$route = $route->getRouter();
 
-		if ($route instanceof self)
+		if ($route instanceof self || $route instanceof LateInitRouter)
 			$route->setParent($this);
 
 		array_unshift($this->routes, [$path, $route, $requestMethod, $overrideResponse]);

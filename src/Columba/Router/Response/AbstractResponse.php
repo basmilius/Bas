@@ -41,7 +41,7 @@ abstract class AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function redirect (string $redirectUri, int $code = 301): void
+	public final function redirect (string $redirectUri, int $code = 302): void
 	{
 		$queryString = explode('?', $_SERVER['REQUEST_URI'])[1] ?? '';
 		if (strlen($queryString) > 0)
