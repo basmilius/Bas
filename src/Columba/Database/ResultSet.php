@@ -280,7 +280,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 */
 	public final function rawIntoSingle (string $className, ...$arguments)
 	{
-		$all = $this->into($className, ...$arguments);
+		$all = $this->rawInto($className, ...$arguments);
 
 		return $all[0] ?? null;
 	}
