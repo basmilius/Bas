@@ -18,7 +18,9 @@ use Columba\Router\Exception\RouteExecutionException;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\HtmlResponse;
+use Columba\Router\Response\JsonResponse;
 use Exception;
+use JsonSerializable;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -286,6 +288,11 @@ class Router
 			catch (AccessDeniedException $err)
 			{
 				$this->onAccessDenied($err);
+				$didHandleRequest = true;
+			}
+			catch (JsonSerializable $err)
+			{
+				$this->response(new JsonResponse(false))->print($err);
 				$didHandleRequest = true;
 			}
 			catch (Exception $exception)
