@@ -56,7 +56,7 @@ final class CodeResponseType implements IResponseType
 		$this->tokenFactory->saveAuthorizationToken($client['client_id'], $ownerId, $redirectUri, $scope, $authorizationCode);
 
 		http_response_code(303);
-		header('Location: ' . $redirectUri . '?code=' . $authorizationCode . ($state !== null ? '&state=' . urlencode($state) : ''));
+		header('Location: ' . $redirectUri . (strpos($redirectUri, '?') ? '&' : '?') . 'code=' . $authorizationCode . ($state !== null ? '&state=' . urlencode($state) : ''));
 	}
 
 }

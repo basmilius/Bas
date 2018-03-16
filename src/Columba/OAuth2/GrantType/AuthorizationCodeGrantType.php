@@ -68,6 +68,7 @@ final class AuthorizationCodeGrantType implements IGrantType
 			throw new InvalidRequestException('Missing parameter: "redirect_uri" is required.');
 
 		$authorizationCode = $this->oAuth2->getTokenFactory()->getToken('authorization_code', $code);
+		$redirectUri = urldecode($redirectUri);
 
 		if ($authorizationCode === null)
 			throw new InvalidGrantException('Authorization code doesn\'t exist or is invalid for the client.');
