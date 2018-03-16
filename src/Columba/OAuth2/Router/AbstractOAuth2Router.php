@@ -67,7 +67,15 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 */
 	public final function onGetOAuth2Authorize (?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): string
 	{
-		$this->oAuth2->validateAuthorizeRequest($client_id, $this->getOwnerId(), $response_type, $redirect_uri, $scope, $client);
+		$ownerId = $this->getOwnerId();
+
+		if ($ownerId === null)
+		{
+			$this->onOwnerNull();
+			return '';
+		}
+
+		$this->oAuth2->validateAuthorizeRequest($client_id, $ownerId, $response_type, $redirect_uri, $scope, $client);
 
 		return $this->renderAuthorize([
 			'client' => $client,
@@ -123,6 +131,14 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @since 1.3.0
 	 */
 	protected abstract function getOwnerId (): ?int;
+
+	/**
+	 * Invoked when the owner is NULL.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected abstract function onOwnerNull (): void;
 
 	/**
 	 * Renders the authorize view.
