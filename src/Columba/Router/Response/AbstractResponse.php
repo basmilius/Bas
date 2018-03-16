@@ -37,15 +37,23 @@ abstract class AbstractResponse
 	 *
 	 * @param string $redirectUri
 	 * @param int    $code
+	 * @param bool   $redirectQueryString
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function redirect (string $redirectUri, int $code = 302): void
+	public final function redirect (string $redirectUri, int $code = 302, bool $redirectQueryString = true): void
 	{
-		$queryString = explode('?', $_SERVER['REQUEST_URI'])[1] ?? '';
-		if (strlen($queryString) > 0)
-			$queryString = '?' . $queryString;
+		if ($redirectQueryString)
+		{
+			$queryString = explode('?', $_SERVER['REQUEST_URI'])[1] ?? '';
+			if (strlen($queryString) > 0)
+				$queryString = '?' . $queryString;
+		}
+		else
+		{
+			$queryString = '';
+		}
 
 		http_response_code($code);
 		header('Location: ' . $redirectUri . $queryString);
