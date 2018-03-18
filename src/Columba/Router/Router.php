@@ -84,14 +84,15 @@ class Router
 	/**
 	 * Returns TRUE if the router is available for the current context.
 	 *
-	 * @param string $route
-	 * @param string $routeWithParams
+	 * @param string      $route
+	 * @param string      $routeWithParams
+	 * @param string|null $alternativeRoute
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function canAccess (string $route, string $routeWithParams): bool
+	protected function canAccess (string $route, string $routeWithParams, ?string &$alternativeRoute): bool
 	{
 		return true;
 	}
@@ -213,8 +214,16 @@ class Router
 			if (substr($newRoute, 0, 1) !== '/')
 				$newRoute = '/' . $newRoute;
 
-			if (!$this->canAccess($route, $routeWithParams))
+			if (!$this->canAccess($route, $routeWithParams, $alternativeRoute))
+			{
+				if ($alternativeRoute !== null)
+				{
+					$this->response()->redirect($alternativeRoute, RedirectType::SEE_OTHER);
+					return;
+				}
+
 				continue;
+			}
 
 			try
 			{
@@ -268,7 +277,7 @@ class Router
 			}
 			catch (AccessDeniedException $err)
 			{
-				$this->onAccessDenied($err);
+				$this->onAccessDenied($route, $routeWithParams, $err);
 				$didHandleRequest = true;
 			}
 			catch (JsonSerializable $err)
@@ -278,7 +287,7 @@ class Router
 			}
 			catch (Exception $exception)
 			{
-				$this->onException($exception);
+				$this->onException($route, $routeWithParams, $exception);
 			}
 
 			if ($didHandleRequest)
@@ -290,7 +299,7 @@ class Router
 			if ($isSubRoute)
 				throw new RouteExecutionException('Subroute not found', RouteExecutionException::ERR_SUBROUTE_NOT_FOUND);
 			else
-				$this->onNotFound();
+				$this->onNotFound($requestPath);
 		}
 	}
 
@@ -599,42 +608,48 @@ class Router
 	/**
 	 * Invoked when route access is denied.
 	 *
+	 * @param string                $route
+	 * @param string                $routeWithParams
 	 * @param AccessDeniedException $err
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function onAccessDenied (AccessDeniedException $err): void
+	protected function onAccessDenied (string $route, string $routeWithParams, AccessDeniedException $err): void
 	{
-		$this->response->print('Access to this route is denied. ' . $err->getMessage());
+		$this->response->print('Access to this route is denied (' . $route . ' / ' . $routeWithParams . '). ' . $err->getMessage());
 	}
 
 	/**
 	 * Invoked when an exception is thrown.
 	 *
+	 * @param string    $route
+	 * @param string    $routeWithParams
 	 * @param Exception $exception
 	 *
 	 * @throws RouteExecutionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function onException (Exception $exception): void
+	protected function onException (string $route, string $routeWithParams, Exception $exception): void
 	{
 		if ($exception instanceof RouteExecutionException)
 			throw $exception;
 		else
-			throw new RouteExecutionException('Route execution failed with an exception', RouteExecutionException::ERR_ROUTE_THREW_EXCEPTION, $exception);
+			throw new RouteExecutionException('Route execution failed with an exception. (' . $route . ' / ' . $routeWithParams . ')', RouteExecutionException::ERR_ROUTE_THREW_EXCEPTION, $exception);
 	}
 
 	/**
 	 * Invoked when a route is not found.
 	 *
+	 * @param string $requestPath
+	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function onNotFound (): void
+	protected function onNotFound (string $requestPath): void
 	{
-		$this->response->print('Route not found!');
+		$this->response->print('Route ' . $requestPath . ' not found.');
 	}
 
 	/**

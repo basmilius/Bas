@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
+use Columba\Router\RedirectType;
+
 /**
  * Class AbstractResponse
  *
@@ -42,7 +44,7 @@ abstract class AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function redirect (string $redirectUri, int $code = 302, bool $redirectQueryString = true): void
+	public final function redirect (string $redirectUri, int $code = RedirectType::FOUND, bool $redirectQueryString = true): void
 	{
 		if ($redirectQueryString)
 		{
