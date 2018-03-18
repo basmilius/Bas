@@ -21,7 +21,6 @@ use Columba\Router\Response\HtmlResponse;
 use Columba\Router\Response\JsonResponse;
 use Exception;
 use JsonSerializable;
-use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
@@ -128,6 +127,7 @@ class Router
 		return $paramValue;
 	}
 
+	/** @noinspection PhpDocRedundantThrowsInspection */
 	/**
 	 * Handles the request based on {@see $requestPath}.
 	 *
@@ -135,6 +135,7 @@ class Router
 	 * @param array  $params
 	 * @param bool   $isSubRoute
 	 *
+	 * @throws AccessDeniedException
 	 * @throws RouteExecutionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -169,21 +170,13 @@ class Router
 					$paramDefinitions[] = [$paramName, $paramType];
 
 					if ($paramType === 's')
-					{
 						$pattern .= '\/(?<' . $paramName . '>[a-zA-Z0-9-_\.]+)';
-					}
 					else if ($paramType === 'i')
-					{
 						$pattern .= '\/(?<' . $paramName . '>[0-9]+)';
-					}
 					else if ($paramType === 'f')
-					{
 						$pattern .= '\/(?<' . $paramName . '>[0-9\.]+)';
-					}
 					else if ($paramType === 'b')
-					{
 						$pattern .= '\/(?<' . $paramName . '>(0|1|false|true)+)';
-					}
 				}
 			}
 
@@ -209,6 +202,14 @@ class Router
 			foreach ($params as $param => $value)
 				$convertedPath = preg_replace('#(\[(s|i|f|b)\:(' . $param . ')\])#', $value, $convertedPath);
 
+			$newPath = substr($requestPath, strlen($convertedPath));
+
+			if (!$newPath)
+				$newPath = '/';
+
+			if (substr($newPath, 0, 1) !== '/')
+				$newPath = '/' . $newPath;
+
 			try
 			{
 				if ($handler instanceof LateInitRouter)
@@ -218,14 +219,6 @@ class Router
 				{
 					if (!$handler->canAccess())
 						continue;
-
-					$newPath = substr($requestPath, strlen($convertedPath));
-
-					if (!$newPath)
-						$newPath = '/';
-
-					if (substr($newPath, 0, 1) !== '/')
-						$newPath = '/' . $newPath;
 
 					try
 					{
@@ -244,21 +237,7 @@ class Router
 				{
 					$response = $overrideResponse ?? $this->response();
 
-					if (is_string($handler) && class_exists($handler) && ($reflection = new ReflectionClass($handler))->isSubclassOf(AbstractRouteController::class))
-					{
-						$this->parseArguments($reflection->getConstructor()->getParameters(), $params, $arguments);
-
-						/** @var AbstractRouteController $instance */
-						$instance = $reflection->newInstanceArgs($arguments);
-						$instance->onBeforeHandle();
-
-						$response->print($instance->handle());
-
-						$instance->onAfterHandle();
-
-						$didHandleRequest = true;
-					}
-					else if (is_string($handler) && !is_callable($handler))
+					if (is_string($handler) && !is_callable($handler))
 					{
 						$this->response()->redirect($handler);
 
@@ -284,7 +263,6 @@ class Router
 					}
 				}
 			}
-				/** @noinspection PhpRedundantCatchClauseInspection */
 			catch (AccessDeniedException $err)
 			{
 				$this->onAccessDenied($err);
@@ -297,7 +275,7 @@ class Router
 			}
 			catch (Exception $exception)
 			{
-				throw new RouteExecutionException('Route execution failed with an exception', RouteExecutionException::ERR_ROUTE_THREW_EXCEPTION, $exception);
+				$this->onException($exception);
 			}
 
 			if ($didHandleRequest)
@@ -359,9 +337,9 @@ class Router
 	/**
 	 * Adds a DELETE route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -375,9 +353,9 @@ class Router
 	/**
 	 * Adds a GET route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -391,9 +369,9 @@ class Router
 	/**
 	 * Adds a OPTIONS route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -407,9 +385,9 @@ class Router
 	/**
 	 * Adds a PATCH route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -423,9 +401,9 @@ class Router
 	/**
 	 * Adds a POST route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -439,9 +417,9 @@ class Router
 	/**
 	 * Adds a PUT route handler.
 	 *
-	 * @param string                     $path
+	 * @param string                                    $path
 	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null      $overrideResponse
+	 * @param AbstractResponse|null                     $overrideResponse
 	 *
 	 * @see Router::use()
 	 * @author Bas Milius <bas@mili.us>
@@ -626,6 +604,23 @@ class Router
 	protected function onAccessDenied (AccessDeniedException $err): void
 	{
 		$this->response->print('Access to this route is denied. ' . $err->getMessage());
+	}
+
+	/**
+	 * Invoked when an exception is thrown.
+	 *
+	 * @param Exception $exception
+	 *
+	 * @throws RouteExecutionException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected function onException (Exception $exception): void
+	{
+		if ($exception instanceof RouteExecutionException)
+			throw $exception;
+		else
+			throw new RouteExecutionException('Route execution failed with an exception', RouteExecutionException::ERR_ROUTE_THREW_EXCEPTION, $exception);
 	}
 
 	/**
