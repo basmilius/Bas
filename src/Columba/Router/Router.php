@@ -295,12 +295,7 @@ class Router
 		}
 
 		if (!$didHandleRequest)
-		{
-			if ($isSubRoute)
-				throw new RouteExecutionException('Subroute not found', RouteExecutionException::ERR_SUBROUTE_NOT_FOUND);
-			else
-				$this->onNotFound($requestPath);
-		}
+			$this->onNotFound($requestPath, $isSubRoute);
 	}
 
 	/**
@@ -643,13 +638,18 @@ class Router
 	 * Invoked when a route is not found.
 	 *
 	 * @param string $requestPath
+	 * @param bool   $isSubRoute
 	 *
+	 * @throws RouteExecutionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function onNotFound (string $requestPath): void
+	protected function onNotFound (string $requestPath, bool $isSubRoute): void
 	{
-		$this->response->print('Route ' . $requestPath . ' not found.');
+		if ($isSubRoute)
+			throw new RouteExecutionException('Subroute not found', RouteExecutionException::ERR_SUBROUTE_NOT_FOUND);
+		else
+			$this->response->print('Route ' . $requestPath . ' not found.');
 	}
 
 	/**
