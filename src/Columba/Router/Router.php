@@ -213,7 +213,7 @@ class Router
 			if (substr($newRoute, 0, 1) !== '/')
 				$newRoute = '/' . $newRoute;
 
-			if ($this->canAccess($route, $routeWithParams))
+			if (!$this->canAccess($route, $routeWithParams))
 				continue;
 
 			try
