@@ -84,11 +84,14 @@ class Router
 	/**
 	 * Returns TRUE if the router is available for the current context.
 	 *
+	 * @param string $route
+	 * @param string $routeWithParams
+	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function canAccess (): bool
+	protected function canAccess (string $route, string $routeWithParams): bool
 	{
 		return true;
 	}
@@ -145,14 +148,14 @@ class Router
 		$currentPath = null;
 		$didHandleRequest = false;
 
-		foreach ($this->routes as [$path, $handler, $requestMethod, $overrideResponse])
+		foreach ($this->routes as [$route, $handler, $requestMethod, $overrideResponse])
 		{
 			if ($requestMethod !== null && $_SERVER['REQUEST_METHOD'] !== $requestMethod)
 				continue;
 
 			$paramDefinitions = [];
 			$pattern = '';
-			$parts = array_filter(explode('/', $path));
+			$parts = array_filter(explode('/', $route));
 
 			foreach ($parts as $part)
 			{
@@ -197,18 +200,18 @@ class Router
 			if (!$isMatch)
 				continue;
 
-			$convertedPath = $path;
+			$routeWithParams = $route;
 
 			foreach ($params as $param => $value)
-				$convertedPath = preg_replace('#(\[(s|i|f|b)\:(' . $param . ')\])#', $value, $convertedPath);
+				$routeWithParams = preg_replace('#(\[(s|i|f|b)\:(' . $param . ')\])#', $value, $routeWithParams);
 
-			$newPath = substr($requestPath, strlen($convertedPath));
+			$newRoute = substr($requestPath, strlen($routeWithParams));
 
-			if (!$newPath)
-				$newPath = '/';
+			if (!$newRoute)
+				$newRoute = '/';
 
-			if (substr($newPath, 0, 1) !== '/')
-				$newPath = '/' . $newPath;
+			if (substr($newRoute, 0, 1) !== '/')
+				$newRoute = '/' . $newRoute;
 
 			try
 			{
@@ -217,12 +220,12 @@ class Router
 
 				if ($handler instanceof self)
 				{
-					if (!$handler->canAccess())
+					if (!$handler->canAccess($route, $routeWithParams))
 						continue;
 
 					try
 					{
-						$handler->handle($newPath, $params, true);
+						$handler->handle($newRoute, $params, true);
 						$didHandleRequest = true;
 					}
 					catch (RouteExecutionException $err)
@@ -233,7 +236,7 @@ class Router
 							throw $err;
 					}
 				}
-				else if (preg_match(substr($pattern, 0, -1) . '$#', $requestPath) || $requestPath === '/' && $path === '/')
+				else if (preg_match(substr($pattern, 0, -1) . '$#', $requestPath) || $requestPath === '/' && $route === '/')
 				{
 					$response = $overrideResponse ?? $this->response();
 
