@@ -213,6 +213,9 @@ class Router
 			if (substr($newRoute, 0, 1) !== '/')
 				$newRoute = '/' . $newRoute;
 
+			if ($this->canAccess($route, $routeWithParams))
+				continue;
+
 			try
 			{
 				if ($handler instanceof LateInitRouter)
@@ -220,9 +223,6 @@ class Router
 
 				if ($handler instanceof self)
 				{
-					if (!$handler->canAccess($route, $routeWithParams))
-						continue;
-
 					try
 					{
 						$handler->handle($newRoute, $params, true);
