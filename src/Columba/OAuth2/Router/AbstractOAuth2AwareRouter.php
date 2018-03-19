@@ -139,7 +139,8 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	private function checkRequest ()
 	{
-		if (isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']))
+		// Only check on Authorization: Bearer ... requests.
+		if (isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) && substr($_SERVER['HTTP_AUTHORIZATION'], 0, 6) === 'Bearer')
 		{
 			[$ownerId, $scopes] = $this->oAuth2->validateResource();
 
