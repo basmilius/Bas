@@ -129,7 +129,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	private function checkRequest ()
 	{
-		if (isset($_SERVER['HTTP_AUTHORIZATION']))
+		if (isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']))
 		{
 			[$ownerId, $scopes] = $this->oAuth2->validateResource();
 
