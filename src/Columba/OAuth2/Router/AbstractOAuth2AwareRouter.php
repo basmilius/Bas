@@ -158,6 +158,9 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function filterScopes (int $ownerId, array $scopes): array;
+	protected function filterScopes (int $ownerId, array $scopes): array
+	{
+		return $scopes;
+	}
 
 }
