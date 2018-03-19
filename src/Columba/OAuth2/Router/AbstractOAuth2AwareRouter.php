@@ -143,6 +143,15 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	protected final function isScopeAllowed (string $scope): bool
 	{
+		$validInToken = false;
+
+		foreach ($this->scopes as ['scope' => $scp])
+			if ($scp === $scope)
+				$validInToken = true;
+
+		if (!$validInToken)
+			return false;
+
 		return $this->oAuth2->getScopeFactory()->isScopeAllowed($this->ownerId, $scope);
 	}
 
