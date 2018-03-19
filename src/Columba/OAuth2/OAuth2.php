@@ -155,7 +155,7 @@ class OAuth2
 		if (!$authorize)
 		{
 			http_response_code(303);
-			header('Location: ' . $redirectUri . '?error=access_denied' . ($state !== null ? '&state=' . urlencode($state) : ''));
+			header('Location: ' . $redirectUri . (strpos($redirectUri, '?') ? '&' : '?') . 'error=access_denied' . ($state !== null ? '&state=' . urlencode($state) : ''));
 			return;
 		}
 
@@ -172,7 +172,7 @@ class OAuth2
 		}
 		catch (Exception $err)
 		{
-			header('Location: ' . $redirectUri . '?error=internal_error' . ($state !== null ? '&state=' . urlencode($state) : ''));
+			header('Location: ' . $redirectUri . (strpos($redirectUri, '?') ? '&' : '?') . 'error=internal_error' . ($state !== null ? '&state=' . urlencode($state) : ''));
 		}
 	}
 
