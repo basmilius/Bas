@@ -48,7 +48,7 @@ final class Token extends OAuth2Object
 	 */
 	public final function isExpired (): bool
 	{
-		return $this['expires_at'] < time();
+		return $this['expires_at'] !== -1 && $this['expires_at'] < time();
 	}
 
 }

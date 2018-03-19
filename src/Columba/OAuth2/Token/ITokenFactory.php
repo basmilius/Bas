@@ -105,7 +105,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function saveRefreshToken (string $clientId, int $ownerId, string $scope, string $token, int $expiresIn = 2629743): string;
+	function saveRefreshToken (string $clientId, int $ownerId, string $scope, string $token, int $expiresIn = -1): string;
 
 	/**
 	 * Sets the OAuth2 instance.
