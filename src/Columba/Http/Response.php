@@ -177,7 +177,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function asJson (): array
+	public final function asJson (): ?array
 	{
 		return json_decode($this->responseText, true);
 	}
