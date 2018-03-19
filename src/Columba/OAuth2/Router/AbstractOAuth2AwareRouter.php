@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2\Router;
 
+use Columba\OAuth2\Exception\InsufficientClientScopeException;
 use Columba\OAuth2\Exception\OAuthException;
 use Columba\OAuth2\OAuth2;
-use Columba\Router\Exception\AccessDeniedException;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\JsonResponse;
@@ -37,9 +37,19 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	protected $oAuth2;
 
 	/**
+	 * @var string|null
+	 */
+	private $authType;
+
+	/**
 	 * @var bool
 	 */
-	private $isOAuth2Request = false;
+	private $isOAuth2Request;
+
+	/**
+	 * @var int
+	 */
+	private $ownerId;
 
 	/**
 	 * @var array
@@ -59,6 +69,9 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	public function __construct (OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
 		parent::__construct($response, $renderer);
+
+		$this->isOAuth2Request = isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) && strpos($_SERVER['HTTP_AUTHORIZATION'], ' ');
+		$this->authType = $this->isOAuth2Request ? explode(' ', $_SERVER['HTTP_AUTHORIZATION'])[0] : null;
 
 		$this->oAuth2 = $oAuth2;
 		$this->scopes = [];
@@ -84,6 +97,30 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	}
 
 	/**
+	 * Returns TRUE if auth type is basic.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function isAuthBasic (): bool
+	{
+		return $this->isOAuth2Request && $this->authType === 'Basic';
+	}
+
+	/**
+	 * Returns TRUE if auth type is bearer.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function isAuthBearer (): bool
+	{
+		return $this->isOAuth2Request && $this->authType === 'Bearer';
+	}
+
+	/**
 	 * Returns TRUE if this is an oAuth2 request.
 	 *
 	 * @return bool
@@ -96,38 +133,18 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	}
 
 	/**
-	 * Throws an AccessDeniedException if {@see $scope} is not permitted for this request.
+	 * Validates if {@see $scope} is permitted for the authenticated token.
 	 *
 	 * @param string $scope
 	 *
-	 * @throws AccessDeniedException
+	 * @throws InsufficientClientScopeException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function assertScope (string $scope): void
+	protected final function validateScope (string $scope): void
 	{
-		if ($this->validateScope($scope))
-			return;
-
-		throw new AccessDeniedException($scope);
-	}
-
-	/**
-	 * Returns TRUE if a scope is permitted.
-	 *
-	 * @param string $scope
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
-	 * @since 1.3.0
-	 */
-	protected final function validateScope (string $scope): bool
-	{
-		foreach ($this->scopes as $scp)
-			if ($scp['scope'] === $scope)
-				return true;
-
-		return false;
+		if (!$this->oAuth2->getScopeFactory()->isScopeValid($this->ownerId, $scope))
+			throw new InsufficientClientScopeException();
 	}
 
 	/**
@@ -139,29 +156,12 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	private function checkRequest ()
 	{
-		// Only check on Authorization: Bearer ... requests.
-		if (isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) && substr($_SERVER['HTTP_AUTHORIZATION'], 0, 6) === 'Bearer')
-		{
-			[$ownerId, $scopes] = $this->oAuth2->validateResource();
+		if (!$this->isAuthBearer())
+			return;
 
-			$this->isOAuth2Request = true;
-			$this->scopes = $this->filterScopes($ownerId, $scopes);
-		}
-	}
-
-	/**
-	 * Filters scopes based on owner.
-	 *
-	 * @param int   $ownerId
-	 * @param array $scopes
-	 *
-	 * @return array
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	protected function filterScopes (int $ownerId, array $scopes): array
-	{
-		return $scopes;
+		[$ownerId, $scopes] = $this->oAuth2->validateResource();
+		$this->ownerId = $ownerId;
+		$this->scopes = $scopes;
 	}
 
 }

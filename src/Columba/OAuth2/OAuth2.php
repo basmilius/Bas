@@ -14,7 +14,6 @@ namespace Columba\OAuth2;
 
 use Columba\OAuth2\Client\Client;
 use Columba\OAuth2\Client\IClientFactory;
-use Columba\OAuth2\Exception\InsufficientClientScopeException;
 use Columba\OAuth2\Exception\InvalidClientException;
 use Columba\OAuth2\Exception\InvalidRequestException;
 use Columba\OAuth2\Exception\InvalidScopeException;
@@ -272,17 +271,14 @@ class OAuth2
 	/**
 	 * Validates a resource request.
 	 *
-	 * @param string|null $scope
-	 *
 	 * @return array
-	 * @throws InsufficientClientScopeException
 	 * @throws InvalidClientException
 	 * @throws InvalidScopeException
 	 * @throws InvalidTokenException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function validateResource (?string $scope = null): array
+	public final function validateResource (): array
 	{
 		if (!isset($_SERVER['HTTP_AUTHORIZATION']) || !strpos($_SERVER['HTTP_AUTHORIZATION'], ' '))
 			throw new InvalidTokenException();
@@ -308,21 +304,7 @@ class OAuth2
 		if ($client === null)
 			throw new InvalidClientException();
 
-		$scopes = $this->scopeFactory->convertToScopes($accessToken['scope']);
-
-		if ($scope !== null)
-		{
-			$hasAccess = true;
-
-			foreach ($scopes as ['scope' => $scp])
-				if ($scp === $scope)
-					$hasAccess = true;
-
-			if ($hasAccess)
-				throw new InsufficientClientScopeException();
-		}
-
-		return [$accessToken['owner_id'], $scopes];
+		return [$accessToken['owner_id'], $this->scopeFactory->convertToScopes($accessToken['scope'])];
 	}
 
 	/**

@@ -42,12 +42,12 @@ interface IScopeFactory
 	 *
 	 * @param string $scope
 	 *
-	 * @return array
+	 * @return array|null
 	 * @throws InvalidScopeException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getScope (string $scope): array;
+	function getScope (string $scope): ?array;
 
 	/**
 	 * Gets a list with available scopes.
@@ -57,6 +57,18 @@ interface IScopeFactory
 	 * @since 1.3.0
 	 */
 	function getScopes (): array;
+
+	/**
+	 * Validates if a {@see $scope} is valid for {@see $ownerId}.
+	 *
+	 * @param int    $ownerId
+	 * @param string $scope
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	function isScopeValid (int $ownerId, string $scope): bool;
 
 	/**
 	 * Sets the OAuth2 instance.
