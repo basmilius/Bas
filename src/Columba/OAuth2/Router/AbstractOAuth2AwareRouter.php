@@ -176,6 +176,20 @@ abstract class AbstractOAuth2AwareRouter extends Router
 		[$ownerId, $scopes] = $this->oAuth2->validateResource();
 		$this->ownerId = $ownerId;
 		$this->scopes = $scopes;
+
+		$this->onOwnerIdAvailable($this->ownerId);
+	}
+
+	/**
+	 * Invoked when a owner id is available.
+	 *
+	 * @param int $ownerId
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected function onOwnerIdAvailable (int $ownerId): void
+	{
 	}
 
 }
