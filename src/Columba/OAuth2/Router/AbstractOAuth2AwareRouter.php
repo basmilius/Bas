@@ -17,7 +17,9 @@ use Columba\OAuth2\OAuth2;
 use Columba\Router\Exception\AccessDeniedException;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
+use Columba\Router\Response\JsonResponse;
 use Columba\Router\Router;
+use JsonSerializable;
 
 /**
  * Class OAuth2AwareRouter
@@ -69,9 +71,16 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	protected function handle (string $requestPath, array $params = [], bool $isSubRoute = false): void
 	{
-		$this->checkRequest();
+		try
+		{
+			$this->checkRequest();
 
-		parent::handle($requestPath, $params, $isSubRoute);
+			parent::handle($requestPath, $params, $isSubRoute);
+		}
+		catch (JsonSerializable $err)
+		{
+			$this->response(new JsonResponse(false))->print($err);
+		}
 	}
 
 	/**
@@ -124,6 +133,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	/**
 	 * Checks the request for oAuth2 params.
 	 *
+	 * @throws OAuthException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
