@@ -18,7 +18,7 @@ use Columba\OAuth2\Exception\InvalidClientException;
 use Columba\OAuth2\Exception\InvalidRequestException;
 use Columba\OAuth2\Exception\InvalidScopeException;
 use Columba\OAuth2\Exception\InvalidTokenException;
-use Columba\OAuth2\Exception\OAuthException;
+use Columba\OAuth2\Exception\OAuth2Exception;
 use Columba\OAuth2\Exception\UnsupportedGrantTypeException;
 use Columba\OAuth2\GrantType\AuthorizationCodeGrantType;
 use Columba\OAuth2\GrantType\IGrantType;
@@ -179,7 +179,7 @@ class OAuth2
 	 * Handles the token request.
 	 *
 	 * @return array
-	 * @throws OAuthException
+	 * @throws OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
@@ -204,7 +204,7 @@ class OAuth2
 	 * @param string|null $scope
 	 * @param Client|null $client
 	 *
-	 * @throws OAuthException
+	 * @throws OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
@@ -310,7 +310,7 @@ class OAuth2
 	/**
 	 * Validates the token request.
 	 *
-	 * @throws OAuthException
+	 * @throws OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */

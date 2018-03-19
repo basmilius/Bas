@@ -19,7 +19,7 @@ namespace Columba\OAuth2\Exception;
  * @package Columba\OAuth2\Exception
  * @since 1.3.0
  */
-final class RedirectUriMismatchException extends OAuthException
+final class RedirectUriMismatchException extends OAuth2Exception
 {
 
 	/**

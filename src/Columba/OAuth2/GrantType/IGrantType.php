@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2\GrantType;
 
-use Columba\OAuth2\Exception\OAuthException;
+use Columba\OAuth2\Exception\OAuth2Exception;
 
 /**
  * Interface IGrantType
@@ -30,7 +30,7 @@ interface IGrantType
 	 * @param string $grantType
 	 *
 	 * @return array
-	 * @throws OAuthException
+	 * @throws OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */

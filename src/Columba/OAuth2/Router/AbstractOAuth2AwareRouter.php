@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Columba\OAuth2\Router;
 
 use Columba\OAuth2\Exception\InsufficientClientScopeException;
-use Columba\OAuth2\Exception\OAuthException;
+use Columba\OAuth2\Exception\OAuth2Exception;
 use Columba\OAuth2\OAuth2;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
@@ -173,7 +173,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	/**
 	 * Checks the request for oAuth2 params.
 	 *
-	 * @throws OAuthException
+	 * @throws OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */

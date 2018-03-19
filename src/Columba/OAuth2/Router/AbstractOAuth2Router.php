@@ -60,7 +60,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @param string|null $state
 	 *
 	 * @return string
-	 * @throws \Columba\OAuth2\Exception\OAuthException
+	 * @throws \Columba\OAuth2\Exception\OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal
@@ -97,7 +97,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @param string|null $scope
 	 * @param string|null $state
 	 *
-	 * @throws \Columba\OAuth2\Exception\OAuthException
+	 * @throws \Columba\OAuth2\Exception\OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
@@ -111,7 +111,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * Invoked when POST /token is requested.
 	 *
 	 * @return array
-	 * @throws \Columba\OAuth2\Exception\OAuthException
+	 * @throws \Columba\OAuth2\Exception\OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal

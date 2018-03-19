@@ -19,7 +19,7 @@ namespace Columba\OAuth2\Exception;
  * @package Columba\OAuth2\Exception
  * @since 1.3.0
  */
-final class UnsupportedGrantTypeException extends OAuthException
+final class UnsupportedGrantTypeException extends OAuth2Exception
 {
 
 	/**

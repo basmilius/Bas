@@ -16,17 +16,17 @@ use Exception;
 use JsonSerializable;
 
 /**
- * Class OAuthException
+ * Class OAuth2Exception
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Exception
  * @since 1.3.0
  */
-abstract class OAuthException extends Exception implements JsonSerializable
+abstract class OAuth2Exception extends Exception implements JsonSerializable
 {
 
 	/**
-	 * OAuthException constructor.
+	 * OAuth2Exception constructor.
 	 *
 	 * @param string         $message
 	 * @param int            $code
