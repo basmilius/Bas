@@ -297,8 +297,11 @@ class OAuth2
 
 		$accessToken = $this->tokenFactory->getToken('access_token', $accessToken);
 
-		if ($accessToken === null || $accessToken->isExpired())
+		if ($accessToken === null)
 			throw new InvalidTokenException();
+
+		if ($accessToken->isExpired())
+			throw new InvalidTokenException('The access_token has expired.');
 
 		$client = $this->clientFactory->getClient($accessToken['client_id']);
 

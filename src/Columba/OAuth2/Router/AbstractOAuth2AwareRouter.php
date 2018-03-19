@@ -131,16 +131,10 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	{
 		if (isset($_SERVER['HTTP_AUTHORIZATION']))
 		{
-			try
-			{
-				[$ownerId, $scopes] = $this->oAuth2->validateResource();
+			[$ownerId, $scopes] = $this->oAuth2->validateResource();
 
-				$this->isOAuth2Request = true;
-				$this->scopes = $this->filterScopes($ownerId, $scopes);
-			}
-			catch (OAuthException $err)
-			{
-			}
+			$this->isOAuth2Request = true;
+			$this->scopes = $this->filterScopes($ownerId, $scopes);
 		}
 	}
 
