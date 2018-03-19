@@ -133,6 +133,20 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	}
 
 	/**
+	 * Returns TRUE if a {@see $scope} is allowed.
+	 *
+	 * @param string $scope
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function isScopeAllowed (string $scope): bool
+	{
+		return $this->oAuth2->getScopeFactory()->isScopeAllowed($this->ownerId, $scope);
+	}
+
+	/**
 	 * Validates if {@see $scope} is permitted for the authenticated token.
 	 *
 	 * @param string $scope
@@ -143,7 +157,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 */
 	protected final function validateScope (string $scope): void
 	{
-		if (!$this->oAuth2->getScopeFactory()->isScopeValid($this->ownerId, $scope))
+		if (!$this->isScopeAllowed($scope))
 			throw new InsufficientClientScopeException();
 	}
 

@@ -68,7 +68,7 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function isScopeValid (int $ownerId, string $scope): bool;
+	function isScopeAllowed (int $ownerId, string $scope): bool;
 
 	/**
 	 * Sets the OAuth2 instance.
