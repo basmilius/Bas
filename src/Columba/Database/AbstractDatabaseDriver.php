@@ -297,6 +297,20 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Executes a MySQL {@see $statement} and returns the affected rows.
+	 *
+	 * @param string $statement
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.3.0
+	 */
+	public final function exec (string $statement): int
+	{
+		return $this->pdo->exec($statement);
+	}
+
+	/**
 	 * Returns the amount of found rows. SQL_CALC_FOUND_ROWS must be present in previous query.
 	 *
 	 * @return int
