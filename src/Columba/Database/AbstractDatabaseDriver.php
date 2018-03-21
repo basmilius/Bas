@@ -302,7 +302,7 @@ abstract class AbstractDatabaseDriver
 	 * @param string $statement
 	 *
 	 * @return int
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public final function exec (string $statement): int

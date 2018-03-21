@@ -291,7 +291,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @param string|null $column
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public final function toArray (?string $column = null): array
