@@ -19,6 +19,7 @@ use Columba\OAuth2\Exception\InvalidRequestException;
 use Columba\OAuth2\Exception\InvalidScopeException;
 use Columba\OAuth2\Exception\InvalidTokenException;
 use Columba\OAuth2\Exception\OAuth2Exception;
+use Columba\OAuth2\Exception\RedirectUriMismatchException;
 use Columba\OAuth2\Exception\UnsupportedGrantTypeException;
 use Columba\OAuth2\GrantType\AuthorizationCodeGrantType;
 use Columba\OAuth2\GrantType\IGrantType;
@@ -214,7 +215,7 @@ class OAuth2
 			throw new InvalidRequestException('Missing parameter: "client_id" is required.');
 
 		if ($redirectUri === null)
-			throw new InvalidRequestException('Missing parameter: "request_uri" is required.');
+			throw new InvalidRequestException('Missing parameter: "redirect_uri" is required.');
 
 		if ($responseType === null)
 			throw new InvalidRequestException('Missing parameter: "response_type" is required.');
@@ -223,6 +224,9 @@ class OAuth2
 			throw new InvalidRequestException('Missing parameter: "scope" is required.');
 
 		$client = $this->clientFactory->getClient($clientId);
+
+		if (!$client->isValidRedirectUri($redirectUri))
+			throw new RedirectUriMismatchException();
 
 		if ($client === null || $ownerId === null)
 			throw new InvalidClientException();

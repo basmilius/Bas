@@ -30,7 +30,7 @@ final class RedirectUriMismatchException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (string $message = 'The redirect uri is missing or do not match.')
+	public function __construct (string $message = 'The redirect uri is missing or does not match.')
 	{
 		parent::__construct($message);
 	}
