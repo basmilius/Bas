@@ -286,6 +286,30 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	}
 
 	/**
+	 * Converts our results to an array. If {@see $column} is set, this will return an array of only that column.
+	 *
+	 * @param string|null $column
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.3.0
+	 */
+	public final function toArray (?string $column = null): array
+	{
+		$results = $this->results;
+
+		if ($column === null)
+			return $results;
+
+		array_walk($results, function (array &$result) use ($column): void
+		{
+			$result = $result[$column];
+		});
+
+		return $results;
+	}
+
+	/**
 	 * Alias for count().
 	 *
 	 * @return int
