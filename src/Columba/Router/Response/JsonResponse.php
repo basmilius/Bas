@@ -55,7 +55,7 @@ final class JsonResponse extends AbstractResponse
 	 */
 	public final function print ($data, ?bool $success = null): void
 	{
-		header('Access-Control-Allow-Headers: Authorization');
+		header('Access-Control-Allow-Headers: *');
 		header('Access-Control-Allow-Methods: GET PUT PATCH DELETE POST OPTIONS');
 		header('Access-Control-Allow-Origin: *');
 		header('Content-Type: application/json; charset=utf-8');
