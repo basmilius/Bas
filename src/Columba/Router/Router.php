@@ -73,7 +73,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
 		$this->parent = null;
 		$this->renderer = $renderer;
@@ -92,7 +92,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function canAccess (string $route, string $routeWithParams, ?string &$alternativeRoute): bool
+	protected function canAccess(string $route, string $routeWithParams, ?string &$alternativeRoute): bool
 	{
 		return true;
 	}
@@ -108,7 +108,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function changeParam (string $paramName, $paramValue, ?string $paramType = null)
+	protected function changeParam(string $paramName, $paramValue, ?string $paramType = null)
 	{
 		if ($paramValue === null)
 			return null;
@@ -144,7 +144,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function handle (string $requestPath, array $params = [], bool $isSubRoute = false): void
+	protected function handle(string $requestPath, array $params = [], bool $isSubRoute = false): void
 	{
 		$currentPath = null;
 		$didHandleRequest = false;
@@ -309,36 +309,28 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseArguments (array $reflectionArguments, array $params, ?array &$arguments): void
+	private function parseArguments(array $reflectionArguments, array $params, ?array &$arguments): void
 	{
 		$arguments = [];
 
 		if (count($reflectionArguments) < count($params))
 			return;
 
-		$notPopulated = $reflectionArguments;
 		/** @var ReflectionParameter[] $notPopulated */
-		$notPopulated = array_splice($notPopulated, count($params));
+		$notPopulated = $reflectionArguments;
+//		$notPopulated = array_splice($notPopulated, count($params));
 
 		foreach ($notPopulated as $methodParam)
 			if (isset($_REQUEST[$methodParam->getName()]))
 				$params[$methodParam->getName()] = $_REQUEST[$methodParam->getName()];
 
 		foreach ($reflectionArguments as $parameter)
-		{
 			if (isset($params[$parameter->getName()]))
-			{
 				$arguments[$parameter->getName()] = $params[$parameter->getName()];
-			}
 			else if ($parameter->isDefaultValueAvailable())
-			{
 				$arguments[$parameter->getName()] = $parameter->getDefaultValue();
-			}
 			else
-			{
 				throw new RouteExecutionException('Some route parameters were missing', RouteExecutionException::ERR_MISSING_PARAMETERS);
-			}
-		}
 	}
 
 	/**
@@ -352,7 +344,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function delete (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function delete(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'DELETE', $overrideResponse);
 	}
@@ -368,7 +360,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function get (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function get(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'GET', $overrideResponse);
 	}
@@ -384,7 +376,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function options (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function options(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'OPTIONS', $overrideResponse);
 	}
@@ -400,7 +392,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function patch (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function patch(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'PATCH', $overrideResponse);
 	}
@@ -416,7 +408,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function post (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function post(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'POST', $overrideResponse);
 	}
@@ -432,7 +424,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function put (string $path, $route, ?AbstractResponse $overrideResponse = null): void
+	public final function put(string $path, $route, ?AbstractResponse $overrideResponse = null): void
 	{
 		$this->use($path, $route, 'PUT', $overrideResponse);
 	}
@@ -448,7 +440,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function redirect (string $path, string $newPath, ?string $requestMethod = null): void
+	public final function redirect(string $path, string $newPath, ?string $requestMethod = null): void
 	{
 		$this->use($path, $newPath, $requestMethod);
 	}
@@ -463,7 +455,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function for (string $path, array $handlers): void
+	public final function for(string $path, array $handlers): void
 	{
 		foreach ($handlers as $requestMethod => $handler)
 		{
@@ -493,7 +485,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function use (string $path, $route, ?string $requestMethod = null, ?AbstractResponse $overrideResponse = null): void
+	public final function use(string $path, $route, ?string $requestMethod = null, ?AbstractResponse $overrideResponse = null): void
 	{
 		if ($route instanceof IGetRouter)
 			$route = $route->getRouter();
@@ -516,7 +508,7 @@ class Router
 	 * @since 1.0.0
 	 * @see AbstractRenderer
 	 */
-	public final function render (string $template, array $context = []): string
+	public final function render(string $template, array $context = []): string
 	{
 		if ($this->getRenderer() === null)
 			throw new RouteExecutionException('Cannot render template without an Columba\\AbstractRenderer instance!');
@@ -534,7 +526,7 @@ class Router
 	 * @since 1.0.0
 	 * @see AbstractResponse
 	 */
-	public final function response (?AbstractResponse $response = null): AbstractResponse
+	public final function response(?AbstractResponse $response = null): AbstractResponse
 	{
 		if ($response !== null)
 			$this->response = $response;
@@ -554,7 +546,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getRoute (string $route)
+	public final function getRoute(string $route)
 	{
 		foreach ($this->routes as [$path, $handler])
 			if ($route === $path)
@@ -570,7 +562,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getRoutes (): array
+	public final function getRoutes(): array
 	{
 		return $this->routes;
 	}
@@ -582,7 +574,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getParent (): ?Router
+	public final function getParent(): ?Router
 	{
 		return $this->parent;
 	}
@@ -595,7 +587,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setParent (Router $parent): void
+	public final function setParent(Router $parent): void
 	{
 		$this->parent = $parent;
 	}
@@ -610,7 +602,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function onAccessDenied (string $route, string $routeWithParams, AccessDeniedException $err): void
+	protected function onAccessDenied(string $route, string $routeWithParams, AccessDeniedException $err): void
 	{
 		$this->response->print('Access to this route is denied (' . $route . ' / ' . $routeWithParams . '). ' . $err->getMessage());
 	}
@@ -626,7 +618,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function onException (string $route, string $routeWithParams, Exception $exception): void
+	protected function onException(string $route, string $routeWithParams, Exception $exception): void
 	{
 		if ($exception instanceof RouteExecutionException)
 			throw $exception;
@@ -644,7 +636,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function onNotFound (string $requestPath, bool $isSubRoute): void
+	protected function onNotFound(string $requestPath, bool $isSubRoute): void
 	{
 		if ($isSubRoute)
 			throw new RouteExecutionException('Subroute not found', RouteExecutionException::ERR_SUBROUTE_NOT_FOUND);
@@ -659,7 +651,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 3.0.0
 	 */
-	protected final function getRenderer (): ?AbstractRenderer
+	protected final function getRenderer(): ?AbstractRenderer
 	{
 		if ($this->renderer !== null)
 			return $this->renderer;
@@ -677,7 +669,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 3.0.0
 	 */
-	protected final function getResponse (): ?AbstractResponse
+	protected final function getResponse(): ?AbstractResponse
 	{
 		if ($this->response !== null)
 			return $this->response;
