@@ -32,6 +32,6 @@ abstract class AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public abstract function render (string $template, array $context = []): string;
+	public abstract function render(string $template, array $context = []): string;
 
 }

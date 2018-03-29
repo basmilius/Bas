@@ -55,7 +55,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (array $tokens = [], int $count = -1)
+	public function __construct(array $tokens = [], int $count = -1)
 	{
 		$this->position = 0;
 
@@ -75,7 +75,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function add (Token $token): void
+	public final function add(Token $token): void
 	{
 		$this->tokens[$this->count++] = $token;
 	}
@@ -88,7 +88,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getHtml (): string
+	public final function getHtml(): string
 	{
 		$tokens = [];
 
@@ -105,7 +105,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getNext (): ?Token
+	public final function getNext(): ?Token
 	{
 		for (; $this->idx < $this->count; ++$this->idx)
 			if ($this->tokens[$this->idx]->getType() !== Type::WHITESPACE && $this->tokens[$this->idx]->getType() !== Type::COMMENT)
@@ -123,7 +123,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getNextOfType (int $type): ?Token
+	public final function getNextOfType(int $type): ?Token
 	{
 		for (; $this->idx < $this->count; ++$this->idx)
 			if ($this->tokens[$this->idx]->getType() === $type)
@@ -142,7 +142,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getNextOfTypeAndValue (int $type, string $value): ?Token
+	public final function getNextOfTypeAndValue(int $type, string $value): ?Token
 	{
 		for (; $this->idx < $this->count; ++$this->idx)
 			if ($this->tokens[$this->idx]->getType() === $type && $this->tokens[$this->idx]->getValue() === $value)
@@ -156,7 +156,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetExists ($offset): bool
+	public final function offsetExists($offset): bool
 	{
 		return $offset < $this->count;
 	}
@@ -166,7 +166,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetGet ($offset)
+	public final function offsetGet($offset)
 	{
 		return $offset < $this->count ? $this->tokens[$offset] : null;
 	}
@@ -176,7 +176,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetSet ($offset, $value): void
+	public final function offsetSet($offset, $value): void
 	{
 		if ($offset === null)
 			$this->tokens[$this->count++] = $value;
@@ -189,7 +189,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetUnset ($offset): void
+	public final function offsetUnset($offset): void
 	{
 		unset($this->tokens[$offset]);
 		--$this->count;
@@ -205,7 +205,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function count (): int
+	public final function count(): int
 	{
 		return $this->count;
 	}
@@ -215,7 +215,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current ()
+	public final function current()
 	{
 		return $this->tokens[$this->position];
 	}
@@ -225,7 +225,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function next ()
+	public final function next()
 	{
 		$this->position++;
 	}
@@ -235,7 +235,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function key ()
+	public final function key()
 	{
 		return $this->position;
 	}
@@ -245,7 +245,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function valid ()
+	public final function valid()
 	{
 		return isset($this->tokens[$this->position]);
 	}
@@ -255,7 +255,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rewind ()
+	public final function rewind()
 	{
 		$this->position = 0;
 	}
@@ -266,7 +266,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __debugInfo (): array
+	public final function __debugInfo(): array
 	{
 		return $this->tokens;
 	}
@@ -280,7 +280,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function build ($list): string
+	public static function build($list): string
 	{
 		if (is_string($list))
 			return $list;

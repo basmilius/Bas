@@ -40,7 +40,7 @@ final class RouteExecutionException extends \Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $message, int $code = self::ERR_UNKNOWN, ?Throwable $previous = null)
+	public function __construct(string $message, int $code = self::ERR_UNKNOWN, ?Throwable $previous = null)
 	{
 		parent::__construct($message, $code, $previous);
 	}

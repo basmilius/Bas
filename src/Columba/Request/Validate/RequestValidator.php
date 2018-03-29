@@ -38,7 +38,7 @@ final class RequestValidator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	private function __construct ()
+	private function __construct()
 	{
 		$this->options = [];
 		$this->params = [];
@@ -53,7 +53,7 @@ final class RequestValidator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toValidate (array $params): RequestValidatorResult
+	public final function toValidate(array $params): RequestValidatorResult
 	{
 		$this->params = $params;
 
@@ -87,7 +87,7 @@ final class RequestValidator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function with (RequestValidatorOption ...$options): RequestValidator
+	public final function with(RequestValidatorOption ...$options): RequestValidator
 	{
 		$this->options = $options;
 
@@ -101,7 +101,7 @@ final class RequestValidator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function use (): RequestValidator
+	public static function use(): RequestValidator
 	{
 		return new RequestValidator();
 	}

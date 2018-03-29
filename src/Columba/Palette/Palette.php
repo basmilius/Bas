@@ -98,7 +98,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function __construct (array $swatches)
+	private function __construct(array $swatches)
 	{
 		$this->swatches = $swatches;
 		$this->highestPopulation = $this->findHighestPopulation();
@@ -119,7 +119,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getDefaultSwatch (): ?Swatch
+	public final function getDefaultSwatch(): ?Swatch
 	{
 		return $this->vibrantSwatch ?? $this->mutedSwatch ?? $this->darkVibrantSwatch ?? $this->lightVibrantSwatch ?? $this->darkMutedSwatch ?? $this->lightMutedSwatch ?? $this->swatches[0] ?? null;
 	}
@@ -131,7 +131,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getDefinedSwatches (): array
+	public final function getDefinedSwatches(): array
 	{
 		return [
 			'Default' => $this->getDefaultSwatch(),
@@ -146,12 +146,12 @@ final class Palette
 		];
 	}
 
-	public final function getMutedSwatch (): ?Swatch
+	public final function getMutedSwatch(): ?Swatch
 	{
 		return $this->mutedSwatch;
 	}
 
-	public final function getVibrantSwatch (): ?Swatch
+	public final function getVibrantSwatch(): ?Swatch
 	{
 		return $this->vibrantSwatch;
 	}
@@ -165,7 +165,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function isSwatchUsed (Swatch $swatch): bool
+	private function isSwatchUsed(Swatch $swatch): bool
 	{
 		return
 			($this->vibrantSwatch !== null && $this->vibrantSwatch->equals($swatch)) ||
@@ -190,7 +190,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function findColor (float $targetLuma, float $minLuma, float $maxLuma, float $targetSaturation, float $minSaturation, float $maxSaturation): ?Swatch
+	private function findColor(float $targetLuma, float $minLuma, float $maxLuma, float $targetSaturation, float $minSaturation, float $maxSaturation): ?Swatch
 	{
 		$max = null;
 		$maxValue = 0;
@@ -223,7 +223,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function findHighestPopulation (): int
+	private function findHighestPopulation(): int
 	{
 		$h = 0;
 
@@ -248,7 +248,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function createComparsionValue (float $saturation, float $targetSaturation, float $luma, float $targetLuma, int $population, int $highestPopulaiton): float
+	private static function createComparsionValue(float $saturation, float $targetSaturation, float $luma, float $targetLuma, int $population, int $highestPopulaiton): float
 	{
 		return self::weightedMean(self::invertDiff($saturation, $targetSaturation), self::WEIGHT_SATURATION, self::invertDiff($luma, $targetLuma), self::WEIGHT_LUMA, $population / $highestPopulaiton, self::WEIGHT_POPULATION);
 	}
@@ -264,7 +264,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function generate (Image $image, int $numColors = self::DEFAULT_CALCULATE_COLORS): self
+	public static function generate(Image $image, int $numColors = self::DEFAULT_CALCULATE_COLORS): self
 	{
 		$image = self::scaleImageDown($image);
 		$quantizer = ColorCutQuantizer::fromImage($image, $numColors);
@@ -285,7 +285,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function invertDiff (float $value, float $targetValue): float
+	private static function invertDiff(float $value, float $targetValue): float
 	{
 		return 1 - abs($value - $targetValue);
 	}
@@ -299,7 +299,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function scaleImageDown (Image $image): Image
+	private static function scaleImageDown(Image $image): Image
 	{
 		$minDimension = min($image->getWidth(), $image->getHeight());
 
@@ -320,7 +320,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function weightedMean (float ...$values): float
+	private static function weightedMean(float ...$values): float
 	{
 		$sum = 0;
 		$sumWeight = 0;

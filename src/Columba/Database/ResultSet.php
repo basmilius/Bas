@@ -59,7 +59,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (PreparedStatement $statement, PDOStatement $pdoStatement)
+	public function __construct(PreparedStatement $statement, PDOStatement $pdoStatement)
 	{
 		$this->pdoStatement = $pdoStatement;
 		$this->statement = $statement;
@@ -75,7 +75,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function var ()
+	public final function var()
 	{
 		if ($this->count() > 0)
 			return array_values($this->results[0])[0];
@@ -89,7 +89,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current (): array
+	public final function current(): array
 	{
 		return $this->results[$this->position];
 	}
@@ -99,7 +99,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function next (): void
+	public final function next(): void
 	{
 		$this->position++;
 	}
@@ -110,7 +110,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function key (): int
+	public final function key(): int
 	{
 		return $this->position;
 	}
@@ -121,7 +121,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function valid (): bool
+	public final function valid(): bool
 	{
 		return isset($this->results[$this->position]);
 	}
@@ -131,7 +131,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rewind (): void
+	public final function rewind(): void
 	{
 		$this->position = 0;
 	}
@@ -142,7 +142,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetExists ($offset): bool
+	public final function offsetExists($offset): bool
 	{
 		if (!is_int($offset))
 			throw new ErrorException('Offset must be instance of int.');
@@ -156,7 +156,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetGet ($offset)
+	public final function offsetGet($offset)
 	{
 		if (!is_int($offset))
 			throw new ErrorException('Offset must be instance of int.');
@@ -170,7 +170,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetSet ($offset, $value)
+	public final function offsetSet($offset, $value)
 	{
 		throw new ErrorException('ResultSet is immutabe and can therefore not be changed.');
 	}
@@ -181,7 +181,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetUnset ($offset)
+	public final function offsetUnset($offset)
 	{
 		throw new ErrorException('ResultSet is immutabe and can therefore not be changed.');
 	}
@@ -191,7 +191,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function count (): int
+	public final function count(): int
 	{
 		return count($this->results);
 	}
@@ -207,7 +207,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function into (string $className, ...$arguments): array
+	public final function into(string $className, ...$arguments): array
 	{
 		if (!class_exists($className))
 			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
@@ -236,7 +236,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function intoSingle (string $className, ...$arguments)
+	public final function intoSingle(string $className, ...$arguments)
 	{
 		$all = $this->into($className, ...$arguments);
 
@@ -254,7 +254,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rawInto (string $className, ...$arguments): array
+	public final function rawInto(string $className, ...$arguments): array
 	{
 		if (!class_exists($className))
 			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
@@ -278,7 +278,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rawIntoSingle (string $className, ...$arguments)
+	public final function rawIntoSingle(string $className, ...$arguments)
 	{
 		$all = $this->rawInto($className, ...$arguments);
 
@@ -294,7 +294,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function toArray (?string $column = null): array
+	public final function toArray(?string $column = null): array
 	{
 		$results = $this->results;
 
@@ -316,7 +316,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rowCount (): int
+	public final function rowCount(): int
 	{
 		return $this->count();
 	}
@@ -326,7 +326,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __debugInfo (): array
+	public final function __debugInfo(): array
 	{
 		return [
 			'position' => $this->position,

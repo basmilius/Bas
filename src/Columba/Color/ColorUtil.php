@@ -36,7 +36,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function blend (array $color1, array $color2, int $weight = 0): array
+	public static function blend(array $color1, array $color2, int $weight = 0): array
 	{
 		$weight = MathUtil::clamp($weight, 0, 100);
 
@@ -67,7 +67,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function shade (array $color, int $weight = 0): array
+	public static function shade(array $color, int $weight = 0): array
 	{
 		return self::blend([0, 0, 0], $color, $weight);
 	}
@@ -82,7 +82,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function tint (array $color, int $weight = 0): array
+	public static function tint(array $color, int $weight = 0): array
 	{
 		return self::blend([255, 255, 255], $color, $weight);
 	}
@@ -98,7 +98,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function luminance (int $r, int $g, int $b): float
+	public static function luminance(int $r, int $g, int $b): float
 	{
 		$rgb = [$r, $g, $b];
 
@@ -128,7 +128,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function yiq (int $r, int $g, int $b): float
+	public static function yiq(int $r, int $g, int $b): float
 	{
 		return (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
 	}
@@ -145,7 +145,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function lightOrDark (array $color, array $dark = [0, 0, 0], array $light = [255, 255, 255], float $delta = 0.5): array
+	public static function lightOrDark(array $color, array $dark = [0, 0, 0], array $light = [255, 255, 255], float $delta = 0.5): array
 	{
 		if (self::luminance(...$color) < $delta)
 			return $light;
@@ -162,7 +162,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function hexToRgb (string $hex): array
+	public static function hexToRgb(string $hex): array
 	{
 		[$r, $g, $b] = self::hexToRgba($hex);
 
@@ -178,7 +178,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function hexToRgba (string $hex): array
+	public static function hexToRgba(string $hex): array
 	{
 		$hex = trim($hex);
 
@@ -235,7 +235,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function hslToRgb (float $h, float $s, float $l): array
+	public static function hslToRgb(float $h, float $s, float $l): array
 	{
 		if ($s === 0)
 			return [$l, $l, $l]; // Color is grey, only lightness is relevant.
@@ -302,7 +302,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function intToRgb (int $color): array
+	public static function intToRgb(int $color): array
 	{
 		$r = $color >> 16 & 0xFF;
 		$g = $color >> 8 & 0xFF;
@@ -320,7 +320,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function intToRgba (int $color): array
+	public static function intToRgba(int $color): array
 	{
 		$a = $color >> 24 & 0xFF;
 		$r = $color >> 16 & 0xFF;
@@ -343,7 +343,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function rgbaToHex (int $r, int $g, int $b, float $a, bool $includeHashtag = false): string
+	public static function rgbaToHex(int $r, int $g, int $b, float $a, bool $includeHashtag = false): string
 	{
 		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT) . str_pad(dechex($a * 255), 2, '0', STR_PAD_LEFT);
 	}
@@ -360,7 +360,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function rgbToHex (int $r, int $g, int $b, bool $includeHashtag = false): string
+	public static function rgbToHex(int $r, int $g, int $b, bool $includeHashtag = false): string
 	{
 		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
 	}
@@ -376,7 +376,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function rgbToInt (int $r, int $g, int $b): int
+	public static function rgbToInt(int $r, int $g, int $b): int
 	{
 		return ($r << 16) | ($g << 8) | ($b << 0);
 	}
@@ -392,7 +392,7 @@ final class ColorUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function rgbToHsl (int $r, int $g, int $b): array
+	public static function rgbToHsl(int $r, int $g, int $b): array
 	{
 		$r /= 255;
 		$g /= 255;

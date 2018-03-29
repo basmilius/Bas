@@ -47,7 +47,7 @@ final class RequestValidatorException extends Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct (string $message, int $code = self::ERR_MISSING)
+	public function __construct(string $message, int $code = self::ERR_MISSING)
 	{
 		parent::__construct($message, $code);
 	}

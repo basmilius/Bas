@@ -67,7 +67,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (int $page, bool $isCurrent, bool $isDisabled, bool $isDots, bool $isNav, string $label)
+	public function __construct(int $page, bool $isCurrent, bool $isDisabled, bool $isDots, bool $isNav, string $label)
 	{
 		$this->page = $page;
 		$this->isCurrent = $isCurrent;
@@ -82,7 +82,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function getPage (): int
+	public function getPage(): int
 	{
 		return $this->page;
 	}
@@ -92,7 +92,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function isCurrent (): bool
+	public function isCurrent(): bool
 	{
 		return $this->isCurrent;
 	}
@@ -102,7 +102,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function isDisabled (): bool
+	public function isDisabled(): bool
 	{
 		return $this->isDisabled;
 	}
@@ -112,7 +112,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function isDots (): bool
+	public function isDots(): bool
 	{
 		return $this->isDots;
 	}
@@ -122,7 +122,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function isNav (): bool
+	public function isNav(): bool
 	{
 		return $this->isNav;
 	}
@@ -132,7 +132,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getLabel (): string
+	public final function getLabel(): string
 	{
 		if ($this->page === -1 && $this->label === '-1')
 			return 'dots';
@@ -145,7 +145,7 @@ final class PaginationItem implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function jsonSerialize (): array
+	public final function jsonSerialize(): array
 	{
 		return [
 			'page' => $this->page,

@@ -41,7 +41,7 @@ final class AuthorizationCodeGrantType implements IGrantType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (OAuth2 $oAuth2)
+	public function __construct(OAuth2 $oAuth2)
 	{
 		$this->oAuth2 = $oAuth2;
 	}
@@ -51,7 +51,7 @@ final class AuthorizationCodeGrantType implements IGrantType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function handleTokenRequest (string $grantType): array
+	public final function handleTokenRequest(string $grantType): array
 	{
 		$client = $this->oAuth2->validateClientAuthorization();
 

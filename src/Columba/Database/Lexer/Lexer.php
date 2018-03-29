@@ -82,7 +82,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $query, bool $strict = false, string $delimiter = self::DEFAULT_DELIMITER)
+	public function __construct(string $query, bool $strict = false, string $delimiter = self::DEFAULT_DELIMITER)
 	{
 		$this->query = $query;
 		$this->length = strlen($query);
@@ -99,7 +99,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getTokens (): TokenList
+	public final function getTokens(): TokenList
 	{
 		return $this->list;
 	}
@@ -112,7 +112,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setDatabase (string $database): void
+	public final function setDatabase(string $database): void
 	{
 		$this->database = $database;
 	}
@@ -125,7 +125,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setDelimiter (string $delimiter): void
+	public final function setDelimiter(string $delimiter): void
 	{
 		$this->delimiter = $delimiter;
 		$this->delimiterLength = strlen($delimiter);
@@ -139,7 +139,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setException (PDOException $exception): void
+	public final function setException(PDOException $exception): void
 	{
 		$this->exception = $exception;
 	}
@@ -150,7 +150,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function lex (): void
+	public final function lex(): void
 	{
 		$this->list = new TokenList();
 
@@ -259,7 +259,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function error (string $message, string $char, int $lastIndex): void
+	private function error(string $message, string $char, int $lastIndex): void
 	{
 		if (function_exists('pre_die'))
 			pre_die(...func_get_args());
@@ -274,7 +274,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseBoolean (): ?Token
+	private function parseBoolean(): ?Token
 	{
 		if ($this->last + 3 >= $this->length)
 			return null;
@@ -306,7 +306,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseComment (): ?Token
+	private function parseComment(): ?Token
 	{
 		$iBak = $this->last;
 		$token = $this->query[$this->last];
@@ -393,7 +393,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseDelimiter (): ?Token
+	private function parseDelimiter(): ?Token
 	{
 		$idx = 0;
 
@@ -417,7 +417,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseInvalid (): ?Token
+	private function parseInvalid(): ?Token
 	{
 		$token = $this->query[$this->last];
 
@@ -439,7 +439,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseKeyword (): ?Token
+	private function parseKeyword(): ?Token
 	{
 		$token = '';
 		$return = null;
@@ -484,7 +484,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseLabel (): ?Token
+	private function parseLabel(): ?Token
 	{
 		$token = '';
 		$return = null;
@@ -523,7 +523,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseNumber (): ?Token
+	private function parseNumber(): ?Token
 	{
 		$iBak = $this->last;
 		$token = '';
@@ -642,7 +642,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseOperator (): ?Token
+	private function parseOperator(): ?Token
 	{
 		$token = '';
 		$return = null;
@@ -673,7 +673,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseString (string $quote = ''): ?Token
+	private function parseString(string $quote = ''): ?Token
 	{
 		$token = $this->query[$this->last];
 
@@ -716,7 +716,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseSymbol (): ?Token
+	private function parseSymbol(): ?Token
 	{
 		$token = $this->query[$this->last];
 
@@ -853,7 +853,7 @@ final class Lexer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function parseWhitespace (): ?Token
+	private function parseWhitespace(): ?Token
 	{
 		$token = $this->query[$this->last];
 

@@ -44,7 +44,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (array $data, OAuth2 $oAuth2)
+	public function __construct(array $data, OAuth2 $oAuth2)
 	{
 		$this->data = $data;
 		$this->oAuth2 = $oAuth2;
@@ -55,7 +55,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetExists ($offset)
+	public final function offsetExists($offset)
 	{
 		return isset($this->data[$offset]);
 	}
@@ -65,7 +65,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetGet ($offset)
+	public final function offsetGet($offset)
 	{
 		return $this->data[$offset];
 	}
@@ -75,7 +75,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetSet ($offset, $value)
+	public final function offsetSet($offset, $value)
 	{
 		$this->data[$offset] = $value;
 	}
@@ -85,7 +85,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetUnset ($offset)
+	public final function offsetUnset($offset)
 	{
 		unset($this->data[$offset]);
 	}
@@ -95,7 +95,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function jsonSerialize (): array
+	public final function jsonSerialize(): array
 	{
 		return $this->data;
 	}

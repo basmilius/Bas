@@ -36,7 +36,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isBool (string $str): bool
+	public static function isBool(string $str): bool
 	{
 		$str = strtoupper($str);
 
@@ -53,7 +53,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isComment (string $str, bool $end = false): ?int
+	public static function isComment(string $str, bool $end = false): ?int
 	{
 		$length = strlen($str);
 
@@ -88,7 +88,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isKeyword (string $str, bool $isReserved = false): ?int
+	public static function isKeyword(string $str, bool $isReserved = false): ?int
 	{
 		$str = strtoupper($str);
 
@@ -112,7 +112,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isNumber (string $str): bool
+	public static function isNumber(string $str): bool
 	{
 		return ($str >= '0' && $str <= '9') || $str === '.' || $str === '-' || $str === '+' || $str === 'e' || $str === 'E';
 	}
@@ -126,7 +126,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isOperator (string $str): ?int
+	public static function isOperator(string $str): ?int
 	{
 		if (isset(Consts::OPERATORS[$str]))
 			return Consts::OPERATORS[$str];
@@ -143,7 +143,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isSeparator (string $str): bool
+	public static function isSeparator(string $str): bool
 	{
 		return $str <= '~' && $str !== '_' && ($str < '0' || $str > '9') && ($str < 'a' || $str > 'z') && ($str < 'A' || $str > 'Z');
 	}
@@ -157,7 +157,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isString (string $str): ?int
+	public static function isString(string $str): ?int
 	{
 		if (strlen($str) === 0)
 			return null;
@@ -180,7 +180,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isSymbol (string $str): ?int
+	public static function isSymbol(string $str): ?int
 	{
 		if (strlen($str) === 0)
 			return null;
@@ -206,7 +206,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isWhitespace (string $str): bool
+	public static function isWhitespace(string $str): bool
 	{
 		return $str === ' ' || $str === "\r" || $str === "\n" || $str === "\t";
 	}
@@ -221,7 +221,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function escape ($str, string $quote = '`')
+	public static function escape($str, string $quote = '`')
 	{
 		if (is_array($str))
 		{
@@ -248,7 +248,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function setMode (string $mode): void
+	public static function setMode(string $mode): void
 	{
 		self::$mode = 0;
 

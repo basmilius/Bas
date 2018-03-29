@@ -33,7 +33,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct ()
+	public function __construct()
 	{
 		$this->definitions = [];
 	}
@@ -48,7 +48,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function addDirectory (string $directory, ?string $namespace = null, bool $isVirtualNamespace = false): void
+	public final function addDirectory(string $directory, ?string $namespace = null, bool $isVirtualNamespace = false): void
 	{
 		$this->definitions[] = [realpath($directory), $namespace, $isVirtualNamespace];
 	}
@@ -59,7 +59,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function register (): void
+	public final function register(): void
 	{
 		spl_autoload_register([$this, 'onRequestObject'], true, true);
 	}
@@ -70,7 +70,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function unregister (): void
+	public final function unregister(): void
 	{
 		spl_autoload_unregister([$this, 'onRequestObject']);
 	}
@@ -84,7 +84,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function onRequestObject (string $object): bool
+	private function onRequestObject(string $object): bool
 	{
 		$didAutoload = false;
 		$object = str_replace('_', '\\', $object);
@@ -110,7 +110,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function file (string $directory, ?string $namespace, bool $isVirtualNamespace, string $object): ?string
+	private function file(string $directory, ?string $namespace, bool $isVirtualNamespace, string $object): ?string
 	{
 		if ($namespace !== null && substr($object, 0, strlen($namespace)) !== $namespace)
 			return null;
@@ -134,7 +134,7 @@ final class Autoloader
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function require (string $file): bool
+	private function require(string $file): bool
 	{
 		if (!is_file($file))
 			return false;

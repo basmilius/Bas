@@ -34,7 +34,7 @@ final class Token extends OAuth2Object
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (array $data, OAuth2 $oAuth2)
+	public function __construct(array $data, OAuth2 $oAuth2)
 	{
 		parent::__construct($data, $oAuth2);
 	}
@@ -46,7 +46,7 @@ final class Token extends OAuth2Object
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function isExpired (): bool
+	public final function isExpired(): bool
 	{
 		return $this['expires_at'] !== -1 && $this['expires_at'] < time();
 	}

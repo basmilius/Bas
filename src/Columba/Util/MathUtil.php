@@ -33,7 +33,7 @@ final class MathUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function clamp (int $value, int $min, int $max): int
+	public static function clamp(int $value, int $min, int $max): int
 	{
 		return max($min, min($max, $value));
 	}

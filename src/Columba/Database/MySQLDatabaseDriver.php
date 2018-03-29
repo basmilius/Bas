@@ -36,7 +36,7 @@ final class MySQLDatabaseDriver extends DatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $database, string $host, int $port = 3306, $username = '', $password = '', array $options = [], $connectAutomatically = true)
+	public function __construct(string $database, string $host, int $port = 3306, $username = '', $password = '', array $options = [], $connectAutomatically = true)
 	{
 		$dsn = "mysql:dbname={$database};host={$host};port={$port}";
 

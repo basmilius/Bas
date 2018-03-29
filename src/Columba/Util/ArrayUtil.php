@@ -31,7 +31,7 @@ final class ArrayUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isAssociativeArray (array $arr): bool
+	public static function isAssociativeArray(array $arr): bool
 	{
 		return count(array_filter(array_keys($arr), 'is_string')) === count($arr);
 	}
@@ -45,7 +45,7 @@ final class ArrayUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isSequentialArray (array $arr): bool
+	public static function isSequentialArray(array $arr): bool
 	{
 		return count(array_filter(array_keys($arr), 'is_int')) === count($arr);
 	}

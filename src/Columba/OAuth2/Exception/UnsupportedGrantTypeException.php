@@ -30,7 +30,7 @@ final class UnsupportedGrantTypeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (string $message = 'The authorization grant type is not supported by the authorization server.')
+	public function __construct(string $message = 'The authorization grant type is not supported by the authorization server.')
 	{
 		parent::__construct($message);
 	}
@@ -42,7 +42,7 @@ final class UnsupportedGrantTypeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getError (): string
+	protected final function getError(): string
 	{
 		return 'unsupported_grant_type';
 	}
@@ -54,7 +54,7 @@ final class UnsupportedGrantTypeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getResponseCode (): int
+	protected final function getResponseCode(): int
 	{
 		return 400;
 	}

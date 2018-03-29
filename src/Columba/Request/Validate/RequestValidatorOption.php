@@ -46,7 +46,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	private function __construct (string $name, string $fieldName)
+	private function __construct(string $name, string $fieldName)
 	{
 		$this->fieldName = $fieldName;
 		$this->name = $name;
@@ -60,7 +60,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getName (): string
+	public final function getName(): string
 	{
 		return $this->name;
 	}
@@ -74,7 +74,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function validate (&$value): void
+	public final function validate(&$value): void
 	{
 		foreach ($this->validators as $validator)
 		{
@@ -89,15 +89,16 @@ final class RequestValidatorOption
 
 	/**
 	 * Ensures that {@see $value} matches {@see $pattern}.
+	 *
 	 * @param string $pattern
 	 *
 	 * @return RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function matchesWith (string $pattern): RequestValidatorOption
+	public final function matchesWith(string $pattern): RequestValidatorOption
 	{
-		$this->validators[] = function ($value) use($pattern): array
+		$this->validators[] = function ($value) use ($pattern): array
 		{
 			if (preg_match($pattern, $value))
 				return [$value, null];
@@ -117,7 +118,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBe (callable $validator): RequestValidatorOption
+	public final function toBe(callable $validator): RequestValidatorOption
 	{
 		$this->validators[] = $validator;
 
@@ -133,7 +134,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeGreaterThan ($num): RequestValidatorOption
+	public final function toBeGreaterThan($num): RequestValidatorOption
 	{
 		$this->validators[] = function ($value) use ($num): array
 		{
@@ -155,7 +156,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeGreaterOrEqualTo ($num): RequestValidatorOption
+	public final function toBeGreaterOrEqualTo($num): RequestValidatorOption
 	{
 		$this->validators[] = function ($value) use ($num): array
 		{
@@ -177,7 +178,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeLowerThan ($num): RequestValidatorOption
+	public final function toBeLowerThan($num): RequestValidatorOption
 	{
 		$this->validators[] = function ($value) use ($num): array
 		{
@@ -199,7 +200,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeLowerOrEqualTo ($num): RequestValidatorOption
+	public final function toBeLowerOrEqualTo($num): RequestValidatorOption
 	{
 		$this->validators[] = function ($value) use ($num): array
 		{
@@ -219,7 +220,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeBoolean (): RequestValidatorOption
+	public final function toBeBoolean(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -242,7 +243,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeFloat (): RequestValidatorOption
+	public final function toBeFloat(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -262,7 +263,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeInteger (): RequestValidatorOption
+	public final function toBeInteger(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -282,7 +283,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeString (): RequestValidatorOption
+	public final function toBeString(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -302,7 +303,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeEmail (): RequestValidatorOption
+	public final function toBeEmail(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -324,7 +325,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toBeUrl (bool $onlySecure = false): RequestValidatorOption
+	public final function toBeUrl(bool $onlySecure = false): RequestValidatorOption
 	{
 		$this->validators[] = function ($value) use ($onlySecure): array
 		{
@@ -349,7 +350,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function toExist (): RequestValidatorOption
+	public final function toExist(): RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
@@ -372,7 +373,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function withCharsBetween (?int $min = null, ?int $max = null): RequestValidatorOption
+	public final function withCharsBetween(?int $min = null, ?int $max = null): RequestValidatorOption
 	{
 		$this->validators[] = function (string $value) use ($min, $max): array
 		{
@@ -398,7 +399,7 @@ final class RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function expect (string $name, ?string $fieldName = null): RequestValidatorOption
+	public static function expect(string $name, ?string $fieldName = null): RequestValidatorOption
 	{
 		return new RequestValidatorOption($name, $fieldName ?? $name);
 	}

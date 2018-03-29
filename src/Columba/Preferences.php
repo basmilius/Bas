@@ -52,7 +52,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function __construct (array $data, ?Preferences $parent = null)
+	private function __construct(array $data, ?Preferences $parent = null)
 	{
 		$this->current = 0;
 		$this->data = $data;
@@ -67,7 +67,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private final function loop (): void
+	private final function loop(): void
 	{
 		foreach ($this->data as $key => $value)
 		{
@@ -83,7 +83,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current ()
+	public final function current()
 	{
 		return $this->data[array_keys($this->data)[$this->current]];
 	}
@@ -93,7 +93,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function next (): void
+	public final function next(): void
 	{
 		$this->current++;
 	}
@@ -103,7 +103,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function key ()
+	public final function key()
 	{
 		return array_keys($this->data)[$this->current];
 	}
@@ -113,7 +113,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function valid (): bool
+	public final function valid(): bool
 	{
 		return isset(array_keys($this->data)[$this->current]);
 	}
@@ -123,7 +123,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rewind ()
+	public final function rewind()
 	{
 	}
 
@@ -132,7 +132,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetExists ($offset): bool
+	public final function offsetExists($offset): bool
 	{
 		return $offset === -1 || isset($this->data[$offset]);
 	}
@@ -142,7 +142,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetGet ($offset)
+	public final function offsetGet($offset)
 	{
 		if ($offset === -1)
 			return $this->parent;
@@ -155,7 +155,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetSet ($offset, $value): void
+	public final function offsetSet($offset, $value): void
 	{
 		if ($offset === -1)
 			throw new \BadMethodCallException('Cannot set parent of Preferences instance.');
@@ -169,7 +169,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetUnset ($offset): void
+	public final function offsetUnset($offset): void
 	{
 		if ($offset === -1)
 			throw new \BadMethodCallException('Cannot unset parent of Preferences instance.');
@@ -182,7 +182,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function count (): int
+	public final function count(): int
 	{
 		return count($this->data);
 	}
@@ -192,7 +192,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function jsonSerialize (): array
+	public final function jsonSerialize(): array
 	{
 		return $this->data;
 	}
@@ -202,7 +202,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __debugInfo (): array
+	public final function __debugInfo(): array
 	{
 		return [
 			'data' => '** Hidden for security reasons. **'
@@ -218,7 +218,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 3.0.0
 	 */
-	public static function loadFromJson (string $fileName): self
+	public static function loadFromJson(string $fileName): self
 	{
 		if (!is_file($fileName) || !is_readable($fileName))
 			throw new \InvalidArgumentException('$fileName must be a readable file!');

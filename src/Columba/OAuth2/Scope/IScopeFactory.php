@@ -35,7 +35,7 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function convertToScopes (string $scope): array;
+	function convertToScopes(string $scope): array;
 
 	/**
 	 * Gets details about a scope. Should return an array with scope, name and description.
@@ -47,7 +47,7 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getScope (string $scope): ?array;
+	function getScope(string $scope): ?array;
 
 	/**
 	 * Gets a list with available scopes.
@@ -56,7 +56,7 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getScopes (): array;
+	function getScopes(): array;
 
 	/**
 	 * Validates if a {@see $scope} is valid for {@see $ownerId}.
@@ -68,7 +68,7 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function isScopeAllowed (int $ownerId, string $scope): bool;
+	function isScopeAllowed(int $ownerId, string $scope): bool;
 
 	/**
 	 * Sets the OAuth2 instance.
@@ -78,6 +78,6 @@ interface IScopeFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function setOAuth2 (OAuth2 $oAuth2): void;
+	function setOAuth2(OAuth2 $oAuth2): void;
 
 }

@@ -34,7 +34,7 @@ final class FormattingUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function formatBytes (int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
+	public static function formatBytes(int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
 	{
 		$si = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 		$iec = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
@@ -73,7 +73,7 @@ final class FormattingUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function formatBytesPerSecond (int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
+	public static function formatBytesPerSecond(int $bytes, int $decimals = 2, bool $siMode = true, bool $bits = false): string
 	{
 		return self::formatBytes($bytes, $decimals, $siMode, $bits) . '/s';
 	}
@@ -87,7 +87,7 @@ final class FormattingUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function formatHoursMinutesFromMinutes (int $minutes): string
+	public static function formatHoursMinutesFromMinutes(int $minutes): string
 	{
 		if ($minutes === 0)
 			return '00:00';

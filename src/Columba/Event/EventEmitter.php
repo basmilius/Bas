@@ -30,7 +30,7 @@ trait EventEmitter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function __construct ()
+	protected function __construct()
 	{
 		$this->listeners = [];
 	}
@@ -44,7 +44,7 @@ trait EventEmitter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function addEventListener (string $eventName, callable $callback): void
+	public final function addEventListener(string $eventName, callable $callback): void
 	{
 		$this->ensureEventExists($eventName);
 
@@ -60,7 +60,7 @@ trait EventEmitter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected final function dispatchEvent (string $eventName, Event $event): void
+	protected final function dispatchEvent(string $eventName, Event $event): void
 	{
 		$this->ensureEventExists($eventName);
 
@@ -78,7 +78,7 @@ trait EventEmitter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function removeEventListeners (string $eventName, callable $callback): void
+	public final function removeEventListeners(string $eventName, callable $callback): void
 	{
 		$this->ensureEventExists($eventName);
 
@@ -96,7 +96,7 @@ trait EventEmitter
 	 * @since 1.0.0
 	 * @internal
 	 */
-	private final function ensureEventExists (string $eventName): void
+	private final function ensureEventExists(string $eventName): void
 	{
 		if (!isset($this->listeners[$eventName]))
 			$this->listeners[$eventName] = [];

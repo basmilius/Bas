@@ -44,7 +44,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected function __construct (DatabaseDriver $driver)
+	protected function __construct(DatabaseDriver $driver)
 	{
 		$this->driver = $driver;
 
@@ -61,7 +61,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	protected final function pdo (?PDO $pdo = null): ?PDO
+	protected final function pdo(?PDO $pdo = null): ?PDO
 	{
 		if ($pdo !== null)
 			$this->pdo = $pdo;
@@ -78,7 +78,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function delete (string $table): QueryBuilder
+	public final function delete(string $table): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->delete($table);
@@ -95,7 +95,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function deleteFrom (string $table): QueryBuilder
+	public final function deleteFrom(string $table): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->deleteFrom($table);
@@ -113,7 +113,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertIgnoreInto (string $table, string ...$fields): QueryBuilder
+	public final function insertIgnoreInto(string $table, string ...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->insertIgnoreInto($table, ...$fields);
@@ -131,7 +131,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertInto (string $table, string ...$fields): QueryBuilder
+	public final function insertInto(string $table, string ...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->insertInto($table, ...$fields);
@@ -149,7 +149,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertIntoValues (string $table, array ...$data): QueryBuilder
+	public final function insertIntoValues(string $table, array ...$data): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->insertIntoValues($table, ...$data);
@@ -166,7 +166,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function optimizeTable (string ...$table): QueryBuilder
+	public final function optimizeTable(string ...$table): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->optimizeTable(...$table);
@@ -183,7 +183,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function select (...$fields): QueryBuilder
+	public final function select(...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->select(...$fields);
@@ -200,7 +200,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectDistinct (...$fields): QueryBuilder
+	public final function selectDistinct(...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->selectDistinct(...$fields);
@@ -217,7 +217,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectFoundRows (...$fields): QueryBuilder
+	public final function selectFoundRows(...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->selectFoundRows(...$fields);
@@ -234,7 +234,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function truncateTable (string $table): QueryBuilder
+	public final function truncateTable(string $table): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->truncateTable($table);
@@ -251,7 +251,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function update (string $table): QueryBuilder
+	public final function update(string $table): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->update($table);
@@ -269,7 +269,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function quote (string $value, int $type = PDO::PARAM_STR): string
+	public final function quote(string $value, int $type = PDO::PARAM_STR): string
 	{
 		return $this->pdo()->quote($value, $type);
 	}
@@ -285,7 +285,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function wildcard (string $value, bool $left, bool $right): string
+	public final function wildcard(string $value, bool $left, bool $right): string
 	{
 		$str = '';
 
@@ -305,7 +305,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function exec (string $statement): int
+	public final function exec(string $statement): int
 	{
 		return $this->pdo->exec($statement);
 	}
@@ -318,7 +318,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function foundRows (): int
+	public final function foundRows(): int
 	{
 		return $this->prepare('SELECT FOUND_ROWS() AS found_rows')->execute()[0]['found_rows'];
 	}
@@ -332,7 +332,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function lastInsertId (?string $name = null): string
+	public final function lastInsertId(?string $name = null): string
 	{
 		return $this->pdo()->lastInsertId($name);
 	}
@@ -346,7 +346,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function lastInsertIdInteger (?string $name = null): int
+	public final function lastInsertIdInteger(?string $name = null): int
 	{
 		return intval($this->lastInsertId($name));
 	}
@@ -362,7 +362,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function prepare (string $query, array $options = []): PreparedStatement
+	public final function prepare(string $query, array $options = []): PreparedStatement
 	{
 		try
 		{
@@ -391,7 +391,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function query (string $query): PDOStatement
+	public final function query(string $query): PDOStatement
 	{
 		return $this->pdo()->query($query);
 	}
@@ -402,7 +402,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function printErrors (): void
+	public final function printErrors(): void
 	{
 		if (function_exists('pre_die'))
 			pre_die($this->pdo()->errorCode(), $this->pdo()->errorInfo());

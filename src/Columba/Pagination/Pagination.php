@@ -43,7 +43,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $base)
+	public function __construct(string $base)
 	{
 		$this->base = $base;
 		$this->current = 0;
@@ -60,7 +60,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function get (): array
+	public final function get(): array
 	{
 		if (!$this->isMade)
 			return $this->make();
@@ -75,7 +75,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function make (): array
+	public final function make(): array
 	{
 		if ($this->isMade)
 			return $this->data;
@@ -147,7 +147,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function isAvailable (): bool
+	public final function isAvailable(): bool
 	{
 		return $this->available;
 	}
@@ -157,7 +157,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getBase (): string
+	public final function getBase(): string
 	{
 		return $this->base;
 	}
@@ -167,7 +167,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getCurrent (): int
+	public final function getCurrent(): int
 	{
 		return $this->current;
 	}
@@ -178,7 +178,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setCurrent (int $current)
+	public final function setCurrent(int $current)
 	{
 		$this->current = $current;
 	}
@@ -188,7 +188,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getItems (): int
+	public final function getItems(): int
 	{
 		return $this->items;
 	}
@@ -199,7 +199,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setItems (int $items)
+	public final function setItems(int $items)
 	{
 		$this->items = $items;
 	}
@@ -209,7 +209,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getItemsPerPage (): int
+	public final function getItemsPerPage(): int
 	{
 		return $this->itemsPerPage;
 	}
@@ -220,7 +220,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setItemsPerPage (int $itemsPerPage)
+	public final function setItemsPerPage(int $itemsPerPage)
 	{
 		$this->itemsPerPage = $itemsPerPage;
 	}
@@ -230,7 +230,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getPages (): int
+	public final function getPages(): int
 	{
 		return $this->pages;
 	}
@@ -240,7 +240,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getSizeEnd (): int
+	public final function getSizeEnd(): int
 	{
 		return $this->sizeEnd;
 	}
@@ -251,7 +251,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setSizeEnd (int $sizeEnd)
+	public final function setSizeEnd(int $sizeEnd)
 	{
 		$this->sizeEnd = $sizeEnd;
 	}
@@ -261,7 +261,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getSizeMid (): int
+	public final function getSizeMid(): int
 	{
 		return $this->sizeMid;
 	}
@@ -272,13 +272,14 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setSizeMid (int $sizeMid)
+	public final function setSizeMid(int $sizeMid)
 	{
 		$this->sizeMid = $sizeMid;
 	}
 
 	/**
 	 * Create a pagination instance, the simple way.
+	 *
 	 * @param int $offset
 	 * @param int $limit
 	 * @param int $total
@@ -287,7 +288,7 @@ final class Pagination
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function simple (int $offset, int $limit, int $total): array
+	public static function simple(int $offset, int $limit, int $total): array
 	{
 		$pagination = new Pagination('');
 		$pagination->setItems($total);

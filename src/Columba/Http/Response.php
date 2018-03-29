@@ -107,7 +107,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct (Request $request, $curlHandle)
+	public function __construct(Request $request, $curlHandle)
 	{
 		$this->curlHandle = $curlHandle;
 		$this->request = $request;
@@ -126,7 +126,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	private function parseResponse (): void
+	private function parseResponse(): void
 	{
 		$response = curl_exec($this->curlHandle);
 
@@ -165,7 +165,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function asImageResource ()
+	public final function asImageResource()
 	{
 		return imagecreatefromstring($this->responseText);
 	}
@@ -177,7 +177,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function asJson (): ?array
+	public final function asJson(): ?array
 	{
 		return json_decode($this->responseText, true);
 	}
@@ -189,7 +189,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function asText (): string
+	public final function asText(): string
 	{
 		return $this->responseText;
 	}
@@ -201,7 +201,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRequest (): Request
+	public final function getRequest(): Request
 	{
 		return $this->request;
 	}
@@ -213,7 +213,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getDownloadSize (): int
+	public final function getDownloadSize(): int
 	{
 		return $this->downloadSize;
 	}
@@ -225,7 +225,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getDownloadSpeed (): int
+	public final function getDownloadSpeed(): int
 	{
 		return $this->downloadSpeed;
 	}
@@ -237,7 +237,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getEffectiveUrl (): string
+	public final function getEffectiveUrl(): string
 	{
 		return $this->effectiveUrl;
 	}
@@ -249,7 +249,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getLocalIp (): string
+	public final function getLocalIp(): string
 	{
 		return $this->localIp;
 	}
@@ -261,7 +261,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getLocalPort (): int
+	public final function getLocalPort(): int
 	{
 		return $this->localPort;
 	}
@@ -273,7 +273,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRemoteIp (): string
+	public final function getRemoteIp(): string
 	{
 		return $this->remoteIp;
 	}
@@ -285,7 +285,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRemotePort (): int
+	public final function getRemotePort(): int
 	{
 		return $this->remotePort;
 	}
@@ -297,7 +297,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResponseCode (): int
+	public final function getResponseCode(): int
 	{
 		return $this->responseCode;
 	}
@@ -309,7 +309,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResponseHeaders (): array
+	public final function getResponseHeaders(): array
 	{
 		return $this->responseHeaders;
 	}
@@ -321,7 +321,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResponseText (): string
+	public final function getResponseText(): string
 	{
 		return $this->responseText;
 	}
@@ -333,7 +333,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getTransactionTime (): int
+	public final function getTransactionTime(): int
 	{
 		return $this->transactionTime;
 	}
@@ -345,7 +345,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getUploadSize (): int
+	public final function getUploadSize(): int
 	{
 		return $this->uploadSize;
 	}
@@ -357,7 +357,7 @@ final class Response
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getUploadSpeed (): int
+	public final function getUploadSpeed(): int
 	{
 		return $this->uploadSpeed;
 	}

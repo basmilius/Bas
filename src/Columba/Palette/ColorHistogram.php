@@ -34,7 +34,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public function __construct (array $pixels)
+	public function __construct(array $pixels)
 	{
 		sort($pixels);
 
@@ -53,7 +53,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColors (): array
+	public final function getColors(): array
 	{
 		return $this->colors;
 	}
@@ -65,7 +65,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColorCounts (): array
+	public final function getColorCounts(): array
 	{
 		return $this->colorCounts;
 	}
@@ -77,7 +77,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getNumberOfColors (): int
+	public final function getNumberOfColors(): int
 	{
 		return $this->numberOfColors;
 	}
@@ -91,7 +91,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function countDistinctColors (array $pixels): int
+	private function countDistinctColors(array $pixels): int
 	{
 		if (count($pixels) < 2)
 			return count($pixels);
@@ -119,7 +119,7 @@ final class ColorHistogram
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function countFrequencies (array $pixels): void
+	private function countFrequencies(array $pixels): void
 	{
 		if (count($pixels) === 0)
 			return;

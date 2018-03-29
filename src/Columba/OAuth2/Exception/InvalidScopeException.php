@@ -30,7 +30,7 @@ final class InvalidScopeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (string $message)
+	public function __construct(string $message)
 	{
 		parent::__construct($message);
 	}
@@ -40,7 +40,7 @@ final class InvalidScopeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getError (): string
+	protected final function getError(): string
 	{
 		return 'invalid_scope';
 	}
@@ -50,7 +50,7 @@ final class InvalidScopeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getResponseCode (): int
+	protected final function getResponseCode(): int
 	{
 		return 400;
 	}

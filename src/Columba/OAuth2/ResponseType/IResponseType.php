@@ -36,6 +36,6 @@ interface IResponseType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function handleAuthorizeRequest (Client $client, int $ownerId, string $redirectUri, string $scope, ?string $state): void;
+	function handleAuthorizeRequest(Client $client, int $ownerId, string $redirectUri, string $scope, ?string $state): void;
 
 }

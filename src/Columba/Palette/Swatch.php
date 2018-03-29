@@ -58,7 +58,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (Color $color, int $population)
+	public function __construct(Color $color, int $population)
 	{
 		$this->color = $color;
 		$this->population = $population;
@@ -71,7 +71,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColor (): Color
+	public final function getColor(): Color
 	{
 		return $this->color;
 	}
@@ -83,7 +83,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getPopulation (): int
+	public final function getPopulation(): int
 	{
 		return $this->population;
 	}
@@ -95,7 +95,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getBodyTextColor (): Color
+	public final function getBodyTextColor(): Color
 	{
 		$this->ensureTextColorsAreGenerated();
 
@@ -109,7 +109,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getTitleTextColor (): Color
+	public final function getTitleTextColor(): Color
 	{
 		$this->ensureTextColorsAreGenerated();
 
@@ -125,7 +125,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function equals (Swatch $other): bool
+	public final function equals(Swatch $other): bool
 	{
 		return $this->color->equals($other->color) && $this->population === $other->population;
 	}
@@ -136,7 +136,7 @@ final class Swatch
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function ensureTextColorsAreGenerated (): void
+	private function ensureTextColorsAreGenerated(): void
 	{
 		if ($this->generatedTextColors)
 			return;

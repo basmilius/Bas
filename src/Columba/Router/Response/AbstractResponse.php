@@ -32,7 +32,7 @@ abstract class AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public abstract function print ($data): void;
+	public abstract function print($data): void;
 
 	/**
 	 * Redirects to {@see $redirectUri} using {@see $code} as HTTP response code.
@@ -44,7 +44,7 @@ abstract class AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function redirect (string $redirectUri, int $code = RedirectType::FOUND, bool $redirectQueryString = true): void
+	public final function redirect(string $redirectUri, int $code = RedirectType::FOUND, bool $redirectQueryString = true): void
 	{
 		if ($redirectQueryString)
 		{

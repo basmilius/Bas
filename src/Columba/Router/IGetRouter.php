@@ -29,6 +29,6 @@ interface IGetRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	function getRouter (): Router;
+	function getRouter(): Router;
 
 }

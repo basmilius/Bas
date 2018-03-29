@@ -37,7 +37,7 @@ final class ExceptionHandler
 	 * @since 1.0.0
 	 * @internal
 	 */
-	public final function onException (Throwable $err): void
+	public final function onException(Throwable $err): void
 	{
 		if (!$this->isCappuccinoAvailable())
 			$this->handleWithoutCappuccino($err);
@@ -53,7 +53,7 @@ final class ExceptionHandler
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function handleWithCappuccino (Throwable $err): void
+	private function handleWithCappuccino(Throwable $err): void
 	{
 		try
 		{
@@ -80,7 +80,7 @@ final class ExceptionHandler
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function handleWithoutCappuccino (Throwable $err): void
+	private function handleWithoutCappuccino(Throwable $err): void
 	{
 		header('Content-Type: text-plain');
 		echo get_class($err) . ' (' . $err->getCode() . '): ' . $err->getMessage();
@@ -95,7 +95,7 @@ final class ExceptionHandler
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function getCappuccinoTemplate (): string
+	private function getCappuccinoTemplate(): string
 	{
 		return <<<CAPPUCCINO
 <!DOCTYPE html>
@@ -119,7 +119,7 @@ CAPPUCCINO;
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function isCappuccinoAvailable (): bool
+	private function isCappuccinoAvailable(): bool
 	{
 		return class_exists('Columba\\Cappuccino\\Cappuccino');
 	}
@@ -130,7 +130,7 @@ CAPPUCCINO;
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function register (): void
+	public static function register(): void
 	{
 		set_exception_handler([new self(), 'onException']);
 	}

@@ -47,7 +47,7 @@ final class PleskApiClient
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $hostname, string $usernameOrSecretKey, ?string $password = null, array $requestOptions = [])
+	public function __construct(string $hostname, string $usernameOrSecretKey, ?string $password = null, array $requestOptions = [])
 	{
 		$this->client = new Client($hostname);
 		$this->requestOptions = $requestOptions;
@@ -68,7 +68,7 @@ final class PleskApiClient
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function request (array $request, bool $full = true): array
+	public final function request(array $request, bool $full = true): array
 	{
 		$request = $this->requestOptions + $request;
 
@@ -87,7 +87,7 @@ final class PleskApiClient
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function arrayToSimpleXML (array $arr, ?SimpleXMLElement &$xml = null, ?string $parentKey = ''): void
+	private function arrayToSimpleXML(array $arr, ?SimpleXMLElement &$xml = null, ?string $parentKey = ''): void
 	{
 		if ($xml === null)
 			$xml = new SimpleXMLElement('<packet/>');

@@ -45,7 +45,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct ($value)
+	public function __construct($value)
 	{
 		if (!static::isValid($value))
 			throw new UnexpectedValueException("Value $value is not part of the enum " . get_called_class(), 0xFEBA007);
@@ -61,7 +61,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getKey (): string
+	public final function getKey(): string
 	{
 		return static::search($this->value);
 	}
@@ -73,7 +73,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getValue ()
+	public final function getValue()
 	{
 		return $this->value;
 	}
@@ -88,7 +88,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isValid ($value): bool
+	public static function isValid($value): bool
 	{
 		return in_array($value, static::toArray(), true);
 	}
@@ -103,7 +103,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function isValidKey (string $key): bool
+	public static function isValidKey(string $key): bool
 	{
 		$array = static::toArray();
 
@@ -120,7 +120,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function search ($value): ?string
+	public static function search($value): ?string
 	{
 		$key = array_search($value, static::toArray(), true);
 
@@ -138,7 +138,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function toArray (): array
+	public static function toArray(): array
 	{
 		$class = get_called_class();
 
@@ -157,7 +157,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function __callStatic (string $name, array $arguments)
+	public static function __callStatic(string $name, array $arguments)
 	{
 		$array = static::toArray();
 
@@ -172,7 +172,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __toString (): string
+	public final function __toString(): string
 	{
 		return (string)$this->getValue();
 	}
@@ -182,7 +182,7 @@ abstract class Enumeration implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function jsonSerialize ()
+	public final function jsonSerialize()
 	{
 		return $this->getValue();
 	}

@@ -56,7 +56,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $dsn, string $username = '', string $password = '', array $options = [], bool $connectAutomatically = true)
+	public function __construct(string $dsn, string $username = '', string $password = '', array $options = [], bool $connectAutomatically = true)
 	{
 		parent::__construct($this);
 
@@ -76,7 +76,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function begin (): Transaction
+	public final function begin(): Transaction
 	{
 		return new Transaction($this);
 	}
@@ -87,7 +87,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function connect (): void
+	public final function connect(): void
 	{
 		$pdo = new PDO($this->dsn, $this->username, $this->password, $this->options);
 		$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -104,7 +104,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __debugInfo ()
+	public final function __debugInfo()
 	{
 		return null;
 	}

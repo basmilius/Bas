@@ -39,7 +39,7 @@ final class TokenResponseType implements IResponseType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (ITokenFactory $tokenFactory)
+	public function __construct(ITokenFactory $tokenFactory)
 	{
 		$this->tokenFactory = $tokenFactory;
 	}
@@ -49,7 +49,7 @@ final class TokenResponseType implements IResponseType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function handleAuthorizeRequest (Client $client, int $ownerId, string $redirectUri, string $scope, ?string $state): void
+	public final function handleAuthorizeRequest(Client $client, int $ownerId, string $redirectUri, string $scope, ?string $state): void
 	{
 		$accessToken = TokenGenerator::generateSimpleToken();
 

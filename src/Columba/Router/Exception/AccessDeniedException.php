@@ -32,7 +32,7 @@ final class AccessDeniedException extends \Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $message)
+	public function __construct(string $message)
 	{
 		parent::__construct($message, self::ERR_ACCESS_DENIED);
 	}

@@ -66,7 +66,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
 		parent::__construct($response, $renderer);
 
@@ -82,7 +82,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function handle (string $requestPath, array $params = [], bool $isSubRoute = false): void
+	protected function handle(string $requestPath, array $params = [], bool $isSubRoute = false): void
 	{
 		try
 		{
@@ -103,7 +103,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isAuthBasic (): bool
+	protected final function isAuthBasic(): bool
 	{
 		return $this->isOAuth2Request && $this->authType === 'Basic';
 	}
@@ -115,7 +115,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isAuthBearer (): bool
+	protected final function isAuthBearer(): bool
 	{
 		return $this->isOAuth2Request && $this->authType === 'Bearer';
 	}
@@ -127,7 +127,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isOAuth2Request (): bool
+	protected final function isOAuth2Request(): bool
 	{
 		return $this->isOAuth2Request;
 	}
@@ -141,7 +141,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isScopeAllowed (string $scope): bool
+	protected final function isScopeAllowed(string $scope): bool
 	{
 		$validInToken = false;
 
@@ -164,7 +164,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function validateScope (string $scope): void
+	protected final function validateScope(string $scope): void
 	{
 		if (!$this->isScopeAllowed($scope))
 			throw new InsufficientClientScopeException();
@@ -177,7 +177,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	private function checkRequest ()
+	private function checkRequest()
 	{
 		if (!$this->isAuthBearer())
 			return;
@@ -197,7 +197,7 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function onOwnerIdAvailable (int $ownerId): void
+	protected function onOwnerIdAvailable(int $ownerId): void
 	{
 	}
 

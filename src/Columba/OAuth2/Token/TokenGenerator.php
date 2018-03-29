@@ -31,7 +31,7 @@ final class TokenGenerator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public static function generateBase64Token (): string
+	public static function generateBase64Token(): string
 	{
 		return base64_encode(self::randomBytes(100));
 	}
@@ -43,7 +43,7 @@ final class TokenGenerator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public static function generateSimpleToken (): string
+	public static function generateSimpleToken(): string
 	{
 		return hash('whirlpool', self::randomBytes(100));
 	}
@@ -57,7 +57,7 @@ final class TokenGenerator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	private static function randomBytes (int $amount): string
+	private static function randomBytes(int $amount): string
 	{
 		try
 		{

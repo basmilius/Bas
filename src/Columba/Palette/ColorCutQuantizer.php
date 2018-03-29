@@ -58,7 +58,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public function __construct (ColorHistogram $colorHistogram, int $maxColors)
+	public function __construct(ColorHistogram $colorHistogram, int $maxColors)
 	{
 		$rawColors = $colorHistogram->getColors();
 		$rawColorCounts = $colorHistogram->getColorCounts();
@@ -113,7 +113,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColors (): array
+	public final function getColors(): array
 	{
 		return $this->colors;
 	}
@@ -125,7 +125,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColorPopulations (): array
+	public final function getColorPopulations(): array
 	{
 		return $this->colorPopulations;
 	}
@@ -137,7 +137,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getQuantizedColors (): array
+	public final function getQuantizedColors(): array
 	{
 		return $this->quantizedColors;
 	}
@@ -151,7 +151,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function generateAvarageColors (array $vboxes): array
+	private function generateAvarageColors(array $vboxes): array
 	{
 		$colors = [];
 
@@ -172,7 +172,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function modifySignificantOctet (int $dimension, int $lowerIndex, int $upperIndex): void
+	public final function modifySignificantOctet(int $dimension, int $lowerIndex, int $upperIndex): void
 	{
 		switch ($dimension)
 		{
@@ -208,7 +208,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function quantizePixels (int $maxColorIndex, int $maxColors): array
+	private function quantizePixels(int $maxColorIndex, int $maxColors): array
 	{
 		$pq = [
 			new Vbox($this, 0, $maxColorIndex)
@@ -228,7 +228,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function shouldIgnoreColor (int $color): bool
+	private function shouldIgnoreColor(int $color): bool
 	{
 		$color = Color::fromRgb(...ColorUtil::intToRgb($color));
 
@@ -244,7 +244,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function shouldIgnoreHsl (array $hsl): bool
+	private function shouldIgnoreHsl(array $hsl): bool
 	{
 		return self::isWhite($hsl) || self::isBlack($hsl) || self::isNearRedILine($hsl);
 	}
@@ -258,7 +258,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function shouldIgnoreSwatch (Swatch $swatch): bool
+	private function shouldIgnoreSwatch(Swatch $swatch): bool
 	{
 		return $this->shouldIgnoreHsl($swatch->getColor()->getHsl());
 	}
@@ -272,7 +272,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function sortColors (int $offset, int $length): void
+	public final function sortColors(int $offset, int $length): void
 	{
 		$sub = array_slice($this->colors, $offset, $length);
 		sort($sub);
@@ -289,7 +289,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function splitBoxes (array $vboxes, int $maxSize)
+	private function splitBoxes(array $vboxes, int $maxSize)
 	{
 		while (count($vboxes) < $maxSize)
 		{
@@ -318,7 +318,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function fromImage (Image $image, int $maxColors): self
+	public static function fromImage(Image $image, int $maxColors): self
 	{
 		$pixels = [];
 
@@ -338,7 +338,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function isBlack (array $hsl): bool
+	private static function isBlack(array $hsl): bool
 	{
 		return $hsl[2] <= self::BLACK_MAX_LIGHTNESS;
 	}
@@ -352,7 +352,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function isNearRedILine (array $hsl): bool
+	private static function isNearRedILine(array $hsl): bool
 	{
 		return $hsl[0] > 0.0278 && $hsl[0] <= 0.1028 && $hsl[1] <= 0.82;
 	}
@@ -366,7 +366,7 @@ final class ColorCutQuantizer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private static function isWhite (array $hsl): bool
+	private static function isWhite(array $hsl): bool
 	{
 		return $hsl[2] >= self::WHITE_MAX_LIGHTNESS;
 	}

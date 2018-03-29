@@ -38,7 +38,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
 		parent::__construct($oAuth2, $response, $renderer);
 
@@ -65,7 +65,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @since 1.3.0
 	 * @internal
 	 */
-	public final function onGetOAuth2Authorize (?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): string
+	public final function onGetOAuth2Authorize(?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): string
 	{
 		$ownerId = $this->getOwnerId();
 
@@ -101,7 +101,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function onPostOAuth2Authorize (?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): void
+	public final function onPostOAuth2Authorize(?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): void
 	{
 		$this->oAuth2->validateAuthorizeRequest($client_id, $this->getOwnerId(), $response_type, $redirect_uri, $scope, $client);
 		$this->oAuth2->handleAuthorizeRequest($client_id, $this->getOwnerId(), $response_type, $redirect_uri, $scope, $state, isset($_POST['authorize']));
@@ -116,7 +116,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @since 1.3.0
 	 * @internal
 	 */
-	public final function onPostOAuth2Token (): array
+	public final function onPostOAuth2Token(): array
 	{
 		$this->oAuth2->validateTokenRequest();
 
@@ -130,7 +130,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function getOwnerId (): ?int;
+	protected abstract function getOwnerId(): ?int;
 
 	/**
 	 * Invoked when the owner is NULL.
@@ -138,7 +138,7 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function onOwnerNull (): void;
+	protected abstract function onOwnerNull(): void;
 
 	/**
 	 * Renders the authorize view.
@@ -149,6 +149,6 @@ abstract class AbstractOAuth2Router extends AbstractOAuth2AwareRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function renderAuthorize (array $context): string;
+	protected abstract function renderAuthorize(array $context): string;
 
 }

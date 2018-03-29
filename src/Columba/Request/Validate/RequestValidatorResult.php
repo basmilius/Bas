@@ -41,7 +41,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct ()
+	public function __construct()
 	{
 		$this->errors = [];
 		$this->params = [];
@@ -55,7 +55,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function addError (RequestValidatorException $err): void
+	public final function addError(RequestValidatorException $err): void
 	{
 		$this->errors[] = $err;
 	}
@@ -69,7 +69,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function addParam (string $name, $value): void
+	public final function addParam(string $name, $value): void
 	{
 		$this->params[$name] = $value;
 	}
@@ -81,7 +81,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getErrors (): array
+	public final function getErrors(): array
 	{
 		return $this->errors;
 	}
@@ -93,7 +93,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getParams (): array
+	public final function getParams(): array
 	{
 		return $this->params;
 	}
@@ -105,7 +105,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function isValid (): bool
+	public final function isValid(): bool
 	{
 		return count($this->errors) === 0;
 	}
@@ -115,7 +115,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function offsetExists ($offset): bool
+	public final function offsetExists($offset): bool
 	{
 		return isset($this->params[$offset]);
 	}
@@ -125,7 +125,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function offsetGet ($offset)
+	public final function offsetGet($offset)
 	{
 		return $this->params[$offset];
 	}
@@ -136,7 +136,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function offsetSet ($offset, $value)
+	public final function offsetSet($offset, $value)
 	{
 		throw new ErrorException('Altering validated parameters is not permitted.');
 	}
@@ -147,7 +147,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function offsetUnset ($offset)
+	public final function offsetUnset($offset)
 	{
 		throw new ErrorException('Altering validated parameters is not permitted.');
 	}

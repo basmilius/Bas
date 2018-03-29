@@ -34,6 +34,6 @@ interface IGrantType
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function handleTokenRequest (string $grantType): array;
+	function handleTokenRequest(string $grantType): array;
 
 }

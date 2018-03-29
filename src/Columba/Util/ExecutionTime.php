@@ -35,7 +35,7 @@ final class ExecutionTime
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 3.0.0
 	 */
-	public static function start (string $id): void
+	public static function start(string $id): void
 	{
 		self::$registry[$id] = microtime(true);
 	}
@@ -49,7 +49,7 @@ final class ExecutionTime
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 3.0.0
 	 */
-	public static function stop (string $id): float
+	public static function stop(string $id): float
 	{
 		$startTime = self::$registry[$id];
 

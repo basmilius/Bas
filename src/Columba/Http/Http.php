@@ -34,7 +34,7 @@ final class Http
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function get (string $url, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function get(string $url, ?callable $manipulator = null, ?Request &$request = null): Response
 	{
 		$request = new Request($url, RequestMethod::GET);
 
@@ -57,7 +57,7 @@ final class Http
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function post (string $url, string $body, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function post(string $url, string $body, ?callable $manipulator = null, ?Request &$request = null): Response
 	{
 		$request = new Request($url, RequestMethod::POST);
 		$request->setBody($body);
@@ -81,7 +81,7 @@ final class Http
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function put (string $url, ?string $body = null, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function put(string $url, ?string $body = null, ?callable $manipulator = null, ?Request &$request = null): Response
 	{
 		$request = new Request($url, RequestMethod::PUT);
 
@@ -104,7 +104,7 @@ final class Http
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function makeRequest (Request $request): Response
+	public final function makeRequest(Request $request): Response
 	{
 		$handle = curl_init();
 

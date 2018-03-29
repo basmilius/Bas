@@ -38,7 +38,7 @@ final class ExceptionUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function exceptionToArray (Throwable $exception): array
+	public static function exceptionToArray(Throwable $exception): array
 	{
 		$class = get_class($exception);
 		$classReflection = new ReflectionClass($class);
@@ -76,7 +76,7 @@ final class ExceptionUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function exceptionToExceptions (Throwable $exception): array
+	public static function exceptionToExceptions(Throwable $exception): array
 	{
 		$exceptions = [];
 
@@ -98,7 +98,7 @@ final class ExceptionUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function traceItemToArray (array $item): array
+	public static function traceItemToArray(array $item): array
 	{
 		$callable = null;
 		$callableReflection = null;

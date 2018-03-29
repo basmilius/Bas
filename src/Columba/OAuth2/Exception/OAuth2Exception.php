@@ -35,7 +35,7 @@ abstract class OAuth2Exception extends Exception implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (string $message, int $code = -1, ?Exception $previous = null)
+	public function __construct(string $message, int $code = -1, ?Exception $previous = null)
 	{
 		parent::__construct($message, $code, $previous);
 	}
@@ -47,7 +47,7 @@ abstract class OAuth2Exception extends Exception implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function getError (): string;
+	protected abstract function getError(): string;
 
 	/**
 	 * Gets the response code.
@@ -56,14 +56,14 @@ abstract class OAuth2Exception extends Exception implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function getResponseCode (): int;
+	protected abstract function getResponseCode(): int;
 
 	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function jsonSerialize (): array
+	public function jsonSerialize(): array
 	{
 		// TODO(Bas): Figure out a way to integrate this with Router.
 		http_response_code($this->getResponseCode());

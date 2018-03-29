@@ -47,7 +47,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public function __construct ($imageResource)
+	public function __construct($imageResource)
 	{
 		$this->imageResource = $imageResource;
 
@@ -65,7 +65,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColorIntAt (int $x, int $y): int
+	public final function getColorIntAt(int $x, int $y): int
 	{
 		return imagecolorat($this->imageResource, $x, $y);
 	}
@@ -77,7 +77,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResource ()
+	public final function getResource()
 	{
 		return $this->imageResource;
 	}
@@ -89,7 +89,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getHeight (): int
+	public final function getHeight(): int
 	{
 		return $this->height;
 	}
@@ -101,7 +101,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getWidth (): int
+	public final function getWidth(): int
 	{
 		return $this->width;
 	}
@@ -113,7 +113,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function copy (): Image
+	public final function copy(): Image
 	{
 		$resource = imagecreatetruecolor($this->width, $this->height);
 
@@ -128,7 +128,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function destroy (): void
+	public final function destroy(): void
 	{
 		imagedestroy($this->imageResource);
 	}
@@ -146,7 +146,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since <caret>
 	 */
-	public final function resize (int $width, int $height, bool $crop = false, bool $thumbnail = false, bool $copy = false): Image
+	public final function resize(int $width, int $height, bool $crop = false, bool $thumbnail = false, bool $copy = false): Image
 	{
 		$image = $copy ? $this->copy() : $this;
 		$oldResource = $image->imageResource;
@@ -198,7 +198,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function print (?string $type = 'png'): void
+	public final function print(?string $type = 'png'): void
 	{
 		switch ($type)
 		{
@@ -229,7 +229,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function save (string $filename, ?string $type = 'png'): void
+	public final function save(string $filename, ?string $type = 'png'): void
 	{
 		switch ($type)
 		{
@@ -257,7 +257,7 @@ final class Image
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function fromFile (string $fileName): self
+	public static function fromFile(string $fileName): self
 	{
 		if (!is_file($fileName))
 			throw new InvalidArgumentException('$fileName not found!');

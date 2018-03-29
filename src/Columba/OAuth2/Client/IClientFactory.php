@@ -33,7 +33,7 @@ interface IClientFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getClient (string $clientId): ?Client;
+	function getClient(string $clientId): ?Client;
 
 	/**
 	 * Gets the redirect uris for a {@see Client} by client_id.
@@ -44,7 +44,7 @@ interface IClientFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getClientRedirectUris (string $clientId): array;
+	function getClientRedirectUris(string $clientId): array;
 
 	/**
 	 * Sets the OAuth2 instance.
@@ -54,6 +54,6 @@ interface IClientFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function setOAuth2 (OAuth2 $oAuth2): void;
+	function setOAuth2(OAuth2 $oAuth2): void;
 
 }

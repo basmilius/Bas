@@ -64,7 +64,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $token, int $type = Type::INVALID, int $flags = 0)
+	public function __construct(string $token, int $type = Type::INVALID, int $flags = 0)
 	{
 		$this->token = $token;
 		$this->type = $type;
@@ -80,7 +80,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getFlags (): int
+	public final function getFlags(): int
 	{
 		return $this->flags;
 	}
@@ -93,7 +93,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getHtml (): string
+	public final function getHtml(): string
 	{
 		if ($this->type === Type::WHITESPACE)
 		{
@@ -118,7 +118,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getPosition (): int
+	public final function getPosition(): int
 	{
 		return $this->position;
 	}
@@ -130,7 +130,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getToken (): string
+	public final function getToken(): string
 	{
 		return $this->token;
 	}
@@ -142,7 +142,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getType (): int
+	public final function getType(): int
 	{
 		return $this->type;
 	}
@@ -155,7 +155,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getTypeName (): ?string
+	public final function getTypeName(): ?string
 	{
 		$class = new ReflectionClass(Type::class);
 		$constants = $class->getConstants();
@@ -171,7 +171,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getValue ()
+	public final function getValue()
 	{
 		return $this->value;
 	}
@@ -183,7 +183,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function getInlineToken (): string
+	public final function getInlineToken(): string
 	{
 		return str_replace(
 			["\r", "\n", "\t"],
@@ -200,7 +200,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setFlags (int $flags): void
+	public final function setFlags(int $flags): void
 	{
 		$this->flags = $flags;
 	}
@@ -213,7 +213,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setPosition (int $position): void
+	public final function setPosition(int $position): void
 	{
 		$this->position = $position;
 	}
@@ -226,7 +226,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setToken (string $token): void
+	public final function setToken(string $token): void
 	{
 		$this->token = $token;
 	}
@@ -239,7 +239,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setType (int $type): void
+	public final function setType(int $type): void
 	{
 		$this->type = $type;
 	}
@@ -252,7 +252,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function setValue (string $value): void
+	public final function setValue(string $value): void
 	{
 		$this->value = $value;
 	}
@@ -264,7 +264,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function extract ()
+	private function extract()
 	{
 		switch ($this->type)
 		{
@@ -346,7 +346,7 @@ final class Token
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function __debugInfo ()
+	public final function __debugInfo()
 	{
 		return [
 			'flags' => $this->flags,

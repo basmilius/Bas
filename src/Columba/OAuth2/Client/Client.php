@@ -34,7 +34,7 @@ final class Client extends OAuth2Object
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (array $data, OAuth2 $oAuth2)
+	public function __construct(array $data, OAuth2 $oAuth2)
 	{
 		parent::__construct($data, $oAuth2);
 
@@ -50,7 +50,7 @@ final class Client extends OAuth2Object
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function isValidRedirectUri (string $redirectUri): bool
+	public final function isValidRedirectUri(string $redirectUri): bool
 	{
 		return in_array($redirectUri, $this->data['redirect_uris']);
 	}
@@ -64,7 +64,7 @@ final class Client extends OAuth2Object
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function isValidSecret (string $secret): bool
+	public final function isValidSecret(string $secret): bool
 	{
 		return $this['client_secret'] === $secret;
 	}

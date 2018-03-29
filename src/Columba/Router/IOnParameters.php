@@ -31,6 +31,6 @@ interface IOnParameters
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	function onParameters (array $parameters, array $rawParameters): void;
+	function onParameters(array $parameters, array $rawParameters): void;
 
 }

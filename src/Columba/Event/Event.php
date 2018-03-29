@@ -46,7 +46,7 @@ class Event
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct ($target, ...$data)
+	public function __construct($target, ...$data)
 	{
 		$this->cancelled = false;
 		$this->data = $data;
@@ -61,7 +61,7 @@ class Event
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function call (callable $listener): void
+	public final function call(callable $listener): void
 	{
 		$listener($this, ...$this->data);
 	}
@@ -72,7 +72,7 @@ class Event
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function cancel (): void
+	public final function cancel(): void
 	{
 		$this->cancelled = true;
 	}
@@ -84,7 +84,7 @@ class Event
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function isCancelled (): bool
+	public final function isCancelled(): bool
 	{
 		return $this->cancelled;
 	}

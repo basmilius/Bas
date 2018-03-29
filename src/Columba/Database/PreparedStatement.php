@@ -45,7 +45,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (AbstractDatabaseDriver $driver, PDOStatement $statement)
+	public function __construct(AbstractDatabaseDriver $driver, PDOStatement $statement)
 	{
 		$this->driver = $driver;
 		$this->statement = $statement;
@@ -61,7 +61,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function bind (string $param, $value, int $paramType): void
+	public final function bind(string $param, $value, int $paramType): void
 	{
 		$this->statement->bindValue($param, $value, $paramType);
 	}
@@ -75,7 +75,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function bindBool (string $param, bool $value): void
+	public final function bindBool(string $param, bool $value): void
 	{
 		$this->bind($param, $value ? 1 : 0, PDO::PARAM_INT);
 	}
@@ -89,7 +89,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function bindFloat (string $param, float $value): void
+	public final function bindFloat(string $param, float $value): void
 	{
 		$this->bind($param, $value, PDO::PARAM_STR);
 	}
@@ -103,7 +103,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function bindInt (string $param, ?int $value): void
+	public final function bindInt(string $param, ?int $value): void
 	{
 		$this->bind($param, $value, $value !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
 	}
@@ -117,7 +117,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function bindString (string $param, ?string $value): void
+	public final function bindString(string $param, ?string $value): void
 	{
 		$this->bind($param, $value, $value !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
 	}
@@ -128,7 +128,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function debugDumpParams (): void
+	public final function debugDumpParams(): void
 	{
 		$this->statement->debugDumpParams();
 	}
@@ -140,7 +140,7 @@ final class PreparedStatement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function execute (): ResultSet
+	public final function execute(): ResultSet
 	{
 		$result = $this->statement->execute();
 

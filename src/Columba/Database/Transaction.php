@@ -30,7 +30,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (DatabaseDriver $driver)
+	public function __construct(DatabaseDriver $driver)
 	{
 		parent::__construct($driver);
 
@@ -44,7 +44,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function begin (): bool
+	public final function begin(): bool
 	{
 		return $this->driver->pdo()->beginTransaction();
 	}
@@ -56,7 +56,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function commit (): bool
+	public final function commit(): bool
 	{
 		return $this->driver->pdo()->commit();
 	}
@@ -68,7 +68,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rollBack (): bool
+	public final function rollBack(): bool
 	{
 		return $this->driver->pdo()->rollBack();
 	}

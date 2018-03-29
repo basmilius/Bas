@@ -37,7 +37,7 @@ final class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (bool $withTemplate = true)
+	public function __construct(bool $withTemplate = true)
 	{
 		ExecutionTime::start(self::class);
 
@@ -53,7 +53,7 @@ final class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function print ($data, ?bool $success = null): void
+	public final function print($data, ?bool $success = null): void
 	{
 		header('Access-Control-Allow-Headers: *');
 		header('Access-Control-Allow-Methods: GET PUT PATCH DELETE POST OPTIONS');
@@ -100,7 +100,7 @@ final class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function jsonOptions (): int
+	public static function jsonOptions(): int
 	{
 		return JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRESERVE_ZERO_FRACTION;
 	}

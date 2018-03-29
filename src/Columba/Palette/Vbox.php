@@ -56,7 +56,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public function __construct (ColorCutQuantizer $quantizer, int $lowerIndex, int $upperIndex)
+	public function __construct(ColorCutQuantizer $quantizer, int $lowerIndex, int $upperIndex)
 	{
 		$this->quantizer = $quantizer;
 		$this->lowerIndex = $lowerIndex;
@@ -72,7 +72,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function canSplit (): bool
+	public final function canSplit(): bool
 	{
 		return $this->getColorCount() > 1;
 	}
@@ -84,7 +84,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getAvarageColor (): Swatch
+	public final function getAvarageColor(): Swatch
 	{
 		$redSum = 0;
 		$greenSum = 0;
@@ -121,7 +121,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function getColorCount (): int
+	public final function getColorCount(): int
 	{
 		return $this->upperIndex - $this->lowerIndex + 1;
 	}
@@ -133,7 +133,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function findSplitPoint (): int
+	private function findSplitPoint(): int
 	{
 		$longestDimension = $this->getLongestColorDimension();
 
@@ -175,7 +175,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function fitBox (): void
+	private function fitBox(): void
 	{
 		$this->minRed = $this->minGreen = $this->minBlue = 0xFF;
 		$this->maxRed = $this->maxGreen = $this->maxBlue = 0x0;
@@ -213,7 +213,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function getLongestColorDimension (): int
+	private function getLongestColorDimension(): int
 	{
 		$redLength = $this->maxRed - $this->minRed;
 		$greenLength = $this->maxGreen - $this->minGreen;
@@ -237,7 +237,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	private function midPoint (int $dimension): int
+	private function midPoint(int $dimension): int
 	{
 		switch ($dimension)
 		{
@@ -260,7 +260,7 @@ final class Vbox
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function splitBox (): self
+	public final function splitBox(): self
 	{
 		if (!$this->canSplit())
 			throw new Exception('Cannot split a box with only one color.');

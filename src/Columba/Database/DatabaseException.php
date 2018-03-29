@@ -40,7 +40,7 @@ final class DatabaseException extends \Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct (string $message, int $code, ?PDOException $previous = null, ?string $query = null)
+	public function __construct(string $message, int $code, ?PDOException $previous = null, ?string $query = null)
 	{
 		parent::__construct($message, $code, $previous);
 
@@ -59,7 +59,7 @@ final class DatabaseException extends \Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private function handleQuerySyntaxError (PDOException $err, string $query): void
+	private function handleQuerySyntaxError(PDOException $err, string $query): void
 	{
 		try
 		{

@@ -46,7 +46,7 @@ final class LateInitRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct (string $className, ...$arguments)
+	public function __construct(string $className, ...$arguments)
 	{
 		$this->arguments = $arguments;
 		$this->className = $className;
@@ -61,7 +61,7 @@ final class LateInitRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setParent (Router $router): void
+	public final function setParent(Router $router): void
 	{
 		$this->parent = $router;
 	}
@@ -73,7 +73,7 @@ final class LateInitRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function createRouter (): Router
+	public final function createRouter(): Router
 	{
 		/** @var Router $router */
 		$router = new $this->className(...$this->arguments);

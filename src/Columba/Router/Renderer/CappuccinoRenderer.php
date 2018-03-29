@@ -50,7 +50,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct (array $options = [])
+	public function __construct(array $options = [])
 	{
 		$defaultOptions = [
 			'debug' => false
@@ -71,7 +71,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function addExtension (ExtensionInterface $extension): void
+	public final function addExtension(ExtensionInterface $extension): void
 	{
 		$this->cappuccino->addExtension($extension);
 	}
@@ -85,7 +85,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function addGlobal (string $name, $value): void
+	public final function addGlobal(string $name, $value): void
 	{
 		$this->cappuccino->addGlobal($name, $value);
 	}
@@ -100,7 +100,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function addPath (string $path, ?string $namespace = null): void
+	public final function addPath(string $path, ?string $namespace = null): void
 	{
 		$this->loader->addPath($path, $namespace ?? FilesystemLoader::MAIN_NAMESPACE);
 	}
@@ -113,7 +113,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function render (string $template, array $context = []): string
+	public function render(string $template, array $context = []): string
 	{
 		if (substr($template, -6) !== '.cappy')
 			$template .= '.cappy';
@@ -128,7 +128,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getCappuccino (): ?Cappuccino
+	public final function getCappuccino(): ?Cappuccino
 	{
 		return $this->cappuccino;
 	}

@@ -27,7 +27,7 @@ final class HtmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function print ($data): void
+	public final function print($data): void
 	{
 		echo $data;
 	}

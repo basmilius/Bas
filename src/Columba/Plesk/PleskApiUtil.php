@@ -33,7 +33,7 @@ final class PleskApiUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function createDataSet (string ...$sets): array
+	public static function createDataSet(string ...$sets): array
 	{
 		$dataset = array_flip($sets);
 
@@ -54,7 +54,7 @@ final class PleskApiUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function nameValuesToArray (array $properties, string $nameKey = 'name', string $valueKey = 'value'): array
+	public static function nameValuesToArray(array $properties, string $nameKey = 'name', string $valueKey = 'value'): array
 	{
 		$result = [];
 
@@ -85,7 +85,7 @@ final class PleskApiUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function xmlResponseToArray (XmlResponse $response): array
+	public static function xmlResponseToArray(XmlResponse $response): array
 	{
 		$response = json_encode($response);
 		$response = json_decode($response, true);

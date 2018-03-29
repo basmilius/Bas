@@ -33,7 +33,7 @@ final class HttpUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public static function parseArrayOfHeaders (array $headers): array
+	public static function parseArrayOfHeaders(array $headers): array
 	{
 		$httpHeaders = [];
 
@@ -46,7 +46,7 @@ final class HttpUtil
 		return $httpHeaders;
 	}
 
-	public static function parseStringOfHeaders (string $headersString): array
+	public static function parseStringOfHeaders(string $headersString): array
 	{
 		$headers = [];
 

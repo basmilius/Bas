@@ -58,7 +58,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public function __construct (?string $requestUrl = null, ?string $requestMethod = null)
+	public function __construct(?string $requestUrl = null, ?string $requestMethod = null)
 	{
 		$this->body = null;
 		$this->headers = [];
@@ -75,7 +75,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getBody (): ?string
+	public final function getBody(): ?string
 	{
 		return $this->body;
 	}
@@ -88,7 +88,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setBody (string $body): void
+	public final function setBody(string $body): void
 	{
 		$this->body = $body;
 	}
@@ -100,7 +100,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getHeaders (): array
+	public final function getHeaders(): array
 	{
 		return $this->headers;
 	}
@@ -113,7 +113,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setHeaders (array $headers): void
+	public final function setHeaders(array $headers): void
 	{
 		$this->headers = $headers;
 	}
@@ -125,7 +125,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRequestMethod (): ?string
+	public final function getRequestMethod(): ?string
 	{
 		return $this->requestMethod;
 	}
@@ -138,7 +138,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setRequestMethod (string $requestMethod): void
+	public final function setRequestMethod(string $requestMethod): void
 	{
 		$this->requestMethod = $requestMethod;
 	}
@@ -150,7 +150,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRequestUrl (): ?string
+	public final function getRequestUrl(): ?string
 	{
 		return $this->requestUrl;
 	}
@@ -163,7 +163,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setRequestUrl (string $requestUrl): void
+	public final function setRequestUrl(string $requestUrl): void
 	{
 		$this->requestUrl = $requestUrl;
 	}
@@ -175,7 +175,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getUserAgent (): string
+	public final function getUserAgent(): string
 	{
 		return $this->userAgent;
 	}
@@ -188,7 +188,7 @@ final class Request
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function setUserAgent (string $userAgent): void
+	public final function setUserAgent(string $userAgent): void
 	{
 		$this->userAgent = $userAgent;
 	}

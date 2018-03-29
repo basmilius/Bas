@@ -34,7 +34,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function expireToken (string $clientId, string $type, string $token): void;
+	function expireToken(string $clientId, string $type, string $token): void;
 
 	/**
 	 * Gets an access token by refresh token.
@@ -46,7 +46,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getAccessTokenByRefreshToken (string $clientId, string $refreshToken): ?Token;
+	function getAccessTokenByRefreshToken(string $clientId, string $refreshToken): ?Token;
 
 	/**
 	 * Gets a {@see Token}.
@@ -58,7 +58,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function getToken (string $type, string $token): ?Token;
+	function getToken(string $type, string $token): ?Token;
 
 	/**
 	 * Saves an access token.
@@ -74,7 +74,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function saveAccessToken (string $clientId, int $ownerId, string $scope, string $token, ?string $associatedToken = null, int $expiresIn = 3600): string;
+	function saveAccessToken(string $clientId, int $ownerId, string $scope, string $token, ?string $associatedToken = null, int $expiresIn = 3600): string;
 
 	/**
 	 * Saves an authorization token.
@@ -90,7 +90,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function saveAuthorizationToken (string $clientId, int $ownerId, string $redirectUri, string $scope, string $token, int $expiresIn = 60): string;
+	function saveAuthorizationToken(string $clientId, int $ownerId, string $redirectUri, string $scope, string $token, int $expiresIn = 60): string;
 
 	/**
 	 * Saves a refresh token.
@@ -105,7 +105,7 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function saveRefreshToken (string $clientId, int $ownerId, string $scope, string $token, int $expiresIn = -1): string;
+	function saveRefreshToken(string $clientId, int $ownerId, string $scope, string $token, int $expiresIn = -1): string;
 
 	/**
 	 * Sets the OAuth2 instance.
@@ -115,6 +115,6 @@ interface ITokenFactory
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	function setOAuth2 (OAuth2 $oAuth2): void;
+	function setOAuth2(OAuth2 $oAuth2): void;
 
 }

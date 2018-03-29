@@ -76,7 +76,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct (IClientFactory $clientFactory, IScopeFactory $scopeFactory, ITokenFactory $tokenFactory)
+	public function __construct(IClientFactory $clientFactory, IScopeFactory $scopeFactory, ITokenFactory $tokenFactory)
 	{
 		$this->clientFactory = $clientFactory;
 		$this->clientFactory->setOAuth2($this);
@@ -105,7 +105,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getClientFactory (): IClientFactory
+	public final function getClientFactory(): IClientFactory
 	{
 		return $this->clientFactory;
 	}
@@ -117,7 +117,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getScopeFactory (): IScopeFactory
+	public final function getScopeFactory(): IScopeFactory
 	{
 		return $this->scopeFactory;
 	}
@@ -129,7 +129,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getTokenFactory (): ITokenFactory
+	public final function getTokenFactory(): ITokenFactory
 	{
 		return $this->tokenFactory;
 	}
@@ -148,7 +148,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function handleAuthorizeRequest (string $clientId, int $ownerId, string $responseType, string $redirectUri, string $scope, ?string $state, bool $authorize = false): void
+	public final function handleAuthorizeRequest(string $clientId, int $ownerId, string $responseType, string $redirectUri, string $scope, ?string $state, bool $authorize = false): void
 	{
 		$client = $this->clientFactory->getClient($clientId);
 
@@ -184,7 +184,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function handleTokenRequest (): array
+	public final function handleTokenRequest(): array
 	{
 		$grantType = $_POST['grant_type'];
 
@@ -209,7 +209,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function validateAuthorizeRequest (?string $clientId, ?int $ownerId, ?string $responseType, ?string $redirectUri, ?string $scope, ?Client &$client): void
+	public final function validateAuthorizeRequest(?string $clientId, ?int $ownerId, ?string $responseType, ?string $redirectUri, ?string $scope, ?Client &$client): void
 	{
 		if ($clientId === null)
 			throw new InvalidRequestException('Missing parameter: "client_id" is required.');
@@ -243,7 +243,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function validateClientAuthorization (): Client
+	public final function validateClientAuthorization(): Client
 	{
 		[
 			$authorizationType,
@@ -282,7 +282,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function validateResource (): array
+	public final function validateResource(): array
 	{
 		if (!isset($_SERVER['HTTP_AUTHORIZATION']) || !strpos($_SERVER['HTTP_AUTHORIZATION'], ' '))
 			throw new InvalidTokenException();
@@ -318,7 +318,7 @@ class OAuth2
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function validateTokenRequest (): void
+	public final function validateTokenRequest(): void
 	{
 		/** @var string|null $grantType */
 		$grantType = $_POST['grant_type'] ?? null;
