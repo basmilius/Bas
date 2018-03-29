@@ -43,6 +43,11 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	/**
 	 * @var int
 	 */
+	private $affectedRows;
+
+	/**
+	 * @var int
+	 */
 	private $position;
 
 	/**
@@ -64,6 +69,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 		$this->pdoStatement = $pdoStatement;
 		$this->statement = $statement;
 
+		$this->affectedRows = $pdoStatement->rowCount();
 		$this->position = 0;
 		$this->results = $this->pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -307,6 +313,18 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 		});
 
 		return $results;
+	}
+
+	/**
+	 * Returns the amount of affected rows.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function affectedRows(): int
+	{
+		return $this->affectedRows;
 	}
 
 	/**
