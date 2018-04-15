@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
-use Columba\Database\Lexer\Lexer;
 use PDOException;
 
 /**
@@ -43,38 +42,6 @@ final class DatabaseException extends \Exception
 	public function __construct(string $message, int $code, ?PDOException $previous = null, ?string $query = null)
 	{
 		parent::__construct($message, $code, $previous);
-
-		if ($previous !== null && $query !== null)
-		{
-			$this->handleQuerySyntaxError($previous, $query);
-		}
-	}
-
-	/**
-	 * If we're in a query syntax exception, enhance the message output.
-	 *
-	 * @param PDOException $err
-	 * @param string       $query
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function handleQuerySyntaxError(PDOException $err, string $query): void
-	{
-		try
-		{
-			$lexer = new Lexer($query);
-			$lexer->setDatabase('admin_intranet');
-			$lexer->setException($err);
-			$lexer->lex();
-			$tokens = $lexer->getTokens();
-
-			$this->message = $tokens->getHtml();
-		}
-		catch (\ReflectionException $err)
-		{
-			$this->message = $err->getMessage();
-		}
 	}
 
 }
