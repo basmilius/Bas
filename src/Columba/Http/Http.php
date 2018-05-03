@@ -108,6 +108,9 @@ final class Http
 	{
 		$handle = curl_init();
 
+		foreach ($request->getOptions() as $option => $value)
+			curl_setopt($handle, $option, $value);
+
 		curl_setopt($handle, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $request->getRequestMethod());
 		curl_setopt($handle, CURLOPT_ENCODING, 'gzip');
