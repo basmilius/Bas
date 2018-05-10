@@ -35,6 +35,11 @@ final class Request
 	protected $headers;
 
 	/**
+	 * @var array
+	 */
+	protected $options;
+
+	/**
 	 * @var string|null
 	 */
 	protected $requestMethod;
@@ -62,6 +67,7 @@ final class Request
 	{
 		$this->body = null;
 		$this->headers = [];
+		$this->options = [];
 		$this->userAgent = 'ColumbaHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
 
 		$this->requestMethod = $requestMethod;
@@ -116,6 +122,45 @@ final class Request
 	public final function setHeaders(array $headers): void
 	{
 		$this->headers = $headers;
+	}
+
+	/**
+	 * Gets options.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function getOptions(): array
+	{
+		return $this->options;
+	}
+
+	/**
+	 * Sets an option.
+	 *
+	 * @param int   $option
+	 * @param mixed $value
+	 *
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function setOption(int $option, $value): void
+	{
+		$this->options[$option] = $value;
+	}
+
+	/**
+	 * Sets options.
+	 *
+	 * @param array $options
+	 *
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function setOptions(array $options): void
+	{
+		$this->options = $options;
 	}
 
 	/**

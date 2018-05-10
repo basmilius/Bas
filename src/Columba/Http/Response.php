@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
+use SimpleXMLElement;
+
 /**
  * Class Response
  *
@@ -192,6 +194,23 @@ final class Response
 	public final function asText(): string
 	{
 		return $this->responseText;
+	}
+
+	/**
+	 * Gets the response as XML.
+	 *
+	 * @return SimpleXMLElement|null
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function asXml(): ?SimpleXMLElement
+	{
+		$xml = simplexml_load_string($this->responseText);
+
+		if (!$xml)
+			return null;
+
+		return $xml;
 	}
 
 	/**

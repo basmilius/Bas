@@ -180,6 +180,9 @@ final class Image
 
 		$newResource = imagecreatetruecolor($width, $height);
 
+		imagealphablending($newResource, false);
+		imagesavealpha($newResource, true);
+
 		imagecopyresampled($newResource, $oldResource, $x, $y, 0, 0, $iw, $ih, $image->width, $image->height);
 		imagedestroy($oldResource);
 

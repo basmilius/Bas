@@ -70,6 +70,27 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Ping the server.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.2.0
+	 */
+	public final function ping(): bool
+	{
+		try
+		{
+			$this->pdo->query('SELECT 1');
+
+			return true;
+		}
+		catch (PDOException $err)
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Creates a DELETE query.
 	 *
 	 * @param string $table

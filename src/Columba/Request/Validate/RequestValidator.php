@@ -61,9 +61,10 @@ final class RequestValidator
 
 		foreach ($this->options as $option)
 		{
+			$name = $option->getName();
+
 			try
 			{
-				$name = $option->getName();
 				$value = $this->params[$name] ?? null;
 
 				$option->validate($value);
@@ -72,6 +73,7 @@ final class RequestValidator
 			catch (RequestValidatorException $err)
 			{
 				$result->addError($err);
+				$result->addParam($name, null);
 			}
 		}
 
