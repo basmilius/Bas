@@ -91,7 +91,7 @@ final class RouteContext
 			if (($prepend = ($values ? $current->pathValues : $current->path)) !== '/')
 				$path = $prepend . $path;
 
-		return $path;
+		return $path ?? 'NULL';
 	}
 
 	/**
