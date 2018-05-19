@@ -73,7 +73,7 @@ abstract class AbstractDatabaseDriver
 	 * Ping the server.
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function ping(): bool

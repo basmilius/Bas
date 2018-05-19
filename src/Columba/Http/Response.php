@@ -200,7 +200,7 @@ final class Response
 	 * Gets the response as XML.
 	 *
 	 * @return SimpleXMLElement|null
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function asXml(): ?SimpleXMLElement

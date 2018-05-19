@@ -128,7 +128,7 @@ final class Request
 	 * Gets options.
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function getOptions(): array
@@ -142,7 +142,7 @@ final class Request
 	 * @param int   $option
 	 * @param mixed $value
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function setOption(int $option, $value): void
@@ -155,7 +155,7 @@ final class Request
 	 *
 	 * @param array $options
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
 	public final function setOptions(array $options): void
