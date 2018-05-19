@@ -3,22 +3,30 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
+use Columba\Util\XmlUtil;
+use SimpleXMLElement;
+
 /**
- * Class JsonResponse
+ * Class XmlResponse
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class JsonResponse extends AbstractResponse
+final class XmlResponse extends AbstractResponse
 {
 
-	public const DEFAULT_OPTIONS = JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG;
+	public const ROOT = '<response/>';
 
 	/**
-	 * @var int
+	 * @var bool
 	 */
-	private $options;
+	private $prettyPrint;
+
+	/**
+	 * @var string
+	 */
+	private $root;
 
 	/**
 	 * @var bool
@@ -26,27 +34,22 @@ final class JsonResponse extends AbstractResponse
 	private $withDefaults;
 
 	/**
-	 * JsonResponse constructor.
+	 * XmlResponse constructor.
 	 *
-	 * @param bool $withDefaults
-	 * @param int  $options
+	 * @param bool   $withDefaults
+	 * @param bool   $prettyPrint
+	 * @param string $root
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(bool $withDefaults = true, int $options = self::DEFAULT_OPTIONS)
+	public function __construct(bool $withDefaults = true, bool $prettyPrint = false, string $root = self::ROOT)
 	{
 		parent::__construct();
 
+		$this->prettyPrint = $prettyPrint;
+		$this->root = $root;
 		$this->withDefaults = $withDefaults;
-		$this->options = $options;
-
-		$this->addHeader('Access-Control-Allow-Headers', '*');
-		$this->addHeader('Access-Control-Allow-Method', 'GET PUT PATCH DELETE POST OPTIONS');
-		$this->addHeader('Access-Control-Allow-Origin', '*');
-		$this->addHeader('Content-Type', 'application/json; charset=utf-8');
-		$this->addHeader('X-Content-Type-Options', 'nosniff');
-		$this->addHeader('X-Frame-Options', 'deny');
 	}
 
 	/**
@@ -56,6 +59,8 @@ final class JsonResponse extends AbstractResponse
 	 */
 	protected final function respond($value): string
 	{
+		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
+
 		if ($this->withDefaults)
 		{
 			$header = [
@@ -84,7 +89,20 @@ final class JsonResponse extends AbstractResponse
 			$result = $value;
 		}
 
-		return json_encode($result, $this->options);
+		$xml = new SimpleXMLElement($this->root);
+
+		XmlUtil::arrayToXml($result, $xml);
+
+		if ($this->prettyPrint)
+		{
+			$doc = new \DOMDocument();
+			$doc->loadXML($xml->asXML());
+			$doc->formatOutput = true;
+
+			return $doc->saveXML();
+		}
+
+		return $xml->asXML();
 	}
 
 }

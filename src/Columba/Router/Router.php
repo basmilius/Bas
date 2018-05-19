@@ -1,66 +1,45 @@
 <?php
-/**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
- * This file is part of the Columba package.
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace Columba\Router;
 
-use Closure;
-use Columba\Router\Exception\AccessDeniedException;
-use Columba\Router\Exception\RouteExecutionException;
+use Columba\Http\RequestMethod;
+use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
-use Columba\Router\Response\HtmlResponse;
-use Columba\Router\Response\JsonResponse;
-use Exception;
-use JsonSerializable;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionParameter;
-
-define('HTTP_DELETE', 'DELETE');
-define('HTTP_GET', 'GET');
-define('HTTP_OPTIONS', 'OPTIONS');
-define('HTTP_PATCH', 'PATCH');
-define('HTTP_POST', 'POST');
-define('HTTP_PUT', 'PUT');
+use Columba\Router\Response\ResponseWrapper;
+use Columba\Router\Route\AbstractRoute;
+use Columba\Router\Route\CallbackRoute;
+use Columba\Router\Route\LazyRouterRoute;
+use Columba\Router\Route\RouterRoute;
 
 /**
  * Class Router
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Router
- * @since 1.0.0
+ * @since 1.3.0
  */
 class Router
 {
 
-	private const ALLOWED_METHODS = [HTTP_DELETE, HTTP_GET, HTTP_OPTIONS, HTTP_PATCH, HTTP_POST, HTTP_PUT];
-
 	/**
-	 * @var Router
+	 * @var AbstractMiddleware[]
 	 */
-	private $parent;
+	private $middlewares;
 
 	/**
-	 * @var AbstractRenderer|null
+	 * @var AbstractRenderer
 	 */
 	private $renderer;
 
 	/**
-	 * @var AbstractResponse|null
+	 * @var AbstractResponse
 	 */
 	private $response;
 
 	/**
-	 * @var array
+	 * @var AbstractRoute[]
 	 */
 	private $routes;
 
@@ -71,613 +50,379 @@ class Router
 	 * @param AbstractRenderer|null $renderer
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
-		$this->parent = null;
+		$this->middlewares = [];
 		$this->renderer = $renderer;
 		$this->response = $response;
 		$this->routes = [];
 	}
 
 	/**
-	 * Returns TRUE if the router is available for the current context.
+	 * Adds a {@see AbstractRoute}.
 	 *
-	 * @param string      $route
-	 * @param string      $routeWithParams
-	 * @param string|null $alternativeRoute
+	 * @param AbstractRoute $route
 	 *
-	 * @return bool
+	 * @return Router
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
-	protected function canAccess(string $route, string $routeWithParams, ?string &$alternativeRoute): bool
+	public final function add(AbstractRoute $route): Router
 	{
-		return true;
+		array_unshift($this->routes, $route);
+
+		return $this;
 	}
 
 	/**
-	 * Changes a param before it's used by the {@see Router}.
-	 *
-	 * @param string      $paramName
-	 * @param mixed       $paramValue
-	 * @param string|null $paramType
-	 *
-	 * @return mixed
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	protected function changeParam(string $paramName, $paramValue, ?string $paramType = null)
-	{
-		if ($paramValue === null)
-			return null;
-
-		if (empty($paramName))
-			return null;
-
-		if ($paramType === 's')
-			return strval($paramValue);
-
-		if ($paramType === 'i')
-			return intval($paramValue);
-
-		if ($paramType === 'f')
-			return floatval($paramValue);
-
-		if ($paramType === 'b')
-			return strval($paramValue) === '1' || strval($paramValue) === 'true';
-
-		return $paramValue;
-	}
-
-	/** @noinspection PhpDocRedundantThrowsInspection */
-	/**
-	 * Handles the request based on {@see $requestPath}.
-	 *
-	 * @param string $requestPath
-	 * @param array  $params
-	 * @param bool   $isSubRoute
-	 *
-	 * @throws AccessDeniedException
-	 * @throws RouteExecutionException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	protected function handle(string $requestPath, array $params = [], bool $isSubRoute = false): void
-	{
-		$currentPath = null;
-		$didHandleRequest = false;
-
-		foreach ($this->routes as [$route, $handler, $requestMethod, $overrideResponse])
-		{
-			if ($requestMethod !== null && $_SERVER['REQUEST_METHOD'] !== $requestMethod)
-				continue;
-
-			$paramDefinitions = [];
-			$pattern = '';
-			$parts = array_filter(explode('/', $route));
-
-			foreach ($parts as $part)
-			{
-				preg_match('#\[(i|s|f|b)\:([a-zA-Z0-9-_\.]+)\]#', $part, $matches);
-
-				if (count($matches) < 3 || count($matches) === 0)
-				{
-					$pattern .= '\/' . $part;
-				}
-				else
-				{
-					$paramType = $matches[1];
-					$paramName = $matches[2];
-
-					$paramDefinitions[] = [$paramName, $paramType];
-
-					if ($paramType === 's')
-						$pattern .= '\/(?<' . $paramName . '>[a-zA-Z0-9-_\.]+)';
-					else if ($paramType === 'i')
-						$pattern .= '\/(?<' . $paramName . '>[0-9]+)';
-					else if ($paramType === 'f')
-						$pattern .= '\/(?<' . $paramName . '>[0-9\.]+)';
-					else if ($paramType === 'b')
-						$pattern .= '\/(?<' . $paramName . '>(0|1|false|true)+)';
-				}
-			}
-
-			$pattern = '#^' . $pattern . '(?![a-zA-Z0-9-_])#';
-			$isMatch = preg_match($pattern, $requestPath, $matches);
-
-			foreach ($paramDefinitions as $paramDefinition)
-			{
-				$paramName = $paramDefinition[0];
-				$paramType = $paramDefinition[1];
-
-				if (!isset($matches[$paramName]))
-					continue;
-
-				$params[$paramName] = $this->changeParam($paramName, $matches[$paramName], $paramType);
-			}
-
-			if (!$isMatch)
-				continue;
-
-			$routeWithParams = $route;
-
-			foreach ($params as $param => $value)
-				$routeWithParams = preg_replace('#(\[(s|i|f|b)\:(' . $param . ')\])#', $value, $routeWithParams);
-
-			$newRoute = substr($requestPath, strlen($routeWithParams));
-
-			if (!$newRoute)
-				$newRoute = '/';
-
-			if (substr($newRoute, 0, 1) !== '/')
-				$newRoute = '/' . $newRoute;
-
-			if (!$this->canAccess($route, $routeWithParams, $alternativeRoute))
-			{
-				if ($alternativeRoute !== null)
-				{
-					$this->response()->redirect($alternativeRoute, RedirectType::SEE_OTHER);
-					return;
-				}
-
-				continue;
-			}
-
-			try
-			{
-				if ($handler instanceof LateInitRouter)
-					$handler = $handler->createRouter();
-
-				if ($handler instanceof self)
-				{
-					try
-					{
-						$handler->handle($newRoute, $params, true);
-						$didHandleRequest = true;
-					}
-					catch (RouteExecutionException $err)
-					{
-						if ($err->getCode() === RouteExecutionException::ERR_SUBROUTE_NOT_FOUND)
-							$didHandleRequest = false;
-						else
-							throw $err;
-					}
-				}
-				else if (preg_match(substr($pattern, 0, -1) . '$#', $requestPath) || $requestPath === '/' && $route === '/')
-				{
-					$response = $overrideResponse ?? $this->response();
-
-					if (is_string($handler) && !is_callable($handler))
-					{
-						$this->response()->redirect($handler);
-
-						$didHandleRequest = true;
-					}
-					else if (is_callable($handler))
-					{
-						$reflection = !($handler instanceof Closure) ? new ReflectionMethod($handler[0], $handler[1]) : new ReflectionFunction($handler);
-						$this->parseArguments($reflection->getParameters(), $params, $arguments);
-
-						/** @var IOnParameters $instance */
-						if ($reflection instanceof ReflectionMethod && ($instance = $handler[0]) instanceof IOnParameters)
-							$instance->onParameters($arguments, $params);
-
-						$data = call_user_func_array($handler, $arguments);
-						$response->print($data);
-
-						$didHandleRequest = true;
-					}
-					else
-					{
-						throw new RouteExecutionException('Route callback is inaccessible', RouteExecutionException::ERR_INACCESSIBLE);
-					}
-				}
-			}
-			catch (AccessDeniedException $err)
-			{
-				$this->onAccessDenied($route, $routeWithParams, $err);
-				$didHandleRequest = true;
-			}
-			catch (JsonSerializable $err)
-			{
-				$this->response(new JsonResponse(false))->print($err);
-				$didHandleRequest = true;
-			}
-			catch (Exception $exception)
-			{
-				$this->onException($route, $routeWithParams, $exception);
-			}
-
-			if ($didHandleRequest)
-				break;
-		}
-
-		if (!$didHandleRequest)
-			$this->onNotFound($requestPath, $isSubRoute);
-	}
-
-	/**
-	 * Parses the parameters to their defined types.
-	 *
-	 * @param ReflectionParameter[] $reflectionArguments
-	 * @param array                 $params
-	 * @param array|null            $arguments
-	 *
-	 * @throws RouteExecutionException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function parseArguments(array $reflectionArguments, array $params, ?array &$arguments): void
-	{
-		$arguments = [];
-
-		if (count($reflectionArguments) < count($params))
-			return;
-
-		/** @var ReflectionParameter[] $notPopulated */
-		$notPopulated = $reflectionArguments;
-//		$notPopulated = array_splice($notPopulated, count($params));
-
-		foreach ($notPopulated as $methodParam)
-			if (isset($_REQUEST[$methodParam->getName()]))
-				$params[$methodParam->getName()] = $_REQUEST[$methodParam->getName()];
-
-		foreach ($reflectionArguments as $parameter)
-			if (isset($params[$parameter->getName()]))
-				$arguments[$parameter->getName()] = $params[$parameter->getName()];
-			else if ($parameter->isDefaultValueAvailable())
-				$arguments[$parameter->getName()] = $parameter->getDefaultValue();
-			else
-				throw new RouteExecutionException('Some route parameters were missing', RouteExecutionException::ERR_MISSING_PARAMETERS);
-	}
-
-	/**
-	 * Adds a DELETE route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function delete(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'DELETE', $overrideResponse);
-	}
-
-	/**
-	 * Adds a GET route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function get(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'GET', $overrideResponse);
-	}
-
-	/**
-	 * Adds a OPTIONS route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function options(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'OPTIONS', $overrideResponse);
-	}
-
-	/**
-	 * Adds a PATCH route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function patch(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'PATCH', $overrideResponse);
-	}
-
-	/**
-	 * Adds a POST route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function post(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'POST', $overrideResponse);
-	}
-
-	/**
-	 * Adds a PUT route handler.
-	 *
-	 * @param string                                    $path
-	 * @param Router|LateInitRouter|IGetRouter|callable $route
-	 * @param AbstractResponse|null                     $overrideResponse
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function put(string $path, $route, ?AbstractResponse $overrideResponse = null): void
-	{
-		$this->use($path, $route, 'PUT', $overrideResponse);
-	}
-
-	/**
-	 * Adds a redirect path.
-	 *
-	 * @param string      $path
-	 * @param string      $newPath
-	 * @param string|null $requestMethod
-	 *
-	 * @see Router::use()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function redirect(string $path, string $newPath, ?string $requestMethod = null): void
-	{
-		$this->use($path, $newPath, $requestMethod);
-	}
-
-	/**
-	 * Adds a route with handlers for multiple request methods.
+	 * Tries to guess the {@see AbstractRoute} instance and adds it.
 	 *
 	 * @param string $path
-	 * @param array  $handlers
+	 * @param mixed  ...$arguments
 	 *
-	 * @see Router::use()
+	 * @return AbstractRoute
+	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
+	 * @since
 	 */
-	public final function for(string $path, array $handlers): void
+	public final function addFromArguments(string $path, ...$arguments): AbstractRoute
 	{
-		foreach ($handlers as $requestMethod => $handler)
-		{
-			if (!in_array($requestMethod, self::ALLOWED_METHODS))
-				continue;
+		$route = null;
 
-			$overrideResponse = null;
+		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
+			$route = new CallbackRoute($this, $path, ...$arguments);
 
-			if (is_array($handler) && !is_callable($handler))
-			{
-				$overrideResponse = $handler[1];
-				$handler = $handler[0];
-			}
+		if (count($arguments) > 0 && $arguments[0] instanceof Router)
+			$route = new RouterRoute($this, $path, ...$arguments);
 
-			$this->use($path, $handler, $requestMethod, $overrideResponse);
-		}
+		if (count($arguments) > 0 && is_string($arguments[0]) && is_subclass_of($arguments[0], Router::class))
+			$route = new LazyRouterRoute($this, $path, ...$arguments);
+
+		if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
+			$route = new RouterRoute($this, $path, $arguments[0]->getRouter());
+
+		if ($route === null)
+			throw new RouterException('Could not determine route implementation', RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
+
+		$this->add($route);
+
+		return $route;
 	}
 
 	/**
-	 * Adds a route handler on a {@see $path}.
+	 * Gets all enabled middlewares for this {@see Router}.
 	 *
-	 * @param string                                           $path
-	 * @param Router|LateInitRouter|IGetRouter|callable|string $route
-	 * @param string|null                                      $requestMethod
-	 * @param AbstractResponse|null                            $overrideResponse
-	 *
+	 * @return AbstractMiddleware[]
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
-	public final function use(string $path, $route, ?string $requestMethod = null, ?AbstractResponse $overrideResponse = null): void
+	public final function getMiddlewares(): array
 	{
-		if ($route instanceof IGetRouter)
-			$route = $route->getRouter();
-
-		if ($route instanceof self || $route instanceof LateInitRouter)
-			$route->setParent($this);
-
-		array_unshift($this->routes, [$path, $route, $requestMethod, $overrideResponse]);
+		return $this->middlewares;
 	}
 
 	/**
-	 * Renders a {@see $template} with the given {@see $context}.
+	 * Adds a {@see AbstractRoute} to use.
+	 *
+	 * @param string $middleware
+	 * @param mixed  ...$arguments
+	 *
+	 * @return Router
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function use(string $middleware, ...$arguments): Router
+	{
+		if (!class_exists($middleware))
+			throw new RouterException('Middleware ' . $middleware . ' not found!', RouterException::ERR_MIDDLEWARE_NOT_FOUND);
+
+		if (!is_subclass_of($middleware, AbstractMiddleware::class))
+			throw new RouterException('Middleware needs to extend from ' . AbstractMiddleware::class, RouterException::ERR_MIDDLEWARE_INVALID);
+
+		$this->middlewares[] = new $middleware($this, ...$arguments);
+
+		return $this;
+	}
+
+	/**
+	 * Searches for a matching {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param string $requestMethod
+	 *
+	 * @return AbstractRoute|null
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function find(string $path, string $requestMethod): ?AbstractRoute
+	{
+		if (empty($path))
+			$path = '/';
+
+		foreach ($this->routes as $route)
+			if ($route->isMatch($path, $requestMethod))
+				return $route;
+
+		return null;
+	}
+
+	/**
+	 * Searches for a matching {@see AbstractRoute} and executes it.
+	 *
+	 * @param string $path
+	 * @param string $requestMethod
+	 *
+	 * @return mixed
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function execute(string $path, string $requestMethod)
+	{
+		$route = $this->find($path, $requestMethod);
+
+		if ($route === null)
+			throw new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND);
+
+		return $route->execute(false);
+	}
+
+	/**
+	 * Searches for a matching {@see AbstractRoute}, executes it and responds to the output buffer.
+	 *
+	 * @param string $path
+	 * @param string $requestMethod
+	 *
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function executeAndRespond(string $path, string $requestMethod): void
+	{
+		$route = $this->find($path, $requestMethod);
+
+		if ($route === null)
+			throw new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND);
+
+		$route->execute(true);
+	}
+
+	/**
+	 * Renders a {@see $template} with the given {@see $context} using an {@see AbstractRenderer}.
 	 *
 	 * @param string $template
 	 * @param array  $context
 	 *
 	 * @return string
-	 * @throws RouteExecutionException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 * @see AbstractRenderer
-	 */
-	public final function render(string $template, array $context = []): string
-	{
-		if ($this->getRenderer() === null)
-			throw new RouteExecutionException('Cannot render template without an Columba\\AbstractRenderer instance!');
-
-		return $this->getRenderer()->render($template, $context);
-	}
-
-	/**
-	 * Gets the response handler.
-	 *
-	 * @param AbstractResponse|null $response
-	 *
-	 * @return AbstractResponse
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 * @see AbstractResponse
-	 */
-	public final function response(?AbstractResponse $response = null): AbstractResponse
-	{
-		if ($response !== null)
-			$this->response = $response;
-
-		if ($this->getResponse() !== null)
-			return $this->getResponse();
-
-		return new HtmlResponse();
-	}
-
-	/**
-	 * Gets a route.
-	 *
-	 * @param string $route
-	 *
-	 * @return Router|callable|string|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function getRoute(string $route)
-	{
-		foreach ($this->routes as [$path, $handler])
-			if ($route === $path)
-				return $handler;
-
-		return null;
-	}
-
-	/**
-	 * Gets the routes in this {@see Router}.
-	 *
-	 * @return array
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function getRoutes(): array
-	{
-		return $this->routes;
-	}
-
-	/**
-	 * Gets the parent {@see Router}.
-	 *
-	 * @return Router|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function getParent(): ?Router
-	{
-		return $this->parent;
-	}
-
-	/**
-	 * Sets the parent {@see Router}.
-	 *
-	 * @param Router $parent
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function setParent(Router $parent): void
-	{
-		$this->parent = $parent;
-	}
-
-	/**
-	 * Invoked when route access is denied.
-	 *
-	 * @param string                $route
-	 * @param string                $routeWithParams
-	 * @param AccessDeniedException $err
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	protected function onAccessDenied(string $route, string $routeWithParams, AccessDeniedException $err): void
-	{
-		$this->response->print('Access to this route is denied (' . $route . ' / ' . $routeWithParams . '). ' . $err->getMessage());
-	}
-
-	/**
-	 * Invoked when an exception is thrown.
-	 *
-	 * @param string    $route
-	 * @param string    $routeWithParams
-	 * @param Exception $exception
-	 *
-	 * @throws RouteExecutionException
+	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function onException(string $route, string $routeWithParams, Exception $exception): void
+	public final function render(string $template, array $context = []): string
 	{
-		if ($exception instanceof RouteExecutionException)
-			throw $exception;
-		else
-			throw new RouteExecutionException('Route execution failed with an exception. (' . $route . ' / ' . $routeWithParams . ')', RouteExecutionException::ERR_ROUTE_THREW_EXCEPTION, $exception);
+		$renderer = $this->getRenderer();
+
+		if ($renderer === null)
+			throw new RouterException('No renderer defined', RouterException::ERR_NULL_RENDERER);
+
+		return $renderer->render($template, $context);
 	}
 
 	/**
-	 * Invoked when a route is not found.
+	 * Sends a custom response.
 	 *
-	 * @param string $requestPath
-	 * @param bool   $isSubRoute
+	 * @param string $implementation
+	 * @param mixed  $value
+	 * @param mixed  ...$options
 	 *
-	 * @throws RouteExecutionException
+	 * @return ResponseWrapper
+	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
-	protected function onNotFound(string $requestPath, bool $isSubRoute): void
+	public final function respond(string $implementation, $value, ...$options): ResponseWrapper
 	{
-		if ($isSubRoute)
-			throw new RouteExecutionException('Subroute not found', RouteExecutionException::ERR_SUBROUTE_NOT_FOUND);
-		else
-			$this->response->print('Route ' . $requestPath . ' not found.');
+		if (!is_subclass_of($implementation, AbstractResponse::class))
+			throw new RouterException('Invalid response implementation! Needs to extend form AbstractResponse.', 0);
+
+		return new ResponseWrapper(new $implementation(...$options), $value);
 	}
 
 	/**
-	 * Gets the recursive renderer instance.
+	 * Adds an ALL {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function all(string $path, ...$arguments): AbstractRoute
+	{
+		return $this->addFromArguments($path, ...$arguments);
+	}
+
+	/**
+	 * Adds a DELETE {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function delete(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::DELETE);
+
+		return $route;
+	}
+
+	/**
+	 * Adds a GET {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function get(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::GET);
+
+		return $route;
+	}
+
+	/**
+	 * Adds a HEAD {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function head(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::HEAD);
+
+		return $route;
+	}
+
+	/**
+	 * Adds an OPTIONS {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function options(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::OPTIONS);
+
+		return $route;
+	}
+
+	/**
+	 * Adds a PATCH {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function patch(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::PATCH);
+
+		return $route;
+	}
+
+	/**
+	 * Adds a POST {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function post(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::POST);
+
+		return $route;
+	}
+
+	/**
+	 * Adds a PUT {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param mixed  ...$arguments
+	 *
+	 * @return AbstractRoute
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function put(string $path, ...$arguments): AbstractRoute
+	{
+		$route = $this->addFromArguments($path, ...$arguments);
+		$route->setRequestMethod(RequestMethod::PUT);
+
+		return $route;
+	}
+
+	/**
+	 * Gets the {@see AbstractRenderer}.
 	 *
 	 * @return AbstractRenderer|null
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 3.0.0
+	 * @since 1.3.0
 	 */
-	protected final function getRenderer(): ?AbstractRenderer
+	public function getRenderer(): ?AbstractRenderer
 	{
-		if ($this->renderer !== null)
-			return $this->renderer;
-
-		if ($this->parent !== null)
-			return $this->parent->getRenderer();
-
-		return null;
+		return $this->renderer;
 	}
 
 	/**
-	 * Gets the recursive response instance.
+	 * Gets the {@see AbstractResponse}.
 	 *
-	 * @return AbstractRenderer|null
+	 * @return AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 3.0.0
+	 * @since 1.3.0
 	 */
-	protected final function getResponse(): ?AbstractResponse
+	public function getResponse(): ?AbstractResponse
 	{
-		if ($this->response !== null)
-			return $this->response;
-
-		if ($this->parent !== null)
-			return $this->parent->getResponse();
-
-		return null;
+		return $this->response;
 	}
 
 }

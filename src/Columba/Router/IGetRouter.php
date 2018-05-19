@@ -1,13 +1,4 @@
 <?php
-/**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
- * This file is part of the Columba package.
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace Columba\Router;
@@ -17,7 +8,7 @@ namespace Columba\Router;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Router
- * @since 1.2.0
+ * @since 1.3.0
  */
 interface IGetRouter
 {
@@ -27,8 +18,8 @@ interface IGetRouter
 	 *
 	 * @return Router
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
+	 * @since 1.3.0
 	 */
-	function getRouter(): Router;
+	public function getRouter(): Router;
 
 }

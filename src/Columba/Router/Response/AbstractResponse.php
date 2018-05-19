@@ -1,66 +1,119 @@
 <?php
-/**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
- * This file is part of the Columba package.
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
-use Columba\Router\RedirectType;
+use Columba\Router\RouterException;
 
 /**
  * Class AbstractResponse
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Router
- * @since 1.0.0
+ * @package Columba\Router\Response
+ * @since 1.3.0
  */
 abstract class AbstractResponse
 {
 
 	/**
-	 * Prints {@see $data} to the output buffer.
-	 *
-	 * @param mixed $data
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @var string
 	 */
-	public abstract function print($data): void;
+	private $body;
 
 	/**
-	 * Redirects to {@see $redirectUri} using {@see $code} as HTTP response code.
-	 *
-	 * @param string $redirectUri
-	 * @param int    $code
-	 * @param bool   $redirectQueryString
+	 * @var int
+	 */
+	private $code;
+
+	/**
+	 * @var array
+	 */
+	private $headers;
+
+	/**
+	 * AbstractResponse constructor.
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
-	public final function redirect(string $redirectUri, int $code = RedirectType::FOUND, bool $redirectQueryString = true): void
+	public function __construct()
 	{
-		if ($redirectQueryString)
-		{
-			$queryString = explode('?', $_SERVER['REQUEST_URI'])[1] ?? '';
-			if (strlen($queryString) > 0)
-				$queryString = '?' . $queryString;
-		}
-		else
-		{
-			$queryString = '';
-		}
+		$this->body = '';
+		$this->code = 200;
+		$this->headers = [];
+	}
 
-		http_response_code($code);
-		header('Location: ' . $redirectUri . $queryString);
+	/**
+	 * Prints the response to the output buffer.
+	 *
+	 * @param $value
+	 *
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function print($value): void
+	{
+		$output = $this->respond($value);
 
-		die;
+		foreach ($this->headers as [$name, $values])
+			foreach ($values as $headerValue)
+				header($name . ': ' . $headerValue);
+
+		header('Content-Length: ' . mb_strlen($output));
+
+		echo $output;
+	}
+
+	/**
+	 * Respond to the webbrowser.
+	 *
+	 * @param mixed $value
+	 *
+	 * @return string
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected abstract function respond($value): string;
+
+	/**
+	 * Adds a response header.
+	 *
+	 * @param string $name
+	 * @param string ...$values
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function addHeader(string $name, string ...$values): void
+	{
+		$this->headers[] = [$name, $values];
+	}
+
+	/**
+	 * Gets the HTTP Response Code.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function getResponseCode(): int
+	{
+		return http_response_code();
+	}
+
+	/**
+	 * Sets the HTTP Response Code.
+	 *
+	 * @param int $responseCode
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	protected final function setHttpResponseCode(int $responseCode): void
+	{
+		http_response_code($responseCode);
 	}
 
 }
