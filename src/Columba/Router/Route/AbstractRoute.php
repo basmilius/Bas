@@ -130,7 +130,7 @@ abstract class AbstractRoute
 	 */
 	public final function resolve(string $path): string
 	{
-		if (substr($path, 0, 1) === '/')
+		if (substr($path, 0, 1) === '/' || substr($path, 0, 4) === 'http')
 			return $path; // No need to resolve.
 
 		$parts = explode('/', substr($this->context->getFullPath(), 0, -mb_strlen($this->path)) . '/' . $path);
