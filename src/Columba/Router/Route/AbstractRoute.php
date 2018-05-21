@@ -237,6 +237,13 @@ abstract class AbstractRoute
 		foreach ($this->parent->getMiddlewares() as $middleware)
 			$middleware->forContext($this, $this->getContext(), $isRouteValid, $isRequestMethodValid);
 
+		if ($this->getContext()->getRedirectPath() !== null)
+		{
+			http_response_code($this->getContext()->getRedirectCode());
+			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
+			die;
+		}
+
 		return $isRouteValid && $isRequestMethodValid;
 	}
 
