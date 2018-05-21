@@ -83,20 +83,19 @@ abstract class AbstractRoute
 	 */
 	public final function execute(bool $respond)
 	{
-		$context = $this->getContext();
 		$result = null;
 		$throw = null;
 
 		try
 		{
-			if ($context->getRedirectPath() === null)
+			if ($this->getContext()->getRedirectPath() === null)
 				$result = $this->executeImpl($respond);
 
-			if ($context->getRedirectPath() === null)
+			if ($this->getContext()->getRedirectPath() === null)
 				return $result;
 
-			http_response_code($context->getRedirectCode());
-			header('Location: ' . $this->resolve($context->getRedirectPath()));
+			http_response_code($this->getContext()->getRedirectCode());
+			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
 			return $result;
 		}
 		catch (Exception $err)
@@ -201,8 +200,6 @@ abstract class AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
-		$this->context = new RouteContext($this);
-
 		if (strlen($path) > 1 && substr($path, -1) === '/')
 			$path = substr($path, 0, -1);
 
@@ -230,15 +227,15 @@ abstract class AbstractRoute
 				$pathValues = str_replace('$' . $param->getName(), $value, $pathValues);
 		}
 
-		$this->context->setParams($paramsValues);
-		$this->context->setPath($this->path);
-		$this->context->setPathRegex($pathRegex);
-		$this->context->setPathValues($pathValues);
+		$this->getContext()->setParams($paramsValues);
+		$this->getContext()->setPath($this->path);
+		$this->getContext()->setPathRegex($pathRegex);
+		$this->getContext()->setPathValues($pathValues);
 
 		$isRequestMethodValid = ($this->requestMethod === null || $this->requestMethod === $requestMethod);
 
 		foreach ($this->parent->getMiddlewares() as $middleware)
-			$middleware->forContext($this, $this->context, $isRouteValid, $isRequestMethodValid);
+			$middleware->forContext($this, $this->getContext(), $isRouteValid, $isRequestMethodValid);
 
 		return $isRouteValid && $isRequestMethodValid;
 	}
@@ -271,12 +268,15 @@ abstract class AbstractRoute
 	/**
 	 * Gets the context.
 	 *
-	 * @return RouteContext|null
+	 * @return RouteContext
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getContext(): ?RouteContext
+	public final function getContext(): RouteContext
 	{
+		if ($this->context === null)
+			$this->context = new RouteContext($this);
+
 		return $this->context;
 	}
 

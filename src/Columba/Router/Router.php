@@ -150,22 +150,28 @@ class Router
 	/**
 	 * Searches for a matching {@see AbstractRoute}.
 	 *
-	 * @param string $path
-	 * @param string $requestMethod
+	 * @param string            $path
+	 * @param string            $requestMethod
+	 * @param RouteContext|null $context
 	 *
 	 * @return AbstractRoute|null
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function find(string $path, string $requestMethod): ?AbstractRoute
+	public final function find(string $path, string $requestMethod, ?RouteContext $context = null): ?AbstractRoute
 	{
 		if (empty($path))
 			$path = '/';
 
 		foreach ($this->routes as $route)
+		{
+			if ($context !== null)
+				$route->getContext()->setParent($context);
+
 			if ($route->isMatch($path, $requestMethod))
 				return $route;
+		}
 
 		return null;
 	}

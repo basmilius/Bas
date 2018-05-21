@@ -151,6 +151,35 @@ final class RouteContext
 	}
 
 	/**
+	 * Adds a custom param.
+	 *
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function addParam(string $name, $value): void
+	{
+		$this->params[$name] = $value;
+	}
+
+	/**
+	 * Gets a {@see AbstractRoute} param.
+	 *
+	 * @param string $name
+	 * @param bool   $includeParent
+	 *
+	 * @return mixed
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function getParam(string $name, bool $includeParent = true)
+	{
+		return $this->params[$name] ?? ($includeParent && $this->parent !== null ? $this->parent->getParam($name, true) : null);
+	}
+
+	/**
 	 * Gets the {@see AbstractRoute} params.
 	 *
 	 * @param bool $includeParent

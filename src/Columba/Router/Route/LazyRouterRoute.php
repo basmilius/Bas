@@ -139,14 +139,7 @@ final class LazyRouterRoute extends AbstractRoute
 		if (substr($relativePath, 0, 1) !== '/')
 			$relativePath = '/' . $relativePath;
 
-		$this->matchingRoute = $this->router->find($relativePath, $requestMethod);
-
-		if ($this->matchingRoute === null)
-			return false;
-
-		$this->matchingRoute->getContext()->setParent($this->getContext());
-
-		return true;
+		return ($this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext())) !== null;
 	}
 
 }
