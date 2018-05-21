@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
-use Columba\Util\A;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\RouteContext;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
+use Columba\Util\A;
 use Exception;
 
 /**
@@ -91,25 +91,20 @@ abstract class AbstractRoute
 		{
 			if ($context->getRedirectPath() === null)
 				$result = $this->executeImpl($respond);
-		}
-		catch (Exception $err)
-		{
-			if ($err instanceof RouterException)
-				$throw = $err;
-			else
-				$throw = new RouterException('Route handler threw an exception!', RouterException::ERR_HANDLER_THREW_EXCEPTION, $err);
-		}
-		finally
-		{
+
 			if ($context->getRedirectPath() === null)
 				return $result;
-
-			if ($throw)
-				throw $throw;
 
 			http_response_code($context->getRedirectCode());
 			header('Location: ' . $this->resolve($context->getRedirectPath()));
 			return $result;
+		}
+		catch (Exception $err)
+		{
+			if ($err instanceof RouterException)
+				throw $err;
+			else
+				throw new RouterException('Route handler threw an exception!', RouterException::ERR_HANDLER_THREW_EXCEPTION, $err);
 		}
 	}
 
@@ -356,7 +351,6 @@ abstract class AbstractRoute
 		return [
 			'context:' . RouteContext::class => $this->context,
 			'path:string' => $this->path,
-			'pathValues:string' => $this->context->getFullPath(),
 			'requestMethod:string' => $this->requestMethod
 		];
 	}

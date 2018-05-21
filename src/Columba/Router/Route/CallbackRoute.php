@@ -67,7 +67,7 @@ final class CallbackRoute extends AbstractRoute
 				$arguments[] = $params[$parameter->getName()];
 		}
 
-		$result = call_user_func($this->callback, ...$arguments);
+		$result = $this->getReflection()->invoke($this->callback[0], ...$arguments);
 
 		if ($respond)
 			$this->respond($result);
