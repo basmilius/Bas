@@ -1,40 +1,31 @@
 <?php
-/**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
- *
- * This file is part of the Columba package.
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
-namespace Columba\OAuth2\Router;
+namespace Columba\OAuth2\Router\Middleware;
 
 use Columba\OAuth2\Exception\InsufficientClientScopeException;
 use Columba\OAuth2\Exception\OAuth2Exception;
 use Columba\OAuth2\OAuth2;
-use Columba\Router\Renderer\AbstractRenderer;
-use Columba\Router\Response\AbstractResponse;
+use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\JsonResponse;
+use Columba\Router\Route\AbstractRoute;
+use Columba\Router\RouteContext;
 use Columba\Router\Router;
-use JsonSerializable;
 
 /**
- * Class OAuth2AwareRouter
+ * Class OAuth2Middleware
  *
- * @author Bas Milius <bas@mili.us>
- * @package Columba\OAuth2\Router
+ * @author Bas Milius <bas@ideemedia.nl>
+ * @package Columba\OAuth2\Router\Middleware
  * @since 1.3.0
  */
-abstract class AbstractOAuth2AwareRouter extends Router
+abstract class OAuth2Middleware extends AbstractMiddleware
 {
 
 	/**
 	 * @var OAuth2
 	 */
-	protected $oAuth2;
+	private $oAuth2;
 
 	/**
 	 * @var string|null
@@ -57,23 +48,24 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	private $scopes;
 
 	/**
-	 * OAuth2AwareRouter constructor.
+	 * OAuth2Middleware constructor.
 	 *
-	 * @param OAuth2                $oAuth2
-	 * @param AbstractResponse|null $response
-	 * @param AbstractRenderer|null $renderer
+	 * @param Router $router
+	 * @param OAuth2 $oAuth2
 	 *
-	 * @author Bas Milius <bas@mili.us>
+	 * @author Bas Milius <bas@ideemedia.nl>
 	 * @since 1.3.0
 	 */
-	public function __construct(OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(Router $router, OAuth2 $oAuth2)
 	{
-		parent::__construct($response, $renderer);
+		parent::__construct($router);
+
+		$this->oAuth2 = $oAuth2;
 
 		$this->isOAuth2Request = isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) && strpos($_SERVER['HTTP_AUTHORIZATION'], ' ');
 		$this->authType = $this->isOAuth2Request ? explode(' ', $_SERVER['HTTP_AUTHORIZATION'])[0] : null;
 
-		$this->oAuth2 = $oAuth2;
+		$this->ownerId = 0;
 		$this->scopes = [];
 	}
 
@@ -82,17 +74,30 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function handle(string $requestPath, array $params = [], bool $isSubRoute = false): void
+	public final function forContext(AbstractRoute $route, RouteContext $context, bool &$isRouteValid, bool &$isRequestMethodValid): void
 	{
+		if (!$this->isAuthBearer())
+			return;
+
 		try
 		{
-			$this->checkRequest();
+			[$ownerId, $scopes] = $this->oAuth2->validateResource();
+			$this->ownerId = $ownerId;
+			$this->scopes = $scopes;
 
-			parent::handle($requestPath, $params, $isSubRoute);
+			$this->onOwnerIdAvailable($this->ownerId);
+
+			$options = $route->getOptions();
+
+			if (!isset($options['scope']))
+				return;
+
+			$this->validateScope($options['scope']);
 		}
-		catch (JsonSerializable $err)
+		catch (OAuth2Exception $err)
 		{
-			$this->response(new JsonResponse(false))->print($err);
+			$route->respond($route->getParentRouter()->respond(JsonResponse::class, $err, false));
+			die;
 		}
 	}
 
@@ -168,25 +173,6 @@ abstract class AbstractOAuth2AwareRouter extends Router
 	{
 		if (!$this->isScopeAllowed($scope))
 			throw new InsufficientClientScopeException();
-	}
-
-	/**
-	 * Checks the request for oAuth2 params.
-	 *
-	 * @throws OAuth2Exception
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	private function checkRequest()
-	{
-		if (!$this->isAuthBearer())
-			return;
-
-		[$ownerId, $scopes] = $this->oAuth2->validateResource();
-		$this->ownerId = $ownerId;
-		$this->scopes = $scopes;
-
-		$this->onOwnerIdAvailable($this->ownerId);
 	}
 
 	/**
