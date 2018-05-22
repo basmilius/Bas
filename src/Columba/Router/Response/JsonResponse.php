@@ -42,7 +42,7 @@ final class JsonResponse extends AbstractResponse
 		$this->options = $options;
 
 		$this->addHeader('Access-Control-Allow-Headers', '*');
-		$this->addHeader('Access-Control-Allow-Method', 'GET PUT PATCH DELETE POST OPTIONS');
+		$this->addHeader('Access-Control-Allow-Methods', 'GET PUT PATCH DELETE POST OPTIONS');
 		$this->addHeader('Access-Control-Allow-Origin', '*');
 		$this->addHeader('Content-Type', 'application/json; charset=utf-8');
 		$this->addHeader('X-Content-Type-Options', 'nosniff');
