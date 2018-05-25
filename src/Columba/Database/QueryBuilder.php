@@ -287,10 +287,10 @@ final class QueryBuilder
 	/**
 	 * Adds a conditional AND clause.
 	 *
-	 * @param bool   $condition
-	 * @param string $field
-	 * @param string $comparator
-	 * @param string $value
+	 * @param bool         $condition
+	 * @param string       $field
+	 * @param string       $comparator
+	 * @param string|array $value
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -309,10 +309,10 @@ final class QueryBuilder
 	/**
 	 * Adds a conditional OR clause.
 	 *
-	 * @param bool   $condition
-	 * @param string $field
-	 * @param string $comparator
-	 * @param string $value
+	 * @param bool         $condition
+	 * @param string       $field
+	 * @param string       $comparator
+	 * @param string|array $value
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -350,10 +350,10 @@ final class QueryBuilder
 	/**
 	 * Adds a conditional parenthesis.
 	 *
-	 * @param bool   $condition
-	 * @param string $field
-	 * @param string $comparator
-	 * @param string $value
+	 * @param bool         $condition
+	 * @param string       $field
+	 * @param string       $comparator
+	 * @param string|array $value
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -380,7 +380,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function and (string $field = '', string $comparator = '', $value = ''): self
+	public final function and(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('AND', $statement, 1, 0, ($statement === '' ? 0 : 1), '');
@@ -671,7 +671,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function or (string $field = '', string $comparator = '', $value = ''): self
+	public final function or(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('OR', $statement, 1, 0, ($statement === '' ? 0 : 1), '');
