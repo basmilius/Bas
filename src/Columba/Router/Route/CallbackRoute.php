@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
-use Columba\Router\RouteContext;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
@@ -86,7 +85,7 @@ final class CallbackRoute extends AbstractRoute
 		$parameters = $this->getReflection()->getParameters();
 
 		foreach ($parameters as $parameter)
-			if ($parameter->getType() === null || $parameter->getType()->getName() !== RouteContext::class)
+			if ($parameter->getType() === null || !class_exists($parameter->getType()->getName()))
 				$params[] = new RouteParam($parameter->getName(), $parameter->getType()->getName(), $parameter->getType()->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
 
 		return $params;
