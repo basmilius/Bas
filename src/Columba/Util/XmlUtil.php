@@ -36,6 +36,9 @@ final class XmlUtil
 			if (is_int($key))
 				$key = $parentName !== null ? self::generateSingularName($parentName) : 'item';
 
+			if (substr($key, 0, 1) === '@')
+				$key = 'entity:' . substr($key, 1);
+
 			if ($value instanceof JsonSerializable)
 				$value = $value->jsonSerialize();
 
