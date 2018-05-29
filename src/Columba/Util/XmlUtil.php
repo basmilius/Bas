@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use JsonSerializable;
 use SimpleXMLElement;
 
 /**
@@ -35,7 +36,6 @@ final class XmlUtil
 			if (is_int($key))
 				$key = $parentName !== null ? self::generateSingularName($parentName) : 'item';
 
-			/** @noinspection PhpUndefinedClassInspection */
 			if ($value instanceof JsonSerializable)
 				$value = $value->jsonSerialize();
 
