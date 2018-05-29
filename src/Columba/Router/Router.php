@@ -12,6 +12,7 @@ use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\CallbackRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RouterRoute;
+use Exception;
 
 /**
  * Class Router
@@ -405,6 +406,24 @@ class Router
 		$route->setRequestMethod(RequestMethod::PUT);
 
 		return $route;
+	}
+
+	/**
+	 * Invoked when an {@see Exception} is thrown.
+	 *
+	 * @param Exception $err
+	 *
+	 * @return mixed|null
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function onException(Exception $err)
+	{
+		if ($err instanceof RouterException)
+			throw $err;
+		else
+			throw new RouterException('Route handler threw an exception!', RouterException::ERR_HANDLER_THREW_EXCEPTION, $err);
 	}
 
 	/**

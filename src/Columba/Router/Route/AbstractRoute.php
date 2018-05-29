@@ -100,10 +100,7 @@ abstract class AbstractRoute
 		}
 		catch (Exception $err)
 		{
-			if ($err instanceof RouterException)
-				throw $err;
-			else
-				throw new RouterException('Route handler threw an exception!', RouterException::ERR_HANDLER_THREW_EXCEPTION, $err);
+			return $this->getParentRouter()->onException($err);
 		}
 	}
 
