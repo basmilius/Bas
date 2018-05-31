@@ -193,7 +193,10 @@ class Router
 		$route = $this->find($path, $requestMethod);
 
 		if ($route === null)
-			throw new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND);
+		{
+			$this->onException(new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND));
+			return null;
+		}
 
 		return $route->execute(false);
 	}
@@ -213,7 +216,10 @@ class Router
 		$route = $this->find($path, $requestMethod);
 
 		if ($route === null)
-			throw new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND);
+		{
+			$this->onException(new RouterException($path . ' was not found!', RouterException::ERR_NOT_FOUND));
+			return;
+		}
 
 		$route->execute(true);
 	}
