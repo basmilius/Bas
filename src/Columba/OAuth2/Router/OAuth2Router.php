@@ -26,7 +26,7 @@ use Columba\Router\SubRouter;
 /**
  * Class OAuth2Router
  *
- * @author Bas Milius <bas@ideemedia.nl>
+ * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Router
  * @since 1.3.0
  */
@@ -46,7 +46,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @param AbstractRenderer|null $renderer
 	 *
 	 * @throws RouterException
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public function __construct(OAuth2 $oAuth2, ?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
@@ -75,7 +75,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @throws RouterException
 	 * @throws InvalidScopeException
 	 * @throws OAuth2Exception
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal
 	 */
@@ -112,7 +112,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @param string|null $state
 	 *
 	 * @throws OAuth2Exception
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal
 	 */
@@ -128,7 +128,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @return ResponseWrapper
 	 * @throws OAuth2Exception
 	 * @throws RouterException
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal
 	 */
