@@ -24,9 +24,9 @@ use PDOException;
 final class DatabaseException extends \Exception
 {
 
-	public const ERR_CLASS_NOT_FOUND = 0xDBA0019;
-	public const ERR_FIELD_NOT_FOUND = 0xDBA0021;
-	public const ERR_QUERY_FAILED = 0xDBA04039;
+	public const ERR_CLASS_NOT_FOUND = 0xDBA019;
+	public const ERR_FIELD_NOT_FOUND = 0xDBA021;
+	public const ERR_QUERY_FAILED = 0xDBA0439;
 
 	/**
 	 * DatabaseException constructor.
