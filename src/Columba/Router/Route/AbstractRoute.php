@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
+use Columba\Http\HttpUtil;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\RouteContext;
 use Columba\Router\RouteParam;
@@ -94,7 +95,10 @@ abstract class AbstractRoute
 			if ($this->getContext()->getRedirectPath() === null)
 				return $result;
 
-			http_response_code($this->getContext()->getRedirectCode());
+			$statusCode = $this->getContext()->getRedirectCode();
+
+			http_response_code($statusCode);
+			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $statusCode . ' ' . HttpUtil::convertStatusCodeToText($statusCode));
 			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
 			return $result;
 		}
