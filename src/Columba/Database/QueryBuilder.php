@@ -389,6 +389,23 @@ final class QueryBuilder
 	}
 
 	/**
+	 * Creates a custom query.
+	 *
+	 * @param string $custom
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function custom(string $custom): self
+	{
+		$this->init();
+		$this->add($custom, '', 0, 1, 1);
+
+		return $this;
+	}
+
+	/**
 	 * Creates a DELETE query.
 	 *
 	 * @param string $table

@@ -91,6 +91,23 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Creates a custom query.
+	 *
+	 * @param string $custom
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public final function delete(string $custom): QueryBuilder
+	{
+		$builder = new QueryBuilder($this);
+		$builder->custom($custom);
+
+		return $builder;
+	}
+
+	/**
 	 * Creates a DELETE query.
 	 *
 	 * @param string $table
