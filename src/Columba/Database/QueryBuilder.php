@@ -783,6 +783,21 @@ final class QueryBuilder
 	}
 
 	/**
+	 * Creates a SELECT {@see $suffix} query.
+	 *
+	 * @param string $suffix
+	 * @param array  ...$fields
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function selectCustom(string $suffix, ...$fields): self
+	{
+		return $this->_select('SELECT ' . $suffix, ...$fields);
+	}
+
+	/**
 	 * Creates a SELECT DISTINCT query.
 	 *
 	 * @param array ...$fields
