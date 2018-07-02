@@ -239,7 +239,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectDistinct(string $suffix, ...$fields): QueryBuilder
+	public final function selectCustom(string $suffix, ...$fields): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->selectCustom($suffix, ...$fields);
