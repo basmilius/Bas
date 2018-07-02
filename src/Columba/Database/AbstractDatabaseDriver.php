@@ -99,7 +99,7 @@ abstract class AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function delete(string $custom): QueryBuilder
+	public final function custom(string $custom): QueryBuilder
 	{
 		$builder = new QueryBuilder($this);
 		$builder->custom($custom);
