@@ -340,6 +340,44 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	}
 
 	/**
+	 * Returns TRUE if this {@see ResultSet} is empty.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.3.0
+	 */
+	public final function isEmpty(): bool
+	{
+		return $this->rowCount() === 0;
+	}
+
+	/**
+	 * Returns TRUE if this {@see ResultSet} has one result.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.3.0
+	 */
+	public final function hasOne(): bool
+	{
+		return $this->rowCount() === 1;
+	}
+
+	/**
+	 * Returns TRUE if this {@see ResultSet} has at least {@see $num} results.
+	 *
+	 * @param int $count
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.3.0
+	 */
+	public final function hasAtLeast(int $count): bool
+	{
+		return $this->rowCount() >= $count;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
