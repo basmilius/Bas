@@ -45,6 +45,11 @@ class Router
 	private $routes;
 
 	/**
+	 * @var AbstractRoute|null
+	 */
+	private $currentRoute;
+
+	/**
 	 * Router constructor.
 	 *
 	 * @param AbstractResponse|null $response
@@ -59,6 +64,8 @@ class Router
 		$this->renderer = $renderer;
 		$this->response = $response;
 		$this->routes = [];
+
+		$this->currentRoute = null;
 	}
 
 	/**
@@ -412,6 +419,27 @@ class Router
 		$route->setRequestMethod(RequestMethod::PUT);
 
 		return $route;
+	}
+
+	/**
+	 * @return AbstractRoute|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function getCurrentRoute(): ?AbstractRoute
+	{
+		return $this->currentRoute;
+	}
+
+	/**
+	 * @param AbstractRoute|null $currentRoute
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function setCurrentRoute(?AbstractRoute $currentRoute)
+	{
+		$this->currentRoute = $currentRoute;
 	}
 
 	/**

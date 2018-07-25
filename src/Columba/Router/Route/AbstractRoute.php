@@ -87,6 +87,8 @@ abstract class AbstractRoute
 		$result = null;
 		$throw = null;
 
+		$this->getParentRouter()->setCurrentRoute($this);
+
 		try
 		{
 			if ($this->getContext()->getRedirectPath() === null)
