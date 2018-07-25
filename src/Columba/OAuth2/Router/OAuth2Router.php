@@ -180,7 +180,8 @@ abstract class OAuth2Router extends SubRouter
 	{
 		if ($err instanceof OAuth2Exception)
 		{
-			echo json_encode($err, JsonResponse::DEFAULT_OPTIONS);
+			$response = $this->respond(JsonResponse::class, $err, false);
+			$response->getResponse()->print($response->getValue());
 			die;
 		}
 
