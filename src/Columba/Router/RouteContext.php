@@ -87,6 +87,9 @@ final class RouteContext
 		$current = $this;
 		$path = ($values ? $this->pathValues : $this->path);
 
+		if ($path === '/' && $current->parent !== null)
+			$path = '';
+
 		while (($current = $current->parent) !== null)
 			if (($prepend = ($values ? $current->pathValues : $current->path)) !== '/')
 				$path = $prepend . $path;
