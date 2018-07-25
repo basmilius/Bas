@@ -87,6 +87,7 @@ abstract class AbstractRoute
 		$result = null;
 		$throw = null;
 
+		$this->getParentRouter()->onExecute($this);
 		$this->getParentRouter()->setCurrentRoute($this);
 
 		try

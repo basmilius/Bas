@@ -461,6 +461,19 @@ class Router
 	}
 
 	/**
+	 * Invoked when a {@see AbstractRoute} is executed.
+	 *
+	 * @param AbstractRoute $route
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function onExecute(AbstractRoute $route): void
+	{
+		// Nothing here.
+	}
+
+	/**
 	 * Gets the {@see AbstractRenderer}.
 	 *
 	 * @return AbstractRenderer|null
