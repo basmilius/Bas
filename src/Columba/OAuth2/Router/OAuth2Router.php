@@ -22,6 +22,7 @@ use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\RouteContext;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
+use Exception;
 
 /**
  * Class OAuth2Router
@@ -169,5 +170,21 @@ abstract class OAuth2Router extends SubRouter
 	 * @since 1.3.0
 	 */
 	protected abstract function renderAuthorize(array $context): string;
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public function onException(Exception $err)
+	{
+		if ($err instanceof OAuth2Exception)
+		{
+			echo json_encode($err, JsonResponse::DEFAULT_OPTIONS);
+			die;
+		}
+
+		parent::onException($err);
+	}
 
 }
