@@ -225,11 +225,11 @@ class OAuth2
 
 		$client = $this->clientFactory->getClient($clientId);
 
-		if (!$client->isValidRedirectUri($redirectUri))
-			throw new RedirectUriMismatchException();
-
 		if ($client === null || $ownerId === null)
 			throw new InvalidClientException();
+
+		if (!$client->isValidRedirectUri($redirectUri))
+			throw new RedirectUriMismatchException();
 
 		if (!isset($this->responseTypes[$responseType]))
 			throw new UnsupportedGrantTypeException();
