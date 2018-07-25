@@ -235,7 +235,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function render(string $template, array $context = []): string
+	public function render(string $template, array $context = []): string
 	{
 		$renderer = $this->getRenderer();
 

@@ -37,7 +37,7 @@ final class PreparedStatement
 	private $statement;
 
 	/**
-	 * PreparedStatement constructor.
+	 * PreparedStatement Constructor.
 	 *
 	 * @param AbstractDatabaseDriver $driver
 	 * @param PDOStatement           $statement
@@ -49,6 +49,19 @@ final class PreparedStatement
 	{
 		$this->driver = $driver;
 		$this->statement = $statement;
+	}
+
+	/**
+	 * PreparedStatement Destructor.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public function __destruct()
+	{
+		$this->driver = null;
+		$this->statement->closeCursor();
+		$this->statement = null;
 	}
 
 	/**

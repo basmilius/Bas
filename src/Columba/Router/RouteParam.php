@@ -72,7 +72,7 @@ final class RouteParam
 				break;
 
 			case 'string':
-				$regex = '([a-zA-Z0-9-_.@]+)';
+				$regex = '([a-zA-Z0-9-_.@=,]+)';
 				break;
 
 			default:
