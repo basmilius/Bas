@@ -167,7 +167,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function find(string $path, string $requestMethod, ?RouteContext $context = null): ?AbstractRoute
+	public function find(string $path, string $requestMethod, ?RouteContext $context = null): ?AbstractRoute
 	{
 		if (empty($path))
 			$path = '/';
@@ -195,7 +195,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function execute(string $path, string $requestMethod)
+	public function execute(string $path, string $requestMethod)
 	{
 		$route = $this->find($path, $requestMethod);
 
@@ -218,7 +218,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function executeAndRespond(string $path, string $requestMethod): void
+	public function executeAndRespond(string $path, string $requestMethod): void
 	{
 		$route = $this->find($path, $requestMethod);
 
