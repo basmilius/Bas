@@ -12,7 +12,7 @@ use Columba\Router\RouterException;
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class HtmlResponse extends AbstractResponse
+class HtmlResponse extends AbstractResponse
 {
 
 	/**
@@ -20,7 +20,7 @@ final class HtmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function respond($value): string
+	protected function respond($value): string
 	{
 		$this->addHeader('Content-Type: text/html; charset=utf-8');
 

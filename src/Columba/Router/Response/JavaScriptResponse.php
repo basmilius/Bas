@@ -10,7 +10,7 @@ namespace Columba\Router\Response;
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class JavaScriptResponse extends AbstractResponse
+class JavaScriptResponse extends AbstractResponse
 {
 
 	/**
@@ -31,7 +31,7 @@ final class JavaScriptResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function respond($value): string
+	protected function respond($value): string
 	{
 		return $value;
 	}

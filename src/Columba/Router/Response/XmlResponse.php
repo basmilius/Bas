@@ -13,7 +13,7 @@ use SimpleXMLElement;
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class XmlResponse extends AbstractResponse
+class XmlResponse extends AbstractResponse
 {
 
 	public const ROOT = '<response/>';
@@ -57,7 +57,7 @@ final class XmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function respond($value): string
+	protected function respond($value): string
 	{
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 

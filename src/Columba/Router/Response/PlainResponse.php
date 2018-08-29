@@ -12,7 +12,7 @@ use Columba\Router\RouterException;
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class PlainResponse extends AbstractResponse
+class PlainResponse extends AbstractResponse
 {
 
 	/**
@@ -20,7 +20,7 @@ final class PlainResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function respond($value): string
+	public function respond($value): string
 	{
 		$this->addHeader('Content-Type: text/plain');
 

@@ -10,7 +10,7 @@ namespace Columba\Router\Response;
  * @package Columba\Router\Response
  * @since 1.3.0
  */
-final class JsonResponse extends AbstractResponse
+class JsonResponse extends AbstractResponse
 {
 
 	public const DEFAULT_OPTIONS = JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG;
@@ -54,7 +54,7 @@ final class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function respond($value): string
+	protected function respond($value): string
 	{
 		if ($this->withDefaults)
 		{
