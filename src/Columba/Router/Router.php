@@ -98,6 +98,7 @@ class Router
 	public final function addFromArguments(string $path, ...$arguments): AbstractRoute
 	{
 		$route = null;
+		$router = get_called_class();
 
 		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
 			$route = new CallbackRoute($this, $path, ...$arguments);
@@ -111,8 +112,10 @@ class Router
 		if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
 			$route = new RouterRoute($this, $path, $arguments[0]->getRouter());
 
-		if ($route === null)
-			throw new RouterException('Could not determine route implementation', RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
+		if ($route === null && isset($arguments[0]) && is_array($arguments[0]) && is_string($arguments[0][1]))
+			throw new RouterException(sprintf("Could not find implementation '%s' for route '%s' in '%s'!", $arguments[0][1], $path, $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
+		else if ($route === null)
+			throw new RouterException(sprintf("Could not determine route implementation in '%s'!", $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
 
 		$this->add($route);
 
