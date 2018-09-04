@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
+use Columba\Router\Router;
+use Columba\Util\ExecutionTime;
+
 /**
  * Class JsonResponse
  *
@@ -59,7 +62,7 @@ class JsonResponse extends AbstractResponse
 		if ($this->withDefaults)
 		{
 			$header = [
-				'execution_time' => 0.3,
+				'execution_time' => ExecutionTime::stop(Router::class),
 				'response_code' => $this->getResponseCode()
 			];
 			$result = ['header' => $header];

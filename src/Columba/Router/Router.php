@@ -12,6 +12,7 @@ use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\CallbackRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RouterRoute;
+use Columba\Util\ExecutionTime;
 use Exception;
 
 /**
@@ -174,6 +175,8 @@ class Router
 	{
 		if (empty($path))
 			$path = '/';
+
+		ExecutionTime::start(Router::class);
 
 		foreach ($this->routes as $route)
 		{
