@@ -44,6 +44,24 @@ final class PleskApiUtil
 	}
 
 	/**
+	 * Flattens a Plesk response.
+	 *
+	 * @param array  $data
+	 * @param string ...$keys
+	 *
+	 * @return array|mixed|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public static function flatten(array $data, string ...$keys)
+	{
+		foreach ($keys as $key)
+			$data = $data[$key] ?? null;
+
+		return $data;
+	}
+
+	/**
 	 * Converts an array of properties to an assocative array.
 	 *
 	 * @param array  $properties

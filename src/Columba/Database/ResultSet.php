@@ -343,7 +343,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * Returns TRUE if this {@see ResultSet} is empty.
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public final function isEmpty(): bool
@@ -355,7 +355,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * Returns TRUE if this {@see ResultSet} has one result.
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public final function hasOne(): bool
@@ -369,7 +369,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * @param int $count
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public final function hasAtLeast(int $count): bool

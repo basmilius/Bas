@@ -144,7 +144,7 @@ final class Image
 	 *
 	 * @return Image
 	 * @author Bas Milius <bas@mili.us>
-	 * @since <caret>
+	 * @since 1.1.0
 	 */
 	public final function resize(int $width, int $height, bool $crop = false, bool $thumbnail = false, bool $copy = false): Image
 	{
@@ -188,6 +188,29 @@ final class Image
 
 		$image->height = imagesy($newResource);
 		$image->width = imagesx($newResource);
+		$image->imageResource = $newResource;
+
+		return $image;
+	}
+
+	/**
+	 * Rotates an image.
+	 *
+	 * @param int  $degrees
+	 * @param bool $copy
+	 *
+	 * @return Image
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function rotate(int $degrees, bool $copy = false): Image
+	{
+		$image = $copy ? $this->copy() : $this;
+		$transparent = imagecolorallocatealpha($image->imageResource, 0, 0, 0, 0);
+
+		$newResource = imagerotate($image->imageResource, $degrees, $transparent);
+		imagedestroy($image->imageResource);
+
 		$image->imageResource = $newResource;
 
 		return $image;

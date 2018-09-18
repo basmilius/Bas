@@ -30,7 +30,7 @@ final class HttpUtil
 	 * @param int $code
 	 *
 	 * @return string
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public static function convertStatusCodeToText(int $code = 0): string
@@ -107,7 +107,7 @@ final class HttpUtil
 	 * @param string $headersString
 	 *
 	 * @return array
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
 	public static function parseStringOfHeaders(string $headersString): array
