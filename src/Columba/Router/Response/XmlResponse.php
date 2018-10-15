@@ -63,6 +63,9 @@ class XmlResponse extends AbstractResponse
 	{
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 
+		if ($value instanceof SimpleXMLElement)
+			return $value->asXML();
+
 		if ($this->withDefaults)
 		{
 			$header = [
