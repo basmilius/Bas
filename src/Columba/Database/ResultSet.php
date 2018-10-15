@@ -316,6 +316,22 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	}
 
 	/**
+	 * Returns a single result.
+	 *
+	 * @param string|null $column
+	 *
+	 * @return mixed|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function toSingle(?string $column = null)
+	{
+		$results = $this->toArray($column);
+
+		return $results[0] ?? null;
+	}
+
+	/**
 	 * Returns the amount of affected rows.
 	 *
 	 * @return int
