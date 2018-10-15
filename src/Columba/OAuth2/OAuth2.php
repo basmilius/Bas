@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2;
 
+use Columba\Http\ResponseCode;
 use Columba\OAuth2\Client\Client;
 use Columba\OAuth2\Client\IClientFactory;
 use Columba\OAuth2\Exception\InvalidClientException;
@@ -154,7 +155,7 @@ class OAuth2
 
 		if (!$authorize)
 		{
-			http_response_code(303);
+			http_response_code(ResponseCode::SEE_OTHER);
 			header('Location: ' . $redirectUri . (strpos($redirectUri, '?') ? '&' : '?') . 'error=access_denied' . ($state !== null ? '&state=' . urlencode($state) : ''));
 			return;
 		}

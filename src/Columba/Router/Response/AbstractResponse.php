@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
+use Columba\Http\ResponseCode;
 use Columba\Router\RouterException;
 
 /**
@@ -56,11 +57,14 @@ abstract class AbstractResponse
 	{
 		$output = $this->respond($value);
 
+		$this->addHeader('Content-Length', strval(mb_strlen($output)));
+
+		$statusCode = http_response_code();
+		header($_SERVER['SERVER_PROTOCOL'] . ' ' . $statusCode . ' ' . ResponseCode::getMessage($statusCode));
+
 		foreach ($this->headers as [$name, $values])
 			foreach ($values as $headerValue)
 				header($name . ': ' . $headerValue);
-
-		header('Content-Length: ' . mb_strlen($output));
 
 		echo $output;
 	}
