@@ -506,7 +506,7 @@ final class A
 	 * @author Bas Milius <bas@miliu.us>
 	 * @since 1.3.0
 	 */
-	public static function reduce(array $arr, $initial = null, callable $callback)
+	public static function reduce(array $arr, $initial = null, ?callable $callback = null)
 	{
 		return array_reduce($arr, $callback, $initial);
 	}

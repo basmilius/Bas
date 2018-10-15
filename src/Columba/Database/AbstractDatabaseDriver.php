@@ -434,7 +434,7 @@ abstract class AbstractDatabaseDriver
 		}
 		catch (PDOException $err)
 		{
-			throw new DatabaseException('Query failed!', DatabaseException::ERR_QUERY_FAILED, $err, $query);
+			throw new DatabaseException('Query failed!', DatabaseException::ERR_QUERY_FAILED, $err);
 		}
 	}
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Columba\Router;
 
 use Exception;
+use Throwable;
 
 /**
  * Class RouterException
@@ -32,12 +33,12 @@ final class RouterException extends Exception
 	 *
 	 * @param string         $message
 	 * @param int            $code
-	 * @param Exception|null $previous
+	 * @param Throwable|null $previous
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(string $message, int $code = self::ERR_UNKNOWN, ?Exception $previous = null)
+	public function __construct(string $message, int $code = self::ERR_UNKNOWN, ?Throwable $previous = null)
 	{
 		parent::__construct($message, $code, $previous);
 	}

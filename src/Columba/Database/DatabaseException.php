@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
+use Exception;
 use PDOException;
 
 /**
@@ -21,7 +22,7 @@ use PDOException;
  * @package Columba\Database
  * @since 1.0.0
  */
-final class DatabaseException extends \Exception
+final class DatabaseException extends Exception
 {
 
 	public const ERR_CLASS_NOT_FOUND = 0xDBA019;
@@ -34,12 +35,11 @@ final class DatabaseException extends \Exception
 	 * @param string            $message
 	 * @param int               $code
 	 * @param PDOException|null $previous
-	 * @param string|null       $query
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct(string $message, int $code, ?PDOException $previous = null, ?string $query = null)
+	public function __construct(string $message, int $code, ?PDOException $previous = null)
 	{
 		parent::__construct($message, $code, $previous);
 	}

@@ -99,7 +99,7 @@ final class ExceptionHandler
 	{
 		return <<<CAPPUCCINO
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Error!</title>
 	<style type="text/css">
