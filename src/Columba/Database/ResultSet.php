@@ -320,7 +320,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 *
 	 * @param string|null $column
 	 *
-	 * @return mixed|null
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
