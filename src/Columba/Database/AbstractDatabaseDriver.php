@@ -422,7 +422,7 @@ abstract class AbstractDatabaseDriver
 	{
 		try
 		{
-			if (is_file($query))
+			if (strlen($query) < PHP_MAXPATHLEN && is_file($query))
 				$query = file_get_contents($query);
 
 			$statement = $this->pdo()->prepare($query, $options);
