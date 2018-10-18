@@ -64,39 +64,43 @@ class XmlResponse extends AbstractResponse
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 
 		if ($value instanceof SimpleXMLElement)
-			return $value->asXML();
-
-		if ($this->withDefaults)
 		{
-			$header = [
-				'execution_time' => ExecutionTime::stop(Router::class),
-				'response_code' => $this->getResponseCode()
-			];
-			$result = ['header' => $header];
-			$success = true;
-
-			if (is_array($value))
-			{
-				if (isset($value['error']))
-					$result['error'] = $value['error'];
-				else
-					$result['data'] = $value;
-			}
-			else
-			{
-				$result['data'] = $value;
-			}
-
-			$result['success'] = $success;
+			$xml = $value;
 		}
 		else
 		{
-			$result = $value;
+			if ($this->withDefaults)
+			{
+				$header = [
+					'execution_time' => ExecutionTime::stop(Router::class),
+					'response_code' => $this->getResponseCode()
+				];
+				$result = ['header' => $header];
+				$success = true;
+
+				if (is_array($value))
+				{
+					if (isset($value['error']))
+						$result['error'] = $value['error'];
+					else
+						$result['data'] = $value;
+				}
+				else
+				{
+					$result['data'] = $value;
+				}
+
+				$result['success'] = $success;
+			}
+			else
+			{
+				$result = $value;
+			}
+
+			$xml = new SimpleXMLElement($this->root);
+
+			XmlUtil::arrayToXml($result, $xml);
 		}
-
-		$xml = new SimpleXMLElement($this->root);
-
-		XmlUtil::arrayToXml($result, $xml);
 
 		if ($this->prettyPrint)
 		{
