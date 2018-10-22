@@ -219,12 +219,13 @@ final class Image
 	/**
 	 * Prints the {@see Image}.
 	 *
-	 * @param string|null $type
+	 * @param string $type
+	 * @param int    $quality
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function print(?string $type = 'png'): void
+	public final function print(string $type = 'png', int $quality = 80): void
 	{
 		switch ($type)
 		{
@@ -236,12 +237,17 @@ final class Image
 			case 'jpg':
 			case 'jpeg':
 				header('Content-Type: image/jpeg');
-				imagejpeg($this->imageResource);
+				imagejpeg($this->imageResource, null, $quality);
 				break;
 
 			case 'png':
 				header('Content-Type: image/png');
 				imagepng($this->imageResource);
+				break;
+
+			case 'webp':
+				header('Content-Type: image/webp');
+				imagewebp($this->imageResource, null, $quality);
 				break;
 		}
 	}
@@ -249,13 +255,14 @@ final class Image
 	/**
 	 * Saves the {@see Image}.
 	 *
-	 * @param string      $filename
-	 * @param string|null $type
+	 * @param string $filename
+	 * @param string $type
+	 * @param int    $quality
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function save(string $filename, ?string $type = 'png'): void
+	public final function save(string $filename, string $type = 'png', int $quality = 80): void
 	{
 		switch ($type)
 		{
@@ -265,11 +272,15 @@ final class Image
 
 			case 'jpg':
 			case 'jpeg':
-				imagejpeg($this->imageResource, $filename);
+				imagejpeg($this->imageResource, $filename, $quality);
 				break;
 
 			case 'png':
 				imagepng($this->imageResource, $filename);
+				break;
+
+			case 'webp':
+				imagewebp($this->imageResource, $filename, $quality);
 				break;
 		}
 	}
