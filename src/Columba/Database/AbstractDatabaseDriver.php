@@ -337,11 +337,11 @@ abstract class AbstractDatabaseDriver
 	 * @param bool   $left
 	 * @param bool   $right
 	 *
-	 * @return string
+	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function wildcard(string $value, bool $left, bool $right): string
+	public final function wildcard(string $value, bool $left, bool $right): array
 	{
 		$str = '';
 
@@ -349,7 +349,7 @@ abstract class AbstractDatabaseDriver
 		$str .= $value;
 		if ($right) $str .= '%';
 
-		return $str;
+		return [$str, PDO::PARAM_STR];
 	}
 
 	/**
