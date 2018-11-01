@@ -17,7 +17,7 @@ namespace Columba\SSH;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\SSH
- * @since 1.0.0
+ * @since 1.3.0
  */
 abstract class SSHAuthentication
 {
@@ -28,7 +28,7 @@ abstract class SSHAuthentication
 	 * @param SSHConnection $ssh
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public abstract function authenticate(SSHConnection $ssh): void;
 

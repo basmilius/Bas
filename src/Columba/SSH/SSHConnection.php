@@ -17,7 +17,7 @@ namespace Columba\SSH;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\SSH
- * @since 1.0.0
+ * @since 1.3.0
  */
 final class SSHConnection
 {
@@ -54,7 +54,7 @@ final class SSHConnection
 	 * @param int    $port
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public function __construct(string $hostname, int $port = 22)
 	{
@@ -68,7 +68,7 @@ final class SSHConnection
 	 *
 	 * @return resource
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function getResource()
 	{
@@ -81,7 +81,7 @@ final class SSHConnection
 	 * @param SSHAuthentication $authentication
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function setAuthentication(SSHAuthentication $authentication): void
 	{
@@ -97,7 +97,7 @@ final class SSHConnection
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function exec(string $command): string
 	{
@@ -115,7 +115,7 @@ final class SSHConnection
 	 * @param callable|null $after
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function execAndStream(string $command, ?callable $before = null, ?callable $after = null)
 	{
@@ -149,7 +149,7 @@ final class SSHConnection
 	 * @param string $text
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function sendToBrowser(string $text): void
 	{

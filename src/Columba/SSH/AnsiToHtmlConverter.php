@@ -17,7 +17,7 @@ namespace Columba\SSH;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\SSH
- * @since 1.0.0
+ * @since 1.3.0
  */
 final class AnsiToHtmlConverter
 {
@@ -55,7 +55,7 @@ final class AnsiToHtmlConverter
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function convert(string $str): string
 	{
@@ -104,7 +104,7 @@ final class AnsiToHtmlConverter
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	private function convertAnsiToColor(string $ansi): string
 	{
@@ -153,7 +153,7 @@ final class AnsiToHtmlConverter
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	private function tokenize($str): array
 	{

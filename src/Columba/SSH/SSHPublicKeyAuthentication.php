@@ -17,7 +17,7 @@ namespace Columba\SSH;
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\SSH
- * @since 1.0.0
+ * @since 1.3.0
  */
 final class SSHPublicKeyAuthentication extends SSHAuthentication
 {
@@ -51,7 +51,7 @@ final class SSHPublicKeyAuthentication extends SSHAuthentication
 	 * @param string $passphrase
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public function __construct(string $username, string $publicKeyFile, string $privateKeyFile, string $passphrase)
 	{
@@ -67,7 +67,7 @@ final class SSHPublicKeyAuthentication extends SSHAuthentication
 	 * @param SSHConnection $ssh
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public final function authenticate(SSHConnection $ssh): void
 	{
