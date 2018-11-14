@@ -14,6 +14,19 @@ use Columba\Autoloader;
 
 require_once __DIR__ . '/../src/Columba/Autoloader.php';
 
+function pre(...$data)
+{
+	echo '<pre>';
+	print_r($data);
+	echo '</pre>';
+}
+
+function pre_die(...$data)
+{
+	pre(...$data);
+	die;
+}
+
 $autoloader = new Autoloader();
 $autoloader->addDirectory(__DIR__ . '/../src', 'Columba\\');
 $autoloader->register();
