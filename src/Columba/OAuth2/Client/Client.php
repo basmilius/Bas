@@ -52,6 +52,8 @@ final class Client extends OAuth2Object
 	 */
 	public final function isValidRedirectUri(string $redirectUri): bool
 	{
+		$redirectUri = explode('?', $redirectUri)[0]
+
 		return in_array($redirectUri, $this->data['redirect_uris']);
 	}
 
