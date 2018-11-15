@@ -64,6 +64,17 @@ final class SSHConnection
 	}
 
 	/**
+	 * Disconnects the ssh connection.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public function __destruct()
+	{
+		ssh2_disconnect($this->ssh);
+	}
+
+	/**
 	 * Gets the SSH resource.
 	 *
 	 * @return resource
@@ -141,6 +152,35 @@ final class SSHConnection
 		$this->sendToBrowser('id: done' . PHP_EOL . 'data: {}');
 
 		ob_end_flush();
+	}
+
+	/**
+	 * Receive a file.
+	 *
+	 * @param string $filename
+	 * @param string $localFilename
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function receiveFile(string $filename, string $localFilename): void
+	{
+		ssh2_scp_recv($this->ssh, $filename, $localFilename);
+	}
+
+	/**
+	 * Sends a file.
+	 *
+	 * @param string   $filename
+	 * @param string   $remoteFilename
+	 * @param int|null $createMode
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function sendFile(string $filename, string $remoteFilename, ?int $createMode = null): void
+	{
+		ssh2_scp_send($this->ssh, $filename, $remoteFilename, $createMode);
 	}
 
 	/**
