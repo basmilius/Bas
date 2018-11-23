@@ -412,17 +412,18 @@ abstract class AbstractDatabaseDriver
 	 *
 	 * @param string $query
 	 * @param array  $options
+	 * @param bool   $isFile
 	 *
 	 * @return PreparedStatement
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function prepare(string $query, array $options = []): PreparedStatement
+	public final function prepare(string $query, array $options = [], bool $isFile = false): PreparedStatement
 	{
 		try
 		{
-			if (strlen($query) < PHP_MAXPATHLEN && is_file($query))
+			if ($isFile && strlen($query) < PHP_MAXPATHLEN && is_file($query))
 				$query = file_get_contents($query);
 
 			$statement = $this->pdo()->prepare($query, $options);
