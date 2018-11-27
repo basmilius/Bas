@@ -27,6 +27,9 @@ class MyRouter extends Router
 
 		$this->get('/', [$this, 'onGetIndex']);
 		$this->get('/user/$userId', [$this, 'onGetUser']);
+		$this->redirect('/redirect', '/destination');
+		$this->redirect('/redirect/$postSlug(string)', '/destination/$postSlug');
+		$this->redirect('/redirect/$userId(int)/$userSlug(string)', '/destination/$userId/$userSlug');
 	}
 
 	public final function onGetIndex(): string
@@ -34,8 +37,10 @@ class MyRouter extends Router
 		return 'Route: /';
 	}
 
-	public final function onGeetUser(int $userId): string
+	public final function onGetUser(int $userId): string
 	{
+		throw new Exception('Hi!');
+
 		return 'Route: /user/' . $userId;
 	}
 
@@ -44,9 +49,9 @@ class MyRouter extends Router
 try
 {
 	$router = new MyRouter();
-	print_r($router->execute('/user/3', 'GET'));
+	print_r($router->execute('/redirect/1/bas-milius', 'GET'));
 }
-catch(RouterException $err)
+catch (RouterException $err)
 {
 	print_r($err);
 }

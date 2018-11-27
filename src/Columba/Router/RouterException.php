@@ -35,7 +35,7 @@ final class RouterException extends Exception
 	public const ERR_RENDERER_THREW_EXCEPTION = 0xFA08;
 
 	public const ERR_NOT_FOUND = 0x404;
-	public const ERR_HANDLER_THREW_EXCEPTION = 0x500;
+	public const ERR_ROUTE_THREW_EXCEPTION = 0x500;
 
 	/**
 	 * RouterException constructor.

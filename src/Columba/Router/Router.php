@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router;
 
 use Columba\Http\RequestMethod;
+use Columba\Http\ResponseCode;
 use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
@@ -20,9 +21,12 @@ use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\CallbackRoute;
 use Columba\Router\Route\LazyRouterRoute;
+use Columba\Router\Route\RedirectRoute;
 use Columba\Router\Route\RouterRoute;
 use Columba\Util\ExecutionTime;
 use Exception;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
 
 /**
  * Class Router
@@ -437,6 +441,30 @@ class Router
 	}
 
 	/**
+	 * Adds a redirect {@see AbstractRoute}.
+	 *
+	 * @param string $path
+	 * @param string $destination
+	 * @param string $requestMethod
+	 * @param int    $responseCode
+	 *
+	 * @return AbstractRoute
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.1
+	 */
+	public final function redirect(string $path, string $destination, string $requestMethod = 'ALL', int $responseCode = ResponseCode::SEE_OTHER): AbstractRoute
+	{
+		$route = new RedirectRoute($this, $path, $destination, $responseCode);
+
+		if ($requestMethod !== 'ALL')
+			$route->setRequestMethod($requestMethod);
+
+		$this->add($route);
+
+		return $route;
+	}
+
+	/**
 	 * @return AbstractRoute|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -460,19 +488,32 @@ class Router
 	/**
 	 * Invoked when an {@see Exception} is thrown.
 	 *
-	 * @param Exception $err
+	 * @param Exception         $err
+	 * @param RouteContext|null $context
 	 *
 	 * @return mixed|null
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function onException(Exception $err)
+	public function onException(Exception $err, ?RouteContext $context = null)
 	{
+		$callbackName = function (ReflectionFunctionAbstract $callback): string
+		{
+			if ($callback instanceof ReflectionMethod)
+				return $callback->getDeclaringClass()->getName() . '::' . $callback->getName();
+
+			return $callback->getName();
+		};
+
 		if ($err instanceof RouterException)
 			throw $err;
+		else if ($context !== null && $context->getCallback() !== null)
+			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getPath()), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
+		else if ($context !== null)
+			throw new RouterException(sprintf("Exception thrown while executing '%s'.", $context->getPath()), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 		else
-			throw new RouterException('Route handler threw an exception!', RouterException::ERR_HANDLER_THREW_EXCEPTION, $err);
+			throw new RouterException('Route handler threw an exception!', RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 	}
 
 	/**

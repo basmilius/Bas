@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router;
 
 use Columba\Router\Route\AbstractRoute;
+use ReflectionFunctionAbstract;
 
 /**
  * Class RouteContext
@@ -28,6 +29,11 @@ final class RouteContext
 	 * @var AbstractRoute
 	 */
 	private $route;
+
+	/**
+	 * @var ReflectionFunctionAbstract|null
+	 */
+	private $callback = null;
 
 	/**
 	 * @var bool
@@ -160,6 +166,31 @@ final class RouteContext
 	public final function setCanExecute(bool $canExecute)
 	{
 		$this->canExecute = $canExecute;
+	}
+
+	/**
+	 * Gets the callback.
+	 *
+	 * @return ReflectionFunctionAbstract|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.1
+	 */
+	public final function getCallback(): ?ReflectionFunctionAbstract
+	{
+		return $this->callback;
+	}
+
+	/**
+	 * Sets the callback.
+	 *
+	 * @param ReflectionFunctionAbstract $callback
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.1
+	 */
+	public final function setCallback(ReflectionFunctionAbstract $callback): void
+	{
+		$this->callback = $callback;
 	}
 
 	/**
