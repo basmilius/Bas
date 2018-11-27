@@ -33,6 +33,7 @@ final class RouterException extends Exception
 	public const ERR_INVALID_RESPONSE_VALUE = 0xFA06;
 	public const ERR_NULL_RENDERER = 0xFA07;
 	public const ERR_RENDERER_THREW_EXCEPTION = 0xFA08;
+	public const ERR_REGEX_COMPILATION_FAILED = 0xFA09;
 
 	public const ERR_NOT_FOUND = 0x404;
 	public const ERR_ROUTE_THREW_EXCEPTION = 0x500;

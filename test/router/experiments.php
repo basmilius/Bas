@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Router\Response\HtmlResponse;
+use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 
@@ -26,10 +27,14 @@ class MyRouter extends Router
 		parent::__construct();
 
 		$this->get('/', [$this, 'onGetIndex']);
-		$this->get('/user/$userId', [$this, 'onGetUser']);
-		$this->redirect('/redirect', '/destination');
-		$this->redirect('/redirect/$postSlug(string)', '/destination/$postSlug');
-		$this->redirect('/redirect/$userId(int)/$userSlug(string)', '/destination/$userId/$userSlug');
+		$this->get('/(profile|user)/$userId', [$this, 'onGetUser']);
+		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?P<format>pdf|html)', [$this, 'onGetUserInvoice']);
+		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
+
+		$this->get('/anonymous', function (RouteContext $context): string
+		{
+			return 'This is a ClosureRoute on ' . $context->getFullPath();
+		});
 	}
 
 	public final function onGetIndex(): string
@@ -37,11 +42,19 @@ class MyRouter extends Router
 		return 'Route: /';
 	}
 
+	public final function onGetInvoice(string $format): string
+	{
+		return 'Route: /download/invoice.' . $format;
+	}
+
 	public final function onGetUser(int $userId): string
 	{
-		throw new Exception('Hi!');
-
 		return 'Route: /user/' . $userId;
+	}
+
+	public final function onGetUserInvoice(RouteContext $context, int $userId, string $invoiceNo, string $format): string
+	{
+		return sprintf("Show invoice '%s' as '%s' for user %d.", $invoiceNo, $format, $userId);
 	}
 
 }
@@ -49,7 +62,9 @@ class MyRouter extends Router
 try
 {
 	$router = new MyRouter();
-	print_r($router->execute('/redirect/1/bas-milius', 'GET'));
+	$result = $router->execute('/profile/1/invoices/20183481.html', 'GET');
+
+	print_r($result);
 }
 catch (RouterException $err)
 {

@@ -225,16 +225,20 @@ abstract class AbstractRoute
 		$pathValues = $this->path;
 
 		foreach ($params as $param)
-			$pathRegex = str_replace('/$' . $param->getName(), $param->getRegex(), $pathRegex);
+			$pathRegex = str_replace(['/$' . $param->getName(), '.$' . $param->getName()], $param->getRegex(), $pathRegex);
 
 		$pathRegex = '#^' . $pathRegex . (!$this->allowSubRoutes ? '$' : '') . '#';
-		$isRouteValid = preg_match($pathRegex, $path, $matches);
-		$isRouteValid = $isRouteValid && substr($path, 0, mb_strlen($matches[0])) === $matches[0];
+		$isRouteValid = @preg_match($pathRegex, $path, $matches);
+
+		if ($isRouteValid === false)
+			throw new RouterException(sprintf("Could not compile regex for route '%s'.", $this->path), RouterException::ERR_REGEX_COMPILATION_FAILED);
+
+		$isRouteValid = $isRouteValid === 1 && substr($path, 0, mb_strlen($matches[0])) === $matches[0];
 
 		foreach ($params as $index => $param)
 		{
-			$paramsValues[$param->getName()] = isset($matches[$index + 1]) ? $param->sanitize($matches[$index + 1]) : (isset($_REQUEST[$param->getName()]) ? $param->sanitize($_REQUEST[$param->getName()]) : $param->getDefaultValue());
-			$value = $matches[$index + 1] ?? $param->getDefaultValue();
+			$paramsValues[$param->getName()] = isset($matches[$param->getName()]) ? $param->sanitize($matches[$param->getName()]) : (isset($_REQUEST[$param->getName()]) ? $param->sanitize($_REQUEST[$param->getName()]) : $param->getDefaultValue());
+			$value = $matches[$param->getName()] ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
 				$pathValues = str_replace('$' . $param->getName(), $value, $pathValues);

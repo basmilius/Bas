@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router;
 
+use Closure;
 use Columba\Http\RequestMethod;
 use Columba\Http\ResponseCode;
 use Columba\Router\Middleware\AbstractMiddleware;
@@ -20,6 +21,7 @@ use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\CallbackRoute;
+use Columba\Router\Route\ClosureRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RedirectRoute;
 use Columba\Router\Route\RouterRoute;
@@ -117,19 +119,22 @@ class Router
 		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
 			$route = new CallbackRoute($this, $path, ...$arguments);
 
-		if (count($arguments) > 0 && $arguments[0] instanceof Router)
+		else if (count($arguments) > 0 && $arguments[0] instanceof Router)
 			$route = new RouterRoute($this, $path, ...$arguments);
 
-		if (count($arguments) > 0 && is_string($arguments[0]) && is_subclass_of($arguments[0], Router::class))
+		else if (count($arguments) > 0 && is_string($arguments[0]) && is_subclass_of($arguments[0], Router::class))
 			$route = new LazyRouterRoute($this, $path, ...$arguments);
 
-		if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
+		else if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
 			$route = new RouterRoute($this, $path, $arguments[0]->getRouter());
+
+		else if (count($arguments) > 0 && $arguments[0] instanceof Closure)
+			$route = new ClosureRoute($this, $path, ...$arguments);
 
 		if ($route === null && isset($arguments[0]) && is_array($arguments[0]) && is_string($arguments[0][1]))
 			throw new RouterException(sprintf("Could not find implementation '%s' for route '%s' in '%s'!", $arguments[0][1], $path, $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
 		else if ($route === null)
-			throw new RouterException(sprintf("Could not determine route implementation in '%s'!", $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
+			throw new RouterException(sprintf("Could not determine route implementation for '%s' in '%s'!", $path, $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
 
 		$this->add($route);
 
