@@ -109,8 +109,6 @@ abstract class AbstractRoute
 
 			$statusCode = $this->getContext()->getRedirectCode();
 
-			pre_die($this);
-
 			http_response_code($statusCode);
 			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $statusCode . ' ' . ResponseCode::getMessage($statusCode));
 			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
