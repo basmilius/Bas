@@ -10,7 +10,6 @@
 
 declare(strict_types=1);
 
-use Columba\Router\Response\HtmlResponse;
 use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
@@ -52,7 +51,7 @@ class MyRouter extends Router
 		return 'Route: /user/' . $userId;
 	}
 
-	public final function onGetUserInvoice(RouteContext $context, int $userId, string $invoiceNo, string $format): string
+	public final function onGetUserInvoice(int $userId, string $invoiceNo, string $format): string
 	{
 		return sprintf("Show invoice '%s' as '%s' for user %d.", $invoiceNo, $format, $userId);
 	}

@@ -88,7 +88,7 @@ final class RouteParam
 				return null;
 		}
 
-		return '((?:(/|.))(?P<' . $this->name . '>' . $regex . '))' . ($this->defaultValue !== null ? '?' : '');
+		return '((?:/|.)(?P<' . $this->name . '>' . $regex . '))' . ($this->defaultValue !== null ? '?' : '');
 	}
 
 	/**
