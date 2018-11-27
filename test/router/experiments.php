@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-use Columba\Router\RouteContext;
+use Columba\Router\Response\HtmlResponse;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 
@@ -23,16 +23,16 @@ class MyRouter extends Router
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(new HtmlResponse());
 
 		$this->get('/', [$this, 'onGetIndex']);
 		$this->get('/(profile|user)/$userId', [$this, 'onGetUser']);
 		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?P<format>pdf|html)', [$this, 'onGetUserInvoice']);
 		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
 
-		$this->get('/anonymous', function (RouteContext $context): string
+		$this->get('/anonymous', function (): void
 		{
-			return 'This is a ClosureRoute on ' . $context->getFullPath();
+			echo 'Hello world!';
 		});
 	}
 
@@ -61,9 +61,7 @@ class MyRouter extends Router
 try
 {
 	$router = new MyRouter();
-	$result = $router->execute('/profile/1/invoices/20183481.html', 'GET');
-
-	print_r($result);
+	$router->executeAndRespond('/anonymous', 'GET');
 }
 catch (RouterException $err)
 {

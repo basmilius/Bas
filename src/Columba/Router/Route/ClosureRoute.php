@@ -70,7 +70,7 @@ final class ClosureRoute extends AbstractRoute
 
 		$result = $this->getReflection()->invoke(...$arguments);
 
-		if ($respond)
+		if ($respond && (!$this->getReflection()->hasReturnType() || $this->getReflection()->getReturnType()->getName() !== 'void'))
 			$this->respond($result);
 
 		return $result;

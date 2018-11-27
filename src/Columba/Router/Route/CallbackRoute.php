@@ -79,7 +79,7 @@ final class CallbackRoute extends AbstractRoute
 
 		$result = $this->getReflection()->invoke($this->callback[0], ...$arguments);
 
-		if ($respond)
+		if ($respond && (!$this->getReflection()->hasReturnType() || $this->getReflection()->getReturnType()->getName() !== 'void'))
 			$this->respond($result);
 
 		return $result;
