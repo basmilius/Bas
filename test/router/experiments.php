@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Router\Response\HtmlResponse;
+use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 
@@ -27,12 +28,12 @@ class MyRouter extends Router
 
 		$this->get('/', [$this, 'onGetIndex']);
 		$this->get('/(profile|user)/$userId', [$this, 'onGetUser']);
-		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?P<format>pdf|html)', [$this, 'onGetUserInvoice']);
+		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?<format>pdf|html)', [$this, 'onGetUserInvoice']);
 		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
 
-		$this->get('/anonymous', function (): void
+		$this->get('/anonymous', function (RouteContext $context): void
 		{
-			echo 'Hello world!';
+			print_r($context);
 		});
 	}
 
@@ -46,24 +47,30 @@ class MyRouter extends Router
 		return 'Route: /download/invoice.' . $format;
 	}
 
-	public final function onGetUser(int $userId): string
+	public final function onGetUser(int $userId = 10): string
 	{
 		return 'Route: /user/' . $userId;
 	}
 
-	public final function onGetUserInvoice(int $userId, string $invoiceNo, string $format): string
+	public final function onGetUserInvoice(string $invoiceNo, string $format, int $userId = 10): string
 	{
 		return sprintf("Show invoice '%s' as '%s' for user %d.", $invoiceNo, $format, $userId);
 	}
 
 }
 
+$s = microtime(true);
+
 try
 {
 	$router = new MyRouter();
-	$router->executeAndRespond('/anonymous', 'GET');
+	$router->executeAndRespond('/profile/invoices/20181122.pdf', 'GET');
 }
 catch (RouterException $err)
 {
 	print_r($err);
 }
+
+echo PHP_EOL;
+echo PHP_EOL;
+echo sprintf('Executed in %gs', (microtime(true) - $s));

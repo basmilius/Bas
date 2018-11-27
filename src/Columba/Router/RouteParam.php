@@ -77,18 +77,23 @@ final class RouteParam
 				break;
 
 			case 'int':
-				$regex = '([0-9]+)';
+				$regex = '[0-9]+';
 				break;
 
 			case 'string':
-				$regex = '([a-zA-Z0-9-_.@=,]+)';
+				$regex = '[a-zA-Z0-9-_.@=,]+';
 				break;
 
 			default:
 				return null;
 		}
 
-		return '((?:/|.)(?P<' . $this->name . '>' . $regex . '))' . ($this->defaultValue !== null ? '?' : '');
+		$regex = '(?<' . $this->name . '>' . $regex . ')';
+
+		if ($this->defaultValue !== null)
+			return '[/.]?' . $regex . '?';
+
+		return '[/.]' . $regex;
 	}
 
 	/**
