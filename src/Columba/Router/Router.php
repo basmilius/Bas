@@ -509,9 +509,9 @@ class Router
 		if ($err instanceof RouterException)
 			throw $err;
 		else if ($context !== null && $context->getCallback() !== null)
-			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getPath()), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
+			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 		else if ($context !== null)
-			throw new RouterException(sprintf("Exception thrown while executing '%s'.", $context->getPath()), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
+			throw new RouterException(sprintf("Exception thrown while executing '%s'.", $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 		else
 			throw new RouterException('Route handler threw an exception!', RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 	}
