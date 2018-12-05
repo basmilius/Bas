@@ -91,9 +91,9 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current(): int
+	public final function current()
 	{
-		return $this->position;
+		return $this->values[$this->position];
 	}
 
 	/**
