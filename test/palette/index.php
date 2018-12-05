@@ -13,19 +13,9 @@ declare(strict_types=1);
 use Columba\Image\Image;
 use Columba\Palette\Palette;
 
-require_once __DIR__ . '/../../src/Columba/Color/Color.php';
-require_once __DIR__ . '/../../src/Columba/Color/ColorUtil.php';
-require_once __DIR__ . '/../../src/Columba/Image/Image.php';
-require_once __DIR__ . '/../../src/Columba/Palette/ColorCutQuantizer.php';
-require_once __DIR__ . '/../../src/Columba/Palette/ColorHistogram.php';
-require_once __DIR__ . '/../../src/Columba/Palette/Palette.php';
-require_once __DIR__ . '/../../src/Columba/Palette/Swatch.php';
-require_once __DIR__ . '/../../src/Columba/Palette/Vbox.php';
-require_once __DIR__ . '/../../src/Columba/Util/MathUtil.php';
+require_once __DIR__ . '/../bootstrap-test.php';
 
-//header('Content-Type: text/plain; charset=UTF-8');
-
-$image = '8.jpg';
+$image = '7.jpg';
 
 try
 {

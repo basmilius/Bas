@@ -15,6 +15,7 @@ namespace Columba;
 use ArrayAccess;
 use Columba\Util\ArrayUtil;
 use Countable;
+use InvalidArgumentException;
 use Iterator;
 use JsonSerializable;
 
@@ -29,19 +30,24 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 {
 
 	/**
-	 * @var int
-	 */
-	private $current;
-
-	/**
-	 * @var array
-	 */
-	private $data;
-
-	/**
 	 * @var Preferences|null
 	 */
 	private $parent;
+
+	/**
+	 * @var int
+	 */
+	private $position;
+
+	/**
+	 * @var string[]
+	 */
+	private $keys;
+
+	/**
+	 * @var mixed[]
+	 */
+	private $values;
 
 	/**
 	 * Preferences constructor.
@@ -54,9 +60,11 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	private function __construct(array $data, ?Preferences $parent = null)
 	{
-		$this->current = 0;
-		$this->data = $data;
 		$this->parent = $parent;
+		$this->position = 0;
+
+		$this->keys = array_keys($data);
+		$this->values = array_values($data);
 
 		$this->loop();
 	}
@@ -69,12 +77,12 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	private final function loop(): void
 	{
-		foreach ($this->data as $key => $value)
+		foreach ($this->keys as $index => $key)
 		{
-			if (!is_array($value) || ArrayUtil::isSequentialArray($value)) // Skip non-array values or sequential arrays.
+			if (!is_array($this->values[$index]) || ArrayUtil::isSequentialArray($this->values[$index]))
 				continue;
 
-			$this->data[$key] = new self($value, $this);
+			$this->values[$index] = new self($this->values[$index], $this);
 		}
 	}
 
@@ -83,9 +91,9 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current()
+	public final function current(): int
 	{
-		return $this->data[array_keys($this->data)[$this->current]];
+		return $this->position;
 	}
 
 	/**
@@ -95,7 +103,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function next(): void
 	{
-		$this->current++;
+		$this->position++;
 	}
 
 	/**
@@ -103,9 +111,9 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function key()
+	public final function key(): string
 	{
-		return array_keys($this->data)[$this->current];
+		return $this->keys[$this->position];
 	}
 
 	/**
@@ -115,7 +123,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function valid(): bool
 	{
-		return isset(array_keys($this->data)[$this->current]);
+		return isset($this->keys[$this->position]);
 	}
 
 	/**
@@ -123,8 +131,9 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function rewind()
+	public final function rewind(): void
 	{
+		$this->position = 0;
 	}
 
 	/**
@@ -134,7 +143,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function offsetExists($offset): bool
 	{
-		return $offset === -1 || isset($this->data[$offset]);
+		return in_array($offset, $this->keys);
 	}
 
 	/**
@@ -147,7 +156,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 		if ($offset === -1)
 			return $this->parent;
 
-		return $this->data[$offset];
+		return $this->values[$this->findIndex($this->keys, $offset)];
 	}
 
 	/**
@@ -157,10 +166,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function offsetSet($offset, $value): void
 	{
-		if ($offset === -1)
-			throw new \BadMethodCallException('Cannot set parent of Preferences instance.');
-
-		$this->data[$offset] = $value;
+		$this->values[$this->findIndex($this->keys, $offset)] = $value;
 		$this->loop();
 	}
 
@@ -171,10 +177,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function offsetUnset($offset): void
 	{
-		if ($offset === -1)
-			throw new \BadMethodCallException('Cannot unset parent of Preferences instance.');
-
-		unset($this->data[$offset]);
+		unset($this->values[$this->findIndex($this->keys, $offset)]);
 	}
 
 	/**
@@ -184,7 +187,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function count(): int
 	{
-		return count($this->data);
+		return count($this->keys);
 	}
 
 	/**
@@ -194,7 +197,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function jsonSerialize(): array
 	{
-		return $this->data;
+		return array_combine($this->keys, $this->values);
 	}
 
 	/**
@@ -210,6 +213,21 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	}
 
 	/**
+	 * Finds an index in an array.
+	 *
+	 * @param array $array
+	 * @param mixed $value
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	private function findIndex(array $array, $value): int
+	{
+		return array_search($value, $array);
+	}
+
+	/**
 	 * Creates a new {@see Preferences} instance from JSON.
 	 *
 	 * @param string $fileName
@@ -220,13 +238,13 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public static function loadFromJson(string $fileName): self
 	{
-		if (!is_file($fileName) || !is_readable($fileName))
-			throw new \InvalidArgumentException('$fileName must be a readable file!');
+		if (!is_readable($fileName))
+			throw new InvalidArgumentException('$fileName must be a readable file!');
 
 		$data = json_decode(file_get_contents($fileName), true);
 
 		if ($data === null && json_last_error() !== JSON_ERROR_NONE)
-			throw new \InvalidArgumentException('$fileName must be a valid JSON file!');
+			throw new InvalidArgumentException('$fileName must be a valid JSON file!');
 
 		return new self($data);
 	}

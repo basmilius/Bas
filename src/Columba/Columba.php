@@ -22,7 +22,7 @@ namespace Columba;
 final class Columba
 {
 
-	public const VERSION = '1.2.0';
-	public const VERSION_CODE = 001002000;
+	public const VERSION = '1.4.0';
+	public const VERSION_CODE = 001004000;
 
 }

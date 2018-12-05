@@ -25,18 +25,7 @@ final class Autoloader
 	/**
 	 * @var mixed[][]
 	 */
-	private $definitions;
-
-	/**
-	 * Autoloader constructor.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function __construct()
-	{
-		$this->definitions = [];
-	}
+	private $definitions = [];
 
 	/**
 	 * Adds a directory to {@see Autoloader}.
