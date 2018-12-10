@@ -193,7 +193,7 @@ final class SSHConnection
 	 */
 	public final function sendToBrowser(string $text): void
 	{
-		echo str_pad($text, 4096 * 2, ' ') . PHP_EOL . PHP_EOL;
+		echo str_pad($text, 4096 * 2, ' '), PHP_EOL, PHP_EOL;
 
 		ob_flush();
 		flush();

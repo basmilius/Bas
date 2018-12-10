@@ -83,7 +83,7 @@ final class ExceptionHandler
 	private function handleWithoutCappuccino(Throwable $err): void
 	{
 		header('Content-Type: text-plain');
-		echo get_class($err) . ' (' . $err->getCode() . '): ' . $err->getMessage();
+		echo get_class($err), ' (', $err->getCode(), '): ', $err->getMessage();
 
 		// TODO(Bas): Enhance this? Maybe?
 	}
