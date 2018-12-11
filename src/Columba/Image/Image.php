@@ -134,6 +134,87 @@ final class Image
 	}
 
 	/**
+	 * Fixes the image from exif data.
+	 *
+	 * @param array $exif
+	 * @param bool  $copy
+	 *
+	 * @return Image
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.4.0
+	 */
+	public final function fixFromExif(array $exif, bool $copy = false): Image
+	{
+		$image = $copy ? $this->copy() : $this;
+
+		$orientation = $exif['Orientation'] ?? 1;
+
+		$flip = false;
+		$rotation = 0;
+
+		switch ($orientation)
+		{
+			case 8:
+				$rotation = 90;
+				break;
+
+			case 3:
+				$rotation = 180;
+				break;
+
+			case 6:
+				$rotation = 270;
+				break;
+
+			case 2:
+				$flip = true;
+				break;
+
+			case 7:
+				$flip = true;
+				$rotation = 90;
+				break;
+
+			case 4:
+				$flip = true;
+				$rotation = 180;
+				break;
+
+			case 5:
+				$flip = true;
+				$rotation = 270;
+				break;
+		}
+
+		if ($rotation > 0)
+			$image->rotate($rotation);
+
+		if ($flip)
+			$image->flip(IMG_FLIP_VERTICAL);
+
+		return $image;
+	}
+
+	/**
+	 * Flips the {@see Image}.
+	 *
+	 * @param int  $type
+	 * @param bool $copy
+	 *
+	 * @return Image
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.4.0
+	 */
+	public final function flip(int $type, bool $copy = false): Image
+	{
+		$image = $copy ? $this->copy() : $this;
+
+		imageflip($image->getResource(), $type);
+
+		return $image;
+	}
+
+	/**
 	 * Resizes the {@see Image}.
 	 *
 	 * @param int  $width
