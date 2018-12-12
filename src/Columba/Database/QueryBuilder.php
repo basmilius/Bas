@@ -69,6 +69,7 @@ final class QueryBuilder
 	public function __construct(?AbstractDatabaseDriver $driver)
 	{
 		$this->driver = $driver;
+		$this->parts = [];
 	}
 
 	/**
@@ -87,7 +88,9 @@ final class QueryBuilder
 	private final function add(string $clause, $data, int $indentSelf = 0, int $indent = 0, int $newLine = 0, ?string $separator = null): void
 	{
 		$this->parts[] = [$clause, $data, $indentSelf + $this->indention, $indent, $newLine, $separator];
-		$this->previousClause = $clause;
+
+		if ($clause !== '(' && $clause !== ')')
+			$this->previousClause = $clause;
 	}
 
 	/**
@@ -181,17 +184,18 @@ final class QueryBuilder
 	}
 
 	/**
-	 * Initializes the query.
+	 * Merges another {@see QueryBuilder}.
 	 *
-	 * @return QueryBuilder
+	 * @param QueryBuilder $builder
+	 * @param int          $extraIndent
+	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.4.0
 	 */
-	private final function init(): self
+	public final function merge(QueryBuilder $builder, int $extraIndent = 0): void
 	{
-		$this->parts = [];
-
-		return $this;
+		foreach ($builder->parts as [$clause, $data, $indentSelf, $indent, $newLine, $separator])
+			$this->parts[] = [$clause, $data, $indentSelf + $extraIndent, $indent + $extraIndent, $newLine, $separator];
 	}
 
 	/**
@@ -242,8 +246,6 @@ final class QueryBuilder
 	 */
 	private final function _select(string $clause, ...$fields): self
 	{
-		$this->init();
-
 		$fields = array_map(function ($field): string
 		{
 			if (is_array($field) && count($field) === 2)
@@ -399,7 +401,6 @@ final class QueryBuilder
 	 */
 	public final function custom(string $custom): self
 	{
-		$this->init();
 		$this->add($custom, '', 0, 1, 1);
 
 		return $this;
@@ -416,7 +417,6 @@ final class QueryBuilder
 	 */
 	public final function delete(string $table): self
 	{
-		$this->init();
 		$this->add('DELETE', $this->escapeField($table), 0, 1, 1);
 
 		return $this;
@@ -433,7 +433,6 @@ final class QueryBuilder
 	 */
 	public final function deleteFrom(string $table): self
 	{
-		$this->init();
 		$this->add('DELETE FROM', $this->escapeField($table), 0, 1, 1);
 
 		return $this;
@@ -442,15 +441,15 @@ final class QueryBuilder
 	/**
 	 * Adds a FROM clause.
 	 *
-	 * @param string $table
+	 * @param string ...$tables
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function from(string $table): self
+	public final function from(string ...$tables): self
 	{
-		$this->add('FROM', $this->escapeField($table), 0, 1, 1, null);
+		$this->add('FROM', $this->escapeFields($tables), 0, 1, 1, ',');
 
 		return $this;
 	}
@@ -502,7 +501,6 @@ final class QueryBuilder
 	 */
 	public final function insertIgnoreInto(string $table, string ...$fields): self
 	{
-		$this->init();
 		$this->add('INSERT IGNORE INTO', $this->escapeField($table), 0, 1, 1);
 		$this->parenthesisOpen();
 		$this->add('', $this->escapeFields($fields), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
@@ -523,7 +521,6 @@ final class QueryBuilder
 	 */
 	public final function insertInto(string $table, string ...$fields): self
 	{
-		$this->init();
 		$this->add('INSERT INTO', $this->escapeField($table), 0, 1, 1);
 		$this->parenthesisOpen();
 		$this->add('', $this->escapeFields($fields), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
@@ -671,7 +668,6 @@ final class QueryBuilder
 	 */
 	public final function optimizeTable(string ...$table): self
 	{
-		$this->init();
 		$this->add('OPTIMIZE TABLE', $this->escapeFields($table), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 
 		return $this;
@@ -870,8 +866,41 @@ final class QueryBuilder
 	 */
 	public final function truncateTable(string $table): self
 	{
-		$this->init();
 		$this->add('TRUNCATE TABLE', $this->escapeField($table), 0, 1, 1);
+
+		return $this;
+	}
+
+	/**
+	 * Adds an UNION statement.
+	 *
+	 * @param QueryBuilder $builder
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function union(QueryBuilder $builder): self
+	{
+		$this->add('UNION', '');
+		$this->merge($builder);
+
+		return $this;
+	}
+
+	/**
+	 * Adds an UNION ALL statement.
+	 *
+	 * @param QueryBuilder $builder
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function unionAll(QueryBuilder $builder): self
+	{
+		$this->add('UNION ALL', '');
+		$this->merge($builder);
 
 		return $this;
 	}
@@ -887,7 +916,6 @@ final class QueryBuilder
 	 */
 	public final function update(string $table): self
 	{
-		$this->init();
 		$this->add('UPDATE', $this->escapeField($table), 0, 1, 1);
 
 		return $this;
@@ -932,6 +960,54 @@ final class QueryBuilder
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('WHERE', $statement, 0, ($statement === '' ? 0 : 1), ($statement === '' ? 0 : 1), '');
+
+		return $this;
+	}
+
+	/**
+	 * Adds a WITH statement.
+	 *
+	 * @param string       $name
+	 * @param QueryBuilder $query
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function with(string $name, QueryBuilder $query): self
+	{
+		if ($this->previousClause !== 'WITH')
+			$this->add('WITH', "$name AS", 0, 0, -1);
+		else
+			$this->add(',', "$name AS", 0, 0);
+
+		$this->parenthesisOpen();
+		$this->merge($query, 1);
+		$this->parenthesisClose();
+
+		return $this;
+	}
+
+	/**
+	 * Adds a WITH RECURSIVE statement.
+	 *
+	 * @param string       $name
+	 * @param QueryBuilder $query
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function withRecursive(string $name, QueryBuilder $query): self
+	{
+		if ($this->previousClause !== 'WITH RECURSIVE')
+			$this->add('WITH RECURSIVE', "$name AS", 0, 0, -1);
+		else
+			$this->add(',', "$name AS", 0, 0);
+
+		$this->parenthesisOpen();
+		$this->merge($query, 1);
+		$this->parenthesisClose();
 
 		return $this;
 	}
@@ -1006,7 +1082,7 @@ final class QueryBuilder
 				$parts[] = $this->repeat($indentSelf, self::DEFAULT_INDENT) . $clause . $this->repeat($newLine, PHP_EOL);
 
 			$parts[] = $this->repeat($indent, self::DEFAULT_INDENT, ($newLine > 0 || empty($clause) || empty($data)) ? '' : ' ') . $data;
-			$query[] = implode('', $parts);
+			$query[] = implode($parts);
 		}
 
 		return implode(($this->pretty ? PHP_EOL : ' '), $query) . PHP_EOL;

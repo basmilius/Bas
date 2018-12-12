@@ -316,6 +316,42 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Creates a WITH query.
+	 *
+	 * @param string       $name
+	 * @param QueryBuilder $query
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function with(string $name, QueryBuilder $query): QueryBuilder
+	{
+		$builder = new QueryBuilder($this);
+		$builder->with($name, $query);
+
+		return $builder;
+	}
+
+	/**
+	 * Creates a WITH RECURSIVE query.
+	 *
+	 * @param string       $name
+	 * @param QueryBuilder $query
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function withRecursive(string $name, QueryBuilder $query): QueryBuilder
+	{
+		$builder = new QueryBuilder($this);
+		$builder->withRecursive($name, $query);
+
+		return $builder;
+	}
+
+	/**
 	 * Quotes a value.
 	 *
 	 * @param string $value
