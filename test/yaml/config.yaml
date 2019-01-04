@@ -1,0 +1,30 @@
+system:
+    database:
+        driver: "Columba\\Database\\MySQLDatabaseDriver"
+        username: "root"
+        password: "random password"
+        hostname: "127.0.0.1"
+        port: 3306
+    storage:
+        use-cdn: true
+        use-do-spaces: true
+        do-spaces:
+            key: "random-key"
+            id: "random-id"
+        cdn:
+            host: "cdn.mili.us"
+            username: "root"
+            password: "cdn-password random"
+uploaders:
+    variants:
+        48:
+            height: 48
+            width: 48
+            is-cropped: true
+            is-thumbnail: true
+
+        96:
+            height: 96
+            width: 96
+            is-cropped: true
+            is-thumbnail: true
