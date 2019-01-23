@@ -416,6 +416,20 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Gets an attribute.
+	 *
+	 * @param int $attribute
+	 *
+	 * @return mixed
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function getAttribute(int $attribute)
+	{
+		return $this->pdo->getAttribute($attribute);
+	}
+
+	/**
 	 * Gets the last insert ID.
 	 *
 	 * @param string|null $name
