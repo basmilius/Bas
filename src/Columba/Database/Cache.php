@@ -9,8 +9,8 @@ use Columba\Database\Dao\Model;
  * Class Cache
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Database
  * @since 1.4.0
+ * @package Columba\Database
  */
 final class Cache
 {
@@ -21,7 +21,7 @@ final class Cache
 	private static $cache = [];
 
 	/**
-	 * Gets a cached model.
+	 * Gets a cached result.
 	 *
 	 * @param int    $id
 	 * @param string $modelClass
@@ -36,7 +36,27 @@ final class Cache
 	}
 
 	/**
-	 * Returns true if a model is cached.
+	 * Returns all cached results matching ids.
+	 *
+	 * @param array  $ids
+	 * @param string $modelClass
+	 *
+	 * @return Model[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function getAll(array $ids, string $modelClass): array
+	{
+		$results = [];
+
+		foreach ($ids as $id)
+			$results[] = self::get($id, $modelClass);
+
+		return $results;
+	}
+
+	/**
+	 * Returns TRUE if a model is cached.
 	 *
 	 * @param int    $id
 	 * @param string $modelClass
@@ -48,6 +68,25 @@ final class Cache
 	public static function has(int $id, string $modelClass): bool
 	{
 		return isset(self::$cache[$modelClass][$id]);
+	}
+
+	/**
+	 * Returns TRUE if all results are cached.
+	 *
+	 * @param array  $ids
+	 * @param string $modelClass
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function hasAll(array $ids, string $modelClass): bool
+	{
+		foreach ($ids as $id)
+			if (!self::has($id, $modelClass))
+				return false;
+
+		return true;
 	}
 
 	/**

@@ -14,8 +14,8 @@ use Columba\Util\StringUtil;
  * Class Model
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Database\Dao
  * @since 1.4.0
+ * @package Columba\Database\Dao
  */
 abstract class Model extends AbstractModel
 {
@@ -31,6 +31,11 @@ abstract class Model extends AbstractModel
 	protected static $mappings = [];
 
 	/**
+	 * @var string|null
+	 */
+	protected static $table = null;
+
+	/**
 	 * @var string[]
 	 */
 	private static $tables = [];
@@ -40,12 +45,37 @@ abstract class Model extends AbstractModel
 	 *
 	 * @param array $data
 	 *
-	 * @since 1.4.0
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
 	 */
 	public function __construct(array $data)
 	{
 		parent::__construct($data);
+	}
+
+	/**
+	 * Resolves a mapping.
+	 *
+	 * @param string       $field
+	 * @param int          $id
+	 * @param Model|string $modelClass
+	 * @param array|null   $data
+	 *
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	private function resolveMapping(string $field, int $id, string $modelClass, array &$data = null): void
+	{
+		if (!class_exists($modelClass))
+			throw new DatabaseException(sprintf('Could not find model %s', $modelClass ?? 'NULL'), DatabaseException::ERR_FIELD_NOT_FOUND);
+
+		$fieldName = $field;
+
+		if (StringUtil::endsWith($field, '_id'))
+			$fieldName = substr($field, 0, -3);
+
+		$data[$fieldName] = $modelClass::get($id);
 	}
 
 	/**
@@ -56,17 +86,7 @@ abstract class Model extends AbstractModel
 	protected function transformData(array &$data): void
 	{
 		foreach (static::$mappings as $field => $modelClass)
-		{
-			if (!class_exists($modelClass))
-				throw new DatabaseException(sprintf('Could not find model %s', $modelClass ?? 'NULL'), DatabaseException::ERR_FIELD_NOT_FOUND);
-
-			$fieldName = $field;
-
-			if (StringUtil::endsWith($field, '_id'))
-				$fieldName = substr($field, 0, -3);
-
-			$data[$fieldName] = $modelClass::get($data[$field] ?? 0);
-		}
+			$this->resolveMapping($field, $data[$field] ?? 0, $modelClass, $data);
 
 		parent::transformData($data);
 	}
@@ -98,7 +118,7 @@ abstract class Model extends AbstractModel
 	 * @return Model|null
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since
+	 * @since 1.4.0
 	 */
 	public static function get(int $id): ?self
 	{
@@ -108,6 +128,26 @@ abstract class Model extends AbstractModel
 		return self::where('id', '=', $id)
 			->execute()
 			->model();
+	}
+
+	/**
+	 * Gets multiple results by id.
+	 *
+	 * @param int ...$ids
+	 *
+	 * @return Model[]
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function find(int ...$ids): array
+	{
+		if (Cache::hasAll($ids, get_called_class()))
+			return Cache::getAll($ids, get_called_class());
+
+		return self::where('id', 'IN(' . implode(',', $ids) . ')')
+			->execute()
+			->models();
 	}
 
 	/**
@@ -121,14 +161,14 @@ abstract class Model extends AbstractModel
 	 * @return array
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since
+	 * @since 1.4.0
 	 */
 	public static function paginate(int $offset = 0, int $limit = 0, ?Pagination &$pagination = null, ?callable $conditions = null): array
 	{
-		$queryBuilder = static::$db
-			->selectFoundRows(static::table() . '.*')
+		$queryBuilder = self::$db
+			->selectFoundRows(self::table() . '.*')
 			->withModel(get_called_class())
-			->from(static::table());
+			->from(self::table());
 
 		if ($conditions !== null)
 			$conditions($queryBuilder);
@@ -151,10 +191,44 @@ abstract class Model extends AbstractModel
 	 */
 	public static function select(): QueryBuilder
 	{
-		return static::$db
+		return self::$db
 			->select(self::table() . '.*')
 			->withModel(get_called_class())
 			->from(self::table());
+	}
+
+	/**
+	 * Updates a result.
+	 *
+	 * @param int   $id
+	 * @param array $fieldsAndValues
+	 *
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function update(int $id, array $fieldsAndValues): void
+	{
+		$model = Cache::get($id, get_called_class());
+		$queryBuilder = self::$db
+			->update(self::table());
+
+		foreach ($fieldsAndValues as $field => $value)
+		{
+			$realValue = is_array($value) ? $value[0] : $value;
+
+			if ($model !== null)
+				if (isset(static::$mappings[$field]))
+					$model->resolveMapping($field, $realValue, static::$mappings[$field], $model->data);
+				else
+					$model[$field] = $realValue;
+
+			$queryBuilder->set($field, $value);
+		}
+
+		$queryBuilder
+			->where('id', '=', $id)
+			->execute();
 	}
 
 	/**
@@ -197,7 +271,7 @@ abstract class Model extends AbstractModel
 	public static function table(): string
 	{
 		if (!isset(self::$tables[get_called_class()]))
-			self::$tables[get_called_class()] = StringUtil::toSnakeCase(get_called_class());
+			self::$tables[get_called_class()] = static::$table ?? StringUtil::toSnakeCase(get_called_class());
 
 		return self::$tables[get_called_class()];
 	}

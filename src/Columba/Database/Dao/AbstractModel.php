@@ -11,8 +11,8 @@ use JsonSerializable;
  * Class AbstractModel
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Database\Dao
  * @since 1.4.0
+ * @package Columba\Database\Dao
  */
 abstract class AbstractModel implements ArrayAccess, JsonSerializable
 {
@@ -20,7 +20,7 @@ abstract class AbstractModel implements ArrayAccess, JsonSerializable
 	/**
 	 * @var array
 	 */
-	private $data;
+	protected $data;
 
 	/**
 	 * @var bool
@@ -232,6 +232,16 @@ abstract class AbstractModel implements ArrayAccess, JsonSerializable
 	public function jsonSerialize(): array
 	{
 		return $this->forPublicData($this->data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function __debugInfo(): array
+	{
+		return $this->data;
 	}
 
 }

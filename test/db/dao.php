@@ -34,4 +34,6 @@ $driver = new MySQLDatabaseDriver('dev_latte', '127.0.0.1', 3306, 'dev', '');
 
 Model::init($driver);
 
-pre_die(json_encode(User::get(1), JSON_PRETTY_PRINT));
+$user = User::get(1);
+
+pre($user);
