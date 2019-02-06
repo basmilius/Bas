@@ -16,9 +16,15 @@ require_once __DIR__ . '/../src/Columba/Autoloader.php';
 
 function pre(...$data)
 {
-	echo '<pre>';
+	$shouldEcho = !in_array('Content-type: text/plain;charset=UTF-8', headers_list());
+
+	if ($shouldEcho)
+		echo '<pre>';
+
 	print_r($data);
-	echo '</pre>';
+
+	if ($shouldEcho)
+		echo '</pre>';
 }
 
 function pre_die(...$data)
