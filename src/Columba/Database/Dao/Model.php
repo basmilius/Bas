@@ -13,9 +13,9 @@ use Columba\Util\StringUtil;
 /**
  * Class Model
  *
+ * @package Columba\Database\Dao
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
- * @package Columba\Database\Dao
  */
 abstract class Model extends AbstractModel
 {

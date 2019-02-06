@@ -15,8 +15,8 @@ namespace Columba\Request\Validate;
 /**
  * Class RequestValidatorOption
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Request\Validate
+ * @author Bas Milius <bas@mili.us>
  * @since 1.2.0
  */
 final class RequestValidatorOption

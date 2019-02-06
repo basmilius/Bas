@@ -19,8 +19,8 @@ use Iterator;
 /**
  * Class TokenList
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Database\Lexer
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class TokenList implements ArrayAccess, Countable, Iterator

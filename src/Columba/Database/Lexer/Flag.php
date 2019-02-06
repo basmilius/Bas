@@ -15,8 +15,8 @@ namespace Columba\Database\Lexer;
 /**
  * Class Flag
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Database\Lexer
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class Flag

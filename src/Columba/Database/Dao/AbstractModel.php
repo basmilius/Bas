@@ -10,9 +10,9 @@ use JsonSerializable;
 /**
  * Class AbstractModel
  *
+ * @package Columba\Database\Dao
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
- * @package Columba\Database\Dao
  */
 abstract class AbstractModel implements ArrayAccess, JsonSerializable
 {

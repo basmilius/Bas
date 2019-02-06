@@ -18,8 +18,8 @@ use ErrorException;
 /**
  * Class RequestValidatorResult
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Request\Validate
+ * @author Bas Milius <bas@mili.us>
  * @since 1.2.0
  */
 final class RequestValidatorResult implements ArrayAccess

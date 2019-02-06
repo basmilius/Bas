@@ -24,8 +24,8 @@ use Columba\Router\Router;
 /**
  * Class OAuth2Middleware
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Router\Middleware
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 abstract class OAuth2Middleware extends AbstractMiddleware
