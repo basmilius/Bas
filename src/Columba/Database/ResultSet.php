@@ -24,8 +24,8 @@ use PDOStatement;
 /**
  * Class ResultSet
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Database
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class ResultSet implements ArrayAccess, Countable, Iterator

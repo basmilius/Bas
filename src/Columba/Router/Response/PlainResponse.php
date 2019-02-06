@@ -17,8 +17,8 @@ use Columba\Router\RouterException;
 /**
  * Class PlainResponse
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Response
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class PlainResponse extends AbstractResponse

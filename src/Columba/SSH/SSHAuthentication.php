@@ -15,8 +15,8 @@ namespace Columba\SSH;
 /**
  * Class SSHAuthentication
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\SSH
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 abstract class SSHAuthentication

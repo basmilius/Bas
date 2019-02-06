@@ -15,8 +15,8 @@ namespace Columba\Router\Response;
 /**
  * Class SerializeResponse
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Response
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class SerializeResponse extends AbstractResponse

@@ -19,8 +19,8 @@ use Columba\Database\DatabaseException;
 /**
  * Class MathUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
 final class MathUtil
@@ -51,8 +51,8 @@ final class MathUtil
 	 *
 	 * @return string|null
 	 * @throws DatabaseException
-	 * @since 1.4.0
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
 	 */
 	public static function generateUniqueId(AbstractDatabaseDriver $db, int $seed, int $id): ?string
 	{

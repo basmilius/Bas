@@ -18,8 +18,8 @@ use InvalidArgumentException;
 /**
  * Class ColorUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Color
+ * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
 final class ColorUtil

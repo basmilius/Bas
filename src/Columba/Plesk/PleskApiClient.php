@@ -19,8 +19,8 @@ use SimpleXMLElement;
 /**
  * Class PleskApiClient
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Plesk
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class PleskApiClient

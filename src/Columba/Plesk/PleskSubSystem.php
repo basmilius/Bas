@@ -15,8 +15,8 @@ namespace Columba\Plesk;
 /**
  * Class PleskSubSystem
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Plesk
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 abstract class PleskSubSystem

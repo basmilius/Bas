@@ -17,8 +17,8 @@ use PDO;
 /**
  * Class DatabaseDriver
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Database
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 abstract class DatabaseDriver extends AbstractDatabaseDriver

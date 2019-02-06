@@ -18,8 +18,8 @@ use Columba\OAuth2\OAuth2;
 /**
  * Interface IScopeFactory
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Scope
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 interface IScopeFactory

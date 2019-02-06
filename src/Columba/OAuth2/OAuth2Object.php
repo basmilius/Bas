@@ -18,8 +18,8 @@ use JsonSerializable;
 /**
  * Class OAuth2Object
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2
+ * @author Bas Milius <bas@mili.us>
  * @since
  */
 class OAuth2Object implements ArrayAccess, JsonSerializable

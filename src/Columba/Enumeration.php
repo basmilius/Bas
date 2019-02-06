@@ -19,8 +19,8 @@ use UnexpectedValueException;
 /**
  * Class Enumeration
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 abstract class Enumeration implements JsonSerializable

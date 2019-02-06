@@ -18,8 +18,8 @@ use Columba\OAuth2\OAuth2Object;
 /**
  * Class Token
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Token
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class Token extends OAuth2Object

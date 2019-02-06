@@ -13,8 +13,8 @@ use ReflectionFunction;
 /**
  * Class ClosureRoute
  *
- * @author Bas Milius <bas@ideemedia.nl>
  * @package Columba\Router\Route
+ * @author Bas Milius <bas@ideemedia.nl>
  * @since 1.3.1
  */
 final class ClosureRoute extends AbstractRoute

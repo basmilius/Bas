@@ -18,8 +18,8 @@ use JsonSerializable;
 /**
  * Class OAuth2Exception
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Exception
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 abstract class OAuth2Exception extends Exception implements JsonSerializable

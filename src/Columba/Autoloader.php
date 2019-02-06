@@ -15,8 +15,8 @@ namespace Columba;
 /**
  * Class Autoloader
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class Autoloader

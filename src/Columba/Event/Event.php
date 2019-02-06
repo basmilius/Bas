@@ -15,8 +15,8 @@ namespace Columba\Event;
 /**
  * Class Event
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Event
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 class Event

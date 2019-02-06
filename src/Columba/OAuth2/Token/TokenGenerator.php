@@ -17,8 +17,8 @@ use Exception;
 /**
  * Class TokenGenerator
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\Token
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class TokenGenerator

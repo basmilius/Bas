@@ -9,8 +9,8 @@ use Columba\Router\Router;
 /**
  * Class RedirectRoute
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Route
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.1
  */
 final class RedirectRoute extends AbstractRoute

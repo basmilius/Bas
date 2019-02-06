@@ -24,8 +24,8 @@ use Exception;
 /**
  * Class AbstractRoute
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Route
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 abstract class AbstractRoute
@@ -125,8 +125,8 @@ abstract class AbstractRoute
 	 *
 	 * @param bool $respond
 	 *
-	 * @throws RouterException
 	 * @return mixed
+	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */

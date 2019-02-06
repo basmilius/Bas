@@ -23,8 +23,8 @@ use Cappuccino\Loader\LoaderInterface;
 /**
  * Class CappuccinoRenderer
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Renderer
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class CappuccinoRenderer extends AbstractRenderer

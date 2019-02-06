@@ -6,8 +6,8 @@ namespace Columba\Util;
 /**
  * Class FileSystemUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
 final class FileSystemUtil

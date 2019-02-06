@@ -17,8 +17,8 @@ use Columba\OAuth2\Client\Client;
 /**
  * Interface IResponseType
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\ResponseType
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 interface IResponseType

@@ -15,8 +15,8 @@ namespace Columba\Util;
 /**
  * Class FormattingUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class FormattingUtil

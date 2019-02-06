@@ -21,8 +21,8 @@ use Throwable;
 /**
  * Class ExceptionHandler
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Error
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class ExceptionHandler

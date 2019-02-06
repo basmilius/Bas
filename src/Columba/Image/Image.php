@@ -17,8 +17,8 @@ use InvalidArgumentException;
 /**
  * Class Image
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Image
+ * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
 final class Image

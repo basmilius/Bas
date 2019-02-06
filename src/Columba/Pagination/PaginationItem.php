@@ -17,8 +17,8 @@ use JsonSerializable;
 /**
  * Class PaginationItem
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Pagination
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class PaginationItem implements JsonSerializable

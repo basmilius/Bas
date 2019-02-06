@@ -21,8 +21,8 @@ use Columba\OAuth2\Token\TokenGenerator;
 /**
  * Class RefreshTokenGrantType
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\GrantType
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class RefreshTokenGrantType implements IGrantType

@@ -17,8 +17,8 @@ use JsonSerializable;
 /**
  * Class Color
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Color
+ * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
 class Color implements JsonSerializable

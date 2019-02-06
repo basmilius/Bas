@@ -15,8 +15,8 @@ namespace Columba\Util;
 /**
  * Class ExecutionTime
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 3.0.0
  */
 final class ExecutionTime

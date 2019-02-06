@@ -15,8 +15,8 @@ namespace Columba\Pagination;
 /**
  * Class Pagination
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Pagination
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class Pagination

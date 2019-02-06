@@ -19,8 +19,8 @@ use Columba\Router\SubRouter;
 /**
  * Class LazyRouterRoute
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Route
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class LazyRouterRoute extends AbstractRoute

@@ -17,8 +17,8 @@ use Columba\OAuth2\Exception\OAuth2Exception;
 /**
  * Interface IGrantType
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\GrantType
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 interface IGrantType

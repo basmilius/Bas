@@ -15,8 +15,8 @@ namespace Columba\Palette;
 /**
  * Class ColorHistogram
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Palette
+ * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
 final class ColorHistogram

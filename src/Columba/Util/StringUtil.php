@@ -6,8 +6,8 @@ namespace Columba\Util;
 /**
  * Class StringUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
 final class StringUtil

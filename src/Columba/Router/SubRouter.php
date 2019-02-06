@@ -18,8 +18,8 @@ use Columba\Router\Response\AbstractResponse;
 /**
  * Class SubRouter
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class SubRouter extends Router

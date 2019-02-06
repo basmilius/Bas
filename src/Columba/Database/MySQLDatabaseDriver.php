@@ -15,8 +15,8 @@ namespace Columba\Database;
 /**
  * Class MySQLDatabaseDriver
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Database
+ * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
 final class MySQLDatabaseDriver extends DatabaseDriver

@@ -17,8 +17,8 @@ use Columba\Router\RouterException;
 /**
  * Class HtmlResponse
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Router\Response
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class HtmlResponse extends AbstractResponse

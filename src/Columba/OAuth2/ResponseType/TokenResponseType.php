@@ -20,8 +20,8 @@ use Columba\OAuth2\Token\TokenGenerator;
 /**
  * Class TokenResponseType
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2\ResponseType
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class TokenResponseType implements IResponseType

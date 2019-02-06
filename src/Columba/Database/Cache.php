@@ -8,9 +8,9 @@ use Columba\Database\Dao\Model;
 /**
  * Class Cache
  *
+ * @package Columba\Database
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
- * @package Columba\Database
  */
 final class Cache
 {

@@ -17,8 +17,8 @@ use Exception;
 /**
  * Class HttpException
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Http
+ * @author Bas Milius <bas@mili.us>
  * @since 1.2.0
  */
 final class HttpException extends Exception

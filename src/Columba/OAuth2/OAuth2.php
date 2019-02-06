@@ -35,8 +35,8 @@ use Exception;
 /**
  * Class OAuth2
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\OAuth2
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 class OAuth2

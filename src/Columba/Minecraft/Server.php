@@ -17,8 +17,8 @@ use LogicException;
 /**
  * Class Server
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Minecraft
+ * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
 final class Server

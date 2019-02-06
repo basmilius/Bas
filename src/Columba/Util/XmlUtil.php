@@ -18,8 +18,8 @@ use SimpleXMLElement;
 /**
  * Class XmlUtil
  *
- * @author Bas Milius <bas@mili.us>
  * @package Columba\Util
+ * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
 final class XmlUtil
