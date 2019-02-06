@@ -25,6 +25,7 @@ use PDOException;
 class DatabaseException extends Exception
 {
 
+	public const ERR_CONNECTION_FAILED = 0xDBA003;
 	public const ERR_CLASS_NOT_FOUND = 0xDBA019;
 	public const ERR_FIELD_NOT_FOUND = 0xDBA021;
 	public const ERR_MODEL_NOT_FOUND = 0xDBA030;

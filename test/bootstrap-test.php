@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Autoloader;
+use Columba\Error\ExceptionHandler;
 
 require_once __DIR__ . '/../src/Columba/Autoloader.php';
 
@@ -36,3 +37,5 @@ function pre_die(...$data)
 $autoloader = new Autoloader();
 $autoloader->addDirectory(__DIR__ . '/../src', 'Columba\\');
 $autoloader->register();
+
+ExceptionHandler::register();

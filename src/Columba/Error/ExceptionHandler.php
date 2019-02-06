@@ -12,10 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use Cappuccino\Cappuccino;
-use Cappuccino\Loader\ArrayLoader;
+use Columba\Http\ResponseCode;
 use Columba\Util\ExceptionUtil;
-use Exception;
 use Throwable;
 
 /**
@@ -23,9 +21,9 @@ use Throwable;
  *
  * @package Columba\Error
  * @author Bas Milius <bas@mili.us>
- * @since 1.0.0
+ * @since 1.4.0
  */
-final class ExceptionHandler
+class ExceptionHandler
 {
 
 	/**
@@ -34,101 +32,49 @@ final class ExceptionHandler
 	 * @param Throwable $err
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.4.0
 	 * @internal
 	 */
-	public final function onException(Throwable $err): void
+	public function onException(Throwable $err): void
 	{
-		if (!$this->isCappuccinoAvailable())
-			$this->handleWithoutCappuccino($err);
-		else
-			$this->handleWithCappuccino($err);
-	}
-
-	/**
-	 * Handles the exception with Cappuccino.
-	 *
-	 * @param Throwable $err
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function handleWithCappuccino(Throwable $err): void
-	{
-		try
+		if (!headers_sent())
 		{
-			$cappuccino = new Cappuccino(new ArrayLoader());
-			$template = $cappuccino->createTemplate($this->getCappuccinoTemplate());
-
-			$exceptions = ExceptionUtil::exceptionToExceptions($err);
-
-			print_r($exceptions);
-
-			die($template->render([]));
+			http_response_code(ResponseCode::INTERNAL_SERVER_ERROR);
+			header('Content-Type: text/html');
 		}
-		catch (Exception $weFailed)
+
+		echo '<pre>';
+		echo '<strong style="color:#AA0000; font-size: 1.5rem">Uncaught error</strong>' . PHP_EOL;
+
+		$exceptions = ExceptionUtil::exceptionsToIterator($err);
+
+		foreach ($exceptions as $err)
 		{
-			die($weFailed->getMessage());
+			echo PHP_EOL;
+			echo PHP_EOL;
+			echo PHP_EOL;
+			echo PHP_EOL;
+
+			echo sprintf('<strong>%s (%s)</strong>', $err->getType(), $err->getCodeConstant()) . PHP_EOL;
+			echo $err->getMessage() . PHP_EOL;
+
+			foreach ($err->getTrace() as $trace)
+			{
+				echo PHP_EOL;
+				echo $trace->getMethod() . PHP_EOL;
+				echo sprintf('%s on line %d', $trace->getFile(), $trace->getLine());
+				echo PHP_EOL;
+			}
 		}
-	}
 
-	/**
-	 * Handles the exception without Cappuccino.
-	 *
-	 * @param Throwable $err
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function handleWithoutCappuccino(Throwable $err): void
-	{
-		header('Content-Type: text-plain');
-		echo get_class($err), ' (', $err->getCode(), '): ', $err->getMessage();
-
-		// TODO(Bas): Enhance this? Maybe?
-	}
-
-	/**
-	 * Gets our basic Cappuccino template.
-	 *
-	 * @return string
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function getCappuccinoTemplate(): string
-	{
-		return <<<CAPPUCCINO
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Error!</title>
-	<style type="text/css">
-	</style>
-</head>
-<body>
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aperiam aspernatur aut beatae commodi consectetur consequatur, cumque deserunt et expedita fugit harum minus natus necessitatibus perferendis quam quidem repellendus, reprehenderit.
-</body>
-</html>
-CAPPUCCINO;
-	}
-
-	/**
-	 * Returns TRUE if Cappuccino is available.
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function isCappuccinoAvailable(): bool
-	{
-		return class_exists('Columba\\Cappuccino\\Cappuccino');
+		echo '</pre>';
 	}
 
 	/**
 	 * Registers the exception handler.
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.4.0
 	 */
 	public static function register(): void
 	{

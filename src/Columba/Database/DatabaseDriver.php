@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use PDO;
+use PDOException;
 
 /**
  * Class DatabaseDriver
@@ -53,6 +54,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @param array  $options
 	 * @param bool   $connectAutomatically
 	 *
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -89,13 +91,20 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 */
 	public final function connect(): void
 	{
-		$pdo = new PDO($this->dsn, $this->username, $this->password, $this->options);
-		$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-		$this->pdo($pdo);
+		try
+		{
+			$pdo = new PDO($this->dsn, $this->username, $this->password, $this->options);
+			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+			$this->pdo($pdo);
 
-		$this->query('SET NAMES utf8')->execute();
+			$this->query('SET NAMES utf8')->execute();
+		}
+		catch (PDOException $err)
+		{
+			throw new DatabaseException('Could not connect to database server.', DatabaseException::ERR_CONNECTION_FAILED, $err);
+		}
 	}
 
 	/**

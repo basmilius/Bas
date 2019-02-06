@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
-use Exception;
-use ReflectionClass;
-use ReflectionFunction;
-use ReflectionMethod;
+use Columba\Error\ExceptionInfo;
+use Columba\Http\ResponseCode;
+use Generator;
 use Throwable;
 
 /**
@@ -23,154 +22,45 @@ use Throwable;
  *
  * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
- * @since 1.0.0
+ * @since 1.4.0
  */
 final class ExceptionUtil
 {
 
 	/**
-	 * Converts a {@see Throwable} to an array.
+	 * Converts exceptions to an usable array.
 	 *
-	 * @param Throwable $exception
+	 * @param Throwable $err
 	 *
-	 * @return array
-	 * @throws \ReflectionException
+	 * @return Generator|ExceptionInfo[]
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.4.0
 	 */
-	public static function exceptionToArray(Throwable $exception): array
+	public static function exceptionsToIterator(Throwable $err): Generator
 	{
-		$class = get_class($exception);
-		$classReflection = new ReflectionClass($class);
+		yield new ExceptionInfo($err);
 
-		$code = $exception->getCode();
-		$codeName = 'ERR_UNKNOWN';
-		$file = $exception->getFile();
-		$line = $exception->getLine();
-		$message = $exception->getMessage();
-
-		foreach ($classReflection->getConstants() as $constant => $value)
-			if ($value === $code)
-				$codeName = $constant;
-
-		$stacktrace = array_map([ExceptionUtil::class, 'traceItemToArray'], $exception->getTrace());
-
-		return [
-			'code' => $code,
-			'code_hex' => '0x' . strtoupper(dechex($code)),
-			'code_name' => $codeName,
-			'file' => $file,
-			'line' => $line,
-			'message' => $message,
-			'stacktrace' => $stacktrace
-		];
+		while (($err = $err->getPrevious()) !== null)
+			yield new ExceptionInfo($err);
 	}
 
 	/**
-	 * Converts a {@see Throwable} to an array with the previous exceptions.
+	 * Gets the exception code from class constants.
 	 *
-	 * @param Throwable $exception
+	 * @param Throwable $err
 	 *
-	 * @return array
-	 * @throws \ReflectionException
+	 * @return string
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public static function exceptionToExceptions(Throwable $exception): array
+	public static function getExceptionCode(Throwable $err): string
 	{
-		$exceptions = [];
+		$code = '0x' . strtoupper(dechex($err->getCode()));
 
-		$current = $exception = new Exception('', 0, $exception);
+		if (!ReflectionUtil::findConstant(get_class($err), $err->getCode(), $code))
+			ReflectionUtil::findConstant(ResponseCode::class, $err->getCode(), $code);
 
-		while (($previous = $current->getPrevious()) !== null)
-			$exceptions[] = self::exceptionToArray($current = $previous);
-
-		return $exceptions;
-	}
-
-	/**
-	 * Converts a trace item to an array.
-	 *
-	 * @param array $item
-	 *
-	 * @return array
-	 * @throws \ReflectionException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public static function traceItemToArray(array $item): array
-	{
-		$callable = null;
-		$callableReflection = null;
-
-		$isFunction = isset($item['function']) && !isset($item['class']);
-		$isInternal = ($isFunction && !function_exists($item['function']));
-		$isMethod = isset($item['function'], $item['class']);
-
-		$params = null;
-
-		if ($isFunction || $isMethod)
-		{
-			$callable = $isFunction ? $item['function'] : [$item['class'], $item['function']];
-
-			if (!$isInternal)
-			{
-				$callableReflection = $isFunction ? new ReflectionFunction($callable) : new ReflectionMethod($callable[0], $callable[1]);
-
-				$params = [];
-				$parameters = $callableReflection->getParameters();
-
-				for ($i = 0; $i < $callableReflection->getNumberOfParameters(); $i++)
-				{
-					$isValueGiven = isset($item['args'][$i]);
-
-					$param = $parameters[$i];
-					$value = $item['args'][$i] ?? null;
-
-					if ($param->isDefaultValueAvailable() && !$isValueGiven)
-						$value = $param->getDefaultValue();
-
-					$type = null;
-
-					if (is_scalar($value))
-					{
-						$type = gettype($value);
-					}
-					else if (is_array($value))
-					{
-//						if (count($value) === 2 && is_callable($value))
-//						{
-//							$type = $value[0] . '::' . $value[1];
-//						}
-//						else if (count($value) === 1 && is_callable($value))
-//						{
-//							$type = $value[0];
-//						}
-//						else
-//						{
-						$type = 'array(' . count($value) . ')';
-//						}
-					}
-
-					$params[] = [
-						'name' => $param->getName(),
-						'type' => $type,
-						'value' => $value
-					];
-				}
-			}
-		}
-
-		return [
-			'callable' => $callable,
-			'callable_reflection' => $callableReflection,
-			'file' => $item['file'] ?? null,
-			'line' => $item['line'] ?? null,
-			'is_function' => $isFunction,
-			'is_internal' => $isInternal,
-			'is_method' => $isMethod,
-			'params' => $params
-		];
+		return $code;
 	}
 
 }

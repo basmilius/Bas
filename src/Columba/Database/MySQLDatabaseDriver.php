@@ -33,6 +33,7 @@ final class MySQLDatabaseDriver extends DatabaseDriver
 	 * @param array  $options
 	 * @param bool   $connectAutomatically
 	 *
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
