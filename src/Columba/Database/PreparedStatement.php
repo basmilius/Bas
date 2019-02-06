@@ -65,6 +65,19 @@ final class PreparedStatement
 	}
 
 	/**
+	 * Gets the database driver instance.
+	 *
+	 * @return AbstractDatabaseDriver
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 * @internal
+	 */
+	public final function getDriver(): AbstractDatabaseDriver
+	{
+		return $this->driver;
+	}
+
+	/**
 	 * Binds a value as a named parameter in the statement.
 	 *
 	 * @param string $param
@@ -149,16 +162,18 @@ final class PreparedStatement
 	/**
 	 * Executes the statement.
 	 *
+	 * @param string|null $modelClass
+	 *
 	 * @return ResultSet
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function execute(): ResultSet
+	public final function execute(?string $modelClass = null): ResultSet
 	{
 		$result = $this->statement->execute();
 
 		if ($result)
-			return new ResultSet($this, $this->statement);
+			return new ResultSet($this, $this->statement, $modelClass);
 
 		throw new PDOException(strval($this->statement->errorInfo()[2]), intval($this->statement->errorCode()));
 	}

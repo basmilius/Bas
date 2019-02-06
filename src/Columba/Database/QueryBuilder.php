@@ -39,6 +39,11 @@ final class QueryBuilder
 	private $indention = 0;
 
 	/**
+	 * @var string|null
+	 */
+	private $modelClass = null;
+
+	/**
 	 * @var array
 	 */
 	private $params = [];
@@ -180,7 +185,7 @@ final class QueryBuilder
 		foreach ($this->params as [$name, $value, $type])
 			$smt->bind($name, $value, $type);
 
-		return $smt->execute();
+		return $smt->execute($this->modelClass);
 	}
 
 	/**
@@ -1008,6 +1013,22 @@ final class QueryBuilder
 		$this->parenthesisOpen();
 		$this->merge($query, 1);
 		$this->parenthesisClose();
+
+		return $this;
+	}
+
+	/**
+	 * Associates a model with the query.
+	 *
+	 * @param string $modelClass
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function withModel(string $modelClass): self
+	{
+		$this->modelClass = $modelClass;
 
 		return $this;
 	}

@@ -22,11 +22,12 @@ use PDOException;
  * @package Columba\Database
  * @since 1.0.0
  */
-final class DatabaseException extends Exception
+class DatabaseException extends Exception
 {
 
 	public const ERR_CLASS_NOT_FOUND = 0xDBA019;
 	public const ERR_FIELD_NOT_FOUND = 0xDBA021;
+	public const ERR_MODEL_NOT_FOUND = 0xDBA030;
 	public const ERR_QUERY_FAILED = 0xDBA0439;
 
 	/**

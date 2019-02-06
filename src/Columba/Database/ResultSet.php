@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use ArrayAccess;
+use Columba\Database\Dao\Model;
 use Countable;
 use ErrorException;
 use Iterator;
@@ -48,6 +49,16 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	/**
 	 * @var int
 	 */
+	private $foundRows;
+
+	/**
+	 * @var string|null
+	 */
+	private $modelClass;
+
+	/**
+	 * @var int
+	 */
 	private $position;
 
 	/**
@@ -60,16 +71,20 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 *
 	 * @param PreparedStatement $statement
 	 * @param PDOStatement      $pdoStatement
+	 * @param string|null       $modelClass
 	 *
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct(PreparedStatement $statement, PDOStatement $pdoStatement)
+	public function __construct(PreparedStatement $statement, PDOStatement $pdoStatement, ?string $modelClass)
 	{
+		$this->modelClass = $modelClass;
 		$this->pdoStatement = $pdoStatement;
 		$this->statement = $statement;
 
 		$this->affectedRows = $pdoStatement->rowCount();
+		$this->foundRows = strstr($this->pdoStatement->queryString, 'SQL_CALC_FOUND_ROWS') ? $statement->getDriver()->prepare('SELECT FOUND_ROWS() AS found_rows')->execute()[0]['found_rows'] : 0;
 		$this->position = 0;
 		$this->results = $this->pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -250,6 +265,55 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	}
 
 	/**
+	 * Converts our result into a model.
+	 *
+	 * @return Model|mixed|null
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function model(): ?Model
+	{
+		return $this->models()[0] ?? null;
+	}
+
+	/**
+	 * Converts our results into models.
+	 *
+	 * @return Model[]
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function models(): array
+	{
+		if ($this->modelClass === null || !class_exists($this->modelClass))
+			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_FIELD_NOT_FOUND);
+
+		$results = $this->toArray();
+
+		foreach ($results as &$result)
+		{
+			if (!isset($result['id']))
+				continue;
+
+			if (Cache::has($result['id'], $this->modelClass))
+			{
+				$model = Cache::get($result['id'], $this->modelClass);
+				$model->initialize($result);
+				$result = $model;
+			}
+			else
+			{
+				$result = new $this->modelClass($result);
+				Cache::set($result);
+			}
+		}
+
+		return $results;
+	}
+
+	/**
 	 * Tries to convert our results into {@see $className}.
 	 *
 	 * @param string $className
@@ -341,6 +405,18 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	public final function affectedRows(): int
 	{
 		return $this->affectedRows;
+	}
+
+	/**
+	 * Returns the amount of found rows.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function foundRows(): int
+	{
+		return $this->foundRows;
 	}
 
 	/**
