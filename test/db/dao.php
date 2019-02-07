@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Columba\Data\Collection;
 use Columba\Database\MySQLDatabaseDriver;
 use Columba\Database\Dao\Model;
 
@@ -34,6 +35,10 @@ $driver = new MySQLDatabaseDriver('dev_latte', '127.0.0.1', 3306, 'dev', '');
 
 Model::init($driver);
 
-$user = User::get(1);
+$collection = new Collection(User::all());
+$collection = $collection->map(function (User $user): string
+{
+	return $user['id'] . ' ' . $user['name'];
+});
 
-pre($user);
+print_r($collection);

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Columba\Database\Dao;
 
-use ArrayAccess;
 use Columba\Database\DatabaseException;
-use JsonSerializable;
+use Columba\Facade\IArray;
+use Columba\Facade\IJson;
 
 /**
  * Class AbstractModel
@@ -14,7 +14,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
-abstract class AbstractModel implements ArrayAccess, JsonSerializable
+abstract class AbstractModel implements IArray, IJson
 {
 
 	/**
@@ -189,6 +189,16 @@ abstract class AbstractModel implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
+	public function jsonSerialize(): array
+	{
+		return $this->forPublicData($this->data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
 	public function offsetExists($field): bool
 	{
 		return $this->hasField($field);
@@ -229,9 +239,9 @@ abstract class AbstractModel implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function jsonSerialize(): array
+	public final function toArray(): array
 	{
-		return $this->forPublicData($this->data);
+		return $this->data;
 	}
 
 	/**
@@ -242,6 +252,16 @@ abstract class AbstractModel implements ArrayAccess, JsonSerializable
 	public final function __debugInfo(): array
 	{
 		return $this->data;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public final function __toString(): string
+	{
+		return get_called_class();
 	}
 
 }

@@ -23,6 +23,35 @@ final class ArrayUtil
 {
 
 	/**
+	 * Returns the first element of an array passing the truth check.
+	 *
+	 * @param array         $array
+	 * @param callable|null $fn
+	 * @param mixed         $default
+	 *
+	 * @return mixed|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function first(array $array, callable $fn = null, $default = null)
+	{
+		if (is_null($fn))
+		{
+			if (empty($array))
+				return $default;
+
+			foreach ($array as $item)
+				return $item;
+		}
+
+		foreach ($array as $key => $value)
+			if ($fn($value, $key))
+				return $value;
+
+		return $default;
+	}
+
+	/**
 	 * Returns TRUE if {@see $arr} is an accociative array.
 	 *
 	 * @param array $arr
