@@ -134,7 +134,7 @@ abstract class Model extends AbstractModel
 		if (Cache::has($id, get_called_class()))
 			return Cache::get($id, get_called_class());
 
-		return static::where('id', '=', $id)
+		return static::where(self::table() . '.id', '=', $id)
 			->execute()
 			->model();
 	}
@@ -154,7 +154,7 @@ abstract class Model extends AbstractModel
 		if (Cache::hasAll($ids, get_called_class()))
 			return Cache::getAll($ids, get_called_class());
 
-		return static::where('id', 'IN(' . implode(',', $ids) . ')')
+		return static::where(self::table() . '.id', 'IN(' . implode(',', $ids) . ')')
 			->execute()
 			->models();
 	}
