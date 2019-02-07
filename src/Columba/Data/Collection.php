@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
+ *
+ * This file is part of the Columba package.
+ *
+ * For the full copyright and license information, please view the
+ * LICENSE file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Columba\Data;
@@ -50,7 +59,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function all(): array
+	public function all(): array
 	{
 		return $this->items;
 	}
@@ -63,12 +72,21 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function append($item): void
+	public function append($item): void
 	{
 		$this->items[] = $item;
 	}
 
-	public final function chunk(int $size): self
+	/**
+	 * Chunks the collection.
+	 *
+	 * @param int $size
+	 *
+	 * @return Collection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public function chunk(int $size): self
 	{
 		$collection = new static;
 
@@ -85,7 +103,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function collapse(): self
+	public function collapse(): self
 	{
 		$result = [];
 
@@ -112,7 +130,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function contains($value): bool
+	public function contains($value): bool
 	{
 		if ($value instanceof Closure)
 			return !is_null($this->first($value));
@@ -129,7 +147,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function diff($items): self
+	public function diff($items): self
 	{
 		return new static(array_diff($this->items, $this->ensureArray($items)));
 	}
@@ -143,7 +161,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function each(callable $fn): self
+	public function each(callable $fn): self
 	{
 		array_map($fn, $this->all());
 
@@ -159,7 +177,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function filter(callable $fn): self
+	public function filter(callable $fn): self
 	{
 		return new static(array_filter($this->items, $fn));
 	}
@@ -174,7 +192,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function first(?callable $fn = null, $default = null)
+	public function first(?callable $fn = null, $default = null)
 	{
 		if ($fn === null)
 			return count($this) > 0 ? reset($this) : $default;
@@ -191,7 +209,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function map(callable $fn): self
+	public function map(callable $fn): self
 	{
 		return new static(array_map($fn, $this->items));
 	}
@@ -205,7 +223,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function merge($items): self
+	public function merge($items): self
 	{
 		return new static(array_merge($this->items, $this->ensureArray($items)));
 	}
@@ -217,7 +235,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function pop()
+	public function pop()
 	{
 		return array_pop($this->items);
 	}
@@ -230,7 +248,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function prepend($item): void
+	public function prepend($item): void
 	{
 		array_unshift($this->items, $item);
 	}
@@ -242,7 +260,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function reverse(): self
+	public function reverse(): self
 	{
 		return new static(array_reverse($this->items));
 	}
@@ -254,7 +272,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function shift()
+	public function shift()
 	{
 		return array_shift($this->items);
 	}
@@ -266,7 +284,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function shuffle(): self
+	public function shuffle(): self
 	{
 		shuffle($this->items);
 
@@ -283,7 +301,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function slice(int $offset, ?int $length = null): self
+	public function slice(int $offset, ?int $length = null): self
 	{
 		return new static(array_slice($this->items, $offset, $length));
 	}
@@ -297,7 +315,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function sort(callable $fn): self
+	public function sort(callable $fn): self
 	{
 		usort($this->items, $fn);
 
@@ -315,7 +333,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function splice(int $offset = 0, int $length = 0, ...$replacement): self
+	public function splice(int $offset = 0, int $length = 0, ...$replacement): self
 	{
 		return new static(array_splice($this->items, $offset, $length, $replacement));
 	}
@@ -329,7 +347,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function transform(callable $fn): self
+	public function transform(callable $fn): self
 	{
 		$this->items = array_map($fn, $this->items);
 
@@ -337,11 +355,23 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
+	 * Copies the Collection to a new instance.
+	 *
+	 * @return Collection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public function copy(): self
+	{
+		return new static($this->items);
+	}
+
+	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function count(): int
+	public function count(): int
 	{
 		return count($this->all());
 	}
@@ -351,7 +381,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function jsonSerialize(): array
+	public function jsonSerialize(): array
 	{
 		return $this->toArray();
 	}
@@ -361,7 +391,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function offsetExists($field): bool
+	public function offsetExists($field): bool
 	{
 		return isset($this->items[$field]);
 	}
@@ -371,7 +401,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function offsetGet($field)
+	public function offsetGet($field)
 	{
 		return $this->items[$field] ?? null;
 	}
@@ -381,7 +411,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function offsetSet($field, $value): void
+	public function offsetSet($field, $value): void
 	{
 		if ($field === null)
 			$this->items[] = $value;
@@ -394,7 +424,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function offsetUnset($field): void
+	public function offsetUnset($field): void
 	{
 		array_splice($this->items, $field, 1);
 	}
@@ -404,7 +434,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function toArray(): array
+	public function toArray(): array
 	{
 		return $this->all();
 	}
@@ -464,7 +494,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function __debugInfo(): array
+	public function __debugInfo(): array
 	{
 		return $this->items;
 	}

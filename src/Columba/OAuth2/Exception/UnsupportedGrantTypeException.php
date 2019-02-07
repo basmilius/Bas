@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
+ * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
  *
  * This file is part of the Columba package.
  *

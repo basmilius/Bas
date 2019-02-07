@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
+ * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
  *
  * This file is part of the Columba package.
  *
@@ -127,7 +127,7 @@ final class Palette
 	/**
 	 * Gets a list with defined swatches.
 	 *
-	 * @return array
+	 * @return Swatch[]
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
@@ -146,11 +146,25 @@ final class Palette
 		];
 	}
 
+	/**
+	 * Gets the muted swatch.
+	 *
+	 * @return Swatch|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
 	public final function getMutedSwatch(): ?Swatch
 	{
 		return $this->mutedSwatch;
 	}
 
+	/**
+	 * Gets the vibrant swatch.
+	 *
+	 * @return Swatch|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
 	public final function getVibrantSwatch(): ?Swatch
 	{
 		return $this->vibrantSwatch;

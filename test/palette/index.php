@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2018 - Bas Milius <bas@mili.us>.
+ * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
  *
  * This file is part of the Columba package.
  *
@@ -15,21 +15,19 @@ use Columba\Palette\Palette;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
-$image = '7.jpg';
-
 try
 {
 	$start = microtime(true);
-	$palette = Palette::generate(Image::fromFile(__DIR__ . '/photos/' . $image));
+	$palette = Palette::generate(Image::fromFile(__DIR__ . '/photo.jpg'));
 	$total = microtime(true) - $start;
 
 	echo '<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Palette</title>
 </head>
 <body>
-	<img height="240" src="./photos/' . $image . '" />
+	<img style="height: 200px" src="./photo.jpg" />
 	
 	<table>
 		<thead>

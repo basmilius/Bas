@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
+ *
+ * This file is part of the Columba package.
+ *
+ * For the full copyright and license information, please view the
+ * LICENSE file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Columba\Util;
@@ -48,6 +57,25 @@ final class ReflectionUtil
 		}
 
 		return false;
+	}
+
+	/**
+	 * Gets the type of a value.
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public static function getType($value): string
+	{
+		$type = gettype($value);
+
+		if ($type !== 'object')
+			return $type;
+
+		return get_class($value);
 	}
 
 }
