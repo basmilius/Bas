@@ -113,7 +113,7 @@ abstract class Model extends AbstractModel
 	 */
 	public static function all(int $offset = 0, int $limit = PHP_INT_MAX): array
 	{
-		return self::select()
+		return static::select()
 			->limit($limit, $offset)
 			->execute()
 			->models();
@@ -134,7 +134,7 @@ abstract class Model extends AbstractModel
 		if (Cache::has($id, get_called_class()))
 			return Cache::get($id, get_called_class());
 
-		return self::where('id', '=', $id)
+		return static::where('id', '=', $id)
 			->execute()
 			->model();
 	}
@@ -154,7 +154,7 @@ abstract class Model extends AbstractModel
 		if (Cache::hasAll($ids, get_called_class()))
 			return Cache::getAll($ids, get_called_class());
 
-		return self::where('id', 'IN(' . implode(',', $ids) . ')')
+		return static::where('id', 'IN(' . implode(',', $ids) . ')')
 			->execute()
 			->models();
 	}
@@ -253,7 +253,7 @@ abstract class Model extends AbstractModel
 	 */
 	public static function where(string $field, string $comparator = '', $value = ''): QueryBuilder
 	{
-		return self::select()
+		return static::select()
 			->where($field, $comparator, $value);
 	}
 
