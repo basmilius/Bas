@@ -33,7 +33,6 @@ class ExceptionHandler
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
-	 * @internal
 	 */
 	public function onException(Throwable $err): void
 	{
