@@ -25,7 +25,7 @@ use Columba\Router\Route\ClosureRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RedirectRoute;
 use Columba\Router\Route\RouterRoute;
-use Columba\Util\ExecutionTime;
+use Columba\Util\Stopwatch;
 use Exception;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -194,7 +194,7 @@ class Router
 		if (empty($path))
 			$path = '/';
 
-		ExecutionTime::start(Router::class);
+		Stopwatch::start(Router::class);
 
 		foreach ($this->routes as $route)
 		{

@@ -10,18 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Columba;
+use Columba\Util\Stopwatch;
 
-/**
- * Class Columba
- *
- * @package Columba
- * @author Bas Milius <bas@mili.us>
- * @since 1.2.0
- */
-final class Columba
-{
+require_once __DIR__ . '/../bootstrap-test.php';
 
-	public const VERSION = '1.5.0-dev';
+header('Content-Type: text/plain');
 
-}
+Stopwatch::start('a');
+Stopwatch::stop('a', $time, Stopwatch::UNIT_SECONDS);
+
+pre(number_format($time, 15, ',', '.') . ' seconds');

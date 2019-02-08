@@ -55,8 +55,8 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @param array                $options
 	 * @param LoaderInterface|null $loader
 	 *
-	 * @throws \Cappuccino\Error\LoaderError
-	 * @throws \Cappuccino\Error\RuntimeError
+	 * @throws LoaderError
+	 * @throws RuntimeError
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

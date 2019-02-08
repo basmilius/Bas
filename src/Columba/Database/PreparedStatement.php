@@ -165,8 +165,9 @@ final class PreparedStatement
 	 * @param string|null $modelClass
 	 *
 	 * @return ResultSet
-	 * @author Bas Milius <bas@mili.us>
+	 * @throws DatabaseException
 	 * @since 1.0.0
+	 * @author Bas Milius <bas@mili.us>
 	 */
 	public final function execute(?string $modelClass = null): ResultSet
 	{
