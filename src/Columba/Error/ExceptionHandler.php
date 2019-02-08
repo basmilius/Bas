@@ -78,7 +78,7 @@ class ExceptionHandler
 	 */
 	public static function register(): void
 	{
-		set_exception_handler([new self(), 'onException']);
+		set_exception_handler([new static(), 'onException']);
 	}
 
 }
