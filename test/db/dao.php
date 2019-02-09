@@ -50,4 +50,4 @@ $collection = $collection->map(function (User $user): string
 	return $user['id'] . ' ' . $user['name'];
 });
 
-pre($collection);
+pre($collection, User::get(1));

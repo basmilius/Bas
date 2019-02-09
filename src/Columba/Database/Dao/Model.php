@@ -18,6 +18,7 @@ use Columba\Database\DatabaseException;
 use Columba\Database\QueryBuilder;
 use Columba\Pagination\Pagination;
 use Columba\Util\StringUtil;
+use PDO;
 
 /**
  * Class Model
@@ -30,6 +31,11 @@ abstract class Model extends AbstractModel
 {
 
 	/**
+	 * @var string[]
+	 */
+	private static $tables = [];
+
+	/**
 	 * @var AbstractDatabaseDriver|null
 	 */
 	protected static $db = null;
@@ -40,14 +46,14 @@ abstract class Model extends AbstractModel
 	protected static $mappings = [];
 
 	/**
-	 * @var string|null
+	 * @var string
 	 */
-	protected static $table = null;
+	public static $primaryKey = 'id';
 
 	/**
-	 * @var string[]
+	 * @var string|null
 	 */
-	private static $tables = [];
+	public static $table = null;
 
 	/**
 	 * Model constructor.
@@ -106,7 +112,7 @@ abstract class Model extends AbstractModel
 	 * @param int $offset
 	 * @param int $limit
 	 *
-	 * @return Model[]
+	 * @return Model[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -122,19 +128,20 @@ abstract class Model extends AbstractModel
 	/**
 	 * Gets a single result.
 	 *
-	 * @param int $id
+	 * @param mixed $id
+	 * @param int   $type
 	 *
-	 * @return Model|null
+	 * @return Model|mixed|null
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function get(int $id): ?self
+	public static function get($id, int $type = PDO::PARAM_INT): ?self
 	{
 		if (Cache::has($id, get_called_class()))
 			return Cache::get($id, get_called_class());
 
-		return static::where(self::table() . '.id', '=', $id)
+		return static::where(static::table() . '.' . static::$primaryKey, '=', [$id, $type])
 			->execute()
 			->model();
 	}
@@ -142,19 +149,23 @@ abstract class Model extends AbstractModel
 	/**
 	 * Gets multiple results by id.
 	 *
-	 * @param int ...$ids
+	 * @param array $ids
+	 * @param int   $type
 	 *
-	 * @return Model[]
+	 * @return Model[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function find(int ...$ids): array
+	public static function find($ids, int $type = PDO::PARAM_INT): array
 	{
 		if (Cache::hasAll($ids, get_called_class()))
 			return Cache::getAll($ids, get_called_class());
 
-		return static::where(self::table() . '.id', 'IN(' . implode(',', $ids) . ')')
+		foreach ($ids as &$id)
+			$id = self::$db->quote(strval($id), $type);
+
+		return static::where(static::table() . '.' . static::$primaryKey, 'IN(' . implode(',', $ids) . ')')
 			->execute()
 			->models();
 	}
@@ -167,7 +178,7 @@ abstract class Model extends AbstractModel
 	 * @param Pagination|null $pagination
 	 * @param callable|null   $conditions
 	 *
-	 * @return array
+	 * @return Model[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -175,9 +186,9 @@ abstract class Model extends AbstractModel
 	public static function paginate(int $offset = 0, int $limit = 0, ?Pagination &$pagination = null, ?callable $conditions = null): array
 	{
 		$queryBuilder = self::$db
-			->selectFoundRows(self::table() . '.*')
+			->selectFoundRows(static::table() . '.*')
 			->withModel(get_called_class())
-			->from(self::table());
+			->from(static::table());
 
 		if ($conditions !== null)
 			$conditions($queryBuilder);
@@ -201,26 +212,26 @@ abstract class Model extends AbstractModel
 	public static function select(): QueryBuilder
 	{
 		return self::$db
-			->select(self::table() . '.*')
+			->select(static::table() . '.*')
 			->withModel(get_called_class())
-			->from(self::table());
+			->from(static::table());
 	}
 
 	/**
 	 * Updates a result.
 	 *
-	 * @param int   $id
+	 * @param mixed $id
 	 * @param array $fieldsAndValues
 	 *
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function update(int $id, array $fieldsAndValues): void
+	public static function update($id, array $fieldsAndValues): void
 	{
 		$model = Cache::get($id, get_called_class());
 		$queryBuilder = self::$db
-			->update(self::table());
+			->update(static::table());
 
 		foreach ($fieldsAndValues as $field => $value)
 		{
@@ -236,7 +247,7 @@ abstract class Model extends AbstractModel
 		}
 
 		$queryBuilder
-			->where('id', '=', $id)
+			->where(static::table() . '.' . static::$primaryKey, '=', $id)
 			->execute();
 	}
 

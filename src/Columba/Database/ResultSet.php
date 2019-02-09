@@ -287,25 +287,27 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 */
 	public final function models(): array
 	{
-		if ($this->modelClass === null || !class_exists($this->modelClass))
+		if ($this->modelClass === null || !class_exists($this->modelClass) || !is_subclass_of($this->modelClass, Model::class))
 			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_FIELD_NOT_FOUND);
 
+		/** @var Model|string $modelClass */
+		$modelClass = $this->modelClass;
 		$results = $this->toArray();
 
 		foreach ($results as &$result)
 		{
-			if (!isset($result['id']))
+			if (!isset($result[$modelClass::$primaryKey]))
 				continue;
 
-			if (Cache::has($result['id'], $this->modelClass))
+			if (Cache::has($result[$modelClass::$primaryKey], $modelClass))
 			{
-				$model = Cache::get($result['id'], $this->modelClass);
+				$model = Cache::get($result[$modelClass::$primaryKey], $modelClass);
 				$model->initialize($result);
 				$result = $model;
 			}
 			else
 			{
-				$result = new $this->modelClass($result);
+				$result = new $modelClass($result);
 				Cache::set($result);
 			}
 		}

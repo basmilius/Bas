@@ -32,14 +32,14 @@ final class Cache
 	/**
 	 * Gets a cached result.
 	 *
-	 * @param int    $id
+	 * @param mixed  $id
 	 * @param string $modelClass
 	 *
 	 * @return Model|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function get(int $id, string $modelClass): ?Model
+	public static function get($id, string $modelClass): ?Model
 	{
 		return self::$cache[$modelClass][$id] ?? null;
 	}
@@ -67,14 +67,14 @@ final class Cache
 	/**
 	 * Returns TRUE if a model is cached.
 	 *
-	 * @param int    $id
+	 * @param mixed  $id
 	 * @param string $modelClass
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function has(int $id, string $modelClass): bool
+	public static function has($id, string $modelClass): bool
 	{
 		return isset(self::$cache[$modelClass][$id]);
 	}
@@ -108,7 +108,7 @@ final class Cache
 	 */
 	public static function set(Model $model): void
 	{
-		self::$cache[get_class($model)][$model['id']] = $model;
+		self::$cache[get_class($model)][$model[$model::$primaryKey]] = $model;
 	}
 
 }
