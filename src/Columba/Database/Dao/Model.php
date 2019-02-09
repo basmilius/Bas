@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Database\Dao;
 
-use Columba\Database\AbstractDatabaseDriver;
 use Columba\Database\Cache;
+use Columba\Database\DatabaseDriver;
 use Columba\Database\DatabaseException;
 use Columba\Database\QueryBuilder;
 use Columba\Pagination\Pagination;
@@ -36,7 +36,7 @@ abstract class Model extends AbstractModel
 	private static $tables = [];
 
 	/**
-	 * @var AbstractDatabaseDriver|null
+	 * @var DatabaseDriver|null
 	 */
 	protected static $db = null;
 
@@ -271,12 +271,12 @@ abstract class Model extends AbstractModel
 	/**
 	 * Initializes the model.
 	 *
-	 * @param AbstractDatabaseDriver $db
+	 * @param DatabaseDriver $db
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final static function init(AbstractDatabaseDriver $db): void
+	public final static function init(DatabaseDriver $db): void
 	{
 		self::$db = $db;
 	}
