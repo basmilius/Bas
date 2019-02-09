@@ -21,7 +21,6 @@ use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\CallbackRoute;
-use Columba\Router\Route\ClosureRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RedirectRoute;
 use Columba\Router\Route\RouterRoute;
@@ -129,7 +128,7 @@ class Router
 			$route = new RouterRoute($this, $path, $arguments[0]->getRouter());
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof Closure)
-			$route = new ClosureRoute($this, $path, ...$arguments);
+			$route = new CallbackRoute($this, $path, ...$arguments);
 
 		if ($route === null && isset($arguments[0]) && is_array($arguments[0]) && is_string($arguments[0][1]))
 			throw new RouterException(sprintf("Could not find implementation '%s' for route '%s' in '%s'!", $arguments[0][1], $path, $router), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);

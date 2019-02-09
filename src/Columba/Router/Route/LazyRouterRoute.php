@@ -133,14 +133,12 @@ final class LazyRouterRoute extends AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
-		$this->ensureRouterInstance();
-
 		$isMatch = parent::isMatch($path, $requestMethod);
 
 		if (!$isMatch)
 			return false;
 
-		$relativePath = substr($path, mb_strlen($this->getContext()->getPathValues()));
+		$relativePath = mb_substr($path, mb_strlen($this->getContext()->getPathValues()));
 
 		if (empty($relativePath))
 			$relativePath = '/';

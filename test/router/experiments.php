@@ -14,6 +14,8 @@ use Columba\Router\Response\HtmlResponse;
 use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
+use Columba\Router\SubRouter;
+use Columba\Util\Stopwatch;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
@@ -59,7 +61,7 @@ class MyRouter extends Router
 
 }
 
-$s = microtime(true);
+Stopwatch::start('router');
 
 try
 {
@@ -71,6 +73,8 @@ catch (RouterException $err)
 	print_r($err);
 }
 
+Stopwatch::stop('router', $time, Stopwatch::UNIT_SECONDS);
+
 echo PHP_EOL;
 echo PHP_EOL;
-echo sprintf('Executed in %gs', (microtime(true) - $s));
+echo sprintf('Executed in %g seconds', $time);
