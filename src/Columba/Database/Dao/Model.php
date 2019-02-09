@@ -212,14 +212,16 @@ abstract class Model extends AbstractModel
 	/**
 	 * Starts a select query on the model.
 	 *
+	 * @param string $selectMode
+	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function select(): QueryBuilder
+	public static function select(string $selectMode = ''): QueryBuilder
 	{
 		return self::$db
-			->select(static::table() . '.*')
+			->selectCustom($selectMode, static::table() . '.*')
 			->withModel(get_called_class())
 			->from(static::table());
 	}
