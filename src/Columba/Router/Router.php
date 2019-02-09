@@ -40,9 +40,14 @@ class Router
 {
 
 	/**
+	 * @var array
+	 */
+	private $globals = [];
+
+	/**
 	 * @var AbstractMiddleware[]
 	 */
-	private $middlewares;
+	private $middlewares = [];
 
 	/**
 	 * @var AbstractRenderer
@@ -57,12 +62,12 @@ class Router
 	/**
 	 * @var AbstractRoute[]
 	 */
-	private $routes;
+	private $routes = [];
 
 	/**
 	 * @var AbstractRoute|null
 	 */
-	private $currentRoute;
+	private $currentRoute = null;
 
 	/**
 	 * Router constructor.
@@ -75,12 +80,8 @@ class Router
 	 */
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
-		$this->middlewares = [];
 		$this->renderer = $renderer;
 		$this->response = $response;
-		$this->routes = [];
-
-		$this->currentRoute = null;
 	}
 
 	/**
@@ -108,7 +109,7 @@ class Router
 	 * @return AbstractRoute
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since
+	 * @since 1.3.0
 	 */
 	public final function addFromArguments(string $path, ...$arguments): AbstractRoute
 	{
@@ -141,11 +142,39 @@ class Router
 	}
 
 	/**
+	 * Defines a global parameter.
+	 *
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function define(string $name, $value): void
+	{
+		$this->globals[$name] = $value;
+	}
+
+	/**
+	 * Gets all global parameters.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 * @internal
+	 */
+	public function getGlobals(): array
+	{
+		return $this->globals;
+	}
+
+	/**
 	 * Gets all enabled middlewares for this {@see Router}.
 	 *
 	 * @return AbstractMiddleware[]
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function getMiddlewares(): array
 	{
@@ -287,7 +316,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function respond(string $implementation, $value, ...$options): ResponseWrapper
+	public function respond(string $implementation, $value, ...$options): ResponseWrapper
 	{
 		if (!is_subclass_of($implementation, AbstractResponse::class))
 			throw new RouterException('Invalid response implementation! Needs to extend form AbstractResponse.', 0);

@@ -54,9 +54,9 @@ class MyRouter extends Router
 		return 'Route: /user/' . $userId;
 	}
 
-	public final function onGetUserInvoice(string $invoiceNo, string $format, int $userId = 10): string
+	public final function onGetUserInvoice(bool $myBool, string $invoiceNo, string $format, int $userId = 10): string
 	{
-		return sprintf("Show invoice '%s' as '%s' for user %d.", $invoiceNo, $format, $userId);
+		return sprintf("Show invoice '%s' as '%s' for user %d AND %s.", $invoiceNo, $format, $userId, $myBool ? 'TRUE' : 'FALSE');
 	}
 
 }
@@ -66,6 +66,7 @@ Stopwatch::start('router');
 try
 {
 	$router = new MyRouter();
+	$router->define('myBool', true);
 	$router->executeAndRespond('/profile/invoices/20181122.pdf', 'GET');
 }
 catch (RouterException $err)

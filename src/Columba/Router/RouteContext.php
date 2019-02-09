@@ -238,6 +238,9 @@ final class RouteContext
 		if ($includeParent && $this->parent !== null)
 			$params = array_merge($params, $this->parent->getParams());
 
+		foreach ($this->getRoute()->getParentRouter()->getGlobals() as $name => $value)
+			$params[$name] = $value;
+
 		return $params;
 	}
 

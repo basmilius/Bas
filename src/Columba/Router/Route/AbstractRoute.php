@@ -94,7 +94,6 @@ abstract class AbstractRoute
 	public final function execute(bool $respond)
 	{
 		$result = null;
-		$throw = null;
 
 		$this->getParentRouter()->onExecute($this);
 		$this->getParentRouter()->setCurrentRoute($this);
@@ -143,10 +142,10 @@ abstract class AbstractRoute
 	 */
 	public final function resolve(string $path): string
 	{
-		if (substr($path, 0, 1) === '/' || substr($path, 0, 4) === 'http')
+		if (mb_substr($path, 0, 1) === '/' || mb_substr($path, 0, 4) === 'http')
 			return $path; // No need to resolve.
 
-		$parts = explode('/', substr($this->context->getFullPath(), 0, -mb_strlen($this->path)) . '/' . $path);
+		$parts = explode('/', mb_substr($this->context->getFullPath(), 0, -mb_strlen($this->path)) . '/' . $path);
 		$result = [];
 
 		foreach ($parts as $part)
@@ -213,8 +212,8 @@ abstract class AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
-		if (strlen($path) > 1 && substr($path, -1) === '/')
-			$path = substr($path, 0, -1);
+		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
+			$path = mb_substr($path, 0, -1);
 
 		if ($path === '/index')
 			$path = '/';
@@ -233,7 +232,7 @@ abstract class AbstractRoute
 		if ($isRouteValid === false)
 			throw new RouterException(sprintf("Could not compile regex for route '%s'.", $this->path), RouterException::ERR_REGEX_COMPILATION_FAILED);
 
-		$isRouteValid = $isRouteValid === 1 && substr($path, 0, mb_strlen($matches[0])) === $matches[0];
+		$isRouteValid = $isRouteValid === 1 && mb_substr($path, 0, mb_strlen($matches[0])) === $matches[0];
 
 		foreach ($params as $index => $param)
 		{

@@ -79,6 +79,18 @@ class SubRouter extends Router
 	}
 
 	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function getGlobals(): array
+	{
+		$globals = parent::getGlobals();
+
+		return array_merge($this->parent->getGlobals(), $globals);
+	}
+
+	/**
 	 * Gets sub router parameters.
 	 *
 	 * @return array
