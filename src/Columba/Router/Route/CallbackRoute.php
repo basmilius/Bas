@@ -64,7 +64,7 @@ final class CallbackRoute extends AbstractRoute
 	 */
 	public final function executeImpl(bool $respond)
 	{
-		$params = $this->getContext()->getParams(false);
+		$params = $this->getContext()->getParams();
 		$params['context'] = $this->getContext();
 
 		$this->getContext()->setCallback($this->getReflection());

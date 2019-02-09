@@ -236,7 +236,7 @@ final class RouteContext
 		$params = $this->params;
 
 		if ($includeParent && $this->parent !== null)
-			$params = array_merge($params, $this->parent->getParams(true));
+			$params = array_merge($params, $this->parent->getParams());
 
 		return $params;
 	}
