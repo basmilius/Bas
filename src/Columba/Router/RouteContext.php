@@ -219,7 +219,9 @@ final class RouteContext
 	 */
 	public final function getParam(string $name, bool $includeParent = true)
 	{
-		return $this->params[$name] ?? ($includeParent && $this->parent !== null ? $this->parent->getParam($name, true) : null);
+		$params = $this->getParams($includeParent);
+
+		return $params[$name] ?? null;
 	}
 
 	/**
