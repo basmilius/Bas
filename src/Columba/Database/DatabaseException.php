@@ -30,6 +30,7 @@ class DatabaseException extends Exception
 	public const ERR_FIELD_NOT_FOUND = 0xDBA021;
 	public const ERR_MODEL_NOT_FOUND = 0xDBA030;
 	public const ERR_QUERY_FAILED = 0xDBA0439;
+	public const ERR_TRANSACTION_FAILED = 0xDBA0445;
 
 	/**
 	 * DatabaseException constructor.

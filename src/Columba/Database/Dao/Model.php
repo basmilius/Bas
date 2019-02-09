@@ -12,10 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Database\Dao;
 
+use Columba\Database\AbstractDatabaseDriver;
 use Columba\Database\Cache;
 use Columba\Database\DatabaseDriver;
 use Columba\Database\DatabaseException;
 use Columba\Database\QueryBuilder;
+use Columba\Database\Transaction;
 use Columba\Pagination\Pagination;
 use Columba\Util\StringUtil;
 use PDO;
@@ -31,12 +33,17 @@ abstract class Model extends AbstractModel
 {
 
 	/**
+	 * @var DatabaseDriver|null
+	 */
+	private static $originalDb = null;
+
+	/**
 	 * @var string[]
 	 */
 	private static $tables = [];
 
 	/**
-	 * @var DatabaseDriver|null
+	 * @var DatabaseDriver|Transaction|AbstractDatabaseDriver|null
 	 */
 	protected static $db = null;
 
@@ -269,6 +276,54 @@ abstract class Model extends AbstractModel
 	}
 
 	/**
+	 * Starts a transaction on all models.
+	 *
+	 * @return Transaction
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function transaction(): Transaction
+	{
+		if (self::$db instanceof Transaction)
+			throw new DatabaseException('There is already an active transaction.', DatabaseException::ERR_TRANSACTION_FAILED);
+
+		return self::$db = self::$originalDb->begin();
+	}
+
+	/**
+	 * Commits the active transaction.
+	 *
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function transactionCommit(): void
+	{
+		if (!(self::$db instanceof Transaction))
+			throw new DatabaseException('There is no active transaction.', DatabaseException::ERR_TRANSACTION_FAILED);
+
+		self::$db->commit();
+		self::$db = self::$originalDb;
+	}
+
+	/**
+	 * Cancels the active transaction and rolls everything back.
+	 *
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function transactionRollBack(): void
+	{
+		if (!(self::$db instanceof Transaction))
+			throw new DatabaseException('There is no active transaction.', DatabaseException::ERR_TRANSACTION_FAILED);
+
+		self::$db->rollBack();
+		self::$db = self::$originalDb;
+	}
+
+	/**
 	 * Initializes the model.
 	 *
 	 * @param DatabaseDriver $db
@@ -279,6 +334,7 @@ abstract class Model extends AbstractModel
 	public final static function init(DatabaseDriver $db): void
 	{
 		self::$db = $db;
+		self::$originalDb = $db;
 	}
 
 	/**

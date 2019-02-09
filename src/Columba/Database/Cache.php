@@ -99,6 +99,17 @@ final class Cache
 	}
 
 	/**
+	 * Purges the cache.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function purge(): void
+	{
+		self::$cache = [];
+	}
+
+	/**
 	 * Adds a model to cache.
 	 *
 	 * @param Model $model
