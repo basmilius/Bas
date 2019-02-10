@@ -132,6 +132,20 @@ final class RouteContext
 	}
 
 	/**
+	 * Resolves a path relative to this route.
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function resolve(string $path): string
+	{
+		return $this->route->resolve($path);
+	}
+
+	/**
 	 * Gets the associated {@see AbstractRoute}.
 	 *
 	 * @return AbstractRoute
