@@ -55,6 +55,16 @@ abstract class Model extends AbstractModel
 	/**
 	 * @var string
 	 */
+	public static $order = 'ASC';
+
+	/**
+	 * @var string
+	 */
+	public static $orderBy = '';
+
+	/**
+	 * @var string
+	 */
 	public static $primaryKey = 'id';
 
 	/**
@@ -127,6 +137,7 @@ abstract class Model extends AbstractModel
 	public static function all(int $offset = 0, int $limit = PHP_INT_MAX): array
 	{
 		return static::select()
+			->orderBy(self::$orderBy . ' ' . self::$order)
 			->limit($limit, $offset)
 			->execute()
 			->models();
@@ -173,6 +184,7 @@ abstract class Model extends AbstractModel
 			$id = self::$db->quote(strval($id), $type);
 
 		return static::where(static::table() . '.' . static::$primaryKey, 'IN(' . implode(',', $ids) . ')')
+			->orderBy(self::$orderBy . ' ' . self::$order)
 			->execute()
 			->models();
 	}
@@ -201,6 +213,7 @@ abstract class Model extends AbstractModel
 			$conditions($queryBuilder);
 
 		$result = $queryBuilder
+			->orderBy(self::$orderBy . ' ' . self::$order)
 			->limit($limit, $offset)
 			->execute();
 
@@ -349,7 +362,10 @@ abstract class Model extends AbstractModel
 	public static function table(): string
 	{
 		if (!isset(self::$tables[get_called_class()]))
+		{
+			self::$orderBy = self::$primaryKey;
 			self::$tables[get_called_class()] = static::$table ?? StringUtil::toSnakeCase(get_called_class());
+		}
 
 		return self::$tables[get_called_class()];
 	}
