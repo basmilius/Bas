@@ -129,7 +129,7 @@ abstract class Model extends AbstractModel
 	 * @param int $offset
 	 * @param int $limit
 	 *
-	 * @return Model[]|mixed
+	 * @return Model[]|static[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -149,7 +149,7 @@ abstract class Model extends AbstractModel
 	 * @param mixed $id
 	 * @param int   $type
 	 *
-	 * @return Model|mixed|null
+	 * @return Model|static|mixed|null
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -170,7 +170,7 @@ abstract class Model extends AbstractModel
 	 * @param array $ids
 	 * @param int   $type
 	 *
-	 * @return Model[]|mixed
+	 * @return Model[]|static[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -197,7 +197,7 @@ abstract class Model extends AbstractModel
 	 * @param Pagination|null $pagination
 	 * @param callable|null   $conditions
 	 *
-	 * @return Model[]|mixed
+	 * @return Model[]|static[]|mixed
 	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
