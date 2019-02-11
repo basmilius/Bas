@@ -60,7 +60,7 @@ abstract class Model extends AbstractModel
 	/**
 	 * @var string
 	 */
-	public static $orderBy = '';
+	public static $orderBy = 'id';
 
 	/**
 	 * @var string
@@ -362,10 +362,7 @@ abstract class Model extends AbstractModel
 	public static function table(): string
 	{
 		if (!isset(self::$tables[get_called_class()]))
-		{
-			self::$orderBy = self::$primaryKey;
 			self::$tables[get_called_class()] = static::$table ?? StringUtil::toSnakeCase(get_called_class());
-		}
 
 		return self::$tables[get_called_class()];
 	}
