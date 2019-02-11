@@ -137,7 +137,7 @@ abstract class Model extends AbstractModel
 	public static function all(int $offset = 0, int $limit = PHP_INT_MAX): array
 	{
 		return static::select()
-			->orderBy(self::$orderBy . ' ' . self::$order)
+			->orderBy(static::$orderBy . ' ' . static::$order)
 			->limit($limit, $offset)
 			->execute()
 			->models();
@@ -184,7 +184,7 @@ abstract class Model extends AbstractModel
 			$id = self::$db->quote(strval($id), $type);
 
 		return static::where(static::table() . '.' . static::$primaryKey, 'IN(' . implode(',', $ids) . ')')
-			->orderBy(self::$orderBy . ' ' . self::$order)
+			->orderBy(static::$orderBy . ' ' . static::$order)
 			->execute()
 			->models();
 	}
@@ -213,7 +213,7 @@ abstract class Model extends AbstractModel
 			$conditions($queryBuilder);
 
 		$result = $queryBuilder
-			->orderBy(self::$orderBy . ' ' . self::$order)
+			->orderBy(static::$orderBy . ' ' . static::$order)
 			->limit($limit, $offset)
 			->execute();
 
