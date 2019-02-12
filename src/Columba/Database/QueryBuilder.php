@@ -139,7 +139,7 @@ final class QueryBuilder
 	 */
 	public final function escapeField(string $field): string
 	{
-		if (strpos($field, ' ') || strpos($field, '(') || strpos($field, ')'))
+		if (strpos($field, ' ') || strpos($field, '(') || strpos($field, ')') || strpos($field, '`'))
 			return $field; // To hard to handle.
 
 		$ignore = ['1', '*'];
