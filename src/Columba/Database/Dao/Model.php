@@ -353,6 +353,24 @@ abstract class Model extends AbstractModel
 	}
 
 	/**
+	 * Returns a fully qualified column name for a table.
+	 *
+	 * @param string $column
+	 * @param string $table
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public static function column(string $column, string $table = ''): string
+	{
+		if ($table === '')
+			$table = static::table();
+
+		return sprintf('`%s`.`%s`', $table, $column);
+	}
+
+	/**
 	 * Gets the table name.
 	 *
 	 * @return string
