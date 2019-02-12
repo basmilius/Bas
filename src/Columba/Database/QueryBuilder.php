@@ -139,7 +139,7 @@ final class QueryBuilder
 	 */
 	public final function escapeField(string $field): string
 	{
-		if (strpos($field, ' ') || strpos($field, '(') || strpos($field, ')') || strpos($field, '`'))
+		if (strpos($field, ' ') || strpos($field, '(') || strpos($field, ')'))
 			return $field; // To hard to handle.
 
 		$ignore = ['1', '*'];
@@ -148,6 +148,9 @@ final class QueryBuilder
 		$parts = array_map(function (string $field) use ($ignore): string
 		{
 			if (in_array($field, $ignore))
+				return $field;
+
+			if (substr($field, 0, 1) === '`')
 				return $field;
 
 			return '`' . $field . '`';
