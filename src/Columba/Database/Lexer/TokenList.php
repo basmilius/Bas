@@ -15,6 +15,7 @@ namespace Columba\Database\Lexer;
 use ArrayAccess;
 use Countable;
 use Iterator;
+use ReflectionException;
 
 /**
  * Class TokenList
@@ -84,7 +85,7 @@ final class TokenList implements ArrayAccess, Countable, Iterator
 	 * Gets the HTML for this {@see TokenList}.
 	 *
 	 * @return string
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */

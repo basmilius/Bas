@@ -34,7 +34,7 @@ final class Transaction extends AbstractDatabaseDriver
 	{
 		parent::__construct($driver);
 
-		$driver->pdo()->beginTransaction();
+		$driver->pdo->beginTransaction();
 	}
 
 	/**
@@ -46,7 +46,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 */
 	public final function begin(): bool
 	{
-		return $this->driver->pdo()->beginTransaction();
+		return $this->driver->pdo->beginTransaction();
 	}
 
 	/**
@@ -58,7 +58,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 */
 	public final function commit(): bool
 	{
-		return $this->driver->pdo()->commit();
+		return $this->driver->pdo->commit();
 	}
 
 	/**
@@ -70,7 +70,7 @@ final class Transaction extends AbstractDatabaseDriver
 	 */
 	public final function rollBack(): bool
 	{
-		return $this->driver->pdo()->rollBack();
+		return $this->driver->pdo->rollBack();
 	}
 
 }

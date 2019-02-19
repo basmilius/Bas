@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database\Lexer;
 
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Class Token
@@ -89,7 +90,7 @@ final class Token
 	 * Gets the HTML string.
 	 *
 	 * @return string
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -151,7 +152,7 @@ final class Token
 	 * Gets the type name.
 	 *
 	 * @return string|null
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -342,7 +343,7 @@ final class Token
 
 	/**
 	 * {@inheritdoc}
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

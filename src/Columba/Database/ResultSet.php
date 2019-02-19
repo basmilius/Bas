@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use ArrayAccess;
+use Columba\Data\Collection;
 use Columba\Database\Dao\Model;
 use Countable;
 use ErrorException;
@@ -262,6 +263,22 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 		$all = $this->into($className, ...$arguments);
 
 		return $all[0] ?? null;
+	}
+
+	/**
+	 * Converts our results to a collection.
+	 *
+	 * @return Collection
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function collection(): Collection
+	{
+		if ($this->modelClass !== null)
+			return new Collection($this->models());
+
+		return new Collection($this->toArray());
 	}
 
 	/**

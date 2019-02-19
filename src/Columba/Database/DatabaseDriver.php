@@ -78,7 +78,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function begin(): Transaction
+	public function begin(): Transaction
 	{
 		return new Transaction($this);
 	}
@@ -89,7 +89,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function connect(): void
+	public function connect(): void
 	{
 		try
 		{
@@ -97,14 +97,23 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-			$this->pdo($pdo);
-
-			$this->query('SET NAMES utf8')->execute();
+			$this->pdo = $pdo;
 		}
 		catch (PDOException $err)
 		{
 			throw new DatabaseException('Could not connect to database server.', DatabaseException::ERR_CONNECTION_FAILED, $err);
 		}
+	}
+
+	/**
+	 * Closes the connection.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function close(): void
+	{
+		$this->pdo = null;
 	}
 
 	/**

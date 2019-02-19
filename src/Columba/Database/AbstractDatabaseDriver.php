@@ -26,15 +26,12 @@ use PDOStatement;
 abstract class AbstractDatabaseDriver
 {
 
-	/**
-	 * @var DatabaseDriver
-	 */
-	protected $driver;
+	use QueryBuilderMethods;
 
 	/**
 	 * @var PDO|null
 	 */
-	private $pdo = null;
+	protected $pdo = null;
 
 	/**
 	 * AbstractDatabaseDriver constructor.
@@ -48,344 +45,20 @@ abstract class AbstractDatabaseDriver
 	{
 		$this->driver = $driver;
 
-		if ($driver->pdo() !== null)
-			$this->pdo($driver->pdo());
+		if ($driver->pdo !== null)
+			$this->pdo = $driver->pdo;
 	}
 
 	/**
-	 * Gets or Sets the PDO instance.
-	 *
-	 * @param PDO|null $pdo
-	 *
-	 * @return PDO
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	protected final function pdo(?PDO $pdo = null): ?PDO
-	{
-		if ($pdo !== null)
-			$this->pdo = $pdo;
-
-		return $this->pdo;
-	}
-
-	/**
-	 * Ping the server.
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
-	 */
-	public final function ping(): bool
-	{
-		try
-		{
-			$this->pdo->query('SELECT 1');
-
-			return true;
-		}
-		catch (PDOException $err)
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Creates a custom query.
-	 *
-	 * @param string $custom
+	 * Creates a new QueryBuilder instance.
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
+	 * @since 1.5.0
 	 */
-	public final function custom(string $custom): QueryBuilder
+	public function createQueryBuilder(): QueryBuilder
 	{
-		$builder = new QueryBuilder($this);
-		$builder->custom($custom);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a DELETE query.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public final function delete(string $table): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->delete($table);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a DELETE FROM query.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function deleteFrom(string $table): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->deleteFrom($table);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates an INSERT IGNORE INTO query.
-	 *
-	 * @param string $table
-	 * @param string ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function insertIgnoreInto(string $table, string ...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->insertIgnoreInto($table, ...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates an INSERT INTO query.
-	 *
-	 * @param string $table
-	 * @param string ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function insertInto(string $table, string ...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->insertInto($table, ...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates an INSERT INTO (...) VALUES (...) query.
-	 *
-	 * @param string $table
-	 * @param array  ...$data
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function insertIntoValues(string $table, array ...$data): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->insertIntoValues($table, ...$data);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates an OPTIMIZE TABLE query.
-	 *
-	 * @param string ...$table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function optimizeTable(string ...$table): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->optimizeTable(...$table);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a SELECT query.
-	 *
-	 * @param array ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function select(...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->select(...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a SELECT {@see $suffix} query.
-	 *
-	 * @param string $suffix
-	 * @param array  ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function selectCustom(string $suffix, ...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->selectCustom($suffix, ...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a SELECT DISTINCT query.
-	 *
-	 * @param array ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function selectDistinct(...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->selectDistinct(...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a SELECT SQL_CALC_FOUND_ROWS query.
-	 *
-	 * @param array ...$fields
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function selectFoundRows(...$fields): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->selectFoundRows(...$fields);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a TRUNCATE TABLE query.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function truncateTable(string $table): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->truncateTable($table);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates an UPDATE query.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function update(string $table): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->update($table);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a WITH query.
-	 *
-	 * @param string       $name
-	 * @param QueryBuilder $query
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public final function with(string $name, QueryBuilder $query): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->with($name, $query);
-
-		return $builder;
-	}
-
-	/**
-	 * Creates a WITH RECURSIVE query.
-	 *
-	 * @param string       $name
-	 * @param QueryBuilder $query
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public final function withRecursive(string $name, QueryBuilder $query): QueryBuilder
-	{
-		$builder = new QueryBuilder($this);
-		$builder->withRecursive($name, $query);
-
-		return $builder;
-	}
-
-	/**
-	 * Quotes a value.
-	 *
-	 * @param string $value
-	 * @param int    $type
-	 *
-	 * @return string
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function quote(string $value, int $type = PDO::PARAM_STR): string
-	{
-		return $this->pdo()->quote($value, $type);
-	}
-
-	/**
-	 * Adds wildcard.
-	 *
-	 * @param string $value
-	 * @param bool   $left
-	 * @param bool   $right
-	 *
-	 * @return array
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function wildcard(string $value, bool $left, bool $right): array
-	{
-		$str = '';
-
-		if ($left) $str .= '%';
-		$str .= $value;
-		if ($right) $str .= '%';
-
-		return [$str, PDO::PARAM_STR];
+		return new QueryBuilder($this);
 	}
 
 	/**
@@ -440,7 +113,7 @@ abstract class AbstractDatabaseDriver
 	 */
 	public final function lastInsertId(?string $name = null): string
 	{
-		return $this->pdo()->lastInsertId($name);
+		return $this->pdo->lastInsertId($name);
 	}
 
 	/**
@@ -455,6 +128,27 @@ abstract class AbstractDatabaseDriver
 	public final function lastInsertIdInteger(?string $name = null): int
 	{
 		return intval($this->lastInsertId($name));
+	}
+
+	/**
+	 * Ping the server.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.2.0
+	 */
+	public final function ping(): bool
+	{
+		try
+		{
+			$this->pdo->query('SELECT 1');
+
+			return true;
+		}
+		catch (PDOException $err)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -476,10 +170,10 @@ abstract class AbstractDatabaseDriver
 			if ($isFile && strlen($query) < PHP_MAXPATHLEN && is_file($query))
 				$query = file_get_contents($query);
 
-			$statement = $this->pdo()->prepare($query, $options);
+			$statement = $this->pdo->prepare($query, $options);
 
 			if (!($statement instanceof PDOStatement))
-				throw new PDOException($this->pdo()->errorInfo()[2], intval($this->pdo()->errorCode()));
+				throw new PDOException($this->pdo->errorInfo()[2], intval($this->pdo->errorCode()));
 
 			return new PreparedStatement($this, $statement);
 		}
@@ -500,21 +194,44 @@ abstract class AbstractDatabaseDriver
 	 */
 	public final function query(string $query): PDOStatement
 	{
-		return $this->pdo()->query($query);
+		return $this->pdo->query($query);
 	}
 
 	/**
-	 * Prints the errors.
+	 * Quotes a value.
 	 *
+	 * @param string $value
+	 * @param int    $type
+	 *
+	 * @return string
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function printErrors(): void
+	public final function quote(string $value, int $type = PDO::PARAM_STR): string
 	{
-		if (function_exists('pre_die'))
-			pre_die($this->pdo()->errorCode(), $this->pdo()->errorInfo());
-		else
-			print_r([$this->pdo()->errorCode(), $this->pdo()->errorInfo()]);
+		return $this->pdo->quote($value, $type);
+	}
+
+	/**
+	 * Adds wildcard.
+	 *
+	 * @param string $value
+	 * @param bool   $left
+	 * @param bool   $right
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function wildcard(string $value, bool $left, bool $right): array
+	{
+		$str = '';
+
+		if ($left) $str .= '%';
+		$str .= $value;
+		if ($right) $str .= '%';
+
+		return [$str, PDO::PARAM_STR];
 	}
 
 }

@@ -19,7 +19,7 @@ namespace Columba\Database;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class MySQLDatabaseDriver extends DatabaseDriver
+class MySQLDatabaseDriver extends DatabaseDriver
 {
 
 	/**
@@ -39,9 +39,21 @@ final class MySQLDatabaseDriver extends DatabaseDriver
 	 */
 	public function __construct(string $database, string $host, int $port = 3306, $username = '', $password = '', array $options = [], $connectAutomatically = true)
 	{
-		$dsn = "mysql:dbname=$database;host=$host;port=$port";
+		$dsn = "mysql:dbname=$database;host=$host;port=$port;charset=utf8mb4";
 
 		parent::__construct($dsn, $username, $password, $options, $connectAutomatically);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function connect(): void
+	{
+		parent::connect();
+
+		$this->query('SET NAMES utf8')->execute();
 	}
 
 }

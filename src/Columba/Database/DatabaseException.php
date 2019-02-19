@@ -25,12 +25,14 @@ use PDOException;
 class DatabaseException extends Exception
 {
 
-	public const ERR_CONNECTION_FAILED = 0xDBA003;
-	public const ERR_CLASS_NOT_FOUND = 0xDBA019;
-	public const ERR_FIELD_NOT_FOUND = 0xDBA021;
-	public const ERR_MODEL_NOT_FOUND = 0xDBA030;
-	public const ERR_QUERY_FAILED = 0xDBA0439;
-	public const ERR_TRANSACTION_FAILED = 0xDBA0445;
+	public const ERR_CONNECTION_FAILED = 1;
+	public const ERR_CLASS_NOT_FOUND = 2;
+	public const ERR_FIELD_NOT_FOUND = 4;
+	public const ERR_MODEL_NOT_FOUND = 8;
+	public const ERR_QUERY_FAILED = 16;
+	public const ERR_TRANSACTION_FAILED = 32;
+	public const ERR_FILE_NOT_READABLE = 64;
+	public const ERR_FEATURE_UNSUPPORTED = 128;
 
 	/**
 	 * DatabaseException constructor.

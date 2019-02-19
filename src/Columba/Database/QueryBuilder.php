@@ -22,11 +22,11 @@ use PDOException;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class QueryBuilder
+class QueryBuilder
 {
 
-	private const DEFAULT_FIELD_SEPARATOR = ", ";
-	private const DEFAULT_INDENT = "    ";
+	protected const DEFAULT_FIELD_SEPARATOR = ", ";
+	protected const DEFAULT_INDENT = "    ";
 
 	/**
 	 * @var AbstractDatabaseDriver
@@ -90,7 +90,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private final function add(string $clause, $data, int $indentSelf = 0, int $indent = 0, int $newLine = 0, ?string $separator = null): void
+	protected final function add(string $clause, $data, int $indentSelf = 0, int $indent = 0, int $newLine = 0, ?string $separator = null): void
 	{
 		$this->parts[] = [$clause, $data, $indentSelf + $this->indention, $indent, $newLine, $separator];
 
@@ -107,7 +107,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private final function addValue($value)
+	protected final function addValue($value)
 	{
 		if (is_array($value) && count($value) === 2)
 		{
@@ -306,7 +306,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function conditionalAnd(bool $condition, string $field = '', string $comparator = '', $value = ''): self
+	public function conditionalAnd(bool $condition, string $field = '', string $comparator = '', $value = ''): self
 	{
 		if (!$condition)
 			return $this;
@@ -328,7 +328,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function conditionalOr(bool $condition, string $field = '', string $comparator = '', $value = ''): self
+	public function conditionalOr(bool $condition, string $field = '', string $comparator = '', $value = ''): self
 	{
 		if (!$condition)
 			return $this;
@@ -347,7 +347,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function conditionalParenthesisClose(bool $condition): self
+	public function conditionalParenthesisClose(bool $condition): self
 	{
 		if (!$condition)
 			return $this;
@@ -369,7 +369,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function conditionalParenthesisOpen(bool $condition, string $field = '', string $comparator = '', $value = ''): self
+	public function conditionalParenthesisOpen(bool $condition, string $field = '', string $comparator = '', $value = ''): self
 	{
 		if (!$condition)
 			return $this;
@@ -390,7 +390,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function and(string $field = '', string $comparator = '', $value = ''): self
+	public function and(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('AND', $statement, 1, 0, ($statement === '' ? 0 : 1), '');
@@ -407,7 +407,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function custom(string $custom): self
+	public function custom(string $custom): self
 	{
 		$this->add($custom, '', 0, 1, 1);
 
@@ -423,7 +423,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function delete(string $table): self
+	public function delete(string $table): self
 	{
 		$this->add('DELETE', $this->escapeField($table), 0, 1, 1);
 
@@ -439,7 +439,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function deleteFrom(string $table): self
+	public function deleteFrom(string $table): self
 	{
 		$this->add('DELETE FROM', $this->escapeField($table), 0, 1, 1);
 
@@ -455,7 +455,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function from(string ...$tables): self
+	public function from(string ...$tables): self
 	{
 		$this->add('FROM', $this->escapeFields($tables), 0, 1, 1, ',');
 
@@ -471,7 +471,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function groupBy(string ...$fields): self
+	public function groupBy(string ...$fields): self
 	{
 		$this->add('GROUP BY', $this->escapeFields($fields), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 
@@ -489,7 +489,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function having(string $field = '', string $comparator = '', $value = ''): self
+	public function having(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('HAVING', $statement, 0, ($statement === '' ? 0 : 1), ($statement === '' ? 0 : 1), '');
@@ -507,7 +507,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertIgnoreInto(string $table, string ...$fields): self
+	public function insertIgnoreInto(string $table, string ...$fields): self
 	{
 		$this->add('INSERT IGNORE INTO', $this->escapeField($table), 0, 1, 1);
 		$this->parenthesisOpen();
@@ -527,7 +527,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertInto(string $table, string ...$fields): self
+	public function insertInto(string $table, string ...$fields): self
 	{
 		$this->add('INSERT INTO', $this->escapeField($table), 0, 1, 1);
 		$this->parenthesisOpen();
@@ -547,7 +547,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function insertIntoValues(string $table, array ...$data): self
+	public function insertIntoValues(string $table, array ...$data): self
 	{
 		$fields = [];
 		$values = [];
@@ -565,6 +565,34 @@ final class QueryBuilder
 	}
 
 	/**
+	 * Adds a FULL JOIN clause.
+	 *
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function fullJoin(string $table): self
+	{
+		return $this->_join('FULL JOIN', $table);
+	}
+
+	/**
+	 * Adds a JOIN clause.
+	 *
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function join(string $table): self
+	{
+		return $this->_join('JOIN', $table);
+	}
+
+	/**
 	 * Adds a LEFT JOIN clause.
 	 *
 	 * @param string $table
@@ -573,7 +601,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function leftJoin(string $table): self
+	public function leftJoin(string $table): self
 	{
 		return $this->_join('LEFT JOIN', $table);
 	}
@@ -587,9 +615,37 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function leftOuterJoin(string $table): self
+	public function leftOuterJoin(string $table): self
 	{
 		return $this->_join('LEFT OUTER JOIN', $table);
+	}
+
+	/**
+	 * Adds an INNER JOIN clause.
+	 *
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function innerJoin(string $table): self
+	{
+		return $this->_join('INNER JOIN', $table);
+	}
+
+	/**
+	 * Adds a RIGHT JOIN clause.
+	 *
+	 * @param string $table
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function rightJoin(string $table): self
+	{
+		return $this->_join('RIGHT JOIN', $table);
 	}
 
 	/**
@@ -602,28 +658,14 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function limit(int $limit, int $offset = 0): self
+	public function limit(int $limit, int $offset = 0): self
 	{
-		$offset = $this->addValue([$offset, PDO::PARAM_INT]);
-		$limit = $this->addValue([$limit, PDO::PARAM_INT]);
+		$this->add('LIMIT', $this->addValue([$limit, PDO::PARAM_INT]), 0, 1, 1);
 
-		$this->add('LIMIT', $offset . ', ' . $limit, 0, 1, 1);
+		if ($offset > 0)
+			$this->add('OFFSET', $this->addValue([$offset, PDO::PARAM_INT]), 0, 1, 1);
 
 		return $this;
-	}
-
-	/**
-	 * Adds a JOIN clause.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function join(string $table): self
-	{
-		return $this->_join('JOIN', $table);
 	}
 
 	/**
@@ -637,7 +679,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function on(string $field1, string $comparator, string $field2): self
+	public function on(string $field1, string $comparator, string $field2): self
 	{
 		$this->add('ON', $this->escapeField($field1) . ' ' . $comparator . ' ' . $this->escapeField($field2), 2, 0, 0, null);
 
@@ -653,7 +695,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function onDuplicateKeyUpdate(string ...$fields): self
+	public function onDuplicateKeyUpdate(string ...$fields): self
 	{
 		$statement = [];
 
@@ -674,7 +716,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function optimizeTable(string ...$table): self
+	public function optimizeTable(string ...$table): self
 	{
 		$this->add('OPTIMIZE TABLE', $this->escapeFields($table), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 
@@ -692,7 +734,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function or(string $field = '', string $comparator = '', $value = ''): self
+	public function or(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('OR', $statement, 1, 0, ($statement === '' ? 0 : 1), '');
@@ -709,7 +751,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function orderBy(string ...$fields): self
+	public function orderBy(string ...$fields): self
 	{
 		$fields = array_map(function ($field): string
 		{
@@ -742,7 +784,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function parenthesisClose(): self
+	public function parenthesisClose(): self
 	{
 		$this->indention--;
 
@@ -762,7 +804,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function parenthesisOpen(string $field = '', string $comparator = '', $value = ''): self
+	public function parenthesisOpen(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('(', $statement, 1, ($statement === '' ? 0 : 1), ($statement === '' ? 0 : 1));
@@ -781,7 +823,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function select(...$fields): self
+	public function select(...$fields): self
 	{
 		return $this->_select('SELECT', ...$fields);
 	}
@@ -796,7 +838,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectCustom(string $suffix, ...$fields): self
+	public function selectCustom(string $suffix, ...$fields): self
 	{
 		return $this->_select('SELECT ' . $suffix, ...$fields);
 	}
@@ -810,7 +852,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectDistinct(...$fields): self
+	public function selectDistinct(...$fields): self
 	{
 		return $this->_select('SELECT DISTINCT', ...$fields);
 	}
@@ -824,7 +866,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function selectFoundRows(...$fields): self
+	public function selectFoundRows(...$fields): self
 	{
 		return $this->_select('SELECT SQL_CALC_FOUND_ROWS', ...$fields);
 	}
@@ -839,7 +881,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function set(string $field = '', $value = ''): self
+	public function set(string $field = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, '=', $value);
 
@@ -872,7 +914,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function truncateTable(string $table): self
+	public function truncateTable(string $table): self
 	{
 		$this->add('TRUNCATE TABLE', $this->escapeField($table), 0, 1, 1);
 
@@ -888,7 +930,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function union(QueryBuilder $builder): self
+	public function union(QueryBuilder $builder): self
 	{
 		$this->add('UNION', '');
 		$this->merge($builder);
@@ -905,7 +947,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function unionAll(QueryBuilder $builder): self
+	public function unionAll(QueryBuilder $builder): self
 	{
 		$this->add('UNION ALL', '');
 		$this->merge($builder);
@@ -922,7 +964,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function update(string $table): self
+	public function update(string $table): self
 	{
 		$this->add('UPDATE', $this->escapeField($table), 0, 1, 1);
 
@@ -938,7 +980,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function values(...$values): self
+	public function values(...$values): self
 	{
 		$vals = [];
 
@@ -964,7 +1006,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function where(string $field = '', string $comparator = '', $value = ''): self
+	public function where(string $field = '', string $comparator = '', $value = ''): self
 	{
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('WHERE', $statement, 0, ($statement === '' ? 0 : 1), ($statement === '' ? 0 : 1), '');
@@ -982,7 +1024,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function with(string $name, QueryBuilder $query): self
+	public function with(string $name, QueryBuilder $query): self
 	{
 		if ($this->previousClause !== 'WITH')
 			$this->add('WITH', "$name AS", 0, 0, -1);
@@ -1006,7 +1048,7 @@ final class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function withRecursive(string $name, QueryBuilder $query): self
+	public function withRecursive(string $name, QueryBuilder $query): self
 	{
 		if ($this->previousClause !== 'WITH RECURSIVE')
 			$this->add('WITH RECURSIVE', "$name AS", 0, 0, -1);
@@ -1071,6 +1113,21 @@ final class QueryBuilder
 			'query_raw' => $raw,
 			'params' => $this->params
 		];
+	}
+
+	/**
+	 * Reports an unsupported feature with a DatabaseException.
+	 *
+	 * @param string $method
+	 *
+	 * @return mixed
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	protected final function unsupportedFeature(string $method): void
+	{
+		throw new DatabaseException(sprintf('Feature %s is currently not supported for %s.', $method, get_class($this->driver)), DatabaseException::ERR_FEATURE_UNSUPPORTED);
 	}
 
 	/**
