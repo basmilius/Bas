@@ -32,6 +32,7 @@ class MyRouter extends Router
 		$this->get('/(profile|user)/$userId', [$this, 'onGetUser']);
 		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?<format>pdf|html)', [$this, 'onGetUserInvoice']);
 		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
+		$this->get('/wildcard/*', [$this, 'onGetWildcard']);
 
 		$this->get('/anonymous', function (RouteContext $context): void
 		{
@@ -59,6 +60,13 @@ class MyRouter extends Router
 		return sprintf("Show invoice '%s' as '%s' for user %d AND %s.", $invoiceNo, $format, $userId, $myBool ? 'TRUE' : 'FALSE');
 	}
 
+	public final function onGetWildcard(RouteContext $context): void
+	{
+		echo 'Wildcard route!', PHP_EOL;
+
+		pre($context);
+	}
+
 }
 
 Stopwatch::start('router');
@@ -67,7 +75,7 @@ try
 {
 	$router = new MyRouter();
 	$router->define('myBool', true);
-	$router->executeAndRespond('/profile/invoices/20181122.pdf', 'GET');
+	$router->executeAndRespond('/wildcard/asdasda', 'GET');
 }
 catch (RouterException $err)
 {

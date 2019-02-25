@@ -95,7 +95,10 @@ class Router
 	 */
 	public final function add(AbstractRoute $route): Router
 	{
-		array_unshift($this->routes, $route);
+		if (strstr($route->getPath(), '/*'))
+			array_push($this->routes, $route);
+		else
+			array_unshift($this->routes, $route);
 
 		return $this;
 	}

@@ -220,7 +220,7 @@ abstract class AbstractRoute
 
 		$params = $this->getValidatableParams();
 		$paramsValues = [];
-		$pathRegex = $this->path;
+		$pathRegex = str_replace('/*', '/(?<wildcard>.*)', $this->path);
 		$pathValues = $this->path;
 
 		foreach ($params as $param)
@@ -241,6 +241,12 @@ abstract class AbstractRoute
 
 			if (is_scalar($value))
 				$pathValues = str_replace('$' . $param->getName(), $value, $pathValues);
+		}
+
+		if (isset($matches['wildcard']))
+		{
+			$paramsValues['wildcard'] = $matches['wildcard'];
+			$pathValues = str_replace('/*', '/' . $matches['wildcard'], $pathValues);
 		}
 
 		$this->getContext()->setParams($paramsValues);
