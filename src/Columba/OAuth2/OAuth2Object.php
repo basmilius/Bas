@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2;
 
-use ArrayAccess;
-use JsonSerializable;
+use Columba\Facade\IArray;
+use Columba\Facade\IJson;
 
 /**
  * Class OAuth2Object
@@ -22,7 +22,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since
  */
-class OAuth2Object implements ArrayAccess, JsonSerializable
+class OAuth2Object implements IArray, IJson
 {
 
 	/**
@@ -55,7 +55,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetExists($offset)
+	public final function offsetExists($offset): bool
 	{
 		return isset($this->data[$offset]);
 	}
@@ -75,7 +75,7 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetSet($offset, $value)
+	public final function offsetSet($offset, $value): void
 	{
 		$this->data[$offset] = $value;
 	}
@@ -85,9 +85,19 @@ class OAuth2Object implements ArrayAccess, JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function offsetUnset($offset)
+	public final function offsetUnset($offset): void
 	{
 		unset($this->data[$offset]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function toArray(): array
+	{
+		return $this->data;
 	}
 
 	/**

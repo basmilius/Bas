@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use JsonSerializable;
+use Columba\Facade\IJson;
 
 /**
  * Class TraceInfo
@@ -21,7 +21,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
-class TraceInfo implements JsonSerializable
+class TraceInfo implements IJson
 {
 
 	/**

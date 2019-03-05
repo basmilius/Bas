@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
+use Columba\Facade\IJson;
 use Columba\Util\A;
 use Columba\Util\ExceptionUtil;
-use JsonSerializable;
 use Throwable;
 
 /**
@@ -24,7 +24,7 @@ use Throwable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
-class ExceptionInfo implements JsonSerializable
+class ExceptionInfo implements IJson
 {
 
 	/**

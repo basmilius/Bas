@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Color;
 
-use JsonSerializable;
+use Columba\Facade\IJson;
 
 /**
  * Class Color
@@ -21,7 +21,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.1.0
  */
-class Color implements JsonSerializable
+class Color implements IJson
 {
 
 	/**

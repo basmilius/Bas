@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Plesk;
 
+use Columba\Facade\IJson;
 use Exception;
-use JsonSerializable;
 use Throwable;
 
 /**
@@ -23,7 +23,7 @@ use Throwable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.4.0
  */
-final class PleskException extends Exception implements JsonSerializable
+final class PleskException extends Exception implements IJson
 {
 
 	/**
@@ -46,7 +46,7 @@ final class PleskException extends Exception implements JsonSerializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function jsonSerialize()
+	public final function jsonSerialize(): array
 	{
 		return [
 			'code' => $this->getCode(),

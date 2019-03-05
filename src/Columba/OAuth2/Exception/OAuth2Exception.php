@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2\Exception;
 
+use Columba\Facade\IJson;
 use Exception;
-use JsonSerializable;
 
 /**
  * Class OAuth2Exception
@@ -22,7 +22,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-abstract class OAuth2Exception extends Exception implements JsonSerializable
+abstract class OAuth2Exception extends Exception implements IJson
 {
 
 	/**

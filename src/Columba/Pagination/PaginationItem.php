@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Pagination;
 
-use JsonSerializable;
+use Columba\Facade\IJson;
 
 /**
  * Class PaginationItem
@@ -21,7 +21,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class PaginationItem implements JsonSerializable
+final class PaginationItem implements IJson
 {
 
 	/**

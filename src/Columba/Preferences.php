@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Columba;
 
-use ArrayAccess;
+use Columba\Facade\IArray;
+use Columba\Facade\ICountable;
+use Columba\Facade\IIterator;
+use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
-use Countable;
 use InvalidArgumentException;
-use Iterator;
-use JsonSerializable;
 
 /**
  * Class Preferences
@@ -26,7 +26,7 @@ use JsonSerializable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class Preferences implements ArrayAccess, Countable, Iterator, JsonSerializable
+final class Preferences implements IArray, ICountable, IIterator, IJson
 {
 
 	/**
@@ -183,6 +183,16 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function toArray(): array
+	{
+		return array_combine($this->keys, $this->values);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function count(): int
@@ -197,7 +207,7 @@ final class Preferences implements ArrayAccess, Countable, Iterator, JsonSeriali
 	 */
 	public final function jsonSerialize(): array
 	{
-		return array_combine($this->keys, $this->values);
+		return $this->toArray();
 	}
 
 	/**
