@@ -84,7 +84,7 @@ final class JWT
 			throw new JWTException('Unknown algorithm.', JWTException::ERR_UNEXPECTED_ARGUMENT);
 
 		if (!isset(static::$supportedAlgorithms[$header['alg']]))
-			throw new JWTException('Algorithm not supported.', JWTException::ERR_NOT_SUPPORTED);
+			throw new JWTException('Algorithm not supported.', JWTException::ERR_UNSUPPORTED);
 
 		if (count($allowedAlgorithms) > 0 && !in_array($header['alg'], $allowedAlgorithms))
 			throw new JWTException('Algorithm not allowed.', JWTException::ERR_UNEXPECTED_ARGUMENT);
@@ -171,7 +171,7 @@ final class JWT
 	public static function sign(string $message, string $key, string $algorithmName): string
 	{
 		if (!isset(static::$supportedAlgorithms[$algorithmName]))
-			throw new JWTException('Algorithm not supported.', JWTException::ERR_NOT_SUPPORTED);
+			throw new JWTException('Algorithm not supported.', JWTException::ERR_UNSUPPORTED);
 
 		[$function, $algorithm] = static::$supportedAlgorithms[$algorithmName];
 
@@ -190,7 +190,7 @@ final class JWT
 				return $signature;
 
 			default:
-				throw new JWTException('Algorithm not supported.', JWTException::ERR_NOT_SUPPORTED);
+				throw new JWTException('Algorithm not supported.', JWTException::ERR_UNSUPPORTED);
 		}
 	}
 
@@ -211,7 +211,7 @@ final class JWT
 	private static function verify(string $message, string $signature, string $key, string $algorithmName): bool
 	{
 		if (!isset(static::$supportedAlgorithms[$algorithmName]))
-			throw new JWTException('Algorithm not supported.', JWTException::ERR_NOT_SUPPORTED);
+			throw new JWTException('Algorithm not supported.', JWTException::ERR_UNSUPPORTED);
 
 		[$function, $algorithm] = static::$supportedAlgorithms[$algorithmName];
 

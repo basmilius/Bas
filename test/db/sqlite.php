@@ -8,8 +8,6 @@
  * LICENSE file that was distributed with this source code.
  */
 
-/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
-
 declare(strict_types=1);
 
 use Columba\Database\SQLiteDatabaseDriver;

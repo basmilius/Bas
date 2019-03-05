@@ -31,7 +31,17 @@ class QueryBuilder
 	/**
 	 * @var AbstractDatabaseDriver
 	 */
-	private $driver;
+	protected $driver;
+
+	/**
+	 * @var string
+	 */
+	protected $escapeLeft = '`';
+
+	/**
+	 * @var string
+	 */
+	protected $escapeRight = '`';
 
 	/**
 	 * @var int
@@ -41,12 +51,12 @@ class QueryBuilder
 	/**
 	 * @var string|null
 	 */
-	private $modelClass = null;
+	protected $modelClass = null;
 
 	/**
 	 * @var array
 	 */
-	private $params = [];
+	protected $params = [];
 
 	/**
 	 * @var array
@@ -150,10 +160,10 @@ class QueryBuilder
 			if (in_array($field, $ignore))
 				return $field;
 
-			if (substr($field, 0, 1) === '`')
+			if (substr($field, 0, 1) === $this->escapeLeft)
 				return $field;
 
-			return '`' . $field . '`';
+			return $this->escapeLeft . $field . $this->escapeRight;
 		}, $parts);
 
 		return implode('.', $parts);
@@ -181,7 +191,7 @@ class QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function execute(): ResultSet
+	public function execute(): ResultSet
 	{
 		$smt = $this->driver->prepare($this->__toString());
 
@@ -189,6 +199,24 @@ class QueryBuilder
 			$smt->bind($name, $value, $type);
 
 		return $smt->execute($this->modelClass);
+	}
+
+	/**
+	 * Returns TRUE if {@see $clause} is defined in the query.
+	 *
+	 * @param string $clause
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function has(string $clause): bool
+	{
+		foreach ($this->parts as [$c])
+			if ($c === $clause)
+				return true;
+
+		return false;
 	}
 
 	/**
@@ -769,7 +797,7 @@ class QueryBuilder
 				return $this->escapeField($field) . ' DESC';
 			}
 
-			return $field;
+			return $this->escapeField($field);
 		}, $fields);
 
 		$this->add('ORDER BY', $fields, 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);

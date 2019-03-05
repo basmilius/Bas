@@ -28,7 +28,7 @@ final class JWTException extends Exception
 	public const ERR_UNKNOWN = 0;
 	public const ERR_JSON_ERROR = 1;
 	public const ERR_NULL_RESULT = 2;
-	public const ERR_NOT_SUPPORTED = 4;
+	public const ERR_UNSUPPORTED = 4;
 	public const ERR_OPENSSL = 8;
 	public const ERR_INVALID_ARGUMENT = 16;
 	public const ERR_UNEXPECTED_ARGUMENT = 32;

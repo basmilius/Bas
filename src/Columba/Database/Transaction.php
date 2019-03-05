@@ -38,15 +38,15 @@ final class Transaction extends AbstractDatabaseDriver
 	}
 
 	/**
-	 * Begins the {@see Transaction}.
+	 * Gets the parent driver.
 	 *
-	 * @return bool
+	 * @return DatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.5.0
 	 */
-	public final function begin(): bool
+	public final function getDriver(): AbstractDatabaseDriver
 	{
-		return $this->driver->pdo->beginTransaction();
+		return $this->driver;
 	}
 
 	/**

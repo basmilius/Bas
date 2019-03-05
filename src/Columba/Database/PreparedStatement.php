@@ -173,10 +173,30 @@ final class PreparedStatement
 	{
 		$result = $this->statement->execute();
 
-		if ($result)
-			return new ResultSet($this, $this->statement, $modelClass);
+		if (!$result)
+			throw new PDOException(strval($this->statement->errorInfo()[2]), intval($this->statement->errorCode()));
 
-		throw new PDOException(strval($this->statement->errorInfo()[2]), intval($this->statement->errorCode()));
+		$driver = $this->driver;
+
+		if ($driver instanceof Transaction)
+			$driver = $driver->getDriver();
+
+		if ($driver instanceof MSSQLDatabaseDriver)
+		{
+			$start = time();
+
+			// With MSSQL we need to advance the rowset until we hit one with data.
+			while ($this->statement->columnCount() === 0 && $this->statement->nextRowset())
+			{
+				// Check if this is running long, if it is stop waiting and throw exception.
+				if (time() - $start > 5)
+					throw new DatabaseException('Retrieving result took too long.', DatabaseException::ERR_QUERY_FAILED);
+			}
+
+			// I know, this isn't the perfect solution, but it worked!
+		}
+
+		return new ResultSet($this, $this->statement, $modelClass);
 	}
 
 }
