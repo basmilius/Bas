@@ -14,6 +14,8 @@ namespace Columba\Router;
 
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Route\AbstractRoute;
+use Columba\Router\Route\LazyRouterRoute;
+use Columba\Router\Route\RouterRoute;
 use ReflectionFunctionAbstract;
 
 /**
@@ -126,6 +128,23 @@ final class RouteContext
 				$path = $prepend . $path;
 
 		return $path ?? 'NULL';
+	}
+
+	/**
+	 * Gets the response implementation based on the current route context.
+	 *
+	 * @return AbstractResponse
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function getResponseImplementation(): AbstractResponse
+	{
+		$route = $this->route;
+
+		if ($route instanceof RouterRoute || $route instanceof LazyRouterRoute)
+			return $route->getRouter()->getResponse();
+
+		return $route->getParentRouter()->getResponse();
 	}
 
 	/**

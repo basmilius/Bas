@@ -464,17 +464,31 @@ class Router
 	}
 
 	/**
+	 * Invoked when a {@see AbstractRoute} is executed.
+	 *
+	 * @param AbstractRoute $route
+	 * @param RouteContext  $context
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 * @internal
+	 */
+	public function onExecute(AbstractRoute $route, RouteContext $context): void
+	{
+	}
+
+	/**
 	 * Invoked when an {@see Exception} is thrown.
 	 *
 	 * @param Exception         $err
 	 * @param RouteContext|null $context
 	 *
-	 * @return mixed|null
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
+	 * @internal
 	 */
-	public function onException(Exception $err, ?RouteContext $context = null)
+	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
 		$callbackName = function (ReflectionFunctionAbstract $callback): string
 		{
@@ -486,25 +500,14 @@ class Router
 
 		if ($err instanceof RouterException)
 			throw $err;
-		else if ($context !== null && $context->getCallback() !== null)
-			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
-		else if ($context !== null)
-			throw new RouterException(sprintf("Exception thrown while executing '%s'.", $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
-		else
-			throw new RouterException('Route handler threw an exception!', RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
-	}
 
-	/**
-	 * Invoked when a {@see AbstractRoute} is executed.
-	 *
-	 * @param AbstractRoute $route
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function onExecute(AbstractRoute $route): void
-	{
-		// Nothing here.
+		if ($context !== null && $context->getCallback() !== null)
+			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
+
+		if ($context !== null)
+			throw new RouterException(sprintf("Exception thrown while executing '%s'.", $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
+
+		throw new RouterException('Route handler threw an exception!', RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);
 	}
 
 	/**

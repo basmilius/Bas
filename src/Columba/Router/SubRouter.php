@@ -136,6 +136,24 @@ class SubRouter extends Router
 	}
 
 	/**
+	 * Invoked when a route is not found in the current router. Return TRUE if you want
+	 * to handle the request yourself. Note that eventual other subrouters with the same
+	 * path will not be executed when you return TRUE.
+	 *
+	 * @param string       $requestPath
+	 * @param RouteContext $context
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 * @internal
+	 */
+	public function onNotFound(string $requestPath, RouteContext $context): bool
+	{
+		return false;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

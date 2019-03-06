@@ -95,7 +95,7 @@ abstract class AbstractRoute
 	{
 		$result = null;
 
-		$this->parent->onExecute($this);
+		$this->parent->onExecute($this, $this->getContext());
 		$this->parent->setCurrentRoute($this);
 
 		try
@@ -158,7 +158,7 @@ abstract class AbstractRoute
 		if (mb_substr($path, 0, 1) === '/' || mb_substr($path, 0, 4) === 'http')
 			return $path; // No need to resolve.
 
-		$parts = explode('/', mb_substr($this->context->getFullPath(), 0, -mb_strlen($this->path)) . '/' . $path);
+		$parts = explode('/', $this->context->getFullPath() . '/' . $path);
 		$result = [];
 
 		foreach ($parts as $part)

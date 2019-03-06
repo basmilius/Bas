@@ -86,6 +86,13 @@ class MyRouter extends Router
 		return $wildcard;
 	}
 
+	public function onNotFound(string $requestPath, RouteContext $context): bool
+	{
+		pre(__METHOD__, 'Route was not found, not found handled in MyRouter.', $requestPath, $context->getResponseImplementation());
+
+		return true;
+	}
+
 }
 
 class MySubRouter extends SubRouter
@@ -93,7 +100,7 @@ class MySubRouter extends SubRouter
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(new \Columba\Router\Response\JsonResponse());
 
 		$this->get('/', [$this, 'onGetIndex']);
 	}
@@ -103,9 +110,16 @@ class MySubRouter extends SubRouter
 		return 'Index of sub router';
 	}
 
-	public function onException(Exception $err, ?RouteContext $context = null)
+	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
 		pre_die(__METHOD__, func_get_args());
+	}
+
+	public function onNotFound(string $requestPath, RouteContext $context): bool
+	{
+		pre(__METHOD__, 'Route was not found, not found handled in MySubRouter.', $requestPath, $context->getResponseImplementation());
+
+		return true;
 	}
 
 }

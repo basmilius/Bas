@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\Router\Route;
 
 use Columba\Router\Router;
-use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
 
 /**
@@ -90,7 +89,7 @@ final class LazyRouterRoute extends AbstractRoute
 	public final function executeImpl(): void
 	{
 		if ($this->matchingRoute === null)
-			throw new RouterException('Illegal call, matchingRoute is NULL', RouterException::ERR_ILLEGAL);
+			return;
 
 		$this->matchingRoute->execute();
 	}
@@ -146,7 +145,12 @@ final class LazyRouterRoute extends AbstractRoute
 		if (mb_substr($relativePath, 0, 1) !== '/')
 			$relativePath = '/' . $relativePath;
 
-		return ($this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext())) !== null;
+		$this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext());
+
+		if ($this->matchingRoute === null)
+			return $this->router->onNotFound($path, $this->getContext());
+
+		return true;
 	}
 
 }
