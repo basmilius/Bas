@@ -14,6 +14,8 @@ namespace Columba\Util;
 
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunctionAbstract;
+use ReflectionParameter;
 
 /**
  * Class ReflectionUtil
@@ -57,6 +59,25 @@ final class ReflectionUtil
 		}
 
 		return false;
+	}
+
+	/**
+	 * Gets parameters of a method or function as an associative array.
+	 *
+	 * @param ReflectionFunctionAbstract $methodOrFunction
+	 *
+	 * @return ReflectionParameter[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function getParameters(ReflectionFunctionAbstract $methodOrFunction): array
+	{
+		$parameters = [];
+
+		foreach ($methodOrFunction->getParameters() as $parameter)
+			$parameters[$parameter->getName()] = $parameter;
+
+		return $parameters;
 	}
 
 	/**
