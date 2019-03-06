@@ -83,8 +83,11 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function forContext(AbstractRoute $route, RouteContext $context, bool &$isRouteValid, bool &$isRequestMethodValid): void
+	public final function forContext(AbstractRoute $route, RouteContext $context, bool &$isValid): void
 	{
+		if (!$isValid)
+			return;
+
 		if (!$this->isAuthBearer())
 			return;
 
