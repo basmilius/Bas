@@ -225,10 +225,13 @@ abstract class AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
+		$this->getContext()->setPath($this->path);
+
 		$agressiveProfiling = defined('COLUMBA_ROUTER_AGRESSIVE_PROFILING') && COLUMBA_ROUTER_AGRESSIVE_PROFILING;
+		$fullPath = $this->getContext()->getFullPath(false);
 
 		if ($agressiveProfiling)
-			ServerTiming::start($this->path . $requestMethod, "$requestMethod $this->path", 'cpu');
+			ServerTiming::start($fullPath . $requestMethod, "$requestMethod $fullPath", 'cpu');
 
 		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
 			$path = mb_substr($path, 0, -1);
@@ -268,7 +271,6 @@ abstract class AbstractRoute
 		}
 
 		$this->getContext()->setParams($paramsValues);
-		$this->getContext()->setPath($this->path);
 		$this->getContext()->setPathRegex($pathRegex);
 		$this->getContext()->setPathValues($pathValues);
 
@@ -291,7 +293,7 @@ abstract class AbstractRoute
 		finally
 		{
 			if ($agressiveProfiling)
-				ServerTiming::stop($this->path . $requestMethod);
+				ServerTiming::stop($fullPath . $requestMethod);
 		}
 	}
 
