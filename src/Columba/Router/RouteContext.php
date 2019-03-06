@@ -152,14 +152,18 @@ final class RouteContext
 	 *
 	 * @param string $redirectPath
 	 * @param int    $responseCode
+	 * @param mixed  $returnValue
 	 *
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function redirect(string $redirectPath, int $responseCode = 302): void
+	public final function redirect(string $redirectPath, int $responseCode = 302, $returnValue = '')
 	{
 		$this->responseCode = $responseCode;
 		$this->redirectPath = $redirectPath;
+
+		return $returnValue;
 	}
 
 	/**
