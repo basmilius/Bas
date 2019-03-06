@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace Columba\Router\Response;
 
 use Columba\Http\ResponseCode;
-use Columba\Router\RouterException;
+use Columba\Router\RouteContext;
+use Columba\Util\ServerTiming;
 
 /**
  * Class AbstractResponse
@@ -56,20 +57,24 @@ abstract class AbstractResponse
 	/**
 	 * Prints the response to the output buffer.
 	 *
-	 * @param $value
+	 * @param RouteContext $context
+	 * @param mixed        $value
 	 *
-	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function print($value): void
+	public final function print(RouteContext $context, $value): void
 	{
-		$output = $this->respond($value);
+		$output = $this->respond($context, $value);
 
 		$this->addHeader('Content-Length', strval(mb_strlen($output)));
 
-		$statusCode = http_response_code();
-		header($_SERVER['SERVER_PROTOCOL'] . ' ' . $statusCode . ' ' . ResponseCode::getMessage($statusCode));
+		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+		$statusCode = http_response_code() ?: 200;
+		$statusMessage = ResponseCode::getMessage($statusCode);
+
+		header("$protocol $statusCode $statusMessage");
+		ServerTiming::appendHeader();
 
 		foreach ($this->headers as [$name, $values])
 			foreach ($values as $headerValue)
@@ -81,14 +86,14 @@ abstract class AbstractResponse
 	/**
 	 * Respond to the webbrowser.
 	 *
-	 * @param mixed $value
+	 * @param RouteContext $context
+	 * @param mixed        $value
 	 *
 	 * @return string
-	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function respond($value): string;
+	protected abstract function respond(RouteContext $context, $value): string;
 
 	/**
 	 * Adds a response header.
@@ -102,31 +107,6 @@ abstract class AbstractResponse
 	protected final function addHeader(string $name, string ...$values): void
 	{
 		$this->headers[] = [$name, $values];
-	}
-
-	/**
-	 * Gets the HTTP Response Code.
-	 *
-	 * @return int
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	protected final function getResponseCode(): int
-	{
-		return http_response_code();
-	}
-
-	/**
-	 * Sets the HTTP Response Code.
-	 *
-	 * @param int $responseCode
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	protected final function setHttpResponseCode(int $responseCode): void
-	{
-		http_response_code($responseCode);
 	}
 
 }

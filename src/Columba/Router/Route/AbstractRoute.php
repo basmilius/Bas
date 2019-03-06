@@ -13,12 +13,15 @@ declare(strict_types=1);
 namespace Columba\Router\Route;
 
 use Columba\Http\ResponseCode;
+use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\RouteContext;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Util\A;
+use Columba\Util\ServerTiming;
+use Columba\Util\Stopwatch;
 use Exception;
 
 /**
@@ -84,52 +87,62 @@ abstract class AbstractRoute
 	/**
 	 * Executes the {@see AbstractRoute}.
 	 *
-	 * @param bool $respond
-	 *
-	 * @return mixed
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function execute(bool $respond)
+	public final function execute(): void
 	{
 		$result = null;
 
-		$this->getParentRouter()->onExecute($this);
-		$this->getParentRouter()->setCurrentRoute($this);
+		$this->parent->onExecute($this);
+		$this->parent->setCurrentRoute($this);
 
 		try
 		{
-			if ($this->getContext()->getRedirectPath() === null)
-				$result = $this->executeImpl($respond);
+			if ($this->getContext()->getResponse()[0] === null && $this->getContext()->getRedirectPath() === null)
+				$this->executeImpl();
+
+			/** @var AbstractResponse $responseImplementation */
+			[$responseImplementation, $responseValue] = $this->getContext()->getResponse();
 
 			if ($this->getContext()->getRedirectPath() === null)
-				return $result;
+			{
+				if ($responseImplementation === null)
+					return;
 
-			$statusCode = $this->getContext()->getRedirectCode();
+				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
-			http_response_code($statusCode);
-			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $statusCode . ' ' . ResponseCode::getMessage($statusCode));
-			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
-			return $result;
+				$this->getContext()->setResolutionTime($time);
+
+				http_response_code($this->getContext()->getResponseCode());
+				$responseImplementation->print($this->getContext(), $responseValue);
+			}
+			else
+			{
+				$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+				$statusCode = $this->getContext()->getResponseCode();
+				$statusMessage = ResponseCode::getMessage($statusCode);
+
+				http_response_code($statusCode);
+				header("$protocol $statusCode $statusMessage");
+				header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
+			}
 		}
 		catch (Exception $err)
 		{
-			return $this->getParentRouter()->onException($err, $this->getContext());
+			$this->parent->onException($err, $this->getContext());
 		}
 	}
 
 	/**
 	 * Implementation for {@see AbstractRoute::execute()}.
 	 *
-	 * @param bool $respond
-	 *
-	 * @return mixed
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public abstract function executeImpl(bool $respond);
+	public abstract function executeImpl(): void;
 
 	/**
 	 * Resolves a path relative to this {@see AbstractRoute}.
@@ -186,7 +199,7 @@ abstract class AbstractRoute
 		if ($response === null)
 			throw new RouterException('Missing response implementation', 0);
 
-		$response->print($value);
+		$this->getContext()->setResponse($response, $value);
 	}
 
 	/**
@@ -212,6 +225,11 @@ abstract class AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
+		$agressiveProfiling = defined('COLUMBA_ROUTER_AGRESSIVE_PROFILING') && COLUMBA_ROUTER_AGRESSIVE_PROFILING;
+
+		if ($agressiveProfiling)
+			ServerTiming::start($this->path . $requestMethod, "$requestMethod $this->path", 'cpu');
+
 		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
 			$path = mb_substr($path, 0, -1);
 
@@ -227,12 +245,12 @@ abstract class AbstractRoute
 			$pathRegex = str_replace(['/$' . $param->getName(), '.$' . $param->getName()], $param->getRegex(), $pathRegex);
 
 		$pathRegex = '#^' . $pathRegex . (!$this->allowSubRoutes ? '$' : '') . '#';
-		$isRouteValid = @preg_match($pathRegex, $path, $matches);
+		$isValid = preg_match($pathRegex, $path, $matches);
 
-		if ($isRouteValid === false)
+		if ($isValid === false)
 			throw new RouterException(sprintf("Could not compile regex for route '%s'.", $this->path), RouterException::ERR_REGEX_COMPILATION_FAILED);
 
-		$isRouteValid = $isRouteValid === 1 && mb_substr($path, 0, mb_strlen($matches[0])) === $matches[0];
+		$isValid = $isValid === 1 && mb_substr($path, 0, mb_strlen($matches[0])) === $matches[0];
 
 		foreach ($params as $index => $param)
 		{
@@ -254,19 +272,27 @@ abstract class AbstractRoute
 		$this->getContext()->setPathRegex($pathRegex);
 		$this->getContext()->setPathValues($pathValues);
 
-		$isRequestMethodValid = ($this->requestMethod === null || $this->requestMethod === $requestMethod);
+		if (!($this->requestMethod === null || $this->requestMethod === $requestMethod))
+			return false;
 
-		foreach ($this->parent->getMiddlewares() as $middleware)
-			$middleware->forContext($this, $this->getContext(), $isRouteValid, $isRequestMethodValid);
-
-		if ($this->getContext()->getRedirectPath() !== null)
+		try
 		{
-			http_response_code($this->getContext()->getRedirectCode());
-			header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
-			die;
-		}
+			foreach ($this->parent->getMiddlewares() as $middleware)
+				$middleware->forContext($this, $this->getContext(), $isValid);
 
-		return $isRouteValid && $isRequestMethodValid;
+			return $isValid;
+		}
+		catch (Exception $err)
+		{
+			$this->parent->onException($err, $this->getContext());
+
+			return false;
+		}
+		finally
+		{
+			if ($agressiveProfiling)
+				ServerTiming::stop($this->path . $requestMethod);
+		}
 	}
 
 	/**

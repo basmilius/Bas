@@ -49,7 +49,7 @@ function pre_die(...$data)
 }
 
 $autoloader = new Autoloader();
-$autoloader->addDirectory(__DIR__ . '/../src', 'Columba\\');
+$autoloader->addDirectory(__DIR__ . '/../src');
 $autoloader->register();
 
 ExceptionHandler::register();

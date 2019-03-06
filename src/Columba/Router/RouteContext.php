@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router;
 
+use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Route\AbstractRoute;
 use ReflectionFunctionAbstract;
 
@@ -66,14 +67,29 @@ final class RouteContext
 	private $pathValues = null;
 
 	/**
-	 * @var int|null
-	 */
-	private $redirectCode = null;
-
-	/**
 	 * @var string|null
 	 */
 	private $redirectPath = null;
+
+	/**
+	 * @var float
+	 */
+	private $resolutionTime = -1;
+
+	/**
+	 * @var AbstractResponse
+	 */
+	private $responseClass = null;
+
+	/**
+	 * @var int
+	 */
+	private $responseCode = 200;
+
+	/**
+	 * @var mixed
+	 */
+	private $responseValue = null;
 
 	/**
 	 * RouteContext constructor.
@@ -116,19 +132,15 @@ final class RouteContext
 	 * Redirects our {@see RouteContext} to something else.
 	 *
 	 * @param string $redirectPath
-	 * @param int    $redirectCode
-	 * @param mixed  $returnValue
+	 * @param int    $responseCode
 	 *
-	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function redirect(string $redirectPath, int $redirectCode = 302, $returnValue = '')
+	public final function redirect(string $redirectPath, int $responseCode = 302): void
 	{
-		$this->redirectCode = $redirectCode;
+		$this->responseCode = $responseCode;
 		$this->redirectPath = $redirectPath;
-
-		return $returnValue;
 	}
 
 	/**
@@ -176,6 +188,7 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function setCanExecute(bool $canExecute)
 	{
@@ -201,10 +214,89 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
+	 * @internal
 	 */
 	public final function setCallback(ReflectionFunctionAbstract $callback): void
 	{
 		$this->callback = $callback;
+	}
+
+	/**
+	 * Gets the resolution time.
+	 *
+	 * @return float
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function getResolutionTime(): float
+	{
+		return $this->resolutionTime;
+	}
+
+	/**
+	 * Sets the resolution time.
+	 *
+	 * @param float $resolutionTime
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 * @internal
+	 */
+	public final function setResolutionTime(float $resolutionTime): void
+	{
+		$this->resolutionTime = $resolutionTime;
+	}
+
+	/**
+	 * Gets the response.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function getResponse(): array
+	{
+		return [$this->responseClass, $this->responseValue];
+	}
+
+	/**
+	 * Sets the response.
+	 *
+	 * @param AbstractResponse $responseClass
+	 * @param mixed            $responseValue
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function setResponse(AbstractResponse $responseClass, $responseValue): void
+	{
+		$this->responseClass = $responseClass;
+		$this->responseValue = $responseValue;
+	}
+
+	/**
+	 * Gets the response code.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function getResponseCode(): int
+	{
+		return $this->responseCode;
+	}
+
+	/**
+	 * Sets the response code.
+	 *
+	 * @param int $responseCode
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function setResponseCode(int $responseCode): void
+	{
+		$this->responseCode = $responseCode;
 	}
 
 	/**
@@ -292,6 +384,7 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function setParent(RouteContext $parent): void
 	{
@@ -317,6 +410,7 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function setPath($path): void
 	{
@@ -342,6 +436,7 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function setPathRegex(string $pathRegex): void
 	{
@@ -367,35 +462,11 @@ final class RouteContext
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 * @internal
 	 */
 	public final function setPathValues(string $pathValues): void
 	{
 		$this->pathValues = $pathValues;
-	}
-
-	/**
-	 * Gets the redirect response code.
-	 *
-	 * @return int|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function getRedirectCode(): ?int
-	{
-		return $this->redirectCode;
-	}
-
-	/**
-	 * Sets the redirect response code.
-	 *
-	 * @param int|null $redirectCode
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function setRedirectCode(?int $redirectCode)
-	{
-		$this->redirectCode = $redirectCode;
 	}
 
 	/**
@@ -408,19 +479,6 @@ final class RouteContext
 	public final function getRedirectPath(): ?string
 	{
 		return $this->redirectPath;
-	}
-
-	/**
-	 * Sets the redirect path.
-	 *
-	 * @param string|null $redirectPath
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function setRedirectPath(?string $redirectPath)
-	{
-		$this->redirectPath = $redirectPath;
 	}
 
 }

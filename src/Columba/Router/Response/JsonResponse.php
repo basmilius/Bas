@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
-use Columba\Router\Router;
-use Columba\Util\Stopwatch;
+use Columba\Router\RouteContext;
 
 /**
  * Class JsonResponse
@@ -66,15 +65,13 @@ class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond($value): string
+	protected function respond(RouteContext $context, $value): string
 	{
 		if ($this->withDefaults)
 		{
-			Stopwatch::stop(Router::class, $executionTime, Stopwatch::UNIT_SECONDS);
-
 			$header = [
-				'execution_time' => $executionTime,
-				'response_code' => $this->getResponseCode()
+				'execution_time' => $context->getResolutionTime(),
+				'response_code' => $context->getResponseCode()
 			];
 			$result = ['header' => $header];
 			$success = true;

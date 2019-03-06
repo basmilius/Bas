@@ -70,20 +70,18 @@ final class RedirectRoute extends AbstractRoute
 	}
 
 	/**
-	 * @param bool $respond
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public final function executeImpl(bool $respond): string
+	public final function executeImpl(): void
 	{
 		$destination = $this->destination;
 
 		foreach ($this->params as $param)
 			$destination = str_replace('$' . $param->getName(), $this->getContext()->getParam($param->getName()), $destination);
 
-		return $this->getContext()->redirect($destination, $this->responseCode);
+		$this->getContext()->redirect($destination, $this->responseCode);
 	}
 
 	/**

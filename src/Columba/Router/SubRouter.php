@@ -14,6 +14,7 @@ namespace Columba\Router;
 
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
+use Columba\Router\Response\ResponseMethods;
 
 /**
  * Class SubRouter
@@ -24,6 +25,8 @@ use Columba\Router\Response\AbstractResponse;
  */
 class SubRouter extends Router
 {
+
+	use ResponseMethods;
 
 	/**
 	 * @var RouteParam[]
@@ -52,30 +55,35 @@ class SubRouter extends Router
 	}
 
 	/**
+	 * Adds a route param.
+	 *
+	 * @param string $name
+	 * @param string $type
+	 * @param bool   $allowsNull
+	 * @param mixed  $defaultValue
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function addParam(string $name, string $type, bool $allowsNull = false, $defaultValue = null): void
+	{
+		$this->parameters[] = new RouteParam($name, $type, $allowsNull, $defaultValue);
+	}
+
+	/**
 	 * Adds a sub router parameter.
 	 *
 	 * @param RouteParam $param
 	 *
+	 * @deprecated Use the new addParam method.
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 *
+	 * @see SubRouter::addParam()
 	 */
 	public final function addParameter(RouteParam $param): void
 	{
 		$this->parameters[] = $param;
-	}
-
-	/**
-	 * Adds multiple sub router parameters.
-	 *
-	 * @param RouteParam ...$params
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function addParameters(RouteParam ...$params): void
-	{
-		foreach ($params as $param)
-			$this->addParameter($param);
 	}
 
 	/**

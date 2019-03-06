@@ -101,7 +101,7 @@ final class Autoloader
 	 */
 	private function file(string $directory, ?string $namespace, bool $isVirtualNamespace, string $object): ?string
 	{
-		if ($namespace !== null && substr($object, 0, strlen($namespace)) !== $namespace)
+		if ($namespace !== null && mb_substr($object, 0, mb_strlen($namespace)) !== $namespace)
 			return null;
 
 		if ($isVirtualNamespace && $namespace !== null)

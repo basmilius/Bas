@@ -61,12 +61,12 @@ final class RouterRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function executeImpl(bool $respond)
+	public final function executeImpl(): void
 	{
 		if ($this->matchingRoute === null)
-			throw new RouterException('Illegal call, matchingRoute is NULL');
+			throw new RouterException('Illegal call, matchingRoute is NULL', RouterException::ERR_ILLEGAL);
 
-		return $this->matchingRoute->execute($respond);
+		$this->matchingRoute->execute();
 	}
 
 	/**
@@ -108,12 +108,12 @@ final class RouterRoute extends AbstractRoute
 		if (!$isMatch)
 			return false;
 
-		$relativePath = substr($path, mb_strlen($this->getContext()->getPathValues()));
+		$relativePath = mb_substr($path, mb_strlen($this->getContext()->getPathValues()));
 
 		if (empty($relativePath))
 			$relativePath = '/';
 
-		if (substr($relativePath, 0, 1) !== '/')
+		if (mb_substr($relativePath, 0, 1) !== '/')
 			$relativePath = '/' . $relativePath;
 
 		return ($this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext())) !== null;

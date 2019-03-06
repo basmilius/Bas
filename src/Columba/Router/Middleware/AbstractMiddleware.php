@@ -50,14 +50,13 @@ abstract class AbstractMiddleware
 	 *
 	 * @param AbstractRoute $route
 	 * @param RouteContext  $context
-	 * @param bool          $isRouteValid
-	 * @param bool          $isRequestMethodValid
+	 * @param bool          $isValid
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public abstract function forContext(AbstractRoute $route, RouteContext $context, bool &$isRouteValid, bool &$isRequestMethodValid): void;
+	public abstract function forContext(AbstractRoute $route, RouteContext $context, bool &$isValid): void;
 
 	/**
 	 * Gets the associated {@see Router}.
@@ -66,7 +65,7 @@ abstract class AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getRouter(): Router
+	protected final function getRouter(): Router
 	{
 		return $this->router;
 	}

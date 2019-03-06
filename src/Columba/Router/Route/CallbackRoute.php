@@ -63,7 +63,7 @@ class CallbackRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function executeImpl(bool $respond)
+	public final function executeImpl(): void
 	{
 		$reflection = $this->getReflection();
 
@@ -82,12 +82,10 @@ class CallbackRoute extends AbstractRoute
 				$arguments[] = null;
 		}
 
-		$result = $this->invoke($this->callback, ...$arguments);
-
-		if ($respond && (!$reflection->hasReturnType() || $reflection->getReturnType()->getName() !== 'void'))
-			$this->respond($result);
-
-		return $result;
+		if (!$reflection->hasReturnType() || $reflection->getReturnType()->getName() !== 'void')
+			$this->respond($this->invoke($this->callback, ...$arguments));
+		else
+			$this->invoke($this->callback, ...$arguments);
 	}
 
 	/**

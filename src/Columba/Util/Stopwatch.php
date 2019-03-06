@@ -58,27 +58,24 @@ final class Stopwatch
 	public static function stop(string $id, float &$time = null, int $unit = self::UNIT_NANOSECONDS): void
 	{
 		$startTime = self::$registry[$id];
-		$time = 0.0;
-
 		$stopTime = hrtime(true);
-		$diffTime = $stopTime - $startTime;
+		$time = $stopTime - $startTime;
+
+		if ($unit === self::UNIT_NANOSECONDS)
+			return;
 
 		switch ($unit)
 		{
-			case self::UNIT_NANOSECONDS:
-				$time = $diffTime;
-				break;
-
 			case self::UNIT_MICROSECONDS:
-				$time = $diffTime / 1000;
+				$time *= 1e-3;
 				break;
 
 			case self::UNIT_MILLISECONDS:
-				$time = $diffTime / 1000000;
+				$time *= 1e-6;
 				break;
 
 			case self::UNIT_SECONDS:
-				$time = $diffTime / 1000000000;
+				$time *= 1e-9;
 				break;
 		}
 	}

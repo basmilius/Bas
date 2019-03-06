@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
-use Columba\Router\Router;
-use Columba\Util\Stopwatch;
+use Columba\Router\RouteContext;
 use Columba\Util\XmlUtil;
+use DOMDocument;
 use SimpleXMLElement;
 
 /**
@@ -27,7 +27,7 @@ use SimpleXMLElement;
 class XmlResponse extends AbstractResponse
 {
 
-	public const ROOT = '<response/>';
+	public const ROOT = '<response></response>';
 
 	/**
 	 * @var bool
@@ -68,7 +68,7 @@ class XmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond($value): string
+	protected function respond(RouteContext $context, $value): string
 	{
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 
@@ -80,11 +80,9 @@ class XmlResponse extends AbstractResponse
 		{
 			if ($this->withDefaults)
 			{
-				Stopwatch::stop(Router::class, $executionTime, Stopwatch::UNIT_SECONDS);
-
 				$header = [
-					'execution_time' => $executionTime,
-					'response_code' => $this->getResponseCode()
+					'execution_time' => $context->getResolutionTime(),
+					'response_code' => $context->getResponseCode()
 				];
 				$result = ['header' => $header];
 				$success = true;
@@ -115,7 +113,7 @@ class XmlResponse extends AbstractResponse
 
 		if ($this->prettyPrint)
 		{
-			$doc = new \DOMDocument();
+			$doc = new DOMDocument();
 			$doc->loadXML($xml->asXML());
 			$doc->formatOutput = true;
 

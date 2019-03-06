@@ -24,19 +24,19 @@ use Exception;
 final class RequestValidatorException extends Exception
 {
 
-	public const ERR_MISSING = 0xBFBF001;
-	public const ERR_NEEDS_TO_BE_BOOLEAN = 0xBFBF002;
-	public const ERR_NEEDS_TO_BE_FLOAT = 0xBFBF003;
-	public const ERR_NEEDS_TO_BE_INTEGER = 0xBFBF004;
-	public const ERR_NEEDS_TO_BE_STRING = 0xBFBF005;
-	public const ERR_TOO_HIGH = 0xBFBF006;
-	public const ERR_TOO_LOW = 0xBFBF007;
-	public const ERR_NOT_AN_URL = 0xBFBF008;
-	public const ERR_NOT_A_SECURE_URL = 0xBFBF009;
-	public const ERR_NOT_AN_EMAIL = 0xBFBF010;
-	public const ERR_TOO_LONG = 0xBFBF011;
-	public const ERR_TOO_SHORT = 0xBFBF012;
-	public const ERR_DIDNT_MATCH = 0xBFBF013;
+	public const ERR_MISSING = 1;
+	public const ERR_NEEDS_TO_BE_BOOLEAN = 2;
+	public const ERR_NEEDS_TO_BE_FLOAT = 4;
+	public const ERR_NEEDS_TO_BE_INTEGER = 8;
+	public const ERR_NEEDS_TO_BE_STRING = 16;
+	public const ERR_TOO_HIGH = 32;
+	public const ERR_TOO_LOW = 64;
+	public const ERR_NOT_AN_URL = 128;
+	public const ERR_NOT_A_SECURE_URL = 256;
+	public const ERR_NOT_AN_EMAIL = 512;
+	public const ERR_TOO_LONG = 1024;
+	public const ERR_TOO_SHORT = 2048;
+	public const ERR_DIDNT_MATCH = 4096;
 
 	/**
 	 * RequestValidatorException constructor.
