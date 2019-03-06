@@ -146,7 +146,6 @@ class SubRouter extends Router
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
-	 * @internal
 	 */
 	public function onNotFound(string $requestPath, RouteContext $context): bool
 	{

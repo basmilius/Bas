@@ -471,7 +471,6 @@ class Router
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
-	 * @internal
 	 */
 	public function onExecute(AbstractRoute $route, RouteContext $context): void
 	{
@@ -486,7 +485,6 @@ class Router
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
-	 * @internal
 	 */
 	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
