@@ -176,7 +176,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function onException(Exception $err, ?RouteContext $context = null)
+	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
 		if ($err instanceof OAuth2Exception)
 		{
