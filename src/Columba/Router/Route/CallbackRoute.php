@@ -99,7 +99,7 @@ class CallbackRoute extends AbstractRoute
 		$parameters = $this->getReflection()->getParameters();
 
 		foreach ($parameters as $parameter)
-			if ($parameter->getType() === null || !class_exists($parameter->getType()->getName()))
+			if ($parameter->getType() !== null && !class_exists($parameter->getType()->getName()))
 				$params[] = new RouteParam($parameter->getName(), $parameter->getType()->getName(), $parameter->getType()->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
 
 		return $params;
@@ -113,7 +113,7 @@ class CallbackRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function getReflection(): ReflectionFunctionAbstract
+	public final function getReflection(): ReflectionFunctionAbstract
 	{
 		try
 		{

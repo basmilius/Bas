@@ -274,7 +274,7 @@ abstract class AbstractRoute
 		$this->getContext()->setPathRegex($pathRegex);
 		$this->getContext()->setPathValues($pathValues);
 
-		if (!($this->requestMethod === null || $this->requestMethod === $requestMethod))
+		if (!$isValid || !($this->requestMethod === null || $this->requestMethod === $requestMethod))
 			return false;
 
 		try
