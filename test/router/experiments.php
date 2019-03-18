@@ -12,6 +12,7 @@
 
 declare(strict_types=1);
 
+use Columba\Http\Foundation\Request;
 use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\HtmlResponse;
 use Columba\Router\Response\JsonResponse;
@@ -112,9 +113,10 @@ class MySubRouter extends SubRouter
 		return 'Index of sub router';
 	}
 
-	public final function onGetName(RouteContext $context, string $name): array
+	public final function onGetName(Request $request, RouteContext $context, string $name): array
 	{
 		return [
+			'request' => $request,
 			'path' => $context->getFullPath(),
 			'name' => $name
 		];
@@ -138,6 +140,7 @@ try
 {
 	$router = new MyRouter();
 	$router->define('myBool', true);
+	$router->define('request', new Request());
 //	$router->execute('/profile/1/invoices/20191001.pdf', 'GET');
 	$router->execute('/sub/bas', 'GET');
 }

@@ -25,6 +25,43 @@ final class HttpUtil
 {
 
 	/**
+	 * Gets all request headers.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function getAllRequestHeaders(): array
+	{
+		if (function_exists('getallheaders'))
+		{
+			$headers = getallheaders();
+		}
+		else
+		{
+			$headers = [];
+
+			foreach ($_SERVER as $name => $value)
+			{
+				if (substr($name, 0, 5) !== 'HTTP_')
+					continue;
+
+				$name = substr($name, 5);
+				$name = implode('-', array_map('strtolower', explode('_', $name)));
+
+				$headers[$name] = $value;
+			}
+		}
+
+		$result = [];
+
+		foreach ($headers as $name => $value)
+			$result[strtolower($name)] = $value;
+
+		return $result;
+	}
+
+	/**
 	 * Parses an array with headers to an valid array with headers.
 	 *
 	 * @param array $headers
