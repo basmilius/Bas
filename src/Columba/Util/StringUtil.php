@@ -73,6 +73,20 @@ final class StringUtil
 	}
 
 	/**
+	 * Splits text into sentences.
+	 *
+	 * @param string $str
+	 *
+	 * @return string[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function splitSentences(string $str): array
+	{
+		return preg_split('/(?<!\.\.\.)(?<!Dr\.)(?<=[.?!]|\.\)|\.")\s+(?=[a-zA-Z"\(])/', $str);
+	}
+
+	/**
 	 * Returns TRUE if {@see $str} starts with {@see $start}.
 	 *
 	 * @param string $str

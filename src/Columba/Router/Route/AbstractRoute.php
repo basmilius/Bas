@@ -37,12 +37,12 @@ abstract class AbstractRoute
 	/**
 	 * @var bool
 	 */
-	private $allowSubRoutes;
+	private $allowSubRoutes = false;
 
 	/**
 	 * @var RouteContext
 	 */
-	private $context;
+	private $context = null;
 
 	/**
 	 * @var array
@@ -57,7 +57,7 @@ abstract class AbstractRoute
 	/**
 	 * @var string|null
 	 */
-	private $requestMethod;
+	private $requestMethod = null;
 
 	/**
 	 * @var Router
@@ -76,11 +76,8 @@ abstract class AbstractRoute
 	 */
 	public function __construct(Router $parent, string $path, array $options = [])
 	{
-		$this->allowSubRoutes = false;
-		$this->context = null;
 		$this->options = $options;
 		$this->path = $path;
-		$this->requestMethod = null;
 		$this->parent = $parent;
 	}
 

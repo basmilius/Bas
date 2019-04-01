@@ -15,6 +15,7 @@ namespace Columba\Palette;
 use Columba\Color\Color;
 use Columba\Color\ColorUtil;
 use Columba\Image\Image;
+use Exception;
 
 /**
  * Class ColorCutQuantizer
@@ -54,7 +55,7 @@ final class ColorCutQuantizer
 	 * @param ColorHistogram $colorHistogram
 	 * @param int            $maxColors
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
@@ -204,7 +205,7 @@ final class ColorCutQuantizer
 	 * @param int $maxColors
 	 *
 	 * @return array
-	 * @throws \Exception
+	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
@@ -285,7 +286,7 @@ final class ColorCutQuantizer
 	 * @param Vbox[] $vboxes
 	 * @param int    $maxSize
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
@@ -314,7 +315,7 @@ final class ColorCutQuantizer
 	 * @param int   $maxColors
 	 *
 	 * @return ColorCutQuantizer
-	 * @throws \Exception
+	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */

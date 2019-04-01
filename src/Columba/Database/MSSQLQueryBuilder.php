@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
-use PDO;
-
 /**
  * Class MSSQLQueryBuilder
  *

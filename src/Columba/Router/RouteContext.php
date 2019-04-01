@@ -372,6 +372,8 @@ final class RouteContext
 		foreach ($this->getRoute()->getParentRouter()->getGlobals() as $name => $value)
 			$params[$name] = $value;
 
+		$params['context'] = $this;
+
 		return $params;
 	}
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Palette;
 
 use Columba\Image\Image;
+use Exception;
 
 /**
  * Class Palette
@@ -274,7 +275,7 @@ final class Palette
 	 * @param int   $numColors
 	 *
 	 * @return Palette
-	 * @throws \Exception
+	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */

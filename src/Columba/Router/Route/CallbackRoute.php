@@ -65,14 +65,11 @@ class CallbackRoute extends AbstractRoute
 	 */
 	public final function executeImpl(): void
 	{
+		$arguments = [];
+		$params = $this->getContext()->getParams();
 		$reflection = $this->getReflection();
 
-		$params = $this->getContext()->getParams();
-		$params['context'] = $this->getContext();
-
 		$this->getContext()->setCallback($reflection);
-
-		$arguments = [];
 
 		foreach ($reflection->getParameters() as $parameter)
 		{
@@ -115,12 +112,15 @@ class CallbackRoute extends AbstractRoute
 	 */
 	public final function getReflection(): ReflectionFunctionAbstract
 	{
+		if ($this->reflection !== null)
+			return $this->reflection;
+
 		try
 		{
 			if (is_array($this->callback) && is_callable($this->callback))
-				return $this->reflection ?? $this->reflection = new ReflectionMethod($this->callback[0], $this->callback[1]);
+				return $this->reflection = new ReflectionMethod($this->callback[0], $this->callback[1]);
 			else
-				return $this->reflection ?? $this->reflection = new ReflectionFunction($this->callback);
+				return $this->reflection = new ReflectionFunction($this->callback);
 		}
 		catch (ReflectionException $err)
 		{

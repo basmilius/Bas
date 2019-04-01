@@ -70,6 +70,51 @@ final class MathUtil
 	}
 
 	/**
+	 * Rounds the value up to the nearest multiple.
+	 *
+	 * @param float|int $value
+	 * @param int       $step
+	 *
+	 * @return float|int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function ceilStep($value, int $step = 1)
+	{
+		return ceil($value / $step) * $step;
+	}
+
+	/**
+	 * Rounds the value down to the nearest multiple.
+	 *
+	 * @param float|int $value
+	 * @param int       $step
+	 *
+	 * @return float|int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function floorStep($value, int $step = 1)
+	{
+		return floor($value / $step) * $step;
+	}
+
+	/**
+	 * Rounds the value to the nearest multiple.
+	 *
+	 * @param float|int $value
+	 * @param int       $step
+	 *
+	 * @return float|int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function roundStep($value, int $step = 1)
+	{
+		return round($value / $step) * $step;
+	}
+
+	/**
 	 * Sums an array by sub-key.
 	 *
 	 * @param array  $arr
