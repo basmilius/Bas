@@ -23,7 +23,7 @@ final class Autoloader
 {
 
 	/**
-	 * @var mixed[][]
+	 * @var array
 	 */
 	private $definitions = [];
 
@@ -76,12 +76,11 @@ final class Autoloader
 	private function onRequestObject(string $object): bool
 	{
 		$didAutoload = false;
-		$object = str_replace('_', '\\', $object);
 
-		foreach ($this->definitions as $definition)
+		foreach ($this->definitions as [$directory, $namespace, $isVirtualNamespace])
 			if ($didAutoload)
 				break;
-			else if (($file = $this->file($definition[0], $definition[1], $definition[2], $object)) !== null)
+			else if (($file = $this->file($directory, $namespace, $isVirtualNamespace, $object)) !== null)
 				$didAutoload = $this->require($file);
 
 		return $didAutoload;
@@ -108,10 +107,9 @@ final class Autoloader
 			$object = str_replace($namespace, '', $object);
 
 		$object = str_replace('\\', DIRECTORY_SEPARATOR, $object);
-
 		$file = realpath($directory . DIRECTORY_SEPARATOR . $object . '.php');
 
-		return $file ? $file : null;
+		return $file ?: null;
 	}
 
 	/**

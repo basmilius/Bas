@@ -90,6 +90,7 @@ abstract class AbstractRoute
 	 */
 	public final function execute(): void
 	{
+		$context = $this->getContext();
 		$result = null;
 
 		$this->parent->onExecute($this, $this->getContext());
@@ -97,38 +98,38 @@ abstract class AbstractRoute
 
 		try
 		{
-			if ($this->getContext()->getResponse()[0] === null && $this->getContext()->getRedirectPath() === null)
+			if ($context->getResponse()[0] === null && $context->getRedirectPath() === null)
 				$this->executeImpl();
 
 			/** @var AbstractResponse $responseImplementation */
-			[$responseImplementation, $responseValue] = $this->getContext()->getResponse();
+			[$responseImplementation, $responseValue] = $context->getResponse();
 
-			if ($this->getContext()->getRedirectPath() === null)
+			if ($context->getRedirectPath() === null)
 			{
 				if ($responseImplementation === null)
 					return;
 
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
-				$this->getContext()->setResolutionTime($time);
+				$context->setResolutionTime($time);
 
-				http_response_code($this->getContext()->getResponseCode());
-				$responseImplementation->print($this->getContext(), $responseValue);
+				http_response_code($context->getResponseCode());
+				$responseImplementation->print($context, $responseValue);
 			}
 			else
 			{
 				$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-				$statusCode = $this->getContext()->getResponseCode();
+				$statusCode = $context->getResponseCode();
 				$statusMessage = ResponseCode::getMessage($statusCode);
 
 				http_response_code($statusCode);
 				header("$protocol $statusCode $statusMessage");
-				header('Location: ' . $this->resolve($this->getContext()->getRedirectPath()));
+				header('Location: ' . $this->resolve($context->getRedirectPath()));
 			}
 		}
 		catch (Exception $err)
 		{
-			$this->parent->onException($err, $this->getContext());
+			$this->parent->onException($err, $context);
 		}
 	}
 
