@@ -25,7 +25,7 @@ final class ArrayUtil
 	/**
 	 * Returns the first element of an array passing the truth check.
 	 *
-	 * @param array         $array
+	 * @param array         $arr
 	 * @param callable|null $fn
 	 * @param mixed         $default
 	 *
@@ -33,22 +33,42 @@ final class ArrayUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function first(array $array, callable $fn = null, $default = null)
+	public static function first(array $arr, callable $fn = null, $default = null)
 	{
 		if (is_null($fn))
 		{
-			if (empty($array))
+			if (empty($arr))
 				return $default;
 
-			foreach ($array as $item)
+			foreach ($arr as $item)
 				return $item;
 		}
 
-		foreach ($array as $key => $value)
+		foreach ($arr as $key => $value)
 			if ($fn($value, $key))
 				return $value;
 
 		return $default;
+	}
+
+	/**
+	 * Groups a multidimensional array by key.
+	 *
+	 * @param array $arr
+	 * @param mixed $key
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function groupBy(array $arr, $key): array
+	{
+		$result = [];
+
+		foreach ($arr as $item)
+			$result[$item[$key]][] = $item;
+
+		return $result;
 	}
 
 	/**
