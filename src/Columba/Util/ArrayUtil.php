@@ -68,7 +68,7 @@ final class ArrayUtil
 		foreach ($arr as $item)
 			$result[$item[$key]][] = $item;
 
-		return $result;
+		return array_values($result);
 	}
 
 	/**
