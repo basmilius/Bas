@@ -62,6 +62,18 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Returns error info.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function errorInfo(): array
+	{
+		return $this->pdo->errorInfo();
+	}
+
+	/**
 	 * Executes a MySQL {@see $statement} and returns the affected rows.
 	 *
 	 * @param string $statement
