@@ -246,4 +246,17 @@ abstract class AbstractDatabaseDriver
 		return [$str, PDO::PARAM_STR];
 	}
 
+	/**
+	 * Exposes our PDO instance.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function withPDO(callable $fn): void
+	{
+		$fn($this->pdo);
+	}
+
 }
