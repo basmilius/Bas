@@ -256,16 +256,20 @@ class QueryBuilder
 	/**
 	 * Adds a JOIN clause.
 	 *
-	 * @param string $clause
-	 * @param string $table
+	 * @param string        $clause
+	 * @param string        $table
+	 * @param callable|null $fn
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private final function _join(string $clause, string $table): self
+	private final function _join(string $clause, string $table, ?callable $fn = null): self
 	{
 		$this->add($clause, $this->escapeField($table), 1, 0, 0, null);
+
+		if ($fn !== null)
+			$fn($this);
 
 		return $this;
 	}
@@ -595,85 +599,91 @@ class QueryBuilder
 	/**
 	 * Adds a FULL JOIN clause.
 	 *
-	 * @param string $table
+	 * @param string        $table
+	 * @param callable|null $fn
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function fullJoin(string $table): self
+	public function fullJoin(string $table, ?callable $fn = null): self
 	{
-		return $this->_join('FULL JOIN', $table);
-	}
-
-	/**
-	 * Adds a JOIN clause.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function join(string $table): self
-	{
-		return $this->_join('JOIN', $table);
-	}
-
-	/**
-	 * Adds a LEFT JOIN clause.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function leftJoin(string $table): self
-	{
-		return $this->_join('LEFT JOIN', $table);
-	}
-
-	/**
-	 * Adds a LEFT OUTER JOIN clause.
-	 *
-	 * @param string $table
-	 *
-	 * @return QueryBuilder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function leftOuterJoin(string $table): self
-	{
-		return $this->_join('LEFT OUTER JOIN', $table);
+		return $this->_join('FULL JOIN', $table, $fn);
 	}
 
 	/**
 	 * Adds an INNER JOIN clause.
 	 *
-	 * @param string $table
+	 * @param string        $table
+	 * @param callable|null $fn
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function innerJoin(string $table): self
+	public function innerJoin(string $table, ?callable $fn = null): self
 	{
-		return $this->_join('INNER JOIN', $table);
+		return $this->_join('INNER JOIN', $table, $fn);
+	}
+
+	/**
+	 * Adds a JOIN clause.
+	 *
+	 * @param string        $table
+	 * @param callable|null $fn
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function join(string $table, ?callable $fn = null): self
+	{
+		return $this->_join('JOIN', $table, $fn);
+	}
+
+	/**
+	 * Adds a LEFT JOIN clause.
+	 *
+	 * @param string        $table
+	 * @param callable|null $fn
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function leftJoin(string $table, ?callable $fn = null): self
+	{
+		return $this->_join('LEFT JOIN', $table, $fn);
+	}
+
+	/**
+	 * Adds a LEFT OUTER JOIN clause.
+	 *
+	 * @param string        $table
+	 * @param callable|null $fn
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function leftOuterJoin(string $table, ?callable $fn = null): self
+	{
+		return $this->_join('LEFT OUTER JOIN', $table, $fn);
 	}
 
 	/**
 	 * Adds a RIGHT JOIN clause.
 	 *
-	 * @param string $table
+	 * @param string        $table
+	 * @param callable|null $fn
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function rightJoin(string $table): self
+	public function rightJoin(string $table, ?callable $fn = null): self
 	{
-		return $this->_join('RIGHT JOIN', $table);
+		return $this->_join('RIGHT JOIN', $table, $fn);
 	}
 
 	/**
