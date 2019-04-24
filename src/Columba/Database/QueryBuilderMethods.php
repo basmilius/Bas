@@ -133,6 +133,42 @@ trait QueryBuilderMethods
 	}
 
 	/**
+	 * Creates an REPLACE INTO query.
+	 *
+	 * @param string $table
+	 * @param string ...$fields
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function replaceInto(string $table, string ...$fields): QueryBuilder
+	{
+		$builder = $this->driver->createQueryBuilder();
+		$builder->replaceInto($table, ...$fields);
+
+		return $builder;
+	}
+
+	/**
+	 * Creates an REPLACE INTO (...) VALUES (...) query.
+	 *
+	 * @param string $table
+	 * @param array  ...$data
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function replaceIntoValues(string $table, array ...$data): QueryBuilder
+	{
+		$builder = $this->driver->createQueryBuilder();
+		$builder->replaceIntoValues($table, ...$data);
+
+		return $builder;
+	}
+
+	/**
 	 * Creates an OPTIMIZE TABLE query.
 	 *
 	 * @param string ...$table
