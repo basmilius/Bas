@@ -597,6 +597,53 @@ class QueryBuilder
 	}
 
 	/**
+	 * Creates a REPLACE INTO query.
+	 *
+	 * @param string $table
+	 * @param string ...$fields
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function replaceInto(string $table, string ...$fields): self
+	{
+		$this->add('REPLACE INTO', $this->escapeField($table), 0, 1, 1);
+		$this->parenthesisOpen();
+		$this->add('', $this->escapeFields($fields), 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
+		$this->parenthesisClose();
+
+		return $this;
+	}
+
+	/**
+	 * Creates a REPLACE INTO {@see $table} (...) VALUES (...) query.
+	 *
+	 * @param string $table
+	 * @param array  ...$data
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function replaceIntoValues(string $table, array ...$data): self
+	{
+		$fields = [];
+		$values = [];
+
+		foreach ($data as $d)
+		{
+			$fields[] = array_shift($d);
+			$values[] = count($d) === 2 ? $d : $d[0];
+		}
+
+		$this->replaceInto($table, ...$fields);
+		$this->values(...$values);
+
+		return $this;
+	}
+
+	/**
 	 * Adds a FULL JOIN clause.
 	 *
 	 * @param string        $table
