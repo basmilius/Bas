@@ -38,21 +38,15 @@ final class FileSystemUtil
 	{
 		$si = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 		$iec = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
-		if ($siMode)
-		{
-			$factor = 1024;
-			$symbols = $si;
-		}
-		else
-		{
-			$factor = 1024;
-			$symbols = $iec;
-		}
+		$factor = 1024;
+		$symbols = $siMode ? $si : $iec;
+
 		if ($bits)
 			$value *= 8;
-		$symbolsCount = count($symbols);
-		for ($i = 0; $i < $symbolsCount - 1 && $value >= $factor; $i++)
+
+		for ($i = 0, $symbolsCount = count($symbols); $i < $symbolsCount - 1 && $value >= $factor; $i++)
 			$value /= $factor;
+
 		return round($value, $decimals) . ' ' . $symbols[$i] . ($bits ? 'b' : 'B');
 	}
 
