@@ -267,7 +267,7 @@ class OAuth2
 
 		$client = $this->clientFactory->getClient($clientId);
 
-		if (!$client->isValidSecret($clientSecret))
+		if ($client === null || !$client->isValidSecret($clientSecret))
 			throw new InvalidClientException();
 
 		return $client;
