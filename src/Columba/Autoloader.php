@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Columba;
 
+use Columba\Util\FileSystemUtil;
+use Columba\Util\StringUtil;
+
 /**
  * Class Autoloader
  *
@@ -51,6 +54,53 @@ final class Autoloader
 	public final function addDirectory(string $directory, ?string $namespace = null, bool $isVirtualNamespace = false): void
 	{
 		$this->definitions[] = [realpath($directory), $namespace, $isVirtualNamespace];
+	}
+
+	/**
+	 * Loads all php files from a given directory. If {@see $recursive} is TRUE
+	 * subdirectories will also be loaded.
+	 *
+	 * @param string $dir
+	 * @param bool   $recursive
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function loadDirectory(string $dir, bool $recursive = false): void
+	{
+		$entries = FileSystemUtil::scanDir($dir);
+
+		foreach ($entries as $entry)
+			if (is_dir($entry) && $recursive)
+				$this->loadDirectory($entry, true);
+			else if (StringUtil::endsWith($entry, '.php'))
+				$this->require($entry);
+	}
+
+	/**
+	 * Loads a file.
+	 *
+	 * @param string $file
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function loadFile(string $file): void
+	{
+		$this->require($file);
+	}
+
+	/**
+	 * Loads a class, interface or trait manually.
+	 *
+	 * @param string $object
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function loadObject(string $object): void
+	{
+		spl_autoload_call($object);
 	}
 
 	/**
@@ -138,7 +188,7 @@ final class Autoloader
 			return false;
 
 		/** @noinspection PhpIncludeInspection */
-		require_once $file;
+		require $file;
 
 		return true;
 	}
