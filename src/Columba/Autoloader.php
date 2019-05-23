@@ -28,6 +28,17 @@ final class Autoloader
 	private $definitions = [];
 
 	/**
+	 * Autoloader constructor.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function __construct()
+	{
+		$this->addDirectory(dirname(__DIR__));
+	}
+
+	/**
 	 * Adds a directory to {@see Autoloader}.
 	 *
 	 * @param string      $directory
