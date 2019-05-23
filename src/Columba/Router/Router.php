@@ -105,6 +105,7 @@ class Router
 	/**
 	 * Tries to guess the {@see AbstractRoute} instance and adds it.
 	 *
+	 * @param string $requestMethod
 	 * @param string $path
 	 * @param mixed  ...$arguments
 	 *
@@ -113,24 +114,24 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function addFromArguments(string $path, ...$arguments): AbstractRoute
+	public final function addFromArguments(string $requestMethod, string $path, ...$arguments): AbstractRoute
 	{
 		$route = null;
 
 		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
-			$route = new CallbackRoute($this, $path, ...$arguments);
+			$route = new CallbackRoute($this, $requestMethod, $path, ...$arguments);
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof Router)
-			$route = new RouterRoute($this, $path, ...$arguments);
+			$route = new RouterRoute($this, $requestMethod, $path, ...$arguments);
 
 		else if (count($arguments) > 0 && is_string($arguments[0]) && is_subclass_of($arguments[0], Router::class))
-			$route = new LazyRouterRoute($this, $path, ...$arguments);
+			$route = new LazyRouterRoute($this, $requestMethod, $path, ...$arguments);
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
-			$route = new RouterRoute($this, $path, $arguments[0]->getRouter());
+			$route = new RouterRoute($this, $requestMethod, $path, $arguments[0]->getRouter());
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof Closure)
-			$route = new CallbackRoute($this, $path, ...$arguments);
+			$route = new CallbackRoute($this, $requestMethod, $path, ...$arguments);
 
 		if ($route === null && isset($arguments[0]) && is_array($arguments[0]) && is_string($arguments[0][1]))
 			throw new RouterException(sprintf("Could not find implementation '%s' for route '%s' in '%s'!", $arguments[0][1], $path, get_called_class()), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
@@ -306,7 +307,7 @@ class Router
 	 */
 	public final function all(string $path, ...$arguments): void
 	{
-		$this->addFromArguments($path, ...$arguments);
+		$this->addFromArguments(RequestMethod::NULL, $path, ...$arguments);
 	}
 
 	/**
@@ -321,8 +322,7 @@ class Router
 	 */
 	public final function delete(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::DELETE);
+		$this->addFromArguments(RequestMethod::DELETE, $path, ...$arguments);
 	}
 
 	/**
@@ -337,8 +337,7 @@ class Router
 	 */
 	public final function get(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::GET);
+		$this->addFromArguments(RequestMethod::GET, $path, ...$arguments);
 	}
 
 	/**
@@ -353,8 +352,7 @@ class Router
 	 */
 	public final function head(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::HEAD);
+		$this->addFromArguments(RequestMethod::HEAD, $path, ...$arguments);
 	}
 
 	/**
@@ -369,8 +367,7 @@ class Router
 	 */
 	public final function options(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::OPTIONS);
+		$this->addFromArguments(RequestMethod::OPTIONS, $path, ...$arguments);
 	}
 
 	/**
@@ -385,8 +382,7 @@ class Router
 	 */
 	public final function patch(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::PATCH);
+		$this->addFromArguments(RequestMethod::PATCH, $path, ...$arguments);
 	}
 
 	/**
@@ -401,8 +397,7 @@ class Router
 	 */
 	public final function post(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::POST);
+		$this->addFromArguments(RequestMethod::POST, $path, ...$arguments);
 	}
 
 	/**
@@ -417,8 +412,7 @@ class Router
 	 */
 	public final function put(string $path, ...$arguments): void
 	{
-		$route = $this->addFromArguments($path, ...$arguments);
-		$route->setRequestMethod(RequestMethod::PUT);
+		$this->addFromArguments(RequestMethod::PUT, $path, ...$arguments);
 	}
 
 	/**
@@ -432,14 +426,9 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public final function redirect(string $path, string $destination, string $requestMethod = 'ALL', int $responseCode = ResponseCode::SEE_OTHER): void
+	public final function redirect(string $path, string $destination, string $requestMethod = RequestMethod::NULL, int $responseCode = ResponseCode::SEE_OTHER): void
 	{
-		$route = new RedirectRoute($this, $path, $destination, $responseCode);
-
-		if ($requestMethod !== 'ALL')
-			$route->setRequestMethod($requestMethod);
-
-		$this->add($route);
+		$this->add(new RedirectRoute($this, $requestMethod, $path, $destination, $responseCode));
 	}
 
 	/**

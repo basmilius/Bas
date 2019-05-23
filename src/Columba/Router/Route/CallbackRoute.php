@@ -44,6 +44,7 @@ class CallbackRoute extends AbstractRoute
 	 * CallbackRoute constructor.
 	 *
 	 * @param Router   $parent
+	 * @param string   $requestMethod
 	 * @param string   $path
 	 * @param callable $callback
 	 * @param array    $options
@@ -51,9 +52,9 @@ class CallbackRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $path, callable $callback, array $options = [])
+	public function __construct(Router $parent, string $requestMethod, string $path, callable $callback, array $options = [])
 	{
-		parent::__construct($parent, $path, $options);
+		parent::__construct($parent, $requestMethod, $path, $options);
 
 		$this->callback = $callback;
 	}

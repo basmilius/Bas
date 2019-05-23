@@ -124,19 +124,6 @@ final class RouteParam
 	}
 
 	/**
-	 * Returns TRUE if this param allows NULL.
-	 *
-	 * @return bool
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function allowsNull(): bool
-	{
-		return $this->allowsNull;
-	}
-
-	/**
 	 * Gets the default value.
 	 *
 	 * @return mixed

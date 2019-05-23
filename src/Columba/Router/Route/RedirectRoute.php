@@ -44,6 +44,7 @@ final class RedirectRoute extends AbstractRoute
 	 * CallbackRoute constructor.
 	 *
 	 * @param Router $parent
+	 * @param string $requestMethod
 	 * @param string $path
 	 * @param string $destination
 	 * @param int    $responseCode
@@ -52,7 +53,7 @@ final class RedirectRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public function __construct(Router $parent, string $path, string $destination, int $responseCode, array $options = [])
+	public function __construct(Router $parent, string $requestMethod, string $path, string $destination, int $responseCode, array $options = [])
 	{
 		$this->destination = $destination;
 		$this->responseCode = $responseCode;
@@ -66,7 +67,7 @@ final class RedirectRoute extends AbstractRoute
 
 		$path = preg_replace('/\((bool|int|string)\)/', '', $path);
 
-		parent::__construct($parent, $path, $options);
+		parent::__construct($parent, $requestMethod, $path, $options);
 	}
 
 	/**

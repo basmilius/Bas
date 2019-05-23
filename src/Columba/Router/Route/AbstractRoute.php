@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
+use Columba\Http\RequestMethod;
 use Columba\Http\ResponseCode;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
@@ -57,7 +58,7 @@ abstract class AbstractRoute
 	/**
 	 * @var string|null
 	 */
-	private $requestMethod = null;
+	private $requestMethod;
 
 	/**
 	 * @var Router
@@ -68,17 +69,30 @@ abstract class AbstractRoute
 	 * AbstractRoute constructor.
 	 *
 	 * @param Router $parent
+	 * @param string requestMethod
 	 * @param string $path
 	 * @param array  $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $path, array $options = [])
+	public function __construct(Router $parent, string $requestMethod, string $path, array $options = [])
 	{
 		$this->options = $options;
+		$this->requestMethod = $requestMethod;
 		$this->path = $path;
 		$this->parent = $parent;
+	}
+
+	/**
+	 * Marks the route als subrouter.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function allowSubRoutes(): void
+	{
+		$this->allowSubRoutes = true;
 	}
 
 	/**
@@ -225,12 +239,6 @@ abstract class AbstractRoute
 	{
 		$this->getContext()->setPath($this->path);
 
-		$agressiveProfiling = defined('COLUMBA_ROUTER_AGRESSIVE_PROFILING') && COLUMBA_ROUTER_AGRESSIVE_PROFILING;
-		$fullPath = $this->getContext()->getFullPath(false);
-
-		if ($agressiveProfiling)
-			ServerTiming::start($fullPath . $requestMethod, "$requestMethod $fullPath", 'cpu');
-
 		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
 			$path = mb_substr($path, 0, -1);
 
@@ -272,7 +280,7 @@ abstract class AbstractRoute
 		$this->getContext()->setPathRegex($pathRegex);
 		$this->getContext()->setPathValues($pathValues);
 
-		if (!$isValid || !($this->requestMethod === null || $this->requestMethod === $requestMethod))
+		if (!$isValid || !($this->requestMethod === RequestMethod::NULL || $this->requestMethod === $requestMethod))
 			return false;
 
 		try
@@ -288,36 +296,6 @@ abstract class AbstractRoute
 
 			return false;
 		}
-		finally
-		{
-			if ($agressiveProfiling)
-				ServerTiming::stop($fullPath . $requestMethod);
-		}
-	}
-
-	/**
-	 * Gets if sub routers are allowed.
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function getAllowSubRoutes(): bool
-	{
-		return $this->allowSubRoutes;
-	}
-
-	/**
-	 * Sets if sub routes are allowed.
-	 *
-	 * @param bool $allowSubRoutes
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function setAllowSubRoutes(bool $allowSubRoutes): void
-	{
-		$this->allowSubRoutes = $allowSubRoutes;
 	}
 
 	/**
@@ -357,31 +335,6 @@ abstract class AbstractRoute
 	public final function getPath(): string
 	{
 		return $this->path;
-	}
-
-	/**
-	 * Gets the request method.
-	 *
-	 * @return string|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function getRequestMethod(): ?string
-	{
-		return $this->requestMethod;
-	}
-
-	/**
-	 * Sets the request method.
-	 *
-	 * @param string $requestMethod
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function setRequestMethod(string $requestMethod): void
-	{
-		$this->requestMethod = $requestMethod;
 	}
 
 	/**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 use Columba\Http\Foundation\Request;
 use Columba\Router\Middleware\AbstractMiddleware;
+use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\HtmlResponse;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
@@ -45,7 +46,7 @@ class MyRouter extends Router
 
 	public function __construct()
 	{
-		parent::__construct(new HtmlResponse());
+		parent::__construct(new HtmlResponse(), new DebugRenderer());
 
 		$this->use(MyMiddleware::class);
 
@@ -57,9 +58,9 @@ class MyRouter extends Router
 		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
 		$this->get('/wildcard/*', [$this, 'onGetWildcard']);
 
-		$this->get('/anonymous', function (RouteContext $context): void
+		$this->get('/anonymous', function (RouteContext $context): RouteContext
 		{
-			print_r($context);
+			return $context;
 		});
 	}
 
@@ -108,9 +109,9 @@ class MySubRouter extends SubRouter
 		$this->get('/$name', [$this, 'onGetName']);
 	}
 
-	public final function onGetIndex(): string
+	public final function onGetIndex(RouteContext $context): string
 	{
-		return 'Index of sub router';
+		return $context->getFullPath();
 	}
 
 	public final function onGetName(Request $request, RouteContext $context, string $name): array
