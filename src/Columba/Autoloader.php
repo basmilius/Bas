@@ -39,6 +39,7 @@ final class Autoloader
 	public function __construct()
 	{
 		$this->addDirectory(dirname(__DIR__));
+		$this->require(__DIR__ . '/Util/functions.php');
 	}
 
 	/**
