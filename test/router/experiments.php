@@ -22,6 +22,7 @@ use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
+use function Columba\Util\preDie;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
@@ -125,7 +126,7 @@ class MySubRouter extends SubRouter
 
 	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
-		pre_die(__METHOD__, func_get_args());
+		preDie(__METHOD__, func_get_args());
 	}
 
 	public function onNotFound(string $requestPath, RouteContext $context): bool

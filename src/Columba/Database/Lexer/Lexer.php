@@ -14,6 +14,7 @@ namespace Columba\Database\Lexer;
 
 use Columba\Database\QueryBuilder;
 use PDOException;
+use function Columba\Util\preDie;
 
 /**
  * Class Lexer
@@ -261,10 +262,7 @@ final class Lexer
 	 */
 	private function error(string $message, string $char, int $lastIndex): void
 	{
-		if (function_exists('pre_die'))
-			pre_die(...func_get_args());
-		else
-			print_r(func_get_args());
+		preDie(...func_get_args());
 	}
 
 	/**

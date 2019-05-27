@@ -13,6 +13,7 @@
 declare(strict_types=1);
 
 use Columba\Http\Foundation\Request;
+use function Columba\Util\preDie;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
@@ -20,6 +21,6 @@ header('Content-Type: text/plain');
 
 $req = new Request();
 
-pre_die(
+preDie(
 	$req
 );

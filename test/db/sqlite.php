@@ -11,6 +11,8 @@
 declare(strict_types=1);
 
 use Columba\Database\SQLiteDatabaseDriver;
+use function Columba\Util\pre;
+use function Columba\Util\preDie;
 
 require __DIR__ . '/../bootstrap-test.php';
 
@@ -41,4 +43,4 @@ pre($results);
 
 $driver->optimizeTable('messages')->execute();
 
-pre_die($driver);
+preDie($driver);

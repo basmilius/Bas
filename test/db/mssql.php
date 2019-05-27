@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Database\MSSQLDatabaseDriver;
+use function Columba\Util\preDie;
 
 require __DIR__ . '/../bootstrap-test.php';
 
@@ -18,7 +19,7 @@ header('Content-Type: text/plain');
 
 $driver = new MSSQLDatabaseDriver('martijnw.com', 'basdb', 'bas', '', MSSQLDatabaseDriver::DRIVER_SQLSRV);
 
-//pre_die(
+//preDie(
 //	$driver
 //		->select('*')
 //		->from('user')
