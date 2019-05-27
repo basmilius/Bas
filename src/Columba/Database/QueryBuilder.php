@@ -14,6 +14,7 @@ namespace Columba\Database;
 
 use PDO;
 use PDOException;
+use function Columba\Util\pre;
 
 /**
  * Class QueryBuilder
@@ -286,6 +287,9 @@ class QueryBuilder
 	 */
 	private final function _select(string $clause, ...$fields): self
 	{
+		if (count($fields) === 0)
+			$fields[] = '*';
+
 		$fields = array_map(function ($field): string
 		{
 			if (is_array($field) && count($field) === 2)
@@ -858,6 +862,30 @@ class QueryBuilder
 		}, $fields);
 
 		$this->add('ORDER BY', $fields, 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
+
+		return $this;
+	}
+
+	/**
+	 * Wraps all calls within {@see $fn} within parentheses.
+	 *
+	 * @param callable $fn
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public function parentheses(callable $fn): self
+	{
+		$firstIndex = count($this->parts);
+
+		$this->parenthesisOpen();
+		$fn($this);
+		$this->parenthesisClose();
+
+		$clause = $this->parts[$firstIndex + 1][0];
+		$this->parts[$firstIndex][0] = $clause . ' ' . $this->parts[$firstIndex][0];
+		$this->parts[$firstIndex + 1][0] = '';
 
 		return $this;
 	}
