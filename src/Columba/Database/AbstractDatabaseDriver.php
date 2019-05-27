@@ -101,6 +101,54 @@ abstract class AbstractDatabaseDriver
 	}
 
 	/**
+	 * Guesses the param type based on value.
+	 *
+	 * @param mixed $value
+	 *
+	 * @return array|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 * @example guessValue('hello world') => ['hello world', PDO::PARAM_STR].
+	 */
+	public final function guessValue($value): ?array
+	{
+		if ($value === null)
+			return [null, PDO::PARAM_NULL, 'null'];
+
+		if (is_array($value))
+			return $value; // This should be valid...?
+
+		if (is_int($value) || (is_numeric($value) && intval($value) == floatval($value)))
+			return [intval($value), PDO::PARAM_INT, 'int'];
+
+		if (is_float($value) || is_numeric($value))
+			return [floatval($value), PDO::PARAM_STR, 'string'];
+
+		if (is_bool($value))
+			return [$value ? 1 : 0, PDO::PARAM_INT, 'int'];
+
+		if (is_string($value))
+			return [$value, PDO::PARAM_STR, 'string'];
+
+		return null;
+	}
+
+	/**
+	 * Guesses the param type for all given values based on value.
+	 *
+	 * @param mixed[] $values
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 * @example guessValues(['hello world', 10]) => [['hello world', PDO::PARAM_STR], [10, PDO::PARAM_INT]].
+	 */
+	public final function guessValues(array $values): array
+	{
+		return array_map([$this, 'guessValue'], $values);
+	}
+
+	/**
 	 * Gets an attribute.
 	 *
 	 * @param int $attribute
@@ -140,6 +188,86 @@ abstract class AbstractDatabaseDriver
 	public final function lastInsertIdInteger(?string $name = null): int
 	{
 		return intval($this->lastInsertId($name));
+	}
+
+	/**
+	 * Calls a function.
+	 *
+	 * @param string $name
+	 * @param mixed  ...$params
+	 *
+	 * @return mixed
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function callFunction(string $name, ...$params)
+	{
+		$bindings = [];
+		$list = [];
+
+		foreach ($params as $index => $param)
+		{
+			$bindings[] = $this->guessValue($param);
+			$list[] = ':param' . $index;
+		}
+
+		$statement = $this->prepare(sprintf('SELECT %s(%s) AS result', $name, implode(',', $list)));
+
+		foreach ($bindings as $index => $binding)
+			$statement->bind(':param' . $index, $binding[0], $binding[1]);
+
+		return $statement->execute()->toSingle('result');
+	}
+
+	/**
+	 * Executes a stored procedure.
+	 *
+	 * @param string $name
+	 * @param array  $input
+	 * @param array  $output
+	 *
+	 * @note(Bas): Figure out if this can be improved.
+	 * @throws DatabaseException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function executeProcedure(string $name, array $input, array &$output): void
+	{
+		$inputParams = [];
+		$outputParams = [];
+
+		$input = $this->guessValues($input);
+
+		for ($i = 0, $length = count($input); $i < $length; $i++)
+			$inputParams[] = ':in' . $i;
+
+		for ($i = 0, $length = count($output); $i < $length; $i++)
+			$outputParams[] = '@out' . $i;
+
+		$parameterList = implode(', ', array_merge($inputParams, $outputParams));
+
+		try
+		{
+			$smt = $this->pdo->prepare(sprintf('CALL %s(%s)', $name, $parameterList));
+
+			foreach ($input as $index => $param)
+				$smt->bindValue(':in' . $index, $param[0], $param[1]);
+
+			$smt->execute();
+
+			$smt = $this->pdo->prepare(sprintf('SELECT %s;', implode(', ', $outputParams)));
+			$smt->execute();
+
+			$result = $smt->fetch();
+
+			for ($i = 0, $length = count($output); $i < $length; $i++)
+				$output[array_keys($output)[$i]] = $result[$i] ?? null;
+		}
+		catch (PDOException $err)
+		{
+			throw new DatabaseException('Execution of procedure failed.', DatabaseException::ERR_PROCEDURE_FAILED, $err);
+		}
 	}
 
 	/**

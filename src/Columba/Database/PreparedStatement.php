@@ -100,6 +100,8 @@ final class PreparedStatement
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
+	 * @deprecated Binding methods for bool, float, int and string is deprecated. See bind().
+	 * @see PreparedStatement::bind()
 	 */
 	public final function bindBool(string $param, bool $value): void
 	{
@@ -114,6 +116,8 @@ final class PreparedStatement
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
+	 * @deprecated Binding methods for bool, float, int and string is deprecated. See bind().
+	 * @see PreparedStatement::bind()
 	 */
 	public final function bindFloat(string $param, float $value): void
 	{
@@ -128,6 +132,8 @@ final class PreparedStatement
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
+	 * @deprecated Binding methods for bool, float, int and string is deprecated. See bind().
+	 * @see PreparedStatement::bind()
 	 */
 	public final function bindInt(string $param, ?int $value): void
 	{
@@ -142,6 +148,8 @@ final class PreparedStatement
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
+	 * @deprecated Binding methods for bool, float, int and string is deprecated. See bind().
+	 * @see PreparedStatement::bind()
 	 */
 	public final function bindString(string $param, ?string $value): void
 	{

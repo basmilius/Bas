@@ -305,7 +305,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	public final function models(): array
 	{
 		if ($this->modelClass === null || !class_exists($this->modelClass) || !is_subclass_of($this->modelClass, Model::class))
-			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_FIELD_NOT_FOUND);
+			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_MODEL_NOT_FOUND);
 
 		/** @var Model|string $modelClass */
 		$modelClass = $this->modelClass;

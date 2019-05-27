@@ -34,6 +34,7 @@ class DatabaseException extends Exception
 	public const ERR_FILE_NOT_READABLE = 64;
 	public const ERR_FEATURE_UNSUPPORTED = 128;
 	public const ERR_UNSUPPORTED = 256;
+	public const ERR_PROCEDURE_FAILED = 512;
 
 	/**
 	 * DatabaseException constructor.
