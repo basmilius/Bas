@@ -25,11 +25,11 @@ class MySQLDatabaseDriver extends DatabaseDriver
 	/**
 	 * MySQLDatabaseDriver constructor.
 	 *
-	 * @param string $database
 	 * @param string $host
-	 * @param int    $port
+	 * @param string $database
 	 * @param string $username
 	 * @param string $password
+	 * @param int    $port
 	 * @param array  $options
 	 * @param bool   $connectAutomatically
 	 *
@@ -37,7 +37,7 @@ class MySQLDatabaseDriver extends DatabaseDriver
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct(string $database, string $host, int $port = 3306, $username = '', $password = '', array $options = [], $connectAutomatically = true)
+	public function __construct(string $host, string $database, string $username = '', string $password = '', int $port = 3306, array $options = [], $connectAutomatically = true)
 	{
 		$dsn = "mysql:dbname=$database;host=$host;port=$port;charset=utf8mb4";
 

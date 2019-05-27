@@ -15,6 +15,7 @@ declare(strict_types=1);
 use Columba\Data\Collection;
 use Columba\Database\MySQLDatabaseDriver;
 use Columba\Database\Dao\Model;
+use function Columba\Util\pre;
 
 require __DIR__ . '/../bootstrap-test.php';
 
@@ -40,14 +41,14 @@ class User extends Model
 
 }
 
-$driver = new MySQLDatabaseDriver('dev_latte', '127.0.0.1', 3306, 'dev', '');
+$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', 'dev', '');
 
 Model::init($driver);
 
 $collection = new Collection(User::all());
 $collection = $collection->map(function (User $user): string
 {
-	return $user['id'] . ' ' . $user['name'];
+	return $user['id'] . ': ' . $user['name'];
 });
 
 pre($collection, User::get(1));

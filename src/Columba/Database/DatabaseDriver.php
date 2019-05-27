@@ -86,6 +86,7 @@ abstract class DatabaseDriver extends AbstractDatabaseDriver
 	/**
 	 * Connects to the database.
 	 *
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

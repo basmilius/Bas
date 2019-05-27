@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap-test.php';
 
 header('Content-Type: text/plain');
 
-$driver = new MySQLDatabaseDriver('dev_latte', '127.0.0.1', 3306, '', '');
+$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', '', '');
 
 $query = $driver
 	->withRecursive('cte1', $driver
