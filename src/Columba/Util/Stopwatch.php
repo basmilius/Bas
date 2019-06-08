@@ -42,7 +42,7 @@ final class Stopwatch
 	 */
 	public static function start(string $id): void
 	{
-		self::$registry[$id] = hrtime(true);
+		self::$registry[$id] = self::time();
 	}
 
 	/**
@@ -58,7 +58,7 @@ final class Stopwatch
 	public static function stop(string $id, float &$time = null, int $unit = self::UNIT_NANOSECONDS): void
 	{
 		$startTime = self::$registry[$id];
-		$stopTime = hrtime(true);
+		$stopTime = self::time();
 		$time = $stopTime - $startTime;
 
 		if ($unit === self::UNIT_NANOSECONDS)
@@ -78,6 +78,21 @@ final class Stopwatch
 				$time *= 1e-9;
 				break;
 		}
+	}
+
+	/**
+	 * Gets the current high resolution time.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public static function time(): int
+	{
+		if (function_exists('hrtime'))
+			return hrtime(true);
+		else
+			return (int)(microtime(true) * 10000000);
 	}
 
 }
