@@ -122,6 +122,25 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
+	 * Gets a collection column as a new collection.
+	 *
+	 * @param string ...$column
+	 *
+	 * @return Collection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function column(string ...$column): self
+	{
+		$items = $this->items;
+
+		foreach ($column as $col)
+			$items = array_column($items, $col);
+
+		return new static($items);
+	}
+
+	/**
 	 * Returns TRUE if an item exists in the collection.
 	 *
 	 * @param $value
@@ -336,6 +355,18 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function splice(int $offset = 0, int $length = 0, ...$replacement): self
 	{
 		return new static(array_splice($this->items, $offset, $length, $replacement));
+	}
+
+	/**
+	 * Sums the collection.
+	 *
+	 * @return float|int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function sum()
+	{
+		return array_sum($this->items);
 	}
 
 	/**
