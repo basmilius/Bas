@@ -92,7 +92,7 @@ final class Stopwatch
 		if (function_exists('hrtime'))
 			return hrtime(true);
 		else
-			return (int)(microtime(true) * 10000000);
+			return (int)(microtime(true) * 1e9);
 	}
 
 }
