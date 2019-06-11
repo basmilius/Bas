@@ -10,13 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http\Foundation;
+namespace Columba\Foundation\Http;
 
 /**
  * Class PostParameters
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Http\Foundation
+ * @package Columba\Foundation\Http
  * @since 1.5.0
  */
 class PostParameters extends Parameters

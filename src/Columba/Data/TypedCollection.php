@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Columba\Data;
 
 use Columba\Util\ReflectionUtil;
-use Exception;
+use InvalidArgumentException;
 
 /**
  * Class TypedCollection
@@ -100,7 +100,7 @@ class TypedCollection extends Collection
 	 *
 	 * @param mixed $item
 	 *
-	 * @throws Exception
+	 * @throws InvalidArgumentException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -111,7 +111,7 @@ class TypedCollection extends Collection
 		if ($this->type === '')
 			$this->type = $type;
 		else if ($this->type !== $type)
-			throw new Exception(sprintf('Item needs to be an instance of %s, %s given.', $this->type, $type));
+			throw new InvalidArgumentException(sprintf('Item needs to be an instance of %s, %s given.', $this->type, $type));
 	}
 
 }

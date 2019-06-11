@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
+use Columba\Foundation\Http\HeaderParameters;
+use Columba\Foundation\Net\IP;
+use Columba\Foundation\Net\IPException;
 use SimpleXMLElement;
 
 /**
@@ -50,39 +53,39 @@ final class Response
 	private $effectiveUrl;
 
 	/**
-	 * @var string
+	 * @var IP|null
 	 */
-	private $localIp;
+	private $localIp = null;
 
 	/**
-	 * @var int
+	 * @var int|null
 	 */
-	private $localPort;
+	private $localPort = null;
 
 	/**
-	 * @var string
+	 * @var IP|null
 	 */
-	private $remoteIp;
+	private $remoteIp = null;
 
 	/**
-	 * @var int
+	 * @var int|null
 	 */
-	private $remotePort;
+	private $remotePort = null;
 
 	/**
-	 * @var int
+	 * @var int|null
 	 */
-	private $responseCode;
+	private $responseCode = null;
 
 	/**
-	 * @var array
+	 * @var HeaderParameters|null
 	 */
-	private $responseHeaders;
+	private $responseHeaders = null;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
-	private $responseText;
+	private $responseText = null;
 
 	/**
 	 * @var int
@@ -114,10 +117,6 @@ final class Response
 		$this->curlHandle = $curlHandle;
 		$this->request = $request;
 
-		$this->responseCode = -1;
-		$this->responseHeaders = [];
-		$this->responseText = '';
-
 		$this->parseResponse();
 	}
 
@@ -139,7 +138,7 @@ final class Response
 			$headers = substr($response, 0, $headerSize);
 			$text = substr($response, $headerSize);
 
-			$this->responseHeaders = HttpUtil::parseStringOfHeaders($headers);
+			$this->responseHeaders = new HeaderParameters(HttpUtil::parseStringOfHeaders($headers));
 			$this->responseText = $text;
 		}
 		else
@@ -147,12 +146,19 @@ final class Response
 			throw new HttpException(curl_error($this->curlHandle), curl_errno($this->curlHandle));
 		}
 
+		try
+		{
+			$this->localIp = IP::parse(curl_getinfo($this->curlHandle, CURLINFO_LOCAL_IP), false);
+			$this->remoteIp = IP::parse(curl_getinfo($this->curlHandle, CURLINFO_PRIMARY_IP), false);
+		}
+		catch (IPException $err)
+		{
+		}
+
 		$this->downloadSize = curl_getinfo($this->curlHandle, CURLINFO_SIZE_DOWNLOAD);
 		$this->downloadSpeed = curl_getinfo($this->curlHandle, CURLINFO_SPEED_DOWNLOAD);
 		$this->effectiveUrl = curl_getinfo($this->curlHandle, CURLINFO_EFFECTIVE_URL);
-		$this->localIp = curl_getinfo($this->curlHandle, CURLINFO_LOCAL_IP);
 		$this->localPort = curl_getinfo($this->curlHandle, CURLINFO_LOCAL_PORT);
-		$this->remoteIp = curl_getinfo($this->curlHandle, CURLINFO_PRIMARY_IP);
 		$this->remotePort = curl_getinfo($this->curlHandle, CURLINFO_PRIMARY_PORT);
 		$this->responseCode = curl_getinfo($this->curlHandle, CURLINFO_RESPONSE_CODE);
 		$this->transactionTime = curl_getinfo($this->curlHandle, CURLINFO_TOTAL_TIME);
@@ -264,11 +270,11 @@ final class Response
 	/**
 	 * Gets the local ip address.
 	 *
-	 * @return string
+	 * @return IP|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getLocalIp(): string
+	public final function getLocalIp(): ?IP
 	{
 		return $this->localIp;
 	}
@@ -288,11 +294,11 @@ final class Response
 	/**
 	 * Gets the remote ip.
 	 *
-	 * @return string
+	 * @return IP|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getRemoteIp(): string
+	public final function getRemoteIp(): ?IP
 	{
 		return $this->remoteIp;
 	}
@@ -324,11 +330,11 @@ final class Response
 	/**
 	 * Gets the response headers.
 	 *
-	 * @return array
+	 * @return HeaderParameters|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResponseHeaders(): array
+	public final function getResponseHeaders(): ?HeaderParameters
 	{
 		return $this->responseHeaders;
 	}

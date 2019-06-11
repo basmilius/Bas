@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router;
 
-use Exception;
-use Throwable;
+use Columba\Error\ColumbaException;
 
 /**
  * Class RouterException
@@ -22,7 +21,7 @@ use Throwable;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-final class RouterException extends Exception
+final class RouterException extends ColumbaException
 {
 
 	public const ERR_UNKNOWN = 1;
@@ -37,20 +36,5 @@ final class RouterException extends Exception
 	public const ERR_NOT_FOUND = 512;
 	public const ERR_ROUTE_THREW_EXCEPTION = 1024;
 	public const ERR_ILLEGAL = 2048;
-
-	/**
-	 * RouterException constructor.
-	 *
-	 * @param string         $message
-	 * @param int            $code
-	 * @param Throwable|null $previous
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public function __construct(string $message, int $code = self::ERR_UNKNOWN, ?Throwable $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
 
 }

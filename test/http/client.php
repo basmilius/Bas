@@ -12,15 +12,17 @@
 
 declare(strict_types=1);
 
-use Columba\Http\Foundation\Request;
+use Columba\Foundation\Http\Request;
+use Columba\Http\Http;
 use function Columba\Util\preDie;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
 header('Content-Type: text/plain');
 
-$req = new Request();
+$http = new Http();
+$response = $http->get('https://bas.dev');
 
 preDie(
-	$req
+	$response
 );

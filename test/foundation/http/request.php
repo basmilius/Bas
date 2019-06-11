@@ -8,22 +8,19 @@
  * LICENSE file that was distributed with this source code.
  */
 
+/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
+
 declare(strict_types=1);
 
-namespace Columba\Http;
+use Columba\Foundation\Http\Request;
+use function Columba\Util\preDie;
 
-use Columba\Error\ColumbaException;
+require_once __DIR__ . '/../../bootstrap-test.php';
 
-/**
- * Class HttpException
- *
- * @package Columba\Http
- * @author Bas Milius <bas@mili.us>
- * @since 1.2.0
- */
-final class HttpException extends ColumbaException
-{
+header('Content-Type: text/plain');
 
-	public const ERR_HOST_UNRESOLVABLE = 6;
+$req = new Request();
 
-}
+preDie(
+	$req
+);

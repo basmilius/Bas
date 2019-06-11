@@ -10,20 +10,16 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http;
-
-use Columba\Error\ColumbaException;
+namespace Columba\Foundation\Http;
 
 /**
- * Class HttpException
+ * Class HeaderParameters
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
- * @since 1.2.0
+ * @package Columba\Foundation\Http
+ * @since 1.5.0
  */
-final class HttpException extends ColumbaException
+class HeaderParameters extends Parameters
 {
-
-	public const ERR_HOST_UNRESOLVABLE = 6;
 
 }

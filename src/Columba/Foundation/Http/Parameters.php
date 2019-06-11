@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http\Foundation;
+namespace Columba\Foundation\Http;
 
 use Columba\Facade\GetHasSetUnset;
 use Columba\Facade\IArray;
@@ -22,7 +22,7 @@ use Columba\Facade\IJson;
  * Class Parameters
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Http\Foundation
+ * @package Columba\Foundation\Http
  * @since 1.5.0
  */
 abstract class Parameters implements IArray, ICountable, IIterator, IJson

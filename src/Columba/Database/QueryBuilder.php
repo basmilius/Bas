@@ -13,8 +13,6 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use PDO;
-use PDOException;
-use function Columba\Util\pre;
 
 /**
  * Class QueryBuilder
@@ -1253,7 +1251,7 @@ class QueryBuilder
 		$query = [];
 
 		if ($this->parts === null)
-			throw new PDOException('Query not initialized!', 0xDBA0007);
+			throw new DatabaseException('Query not initialized!', DatabaseException::ERR_QUERY_FAILED);
 
 		foreach ($this->parts as [$clause, $data, $indentSelf, $indent, $newLine, $separator])
 		{

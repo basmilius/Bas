@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http\Foundation;
+namespace Columba\Foundation\Http;
 
 use Columba\Facade\IJson;
 use Columba\Http\HttpUtil;
@@ -20,7 +20,7 @@ use Columba\Util\ArrayUtil;
  * Class Request
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Http\Foundation
+ * @package Columba\Foundation\Http
  * @since 1.5.0
  */
 class Request implements IJson

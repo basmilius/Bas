@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-use Columba\Http\Foundation\Request;
+use Columba\Foundation\Http\Request;
 use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\HtmlResponse;
@@ -22,6 +22,7 @@ use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
+use function Columba\Util\pre;
 use function Columba\Util\preDie;
 
 require_once __DIR__ . '/../bootstrap-test.php';

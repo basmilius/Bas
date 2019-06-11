@@ -10,20 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http;
+namespace Columba\Foundation\Preferences;
 
 use Columba\Error\ColumbaException;
 
 /**
- * Class HttpException
+ * Class PreferencesException
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
- * @since 1.2.0
+ * @package Columba\Foundation\Preferences
+ * @since 1.6.0
  */
-final class HttpException extends ColumbaException
+final class PreferencesException extends ColumbaException
 {
 
-	public const ERR_HOST_UNRESOLVABLE = 6;
+	public const ERR_INVALID_ARGUMENT = 1;
 
 }
