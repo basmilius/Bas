@@ -23,20 +23,105 @@ final class Http
 {
 
 	/**
+	 * Performs a DELETE request.
+	 *
+	 * @param string        $url
+	 * @param callable|null $manipulator
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function delete(string $url, ?callable $manipulator = null): Response
+	{
+		$request = new Request($url, RequestMethod::DELETE);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
 	 * Performs a GET request.
 	 *
 	 * @param string        $url
 	 * @param callable|null $manipulator
-	 * @param Request|null  $request
 	 *
 	 * @return Response
 	 * @throws HttpException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function get(string $url, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function get(string $url, ?callable $manipulator = null): Response
 	{
 		$request = new Request($url, RequestMethod::GET);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
+	 * Performs a HEAD request.
+	 *
+	 * @param string        $url
+	 * @param callable|null $manipulator
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function head(string $url, ?callable $manipulator = null): Response
+	{
+		$request = new Request($url, RequestMethod::HEAD);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
+	 * Performs a OPTIONS request.
+	 *
+	 * @param string        $url
+	 * @param callable|null $manipulator
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function options(string $url, ?callable $manipulator = null): Response
+	{
+		$request = new Request($url, RequestMethod::OPTIONS);
+
+		if ($manipulator !== null)
+			$manipulator($request);
+
+		return $this->makeRequest($request);
+	}
+
+	/**
+	 * Performs a PATCH request.
+	 *
+	 * @param string        $url
+	 * @param string        $body
+	 * @param callable|null $manipulator
+	 *
+	 * @return Response
+	 * @throws HttpException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function patch(string $url, string $body, ?callable $manipulator = null): Response
+	{
+		$request = new Request($url, RequestMethod::PATCH);
+		$request->setBody($body);
 
 		if ($manipulator !== null)
 			$manipulator($request);
@@ -50,14 +135,13 @@ final class Http
 	 * @param string        $url
 	 * @param string        $body
 	 * @param callable|null $manipulator
-	 * @param Request|null  $request
 	 *
 	 * @return Response
 	 * @throws HttpException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function post(string $url, string $body, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function post(string $url, string $body, ?callable $manipulator = null): Response
 	{
 		$request = new Request($url, RequestMethod::POST);
 		$request->setBody($body);
@@ -74,14 +158,13 @@ final class Http
 	 * @param string        $url
 	 * @param string        $body
 	 * @param callable|null $manipulator
-	 * @param Request|null  $request
 	 *
 	 * @return Response
 	 * @throws HttpException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function put(string $url, ?string $body = null, ?callable $manipulator = null, ?Request &$request = null): Response
+	public final function put(string $url, ?string $body = null, ?callable $manipulator = null): Response
 	{
 		$request = new Request($url, RequestMethod::PUT);
 

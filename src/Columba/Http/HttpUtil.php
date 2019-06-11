@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
+use Columba\Foundation\System;
 use Columba\Util\ArrayUtil;
 
 /**
@@ -33,6 +34,9 @@ final class HttpUtil
 	 */
 	public static function getAllRequestHeaders(): array
 	{
+		if (System::isCLI())
+			return [];
+
 		if (function_exists('getallheaders'))
 		{
 			$headers = getallheaders();

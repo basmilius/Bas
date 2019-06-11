@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Request\Validate;
 
-use Exception;
+use Columba\Error\ColumbaException;
 
 /**
  * Class RequestValidatorException
@@ -21,7 +21,7 @@ use Exception;
  * @author Bas Milius <bas@mili.us>
  * @since 1.2.0
  */
-final class RequestValidatorException extends Exception
+final class RequestValidatorException extends ColumbaException
 {
 
 	public const ERR_MISSING = 1;
@@ -37,19 +37,5 @@ final class RequestValidatorException extends Exception
 	public const ERR_TOO_LONG = 1024;
 	public const ERR_TOO_SHORT = 2048;
 	public const ERR_DIDNT_MATCH = 4096;
-
-	/**
-	 * RequestValidatorException constructor.
-	 *
-	 * @param string $message
-	 * @param int    $code
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
-	 */
-	public function __construct(string $message, int $code = self::ERR_MISSING)
-	{
-		parent::__construct($message, $code);
-	}
 
 }

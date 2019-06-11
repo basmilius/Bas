@@ -10,19 +10,18 @@
 
 declare(strict_types=1);
 
-namespace Columba;
+namespace Columba\Foundation\Preferences;
 
 use Columba\Facade\IArray;
 use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
-use InvalidArgumentException;
 
 /**
  * Class Preferences
  *
- * @package Columba
+ * @package Columba\Foundation\Preferences
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
@@ -82,7 +81,7 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 			if (!is_array($this->values[$index]) || ArrayUtil::isSequentialArray($this->values[$index]))
 				continue;
 
-			$this->values[$index] = new self($this->values[$index], $this);
+			$this->values[$index] = new static($this->values[$index], $this);
 		}
 	}
 
@@ -156,7 +155,7 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 		if ($offset === -1)
 			return $this->parent;
 
-		return $this->values[$this->findIndex($this->keys, $offset)];
+		return $this->values[$this->findIndex($this->keys, $offset)] ?? null;
 	}
 
 	/**
@@ -166,7 +165,12 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetSet($offset, $value): void
 	{
-		$this->values[$this->findIndex($this->keys, $offset)] = $value;
+		$index = $this->findIndex($this->keys, $offset);
+
+		if ($index === null)
+			throw new PreferencesException(sprintf('Could not set "%s" as it did not exist in preferences file.', $offset));
+
+		$this->values[$index] = $value;
 		$this->loop();
 	}
 
@@ -177,7 +181,12 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetUnset($offset): void
 	{
-		unset($this->values[$this->findIndex($this->keys, $offset)]);
+		$index = $this->findIndex($this->keys, $offset);
+
+		if ($index === null)
+			return;
+
+		unset($this->values[$index]);
 	}
 
 	/**
@@ -228,13 +237,15 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	 * @param array $array
 	 * @param mixed $value
 	 *
-	 * @return int
+	 * @return int|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	private function findIndex(array $array, $value): int
+	private function findIndex(array $array, $value): ?int
 	{
-		return array_search($value, $array);
+		$index = array_search($value, $array);
+
+		return $index !== false ? $index : null;
 	}
 
 	/**
@@ -243,20 +254,21 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	 * @param string $fileName
 	 *
 	 * @return Preferences
+	 * @throws PreferencesException
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 3.0.0
+	 * @since 1.6.0
 	 */
 	public static function loadFromJson(string $fileName): self
 	{
 		if (!is_readable($fileName))
-			throw new InvalidArgumentException('$fileName must be a readable file!');
+			throw new PreferencesException(sprintf('"%s" must be a readable file!', $fileName), PreferencesException::ERR_INVALID_ARGUMENT);
 
 		$data = json_decode(file_get_contents($fileName), true);
 
 		if ($data === null && json_last_error() !== JSON_ERROR_NONE)
-			throw new InvalidArgumentException('$fileName must be a valid JSON file!');
+			throw new PreferencesException(sprintf('"%s" must be a valid JSON file!', $fileName), PreferencesException::ERR_INVALID_ARGUMENT);
 
-		return new self($data);
+		return new static($data);
 	}
 
 }

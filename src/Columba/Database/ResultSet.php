@@ -12,14 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
-use ArrayAccess;
 use Columba\Data\Collection;
 use Columba\Database\Dao\Model;
-use Countable;
-use ErrorException;
-use Iterator;
+use Columba\Facade\IArray;
+use Columba\Facade\ICountable;
+use Columba\Facade\IIterator;
 use PDO;
-use PDOException;
 use PDOStatement;
 
 /**
@@ -29,7 +27,7 @@ use PDOStatement;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class ResultSet implements ArrayAccess, Countable, Iterator
+final class ResultSet implements IArray, ICountable, IIterator
 {
 
 	/**
@@ -94,6 +92,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 	 * Returns the first and probably only var.
 	 *
 	 * @return mixed
+	 * @throws DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -102,7 +101,7 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 		if ($this->count() > 0)
 			return array_values($this->results[0])[0];
 
-		throw new PDOException('Did not have any results.');
+		throw new DatabaseException('Did not have any results.', DatabaseException::ERR_NO_RESULTS);
 	}
 
 	/**
@@ -160,52 +159,52 @@ final class ResultSet implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * {@inheritdoc}
-	 * @throws ErrorException
+	 * @throws DatabaseException()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function offsetExists($offset): bool
 	{
 		if (!is_int($offset))
-			throw new ErrorException('Offset must be instance of int.');
+			throw new DatabaseException('Offset must be instance of int.', DatabaseException::ERR_INVALID_OFFSET);
 
 		return isset($this->results[$offset]);
 	}
 
 	/**
 	 * {@inheritdoc}
-	 * @throws ErrorException
+	 * @throws DatabaseException()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
 	public final function offsetGet($offset)
 	{
 		if (!is_int($offset))
-			throw new ErrorException('Offset must be instance of int.');
+			throw new DatabaseException('Offset must be instance of int.', DatabaseException::ERR_INVALID_OFFSET);
 
 		return $this->results[$offset];
 	}
 
 	/**
 	 * {@inheritdoc}
-	 * @throws ErrorException
+	 * @throws DatabaseException()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetSet($offset, $value)
+	public final function offsetSet($offset, $value): void
 	{
-		throw new ErrorException('ResultSet is immutabe and can therefore not be changed.');
+		throw new DatabaseException('ResultSet is immutabe and can therefore not be changed.', DatabaseException::ERR_IMMUTABLE);
 	}
 
 	/**
 	 * {@inheritdoc}
-	 * @throws ErrorException
+	 * @throws DatabaseException()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetUnset($offset)
+	public final function offsetUnset($offset): void
 	{
-		throw new ErrorException('ResultSet is immutabe and can therefore not be changed.');
+		throw new DatabaseException('ResultSet is immutabe and can therefore not be changed.', DatabaseException::ERR_IMMUTABLE);
 	}
 
 	/**

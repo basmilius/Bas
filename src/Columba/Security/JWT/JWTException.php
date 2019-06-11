@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Security\JWT;
 
-use Exception;
-use Throwable;
+use Columba\Error\ColumbaException;
 
 /**
  * Class JWTException
@@ -22,7 +21,7 @@ use Throwable;
  * @package Columba\Security\JWT
  * @since 1.5.0
  */
-final class JWTException extends Exception
+final class JWTException extends ColumbaException
 {
 
 	public const ERR_UNKNOWN = 0;
@@ -35,20 +34,5 @@ final class JWTException extends Exception
 	public const ERR_INVALID_SIGNATURE = 64;
 	public const ERR_NOT_YET_VALID = 128;
 	public const ERR_EXPIRED = 256;
-
-	/**
-	 * JWTException constructor.
-	 *
-	 * @param string         $message
-	 * @param int            $code
-	 * @param Throwable|null $previous
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
-	 */
-	public function __construct(string $message, int $code = self::ERR_UNKNOWN, ?Throwable $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
 
 }

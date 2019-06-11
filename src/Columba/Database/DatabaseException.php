@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
-use Exception;
-use PDOException;
+use Columba\Error\ColumbaException;
 
 /**
  * Class DatabaseException
@@ -22,7 +21,7 @@ use PDOException;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-class DatabaseException extends Exception
+class DatabaseException extends ColumbaException
 {
 
 	public const ERR_CONNECTION_FAILED = 1;
@@ -35,20 +34,8 @@ class DatabaseException extends Exception
 	public const ERR_FEATURE_UNSUPPORTED = 128;
 	public const ERR_UNSUPPORTED = 256;
 	public const ERR_PROCEDURE_FAILED = 512;
-
-	/**
-	 * DatabaseException constructor.
-	 *
-	 * @param string            $message
-	 * @param int               $code
-	 * @param PDOException|null $previous
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public function __construct(string $message, int $code, ?PDOException $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
+	public const ERR_INVALID_OFFSET = 1024;
+	public const ERR_IMMUTABLE = 2048;
+	public const ERR_NO_RESULTS = 4096;
 
 }

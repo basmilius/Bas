@@ -10,16 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http\Foundation;
+namespace Columba\Foundation\Net;
+
+use Columba\Error\ColumbaException;
 
 /**
- * Class HeaderParameters
+ * Class IPException
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Http\Foundation
- * @since 1.5.0
+ * @package Columba\Foundation\Net
+ * @since 1.6.0
  */
-class HeaderParameters extends Parameters
+final class IPException extends ColumbaException
 {
+
+	public const ERR_INVALID_IP = 1;
 
 }

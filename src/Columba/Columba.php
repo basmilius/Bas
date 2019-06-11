@@ -22,6 +22,6 @@ namespace Columba;
 final class Columba
 {
 
-	public const VERSION = '1.5.0-dev';
+	public const VERSION = '1.6.0-dev';
 
 }

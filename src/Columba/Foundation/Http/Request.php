@@ -10,9 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Columba\Http\Foundation;
+namespace Columba\Foundation\Http;
 
 use Columba\Facade\IJson;
+use Columba\Foundation\System;
 use Columba\Http\HttpUtil;
 use Columba\Util\ArrayUtil;
 
@@ -20,7 +21,7 @@ use Columba\Util\ArrayUtil;
  * Class Request
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Http\Foundation
+ * @package Columba\Foundation\Http
  * @since 1.5.0
  */
 class Request implements IJson
@@ -55,8 +56,8 @@ class Request implements IJson
 	public function __construct()
 	{
 		$this->headers = new HeaderParameters(HttpUtil::getAllRequestHeaders());
-		$this->queryString = new QueryString($_GET);
-		$this->post = new PostParameters($_POST);
+		$this->queryString = new QueryString($_GET ?? []);
+		$this->post = new PostParameters($_POST ?? []);
 	}
 
 	/**
@@ -190,6 +191,21 @@ class Request implements IJson
 	public final function getQueryString(): QueryString
 	{
 		return $this->queryString;
+	}
+
+	/**
+	 * Gets the request uri.
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getRequestUri(): ?string
+	{
+		if (System::isCLI())
+			return null;
+
+		return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
 	/**
