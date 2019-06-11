@@ -136,6 +136,8 @@ abstract class AbstractRoute
 				$statusCode = $context->getResponseCode();
 				$statusMessage = ResponseCode::getMessage($statusCode);
 
+				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
+
 				http_response_code($statusCode);
 				header("$protocol $statusCode $statusMessage");
 				header('Location: ' . $this->resolve($context->getRedirectPath()));
