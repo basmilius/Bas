@@ -787,7 +787,10 @@ class QueryBuilder
 		$statement = [];
 
 		foreach ($fields as $field)
-			$statement[] = $field . ' = VALUES(' . $field . ')';
+			if (stristr($field, '='))
+				$statement[] = $field;
+			else
+				$statement[] = $field . ' = VALUES(' . $field . ')';
 
 		$this->add('ON DUPLICATE KEY UPDATE', $statement, 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 
