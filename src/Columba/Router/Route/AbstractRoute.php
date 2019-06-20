@@ -285,6 +285,8 @@ abstract class AbstractRoute
 		if (!$isValid || !($this->requestMethod === RequestMethod::NULL || $this->requestMethod === $requestMethod))
 			return false;
 
+		$middleware = null;
+
 		try
 		{
 			foreach ($this->parent->getMiddlewares() as $middleware)
@@ -294,7 +296,10 @@ abstract class AbstractRoute
 		}
 		catch (Exception $err)
 		{
-			$this->parent->onException($err, $this->getContext());
+			if ($middleware !== null)
+				$this->parent->onException(new RouterException(sprintf("Middleware '%s' threw an exception while executing '%s'.", get_class($middleware), $this->getContext()->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $this->getContext());
+			else
+				$this->parent->onException(new RouterException(sprintf("Unkown exception while executing '%s'.", $this->getContext()->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $this->getContext());
 
 			return false;
 		}

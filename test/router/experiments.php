@@ -38,6 +38,7 @@ class MyMiddleware extends AbstractMiddleware
 		if (!$isValid)
 			return;
 
+//		throw new Exception('Hi', 123);
 //		$route->respond(sprintf('Override from middleware for: %s', $context->getFullPath()));
 	}
 
@@ -139,17 +140,10 @@ class MySubRouter extends SubRouter
 
 }
 
-try
-{
-	$router = new MyRouter();
-	$router->define('myBool', true);
-	$router->define('request', new Request());
-//	$router->execute('/profile/1/invoices/20191001.pdf', 'GET');
-	$router->execute('/sub/bas', 'GET');
-}
-catch (RouterException $err)
-{
-	print_r($err);
-}
+$router = new MyRouter();
+$router->define('myBool', true);
+$router->define('request', new Request());
+//$router->execute('/profile/1/invoices/20191001.pdf', 'GET');
+$router->execute('/sub/bas', 'GET');
 
 echo PHP_EOL;

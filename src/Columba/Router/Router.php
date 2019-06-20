@@ -80,6 +80,8 @@ class Router
 	 */
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
+		ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
+
 		$this->renderer = $renderer;
 		$this->response = $response;
 	}
@@ -246,8 +248,6 @@ class Router
 	 */
 	public function execute(string $path, string $requestMethod): void
 	{
-		ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
-
 		if (($route = $this->find($path, $requestMethod)) !== null)
 			$route->execute();
 		else
