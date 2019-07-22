@@ -100,6 +100,20 @@ final class Request
 	}
 
 	/**
+	 * Adds a HTTP header.
+	 *
+	 * @param string $name
+	 * @param string $content
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function addHeader(string $name, string $content): void
+	{
+		$this->headers[$name] = $content;
+	}
+
+	/**
 	 * Gets the headers.
 	 *
 	 * @return array
