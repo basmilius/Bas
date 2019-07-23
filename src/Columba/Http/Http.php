@@ -191,9 +191,6 @@ final class Http
 	{
 		$handle = curl_init();
 
-		foreach ($request->getOptions() as $option => $value)
-			curl_setopt($handle, $option, $value);
-
 		curl_setopt($handle, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $request->getRequestMethod());
 		curl_setopt($handle, CURLOPT_ENCODING, 'gzip');
@@ -208,11 +205,10 @@ final class Http
 		if ($request->getBody() !== null)
 			curl_setopt($handle, CURLOPT_POSTFIELDS, $request->getBody());
 
-		$response = new Response($request, $handle);
+		foreach ($request->getOptions() as $option => $value)
+			curl_setopt($handle, $option, $value);
 
-		// TODO (Bas): Some checks on $response.
-
-		return $response;
+		return new Response($request, $handle);
 	}
 
 }

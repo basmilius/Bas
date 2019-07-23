@@ -23,6 +23,18 @@ final class System
 {
 
 	/**
+	 * Returns TRUE if PHP is running on the built-in webserver.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function isBuiltInDevServer(): bool
+	{
+		return php_sapi_name() === 'cli-server';
+	}
+
+	/**
 	 * Returns TRUE if PHP is running on the command line interface.
 	 *
 	 * @return bool
