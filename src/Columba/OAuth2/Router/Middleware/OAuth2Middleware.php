@@ -108,8 +108,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 		}
 		catch (OAuth2Exception $err)
 		{
-			$route->respond($route->getParentRouter()->respond(JsonResponse::class, $err, false));
-			die;
+			$context->setResponse(new JsonResponse(false), $err);
 		}
 	}
 
