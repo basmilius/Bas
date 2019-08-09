@@ -67,8 +67,6 @@ abstract class AbstractResponse
 	{
 		$output = $this->respond($context, $value);
 
-		$this->addHeader('Content-Length', strval(mb_strlen($output)));
-
 		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
 		$statusCode = http_response_code() ?: 200;
 		$statusMessage = ResponseCode::getMessage($statusCode);
