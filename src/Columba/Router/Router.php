@@ -299,6 +299,7 @@ class Router
 	 * Adds an ALL {@see AbstractRoute}.
 	 *
 	 * @param string $path
+	 * @param callable $arguments
 	 * @param mixed  ...$arguments
 	 *
 	 * @throws RouterException
@@ -314,6 +315,7 @@ class Router
 	 * Adds a DELETE {@see AbstractRoute}.
 	 *
 	 * @param string $path
+	 * @param callable $arguments
 	 * @param mixed  ...$arguments
 	 *
 	 * @throws RouterException
