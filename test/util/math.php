@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Util\MathUtil;
+use function Columba\Util\pre;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 

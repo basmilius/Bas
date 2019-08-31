@@ -12,7 +12,6 @@
 
 declare(strict_types=1);
 
-use Columba\Foundation\Http\Request;
 use Columba\Http\Http;
 use function Columba\Util\preDie;
 
@@ -26,3 +25,4 @@ $response = $http->get('https://bas.dev');
 preDie(
 	$response
 );
+

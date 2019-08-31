@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Security\JWT\JWT;
+use function Columba\Util\pre;
 
 require __DIR__ . '/../bootstrap-test.php';
 

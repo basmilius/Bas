@@ -11,7 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Database\MSSQLDatabaseDriver;
-use function Columba\Util\preDie;
+use function Columba\Util\pre;
 
 require __DIR__ . '/../bootstrap-test.php';
 

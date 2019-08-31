@@ -27,7 +27,7 @@ try
 	<title>Palette</title>
 </head>
 <body>
-	<img style="height: 200px" src="./photo.jpg" />
+	<img style="height: 200px" src="./photo.jpg" alt="Example photo" />
 	
 	<table>
 		<thead>

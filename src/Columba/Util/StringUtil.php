@@ -83,7 +83,7 @@ final class StringUtil
 	 */
 	public static function splitSentences(string $str): array
 	{
-		return preg_split('/(?<!\.\.\.)(?<!Dr\.)(?<=[.?!]|\.\)|\.")\s+(?=[a-zA-Z"\(])/', $str);
+		return preg_split('/(?<!\.\.\.)(?<!Dr\.)(?<=[.?!]|\.\)|\.")\s+(?=[a-zA-Z"(])/', $str);
 	}
 
 	/**
@@ -99,6 +99,22 @@ final class StringUtil
 	public static function startsWith(string $str, string $start): bool
 	{
 		return mb_substr($str, 0, mb_strlen($start)) === $start;
+	}
+
+	/**
+	 * Converts a string to pascal case.
+	 *
+	 * @param string $str
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function toPascalCase(string $str): string
+	{
+		preg_match_all('/([a-zA-Z0-9]+)/', $str, $matches);
+
+		return join(array_map('ucfirst', $matches[0]));
 	}
 
 	/**

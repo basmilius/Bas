@@ -13,6 +13,7 @@
 declare(strict_types=1);
 
 use Columba\Data\TypedCollection;
+use function Columba\Util\pre;
 
 require __DIR__ . '/../bootstrap-test.php';
 

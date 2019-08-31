@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Util\StringUtil;
+use function Columba\Util\pre;
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
@@ -26,6 +27,11 @@ SENTENCES;
 
 pre(
 	StringUtil::splitSentences($sentences),
+	StringUtil::endsWith('Hello world', 'world'),
+	StringUtil::startsWith('Hello world', 'Hello'),
 	StringUtil::commaCommaAnd('A', 'B', 'C'),
-	StringUtil::toSnakeCase('RouterException')
+	StringUtil::slugify('My "amazing" title that is longer than 10 characters.'),
+	StringUtil::toPascalCase('router exception class'),
+	StringUtil::toSnakeCase('RouterException'),
+	StringUtil::truncateText($sentences, 10, '[...]')
 );
