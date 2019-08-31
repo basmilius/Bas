@@ -74,13 +74,15 @@ class Router
 	 *
 	 * @param AbstractResponse|null $response
 	 * @param AbstractRenderer|null $renderer
+	 * @param bool                  $isSubRouter
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null, bool $isSubRouter = false)
 	{
-		ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
+		if (!$isSubRouter)
+			ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
 
 		$this->renderer = $renderer;
 		$this->response = $response;
@@ -105,36 +107,36 @@ class Router
 	/**
 	 * Tries to guess the {@see AbstractRoute} instance and adds it.
 	 *
-	 * @param string $requestMethod
-	 * @param string $path
-	 * @param mixed  ...$arguments
+	 * @param string[] $requestMethods
+	 * @param string   $path
+	 * @param mixed    ...$arguments
 	 *
 	 * @return AbstractRoute
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function addFromArguments(string $requestMethod, string $path, ...$arguments): AbstractRoute
+	public final function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
 		$route = null;
 
 		if (mb_substr($path, 0, 1) !== '/')
 			$path = '/' . $path;
 
-		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
-			$route = new CallbackRoute($this, $requestMethod, $path, ...$arguments);
+		if (count($arguments) > 0 && is_callable($arguments[0]))
+			$route = new CallbackRoute($this, $requestMethods, $path, Closure::bind(Closure::fromCallable(array_shift($arguments)), $this), ...$arguments);
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof Router)
-			$route = new RouterRoute($this, $requestMethod, $path, ...$arguments);
+			$route = new RouterRoute($this, $requestMethods, $path, ...$arguments);
 
 		else if (count($arguments) > 0 && is_string($arguments[0]) && is_subclass_of($arguments[0], Router::class))
-			$route = new LazyRouterRoute($this, $requestMethod, $path, ...$arguments);
+			$route = new LazyRouterRoute($this, $requestMethods, $path, ...$arguments);
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof IGetRouter)
-			$route = new RouterRoute($this, $requestMethod, $path, $arguments[0]->getRouter());
+			$route = new RouterRoute($this, $requestMethods, $path, $arguments[0]->getRouter());
 
 		else if (count($arguments) > 0 && $arguments[0] instanceof Closure)
-			$route = new CallbackRoute($this, $requestMethod, $path, ...$arguments);
+			$route = new CallbackRoute($this, $requestMethods, $path, ...$arguments);
 
 		if ($route === null && isset($arguments[0]) && is_array($arguments[0]) && is_string($arguments[0][1]))
 			throw new RouterException(sprintf("Could not find implementation '%s' for route '%s' in '%s'!", $arguments[0][1], $path, get_called_class()), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
@@ -322,9 +324,8 @@ class Router
 	/**
 	 * Adds an ALL {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -332,15 +333,29 @@ class Router
 	 */
 	public final function all(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::NULL, $path, ...$arguments);
+		$this->addFromArguments([], $path, ...$arguments);
+	}
+
+	/**
+	 * Adds a route that matches everything in {@see $requestMethods}.
+	 *
+	 * @param array          $requestMethods
+	 * @param string         $path
+	 * @param callable&mixed $arguments
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function match(array $requestMethods, string $path, ...$arguments): void
+	{
+		$this->addFromArguments($requestMethods, $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a DELETE {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -348,15 +363,14 @@ class Router
 	 */
 	public final function delete(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::DELETE, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::DELETE], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a GET {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -364,15 +378,14 @@ class Router
 	 */
 	public final function get(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::GET, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::GET], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a HEAD {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -380,15 +393,14 @@ class Router
 	 */
 	public final function head(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::HEAD, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::HEAD], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds an OPTIONS {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -396,15 +408,14 @@ class Router
 	 */
 	public final function options(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::OPTIONS, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::OPTIONS], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a PATCH {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -412,15 +423,14 @@ class Router
 	 */
 	public final function patch(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::PATCH, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::PATCH], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a POST {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -428,15 +438,14 @@ class Router
 	 */
 	public final function post(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::POST, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::POST], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a PUT {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param callable $arguments
-	 * @param mixed    ...$arguments
+	 * @param string         $path
+	 * @param callable&mixed $arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -444,23 +453,23 @@ class Router
 	 */
 	public final function put(string $path, ...$arguments): void
 	{
-		$this->addFromArguments(RequestMethod::PUT, $path, ...$arguments);
+		$this->addFromArguments([RequestMethod::PUT], $path, ...$arguments);
 	}
 
 	/**
 	 * Adds a redirect {@see AbstractRoute}.
 	 *
-	 * @param string $path
-	 * @param string $destination
-	 * @param string $requestMethod
-	 * @param int    $responseCode
+	 * @param string   $path
+	 * @param string   $destination
+	 * @param string[] $requestMethods
+	 * @param int      $responseCode
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public final function redirect(string $path, string $destination, string $requestMethod = RequestMethod::NULL, int $responseCode = ResponseCode::SEE_OTHER): void
+	public final function redirect(string $path, string $destination, array $requestMethods = [], int $responseCode = ResponseCode::SEE_OTHER): void
 	{
-		$this->add(new RedirectRoute($this, $requestMethod, $path, $destination, $responseCode));
+		$this->add(new RedirectRoute($this, $requestMethods, $path, $destination, $responseCode));
 	}
 
 	/**
@@ -498,6 +507,8 @@ class Router
 	}
 
 	/**
+	 * @noinspection PhpDocMissingThrowsInspection
+	 *
 	 * Invoked when an {@see Exception} is thrown.
 	 *
 	 * @param Exception         $err
@@ -509,6 +520,10 @@ class Router
 	 */
 	public function onException(Exception $err, ?RouteContext $context = null): void
 	{
+		if ($err instanceof RouterException)
+			/** @noinspection PhpUnhandledExceptionInspection */
+			throw $err;
+
 		$callbackName = function (ReflectionFunctionAbstract $callback): string
 		{
 			if ($callback instanceof ReflectionMethod)
@@ -516,9 +531,6 @@ class Router
 
 			return $callback->getName();
 		};
-
-		if ($err instanceof RouterException)
-			throw $err;
 
 		if ($context !== null && $context->getCallback() !== null)
 			throw new RouterException(sprintf("Exception thrown while executing %s for route '%s'.", $callbackName($context->getCallback()), $context->getFullPath(false)), RouterException::ERR_ROUTE_THREW_EXCEPTION, $err);

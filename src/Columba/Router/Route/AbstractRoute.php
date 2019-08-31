@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
-use Columba\Http\RequestMethod;
 use Columba\Http\ResponseCode;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
@@ -20,6 +19,7 @@ use Columba\Router\RouteContext;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
+use Columba\Router\SubRouter;
 use Columba\Util\A;
 use Columba\Util\ServerTiming;
 use Columba\Util\Stopwatch;
@@ -56,30 +56,30 @@ abstract class AbstractRoute
 	private $path;
 
 	/**
-	 * @var string|null
+	 * @var string[]
 	 */
-	private $requestMethod;
+	private $requestMethods;
 
 	/**
-	 * @var Router
+	 * @var Router&SubRouter
 	 */
 	private $parent;
 
 	/**
 	 * AbstractRoute constructor.
 	 *
-	 * @param Router $parent
-	 * @param string requestMethod
-	 * @param string $path
-	 * @param array  $options
+	 * @param Router   $parent
+	 * @param string[] $requestMethods
+	 * @param string   $path
+	 * @param array    $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $requestMethod, string $path, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path, array $options = [])
 	{
 		$this->options = $options;
-		$this->requestMethod = $requestMethod;
+		$this->requestMethods = array_flip($requestMethods);
 		$this->path = $path;
 		$this->parent = $parent;
 	}
@@ -108,7 +108,9 @@ abstract class AbstractRoute
 		$result = null;
 
 		$this->parent->onExecute($this, $this->getContext());
-		$this->parent->setCurrentRoute($this);
+
+		$rootRouter = $this->parent instanceof SubRouter ? $this->parent->getRootRouter() : $this->parent;
+		$rootRouter->setCurrentRoute($this);
 
 		try
 		{
@@ -282,7 +284,7 @@ abstract class AbstractRoute
 		$this->getContext()->setPathRegex($pathRegex);
 		$this->getContext()->setPathValues($pathValues);
 
-		if (!$isValid || !($this->requestMethod === RequestMethod::NULL || $this->requestMethod === $requestMethod))
+		if (!$isValid || !(empty($this->requestMethods) || isset($this->requestMethods[$requestMethod])))
 			return false;
 
 		$middleware = null;
@@ -366,7 +368,7 @@ abstract class AbstractRoute
 		return [
 			'context:' . RouteContext::class => $this->context,
 			'path:string' => $this->path,
-			'requestMethod:string' => $this->requestMethod
+			'requestMethod:array' => array_keys($this->requestMethods)
 		];
 	}
 

@@ -22,7 +22,6 @@ namespace Columba\Http;
 final class RequestMethod
 {
 
-	public const NULL = 'NULL';
 	public const DELETE = 'DELETE';
 	public const GET = 'GET';
 	public const HEAD = 'HEAD';

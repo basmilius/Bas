@@ -39,16 +39,16 @@ final class RouterRoute extends AbstractRoute
 	 * RouterRoute constructor.
 	 *
 	 * @param Router    $parent
-	 * @param string    $requestMethod
+	 * @param string[]  $requestMethods
 	 * @param string    $path
 	 * @param SubRouter $router
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $requestMethod, string $path, SubRouter $router)
+	public function __construct(Router $parent, array $requestMethods, string $path, SubRouter $router)
 	{
-		parent::__construct($parent, $requestMethod, $path);
+		parent::__construct($parent, $requestMethods, $path);
 
 		$this->router = $router;
 		$this->router->setParent($parent);

@@ -48,18 +48,18 @@ final class LazyRouterRoute extends AbstractRoute
 	/**
 	 * LazyRouterRoute constructor.
 	 *
-	 * @param Router $parent
-	 * @param string $requestMethod
-	 * @param string $path
-	 * @param string $routerImplementation
-	 * @param mixed  ...$routerArguments
+	 * @param Router   $parent
+	 * @param string[] $requestMethods
+	 * @param string   $path
+	 * @param string   $routerImplementation
+	 * @param mixed    ...$routerArguments
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $requestMethod, string $path, string $routerImplementation, ...$routerArguments)
+	public function __construct(Router $parent, array $requestMethods, string $path, string $routerImplementation, ...$routerArguments)
 	{
-		parent::__construct($parent, $requestMethod, $path);
+		parent::__construct($parent, $requestMethods, $path);
 
 		$this->routerArguments = $routerArguments;
 		$this->routerImplementation = $routerImplementation;

@@ -49,7 +49,7 @@ class SubRouter extends Router
 	 */
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
-		parent::__construct($response, $renderer);
+		parent::__construct($response, $renderer, true);
 
 		$this->parameters = [];
 	}
@@ -68,22 +68,6 @@ class SubRouter extends Router
 	public final function addParam(string $name, string $type, bool $allowsNull = false, $defaultValue = null): void
 	{
 		$this->parameters[] = new RouteParam($name, $type, $allowsNull, $defaultValue);
-	}
-
-	/**
-	 * Adds a sub router parameter.
-	 *
-	 * @param RouteParam $param
-	 *
-	 * @deprecated Use the new addParam method.
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 *
-	 * @see SubRouter::addParam()
-	 */
-	public final function addParameter(RouteParam $param): void
-	{
-		$this->parameters[] = $param;
 	}
 
 	/**
@@ -108,6 +92,21 @@ class SubRouter extends Router
 	public final function getParameters(): array
 	{
 		return $this->parameters;
+	}
+
+	/**
+	 * Gets the root router instance.
+	 *
+	 * @return Router
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getRootRouter(): Router
+	{
+		if ($this->parent instanceof SubRouter)
+			return $this->parent->getRootRouter();
+
+		return $this->parent;
 	}
 
 	/**

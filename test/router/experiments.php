@@ -10,7 +10,9 @@
 
 declare(strict_types=1);
 
+use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\JsonResponse;
+use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
@@ -39,11 +41,27 @@ class EXNewsRouter extends SubRouter
 		{
 			return sprintf('News post #%d on /news/$postId', $postId);
 		});
+		$this->get('$postId/comments', function (RouteContext $context, int $postId): string
+		{
+			return $this->render('', [$postId, $context]);
+		});
+		$this->delete('$postId', returnString('DELETE request on a post'));
+		$this->head('$postId', returnString('HEAD request on a post'));
+		$this->options('$postId', returnString('OPTIONS request on a post'));
+		$this->patch('$postId', returnString('PATCH request on a post'));
+		$this->put('$postId', returnString('PUT request on a post'));
+		$this->redirect('latest', '/news/204');
+		$this->match(['GET', 'POST'], 'weird', [$this, 'onWeird']);
+	}
+
+	protected final function onWeird(): string
+	{
+		return 'Weird stuff';
 	}
 
 }
 
-$router = new Router(new JsonResponse());
+$router = new Router(new JsonResponse(), new DebugRenderer());
 $router->get('', returnString('Index on /'));
 $router->all('news', EXNewsRouter::class);
 $router->group('users', function (Router $users): void
@@ -62,7 +80,12 @@ $router->group('users', function (Router $users): void
 
 try
 {
-	$router->execute('/news/203', 'GET');
+	$router->define('globalUserId', 1);
+	$router->execute('/users/edit/password', 'GET');
+
+	echo PHP_EOL;
+	echo PHP_EOL;
+	echo sprintf('Found route: %s', $router->getCurrentRoute()->getContext()->getFullPath());
 }
 catch (RouterException $err)
 {

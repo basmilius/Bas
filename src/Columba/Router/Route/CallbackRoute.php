@@ -44,7 +44,7 @@ class CallbackRoute extends AbstractRoute
 	 * CallbackRoute constructor.
 	 *
 	 * @param Router   $parent
-	 * @param string   $requestMethod
+	 * @param string[] $requestMethods
 	 * @param string   $path
 	 * @param callable $callback
 	 * @param array    $options
@@ -52,9 +52,9 @@ class CallbackRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, string $requestMethod, string $path, callable $callback, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path, callable $callback, array $options = [])
 	{
-		parent::__construct($parent, $requestMethod, $path, $options);
+		parent::__construct($parent, $requestMethods, $path, $options);
 
 		$this->callback = $callback;
 	}
@@ -93,14 +93,21 @@ class CallbackRoute extends AbstractRoute
 	 */
 	public final function getValidatableParams(): array
 	{
-		$params = [];
-		$parameters = $this->getReflection()->getParameters();
+		try
+		{
+			$params = [];
+			$parameters = $this->getReflection()->getParameters();
 
-		foreach ($parameters as $parameter)
-			if ($parameter->getType() !== null && !class_exists($parameter->getType()->getName()))
-				$params[] = new RouteParam($parameter->getName(), $parameter->getType()->getName(), $parameter->getType()->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
+			foreach ($parameters as $parameter)
+				if ($parameter->getType() !== null && !class_exists($parameter->getType()->getName()))
+					$params[] = new RouteParam($parameter->getName(), $parameter->getType()->getName(), $parameter->getType()->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
 
-		return $params;
+			return $params;
+		}
+		catch (ReflectionException $err)
+		{
+			throw new RouterException('Could not get parameters due to a reflection error.', RouterException::ERR_REFLECTION_FAILED, $err);
+		}
 	}
 
 	/**
