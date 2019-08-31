@@ -118,6 +118,9 @@ class Router
 	{
 		$route = null;
 
+		if (mb_substr($path, 0, 1) !== '/')
+			$path = '/' . $path;
+
 		if (count($arguments) > 0 && is_array($arguments[0]) && is_callable($arguments[0]))
 			$route = new CallbackRoute($this, $requestMethod, $path, ...$arguments);
 
@@ -296,11 +299,32 @@ class Router
 	}
 
 	/**
+	 * Adds a Router group.
+	 *
+	 * @param string   $path
+	 * @param callable $predicate
+	 *
+	 * @return SubRouter
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function group(string $path, callable $predicate): SubRouter
+	{
+		$router = new SubRouter();
+
+		$predicate($router);
+		$this->all($path, $router);
+
+		return $router;
+	}
+
+	/**
 	 * Adds an ALL {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed  ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -314,9 +338,9 @@ class Router
 	/**
 	 * Adds a DELETE {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed  ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -330,9 +354,9 @@ class Router
 	/**
 	 * Adds a GET {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -346,9 +370,9 @@ class Router
 	/**
 	 * Adds a HEAD {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -362,9 +386,9 @@ class Router
 	/**
 	 * Adds an OPTIONS {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -378,9 +402,9 @@ class Router
 	/**
 	 * Adds a PATCH {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -394,9 +418,9 @@ class Router
 	/**
 	 * Adds a POST {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -410,9 +434,9 @@ class Router
 	/**
 	 * Adds a PUT {@see AbstractRoute}.
 	 *
-	 * @param string $path
+	 * @param string   $path
 	 * @param callable $arguments
-	 * @param mixed ...$arguments
+	 * @param mixed    ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>

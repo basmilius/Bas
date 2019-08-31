@@ -8,142 +8,66 @@
  * LICENSE file that was distributed with this source code.
  */
 
-/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
-
 declare(strict_types=1);
 
-use Columba\Foundation\Http\Request;
-use Columba\Router\Middleware\AbstractMiddleware;
-use Columba\Router\Renderer\DebugRenderer;
-use Columba\Router\Response\HtmlResponse;
 use Columba\Router\Response\JsonResponse;
-use Columba\Router\Route\AbstractRoute;
-use Columba\Router\RouteContext;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
-use function Columba\Util\pre;
-use function Columba\Util\preDie;
+
+/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
 require_once __DIR__ . '/../bootstrap-test.php';
 
-define('COLUMBA_ROUTER_AGRESSIVE_PROFILING', true);
-header('Content-Type: text/plain');
-
-class MyMiddleware extends AbstractMiddleware
+function returnString(string $str): callable
 {
-
-	public function forContext(AbstractRoute $route, RouteContext $context, bool &$isValid): void
+	return function () use ($str): string
 	{
-		if (!$isValid)
-			return;
-
-//		throw new Exception('Hi', 123);
-//		$route->respond(sprintf('Override from middleware for: %s', $context->getFullPath()));
-	}
-
+		return $str;
+	};
 }
 
-class MyRouter extends Router
+class EXNewsRouter extends SubRouter
 {
 
 	public function __construct()
 	{
-		parent::__construct(new HtmlResponse(), new DebugRenderer());
+		parent::__construct();
 
-		$this->use(MyMiddleware::class);
-
-		$this->all('/sub', MySubRouter::class);
-
-		$this->get('/', [$this, 'onGetIndex']);
-		$this->get('/(profile|user)/$userId', [$this, 'onGetUser']);
-		$this->get('/(profile|user)/$userId/invoices/$invoiceNo.(?<format>pdf|html)', [$this, 'onGetUserInvoice']);
-		$this->get('/download/invoice.$format', [$this, 'onGetInvoice']);
-		$this->get('/wildcard/*', [$this, 'onGetWildcard']);
-
-		$this->get('/anonymous', function (RouteContext $context): RouteContext
+		$this->get('', returnString('Index on /news'));
+		$this->get('$postId', function (int $postId): string
 		{
-			return $context;
+			return sprintf('News post #%d on /news/$postId', $postId);
 		});
 	}
 
-	public final function onGetIndex(): string
-	{
-		return 'Route: /';
-	}
-
-	public final function onGetInvoice(string $format): string
-	{
-		return 'Route: /download/invoice.' . $format;
-	}
-
-	public final function onGetUser(int $userId = 10): string
-	{
-		return 'Route: /user/' . $userId;
-	}
-
-	public final function onGetUserInvoice(bool $myBool, string $invoiceNo, string $format, int $userId = 10): string
-	{
-		return sprintf("Show invoice '%s' as '%s' for user %d AND %s.", $invoiceNo, $format, $userId, $myBool ? 'TRUE' : 'FALSE');
-	}
-
-	public final function onGetWildcard(RouteContext $context, string $wildcard): string
-	{
-		return $wildcard;
-	}
-
-	public function onNotFound(string $requestPath, RouteContext $context): bool
-	{
-		pre(__METHOD__, 'Route was not found, not found handled in MyRouter.', $requestPath, $context->getResponseImplementation());
-
-		return true;
-	}
-
 }
 
-class MySubRouter extends SubRouter
+$router = new Router(new JsonResponse());
+$router->get('', returnString('Index on /'));
+$router->all('news', EXNewsRouter::class);
+$router->group('users', function (Router $users): void
 {
-
-	public function __construct()
+	$users->get('', returnString('List with users on /users'));
+	$users->get('$userId', function (int $userId): string
 	{
-		parent::__construct(new JsonResponse());
-
-		$this->get('/', [$this, 'onGetIndex']);
-		$this->get('/$name', [$this, 'onGetName']);
-	}
-
-	public final function onGetIndex(RouteContext $context): string
+		return sprintf('User #%d on /users/$userId', $userId);
+	});
+	$users->group('edit', function (Router $edit): void
 	{
-		return $context->getFullPath();
-	}
+		$edit->get('', returnString('Edit portal on /users/edit'));
+		$edit->get('password', returnString('Edit password on /users/edit/password'));
+	});
+});
 
-	public final function onGetName(Request $request, RouteContext $context, string $name): array
-	{
-		return [
-			'request' => $request,
-			'path' => $context->getFullPath(),
-			'name' => $name
-		];
-	}
-
-	public function onException(Exception $err, ?RouteContext $context = null): void
-	{
-		preDie(__METHOD__, func_get_args());
-	}
-
-	public function onNotFound(string $requestPath, RouteContext $context): bool
-	{
-		pre(__METHOD__, 'Route was not found, not found handled in MySubRouter.', $requestPath, $context->getResponseImplementation());
-
-		return true;
-	}
-
+try
+{
+	$router->execute('/news/203', 'GET');
 }
-
-$router = new MyRouter();
-$router->define('myBool', true);
-$router->define('request', new Request());
-//$router->execute('/profile/1/invoices/20191001.pdf', 'GET');
-$router->execute('/sub/bas', 'GET');
-
-echo PHP_EOL;
+catch (RouterException $err)
+{
+	if ($err->getCode() === $err::ERR_NOT_FOUND)
+		echo $err->getMessage();
+	else
+		throw $err;
+}
