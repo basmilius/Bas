@@ -26,14 +26,15 @@ trait GetHasSetUnset
 	 * Gets a value by key.
 	 *
 	 * @param mixed $key
+	 * @param mixed $defaultValue
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function get($key)
+	public final function get($key, $defaultValue = null)
 	{
-		return $this[$key];
+		return $this[$key] ?? $defaultValue;
 	}
 
 	/**

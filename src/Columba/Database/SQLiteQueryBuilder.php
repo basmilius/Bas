@@ -39,7 +39,7 @@ class SQLiteQueryBuilder extends QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function fullJoin(string $table): QueryBuilder
+	public function fullJoin(string $table, ?callable $fn = null): QueryBuilder
 	{
 		return $this->unsupportedFeature(__METHOD__);
 	}
@@ -49,7 +49,7 @@ class SQLiteQueryBuilder extends QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function rightJoin(string $table): QueryBuilder
+	public function rightJoin(string $table, ?callable $fn = null): QueryBuilder
 	{
 		return $this->unsupportedFeature(__METHOD__);
 	}

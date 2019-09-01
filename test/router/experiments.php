@@ -10,12 +10,14 @@
 
 declare(strict_types=1);
 
+use Columba\Foundation\Http\Request;
+use Columba\Router\Context;
 use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\JsonResponse;
-use Columba\Router\Context;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
+use function Columba\Util\dump;
 use function Columba\Util\pre;
 
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
@@ -79,14 +81,33 @@ $router->group('users', function (Router $users): void
 	});
 });
 
-$router->get('request-test', function(Context $context): void
+$router->get('request-test', function (Context $context, Request $request): void
 {
+	dump(
+		$request->ip(),
+		$request->isSecure(),
+		$request->method(),
+		$request->pathName(),
+		$request->uri(),
+		$request->userAgent()
+	);
+	pre(
+		$request->body(),
+		$request->bodyJson(),
+		$request->bodyMultiPart(),
+		$request->cookies(),
+		$request->files(),
+		$request->headers(),
+		$request->post(),
+		$request->queryString(),
+		$request->server()
+	);
 	pre($context);
 });
 
 try
 {
-	$router->define('globalUserId', 1);
+	$router->define('request', new Request());
 	$router->execute('/request-test', 'GET');
 
 //	echo PHP_EOL;

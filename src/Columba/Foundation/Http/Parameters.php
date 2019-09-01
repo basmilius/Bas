@@ -25,7 +25,7 @@ use Columba\Facade\IJson;
  * @package Columba\Foundation\Http
  * @since 1.5.0
  */
-abstract class Parameters implements IArray, ICountable, IIterator, IJson
+class Parameters implements IArray, ICountable, IIterator, IJson
 {
 
 	use GetHasSetUnset;
@@ -33,12 +33,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	/**
 	 * @var array
 	 */
-	protected $keys;
-
-	/**
-	 * @var array
-	 */
-	protected $values;
+	protected $data;
 
 	/**
 	 * @var int
@@ -48,15 +43,14 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Parameters constructor.
 	 *
-	 * @param array $parameters
+	 * @param array $data
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function __construct(array $parameters = [])
+	public function __construct(array $data = [])
 	{
-		$this->keys = array_keys($parameters);
-		$this->values = array_values($parameters);
+		$this->data = $data;
 	}
 
 	/**
@@ -66,7 +60,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function toArray(): array
 	{
-		return array_combine($this->keys, $this->values);
+		return $this->data;
 	}
 
 	/**
@@ -76,7 +70,19 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function count(): int
 	{
-		return count($this->keys);
+		return count($this->data);
+	}
+
+	/**
+	 * Gets all the keys.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function keys(): array
+	{
+		return array_keys($this->data);
 	}
 
 	/**
@@ -87,7 +93,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function current()
 	{
-		return $this->values[$this->position];
+		return $this[$this->key()] ?? null;
 	}
 
 	/**
@@ -98,7 +104,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function key()
 	{
-		return $this->keys[$this->position];
+		return $this->keys()[$this->position] ?? null;
 	}
 
 	/**
@@ -131,7 +137,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function valid(): bool
 	{
-		return isset($this->keys[$this->position]);
+		return $this->keys()[$this->position] ?? null !== null;
 	}
 
 	/**
@@ -152,7 +158,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetExists($field): bool
 	{
-		return in_array($field, $this->keys);
+		return isset($this->data[$field]);
 	}
 
 	/**
@@ -163,7 +169,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetGet($field)
 	{
-		return $this->values[array_search($field, $this->keys)];
+		return $this->data[$field] ?? null;
 	}
 
 	/**
@@ -174,8 +180,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetSet($field, $value): void
 	{
-		$this->keys[] = $field;
-		$this->values[] = $value;
+		$this->data[$field] = $value;
 	}
 
 	/**
@@ -186,10 +191,7 @@ abstract class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function offsetUnset($field): void
 	{
-		$index = array_search($field, $this->keys);
-
-		unset($this->keys[$index]);
-		unset($this->values[$index]);
+		unset($this->data[$field]);
 	}
 
 	/**

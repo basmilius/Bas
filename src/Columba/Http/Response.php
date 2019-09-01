@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
-use Columba\Foundation\Http\HeaderParameters;
+use Columba\Foundation\Http\Parameters;
 use Columba\Foundation\Net\IP;
 use Columba\Foundation\Net\IPException;
 use SimpleXMLElement;
@@ -78,7 +78,7 @@ final class Response
 	private $responseCode = null;
 
 	/**
-	 * @var HeaderParameters|null
+	 * @var Parameters|null
 	 */
 	private $responseHeaders = null;
 
@@ -138,7 +138,7 @@ final class Response
 			$headers = substr($response, 0, $headerSize);
 			$text = substr($response, $headerSize);
 
-			$this->responseHeaders = new HeaderParameters(HttpUtil::parseStringOfHeaders($headers));
+			$this->responseHeaders = new Parameters(HttpUtil::parseStringOfHeaders($headers));
 			$this->responseText = $text;
 		}
 		else
@@ -330,11 +330,11 @@ final class Response
 	/**
 	 * Gets the response headers.
 	 *
-	 * @return HeaderParameters|null
+	 * @return Parameters|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getResponseHeaders(): ?HeaderParameters
+	public final function getResponseHeaders(): ?Parameters
 	{
 		return $this->responseHeaders;
 	}

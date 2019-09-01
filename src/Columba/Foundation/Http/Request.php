@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace Columba\Foundation\Http;
 
 use Columba\Facade\IJson;
-use Columba\Foundation\System;
+use Columba\Foundation\Net\IP;
+use Columba\Foundation\Store;
 use Columba\Http\HttpUtil;
 use Columba\Util\ArrayUtil;
 
@@ -28,17 +29,27 @@ class Request implements IJson
 {
 
 	/**
-	 * @var string|null
+	 * @var Store
 	 */
-	protected $body = null;
+	protected $localStorage;
 
 	/**
-	 * @var HeaderParameters
+	 * @var Parameters
+	 */
+	protected $cookies;
+
+	/**
+	 * @var Parameters
+	 */
+	protected $files;
+
+	/**
+	 * @var Parameters
 	 */
 	protected $headers;
 
 	/**
-	 * @var PostParameters
+	 * @var Parameters
 	 */
 	protected $post;
 
@@ -48,6 +59,11 @@ class Request implements IJson
 	protected $queryString;
 
 	/**
+	 * @var Parameters
+	 */
+	protected $server;
+
+	/**
 	 * Request constructor.
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -55,9 +71,14 @@ class Request implements IJson
 	 */
 	public function __construct()
 	{
-		$this->headers = new HeaderParameters(HttpUtil::getAllRequestHeaders());
-		$this->queryString = new QueryString($_GET ?? []);
-		$this->post = new PostParameters($_POST ?? []);
+		$this->localStorage = new Store();
+
+		$this->cookies = new Parameters($_COOKIE ?? []);
+		$this->files = new Parameters($_FILES ?? []);
+		$this->headers = new Parameters(HttpUtil::getAllRequestHeaders());
+		$this->post = new Parameters($_POST ?? []);
+		$this->queryString = QueryString::createFromString($_SERVER['QUERY_STRING'] ?? '');
+		$this->server = new Parameters($_SERVER ?? []);
 	}
 
 	/**
@@ -67,9 +88,12 @@ class Request implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getBody(): string
+	public final function body(): string
 	{
-		return $this->body ?? $this->body = file_get_contents('php://input');
+		return $this->localStorage->getOrCreate(__METHOD__, function (): string
+		{
+			return file_get_contents('php://input');
+		});
 	}
 
 	/**
@@ -79,9 +103,12 @@ class Request implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getBodyJson()
+	public final function bodyJson()
 	{
-		return json_decode($this->getBody(), true);
+		return $this->localStorage->getOrCreate(__METHOD__, function ()
+		{
+			return json_decode($this->body(), true);
+		});
 	}
 
 	/**
@@ -91,121 +118,225 @@ class Request implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getBodyMultiPart()
+	public final function bodyMultiPart()
 	{
-		$queryString = '';
-		$result = [];
-
-		preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
-		$boundary = $matches[1] ?? null;
-
-		if ($boundary === null)
-			return null; // Not a multipart request.
-
-		$blocks = preg_split('/-+' . $boundary . '/', $this->getBody());
-		array_pop($blocks);
-
-		$addItem = static function (string $name, $data) use (&$result): void
+		return $this->localStorage->getOrCreate(__METHOD__, function (): ?array
 		{
-			if (isset($result[$name]))
-				if (ArrayUtil::isSequentialArray($result[$name]))
-					$result[$name][] = $data;
-				else
-					$result[$name] = [$result[$name], $data];
-			else
-				$result[$name] = $data;
-		};
+			$queryString = '';
+			$result = [];
 
-		$parseContentDisposition = static function (string $str): array
-		{
-			$raw = preg_split('/(?<!\d)(; )/', $str);
-			array_shift($raw);
+			preg_match('/boundary=(.*)$/', $this->server->get('CONTENT_TYPE'), $matches);
+			$boundary = $matches[1] ?? null;
 
-			$params = [];
+			if ($boundary === null)
+				return null; // Not a multipart request.
 
-			foreach ($raw as $param)
+			$blocks = preg_split('/-+' . $boundary . '/', $this->body());
+			array_pop($blocks);
+
+			$addItem = static function (string $name, $data) use (&$result): void
 			{
-				$p = explode('=', $param, 2);
-				$params[$p[0]] = ltrim(rtrim($p[1], '"'), '"');
+				if (isset($result[$name]))
+					if (ArrayUtil::isSequentialArray($result[$name]))
+						$result[$name][] = $data;
+					else
+						$result[$name] = [$result[$name], $data];
+				else
+					$result[$name] = $data;
+			};
+
+			$parseContentDisposition = static function (string $str): array
+			{
+				$raw = preg_split('/(?<!\d)(; )/', $str);
+				array_shift($raw);
+
+				$params = [];
+
+				foreach ($raw as $param)
+				{
+					$p = explode('=', $param, 2);
+					$params[$p[0]] = ltrim(rtrim($p[1], '"'), '"');
+				}
+
+				return $params;
+			};
+
+			while (count($blocks) > 0)
+			{
+				$block = array_shift($blocks);
+
+				if (empty($block))
+					continue;
+
+				[$headers, $body] = preg_split("/(\r\n\r\n|\n\n|\r\r)/", $block, 2);
+
+				$headers = HttpUtil::parseStringOfHeaders($headers);
+
+				if (!isset($headers['content-disposition']) || !isset($headers['content-type']))
+					continue;
+
+				$contentDisposition = $headers['content-disposition'];
+				$contentType = $headers['content-type'];
+
+				$this->handleMultiPartData($addItem, $body, $headers, $contentType, $parseContentDisposition($contentDisposition));
 			}
 
-			return $params;
-		};
+			parse_str($queryString, $queryStringArray);
 
-		while (count($blocks) > 0)
-		{
-			$block = array_shift($blocks);
-
-			if (empty($block))
-				continue;
-
-			[$headers, $body] = preg_split("/(\r\n\r\n|\n\n|\r\r)/", $block, 2);
-
-			$headers = HttpUtil::parseStringOfHeaders($headers);
-
-			if (!isset($headers['content-disposition']) || !isset($headers['content-type']))
-				continue;
-
-			$contentDisposition = $headers['content-disposition'];
-			$contentType = $headers['content-type'];
-
-			$this->handleMultiPartData($addItem, $body, $headers, $contentType, $parseContentDisposition($contentDisposition));
-		}
-
-		parse_str($queryString, $queryStringArray);
-
-		return array_merge($result, $queryStringArray);
+			return array_merge($result, $queryStringArray);
+		});
 	}
 
 	/**
-	 * Gets the request headers.
+	 * Gets the cookie collection.
 	 *
-	 * @return HeaderParameters
+	 * @return Parameters
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function cookies(): Parameters
+	{
+		return $this->cookies;
+	}
+
+	/**
+	 * Gets the files collection.
+	 *
+	 * @return Parameters
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getHeaders(): HeaderParameters
+	public final function files(): Parameters
+	{
+		return $this->files;
+	}
+
+	/**
+	 * Gets the header collection.
+	 *
+	 * @return Parameters
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.5.0
+	 */
+	public final function headers(): Parameters
 	{
 		return $this->headers;
 	}
 
 	/**
-	 * Gets the POST parameters instance.
+	 * Gets the POST parameter collection.
 	 *
-	 * @return PostParameters
+	 * @return Parameters
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getPost(): PostParameters
+	public final function post(): Parameters
 	{
 		return $this->post;
 	}
 
 	/**
-	 * Gets the QueryString instance.
+	 * Gets the querystring collection.
 	 *
 	 * @return QueryString
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function getQueryString(): QueryString
+	public final function queryString(): QueryString
 	{
 		return $this->queryString;
 	}
 
 	/**
-	 * Gets the request uri.
+	 * Gets the server collection.
 	 *
-	 * @return string|null
+	 * @return Parameters
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function getRequestUri(): ?string
+	public final function server(): Parameters
 	{
-		if (System::isCLI())
-			return null;
+		return $this->server;
+	}
 
-		return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	/**
+	 * Gets the request ip.
+	 *
+	 * @return IP|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function ip(): ?IP
+	{
+		return $this->localStorage->getOrCreate(__METHOD__, function (): ?IP
+		{
+			return IP::parse($this->server->get('REMOTE_ADDR'));
+		});
+	}
+
+	/**
+	 * Returns TRUE if this is a secure request.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function isSecure(): bool
+	{
+		return $this->server->get('HTTPS', 'off') === 'on';
+	}
+
+	/**
+	 * Gets the request method.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function method(): string
+	{
+		return $this->server->get('REQUEST_METHOD', 'GET');
+	}
+
+	/**
+	 * Gets the request path name.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function pathName(): string
+	{
+		$uri = $this->uri();
+
+		return strstr($uri, '?', true) ?: $uri;
+	}
+
+	/**
+	 * Gets the request uri.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function uri(): string
+	{
+		return $this->server->get('REQUEST_URI');
+	}
+
+	/**
+	 * Gets the user agent.
+	 *
+	 * @return UserAgent
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function userAgent(): UserAgent
+	{
+		return $this->localStorage->getOrCreate(__METHOD__, function (): UserAgent
+		{
+			return new UserAgent($this->server->get('HTTP_USER_AGENT'));
+		});
 	}
 
 	/**
