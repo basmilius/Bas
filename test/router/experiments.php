@@ -117,7 +117,7 @@ $router->get('request-test', function (Context $context, Request $request): void
 try
 {
 	$router->define('request', new Request());
-	$router->execute('/request-test', 'GET');
+	$router->execute('/users/edit/password', 'GET');
 
 //	echo PHP_EOL;
 //	echo PHP_EOL;

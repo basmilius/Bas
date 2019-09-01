@@ -30,7 +30,7 @@ abstract class AbstractMiddleware
 	/**
 	 * @var Router
 	 */
-	private $router;
+	protected $router;
 
 	/**
 	 * AbstractRoute constructor.
@@ -57,17 +57,5 @@ abstract class AbstractMiddleware
 	 * @since 1.3.0
 	 */
 	public abstract function forContext(AbstractRoute $route, Context $context, bool &$isValid): void;
-
-	/**
-	 * Gets the associated {@see Router}.
-	 *
-	 * @return Router
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	protected final function getRouter(): Router
-	{
-		return $this->router;
-	}
 
 }
