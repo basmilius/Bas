@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Columba\Foundation\Http\Request;
+use Columba\Foundation\System;
 use Columba\Router\Context;
 use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\JsonResponse;
@@ -23,6 +24,14 @@ use function Columba\Util\pre;
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
 require_once __DIR__ . '/../bootstrap-test.php';
+
+if (System::isCLI())
+{
+	$_SERVER['CONTENT_TYPE'] = '';
+	$_SERVER['HTTP_USER_AGENT'] = 'ColumbaTestPage/1.6.0';
+	$_SERVER['REMOTE_ADDR'] = '::1';
+	$_SERVER['REQUEST_URI'] = '/';
+}
 
 function returnString(string $str): callable
 {
