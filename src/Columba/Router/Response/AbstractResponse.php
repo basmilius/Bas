@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router\Response;
 
 use Columba\Http\ResponseCode;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Util\ServerTiming;
 
 /**
@@ -57,13 +57,13 @@ abstract class AbstractResponse
 	/**
 	 * Prints the response to the output buffer.
 	 *
-	 * @param RouteContext $context
-	 * @param mixed        $value
+	 * @param Context $context
+	 * @param mixed   $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function print(RouteContext $context, $value): void
+	public final function print(Context $context, $value): void
 	{
 		$output = $this->respond($context, $value);
 
@@ -84,14 +84,14 @@ abstract class AbstractResponse
 	/**
 	 * Respond to the webbrowser.
 	 *
-	 * @param RouteContext $context
-	 * @param mixed        $value
+	 * @param Context $context
+	 * @param mixed   $value
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function respond(RouteContext $context, $value): string;
+	protected abstract function respond(Context $context, $value): string;
 
 	/**
 	 * Adds a response header.

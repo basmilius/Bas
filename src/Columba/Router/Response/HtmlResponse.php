@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\RouterException;
 
 /**
@@ -30,7 +30,7 @@ class HtmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond(RouteContext $context, $value): string
+	protected function respond(Context $context, $value): string
 	{
 		$this->addHeader('Content-Type: text/html; charset=utf-8');
 

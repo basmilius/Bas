@@ -18,7 +18,7 @@ use Columba\OAuth2\OAuth2;
 use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\Router;
 
 /**
@@ -83,7 +83,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function forContext(AbstractRoute $route, RouteContext $context, bool &$isValid): void
+	public final function forContext(AbstractRoute $route, Context $context, bool &$isValid): void
 	{
 		if (!$isValid)
 			return;

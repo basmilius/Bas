@@ -15,7 +15,7 @@ namespace Columba\Router\Route;
 use Columba\Http\ResponseCode;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
@@ -41,7 +41,7 @@ abstract class AbstractRoute
 	private $allowSubRoutes = false;
 
 	/**
-	 * @var RouteContext
+	 * @var Context
 	 */
 	private $context = null;
 
@@ -310,14 +310,14 @@ abstract class AbstractRoute
 	/**
 	 * Gets the context.
 	 *
-	 * @return RouteContext
+	 * @return Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getContext(): RouteContext
+	public final function getContext(): Context
 	{
 		if ($this->context === null)
-			$this->context = new RouteContext($this);
+			$this->context = new Context($this);
 
 		return $this->context;
 	}
@@ -366,7 +366,7 @@ abstract class AbstractRoute
 	public final function __debugInfo(): array
 	{
 		return [
-			'context:' . RouteContext::class => $this->context,
+			'context:' . Context::class => $this->context,
 			'path:string' => $this->path,
 			'requestMethod:array' => array_keys($this->requestMethods)
 		];

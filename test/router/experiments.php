@@ -12,10 +12,11 @@ declare(strict_types=1);
 
 use Columba\Router\Renderer\DebugRenderer;
 use Columba\Router\Response\JsonResponse;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
+use function Columba\Util\pre;
 
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
@@ -41,7 +42,7 @@ class EXNewsRouter extends SubRouter
 		{
 			return sprintf('News post #%d on /news/$postId', $postId);
 		});
-		$this->get('$postId/comments', function (RouteContext $context, int $postId): string
+		$this->get('$postId/comments', function (Context $context, int $postId): string
 		{
 			return $this->render('', [$postId, $context]);
 		});
@@ -78,14 +79,19 @@ $router->group('users', function (Router $users): void
 	});
 });
 
+$router->get('request-test', function(Context $context): void
+{
+	pre($context);
+});
+
 try
 {
 	$router->define('globalUserId', 1);
-	$router->execute('/users/edit/password', 'GET');
+	$router->execute('/request-test', 'GET');
 
-	echo PHP_EOL;
-	echo PHP_EOL;
-	echo sprintf('Found route: %s', $router->getCurrentRoute()->getContext()->getFullPath());
+//	echo PHP_EOL;
+//	echo PHP_EOL;
+//	echo sprintf('Found route: %s', $router->getCurrentRoute()->getContext()->getFullPath());
 }
 catch (RouterException $err)
 {

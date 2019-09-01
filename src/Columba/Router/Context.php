@@ -19,13 +19,13 @@ use Columba\Router\Route\RouterRoute;
 use ReflectionFunctionAbstract;
 
 /**
- * Class RouteContext
+ * Class Context
  *
  * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-final class RouteContext
+final class Context
 {
 
 	/**
@@ -49,7 +49,7 @@ final class RouteContext
 	private $params = [];
 
 	/**
-	 * @var RouteContext|null
+	 * @var Context|null
 	 */
 	private $parent = null;
 
@@ -94,7 +94,7 @@ final class RouteContext
 	private $responseValue = null;
 
 	/**
-	 * RouteContext constructor.
+	 * Context constructor.
 	 *
 	 * @param AbstractRoute $route
 	 *
@@ -148,7 +148,7 @@ final class RouteContext
 	}
 
 	/**
-	 * Redirects our {@see RouteContext} to something else.
+	 * Redirects our {@see Context} to something else.
 	 *
 	 * @param string $redirectPath
 	 * @param int    $responseCode
@@ -391,27 +391,27 @@ final class RouteContext
 	}
 
 	/**
-	 * Gets the parent {@see RouteContext}.
+	 * Gets the parent {@see Context}.
 	 *
-	 * @return RouteContext|null
+	 * @return Context|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getParent(): ?RouteContext
+	public final function getParent(): ?Context
 	{
 		return $this->parent;
 	}
 
 	/**
-	 * Sets the parent {@see RouteContext}.
+	 * Sets the parent {@see Context}.
 	 *
-	 * @param RouteContext $parent
+	 * @param Context $parent
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 * @internal
 	 */
-	public final function setParent(RouteContext $parent): void
+	public final function setParent(Context $parent): void
 	{
 		$this->parent = $parent;
 	}

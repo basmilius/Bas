@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Util\XmlUtil;
 use DOMDocument;
 use SimpleXMLElement;
@@ -68,7 +68,7 @@ class XmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond(RouteContext $context, $value): string
+	protected function respond(Context $context, $value): string
 	{
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 

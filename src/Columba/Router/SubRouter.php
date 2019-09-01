@@ -139,14 +139,14 @@ class SubRouter extends Router
 	 * to handle the request yourself. Note that eventual other subrouters with the same
 	 * path will not be executed when you return TRUE.
 	 *
-	 * @param string       $requestPath
-	 * @param RouteContext $context
+	 * @param string  $requestPath
+	 * @param Context $context
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function onNotFound(string $requestPath, RouteContext $context): bool
+	public function onNotFound(string $requestPath, Context $context): bool
 	{
 		return false;
 	}

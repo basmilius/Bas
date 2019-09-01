@@ -19,7 +19,7 @@ use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Response\ResponseWrapper;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
 use Exception;
@@ -65,12 +65,12 @@ abstract class OAuth2Router extends SubRouter
 	/**
 	 * Invoked when GET /authorize is requested.
 	 *
-	 * @param RouteContext $context
-	 * @param string|null  $client_id
-	 * @param string|null  $redirect_uri
-	 * @param string|null  $response_type
-	 * @param string|null  $scope
-	 * @param string|null  $state
+	 * @param Context     $context
+	 * @param string|null $client_id
+	 * @param string|null $redirect_uri
+	 * @param string|null $response_type
+	 * @param string|null $scope
+	 * @param string|null $state
 	 *
 	 * @return string
 	 * @throws RouterException
@@ -80,7 +80,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @since 1.3.0
 	 * @internal
 	 */
-	public final function onGetAuthorize(RouteContext $context, ?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): string
+	public final function onGetAuthorize(Context $context, ?string $client_id = null, ?string $redirect_uri = null, ?string $response_type = null, ?string $scope = null, ?string $state = null): string
 	{
 		$ownerId = $this->getOwnerId();
 
@@ -152,12 +152,12 @@ abstract class OAuth2Router extends SubRouter
 	/**
 	 * Invoked when the owner is NULL.
 	 *
-	 * @param RouteContext $context
+	 * @param Context $context
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function onOwnerNull(RouteContext $context): void;
+	protected abstract function onOwnerNull(Context $context): void;
 
 	/**
 	 * Renders the authorize view.
@@ -176,7 +176,7 @@ abstract class OAuth2Router extends SubRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function onException(Exception $err, ?RouteContext $context = null): void
+	public function onException(Exception $err, ?Context $context = null): void
 	{
 		if ($err instanceof OAuth2Exception)
 		{

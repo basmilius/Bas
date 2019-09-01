@@ -12,13 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
+use Closure;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use ReflectionException;
 use ReflectionFunction;
-use ReflectionFunctionAbstract;
-use ReflectionMethod;
 
 /**
  * Class CallbackRoute
@@ -36,7 +35,7 @@ class CallbackRoute extends AbstractRoute
 	protected $callback;
 
 	/**
-	 * @var ReflectionMethod|null
+	 * @var ReflectionFunction|null
 	 */
 	protected $reflection = null;
 
@@ -46,13 +45,13 @@ class CallbackRoute extends AbstractRoute
 	 * @param Router   $parent
 	 * @param string[] $requestMethods
 	 * @param string   $path
-	 * @param callable $callback
+	 * @param Closure  $callback
 	 * @param array    $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, array $requestMethods, string $path, callable $callback, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path, Closure $callback, array $options = [])
 	{
 		parent::__construct($parent, $requestMethods, $path, $options);
 
@@ -81,9 +80,9 @@ class CallbackRoute extends AbstractRoute
 		}
 
 		if (!$reflection->hasReturnType() || $reflection->getReturnType()->getName() !== 'void')
-			$this->respond($this->invoke($this->callback, ...$arguments));
+			$this->respond($reflection->invoke(...$arguments));
 		else
-			$this->invoke($this->callback, ...$arguments);
+			$reflection->invoke(...$arguments);
 	}
 
 	/**
@@ -113,46 +112,24 @@ class CallbackRoute extends AbstractRoute
 	/**
 	 * Gets the reflection instance or creates a new one.
 	 *
-	 * @return ReflectionFunction|ReflectionMethod
+	 * @return ReflectionFunction
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getReflection(): ReflectionFunctionAbstract
+	public final function getReflection(): ReflectionFunction
 	{
 		if ($this->reflection !== null)
 			return $this->reflection;
 
 		try
 		{
-			if (is_array($this->callback) && is_callable($this->callback))
-				return $this->reflection = new ReflectionMethod($this->callback[0], $this->callback[1]);
-			else
-				return $this->reflection = new ReflectionFunction($this->callback);
+			return $this->reflection = new ReflectionFunction($this->callback);
 		}
 		catch (ReflectionException $err)
 		{
 			throw new RouterException('Could not create reflection instance.', RouterException::ERR_REFLECTION_FAILED, $err);
 		}
-	}
-
-	/**
-	 * Invokes the callback.
-	 *
-	 * @param callable $callback
-	 * @param mixed    ...$arguments
-	 *
-	 * @return mixed
-	 * @throws RouterException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
-	 */
-	protected function invoke(callable $callback, ...$arguments)
-	{
-		if (is_array($this->callback) && is_callable($this->callback))
-			return $this->getReflection()->invoke($callback[0], ...$arguments);
-		else
-			return $this->getReflection()->invoke(...$arguments);
 	}
 
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router\Middleware;
 
 use Columba\Router\Route\AbstractRoute;
-use Columba\Router\RouteContext;
+use Columba\Router\Context;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 
@@ -49,14 +49,14 @@ abstract class AbstractMiddleware
 	 * Performs our this {@see Middlware} for a {@see $route} {@see $context}.
 	 *
 	 * @param AbstractRoute $route
-	 * @param RouteContext  $context
+	 * @param Context       $context
 	 * @param bool          $isValid
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public abstract function forContext(AbstractRoute $route, RouteContext $context, bool &$isValid): void;
+	public abstract function forContext(AbstractRoute $route, Context $context, bool &$isValid): void;
 
 	/**
 	 * Gets the associated {@see Router}.

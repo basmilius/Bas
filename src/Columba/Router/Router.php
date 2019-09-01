@@ -215,16 +215,16 @@ class Router
 	/**
 	 * Searches for a matching {@see AbstractRoute}.
 	 *
-	 * @param string            $path
-	 * @param string            $requestMethod
-	 * @param RouteContext|null $context
+	 * @param string       $path
+	 * @param string       $requestMethod
+	 * @param Context|null $context
 	 *
 	 * @return AbstractRoute|null
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function find(string $path, string $requestMethod, ?RouteContext $context = null): ?AbstractRoute
+	public function find(string $path, string $requestMethod, ?Context $context = null): ?AbstractRoute
 	{
 		if (empty($path))
 			$path = '/';
@@ -497,12 +497,12 @@ class Router
 	 * Invoked when a {@see AbstractRoute} is executed.
 	 *
 	 * @param AbstractRoute $route
-	 * @param RouteContext  $context
+	 * @param Context       $context
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function onExecute(AbstractRoute $route, RouteContext $context): void
+	public function onExecute(AbstractRoute $route, Context $context): void
 	{
 	}
 
@@ -511,14 +511,14 @@ class Router
 	 *
 	 * Invoked when an {@see Exception} is thrown.
 	 *
-	 * @param Exception         $err
-	 * @param RouteContext|null $context
+	 * @param Exception    $err
+	 * @param Context|null $context
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function onException(Exception $err, ?RouteContext $context = null): void
+	public function onException(Exception $err, ?Context $context = null): void
 	{
 		if ($err instanceof RouterException)
 			/** @noinspection PhpUnhandledExceptionInspection */
