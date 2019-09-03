@@ -97,7 +97,17 @@ abstract class AbstractDatabaseDriver
 	 */
 	public final function foundRows(): int
 	{
-		return $this->prepare('SELECT FOUND_ROWS() AS found_rows')->execute()[0]['found_rows'];
+		try
+		{
+			$smt = $this->query('SELECT FOUND_ROWS() AS found_rows');
+			$smt->execute();
+
+			return $smt->fetchColumn();
+		}
+		catch (PDOException $err)
+		{
+			throw new DatabaseException('Error while executing query.', DatabaseException::ERR_QUERY_FAILED, $err);
+		}
 	}
 
 	/**

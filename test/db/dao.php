@@ -12,9 +12,8 @@
 
 declare(strict_types=1);
 
-use Columba\Data\Collection;
-use Columba\Database\MySQLDatabaseDriver;
 use Columba\Database\Dao\Model;
+use Columba\Database\MySQLDatabaseDriver;
 use function Columba\Util\pre;
 
 require __DIR__ . '/../bootstrap-test.php';
@@ -41,14 +40,29 @@ class User extends Model
 
 }
 
-$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', 'dev', '');
+$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', '', '');
 
 Model::init($driver);
 
-$collection = new Collection(User::all());
-$collection = $collection->map(function (User $user): string
-{
-	return $user['id'] . ': ' . $user['name'];
-});
+$query = User::select('SQL_CALC_FOUND_ROWS')
+	->where('id', '=', 1);
 
-pre($collection, User::get(1));
+$result = executeAndPrint($query);
+
+pre(
+	$result->isEmpty(),
+	$result->hasOne(),
+	$result->hasAtLeast(1),
+	$result->rowCount(),
+	$result->affectedRows(),
+	$result->foundRows()
+);
+
+foreach ($result as $user)
+{
+	pre($user);
+}
+
+$result->rewind();
+
+pre($result->model());

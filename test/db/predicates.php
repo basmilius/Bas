@@ -28,7 +28,11 @@ $query = $driver->select()
 		$builder
 			->and('is_active', '=', 1)
 			->or('is_active', '=', 2);
-	})
-	->debug();
+	});
 
-pre($query);
+$result = executeAndPrint($query);
+
+foreach ($result as $user)
+{
+	pre($user);
+}
