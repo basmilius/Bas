@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use PDO;
+use PDOException;
 use PDOStatement;
 
 /**
@@ -178,6 +179,11 @@ final class PreparedStatement
 	 */
 	public final function execute(?string $modelClass = null): ResultSet
 	{
+		$result = $this->statement->execute();
+
+		if (!$result)
+			throw new PDOException(strval($this->statement->errorInfo()[2]), intval($this->statement->errorCode()));
+
 		$driver = $this->driver;
 
 		if ($driver instanceof Transaction)

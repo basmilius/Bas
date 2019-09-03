@@ -14,6 +14,7 @@ namespace Columba\Database;
 
 use Columba\Data\Collection;
 use Columba\Database\Dao\Model;
+use Columba\Facade\IArray;
 use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use PDO;
@@ -26,7 +27,7 @@ use PDOStatement;
  * @author Bas Milius <bas@mili.us>
  * @since 1.0.0
  */
-final class ResultSet implements ICountable, IIterator
+final class ResultSet implements IArray, ICountable, IIterator
 {
 
 	/**
@@ -60,9 +61,9 @@ final class ResultSet implements ICountable, IIterator
 	private $position;
 
 	/**
-	 * @var mixed
+	 * @var array
 	 */
-	private $currentRow;
+	private $results;
 
 	/**
 	 * ResultSet constructor.
@@ -72,36 +73,35 @@ final class ResultSet implements ICountable, IIterator
 	 * @param string|null       $modelClass
 	 *
 	 * @throws DatabaseException
-	 * @since 1.0.0
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
 	 */
 	public function __construct(PreparedStatement $statement, PDOStatement $pdoStatement, ?string $modelClass)
 	{
-		$this->currentRow = null;
 		$this->modelClass = $modelClass;
 		$this->pdoStatement = $pdoStatement;
 		$this->statement = $statement;
 
-		$this->execute();
-
 		$this->affectedRows = $pdoStatement->rowCount();
 		$this->foundRows = strstr($this->pdoStatement->queryString, 'SQL_CALC_FOUND_ROWS') ? $statement->getDriver()->foundRows() : 0;
 		$this->position = 0;
+		$this->results = $this->pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	/**
-	 * Executes the statement.
+	 * Returns the first and probably only var.
 	 *
+	 * @return mixed
 	 * @throws DatabaseException
-	 * @author Bas Milius <bas@ideemedia.nl>
-	 * @since 1.6.0
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
 	 */
-	private function execute(): void
+	public final function var()
 	{
-		$result = $this->pdoStatement->execute();
+		if ($this->count() > 0)
+			return array_values($this->results[0])[0];
 
-		if (!$result)
-			throw new DatabaseException(strval($this->pdoStatement->errorInfo()[2]), intval($this->pdoStatement->errorCode()));
+		throw new DatabaseException('Did not have any results.', DatabaseException::ERR_NO_RESULTS);
 	}
 
 	/**
@@ -110,9 +110,9 @@ final class ResultSet implements ICountable, IIterator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function current(): ?array
+	public final function current(): array
 	{
-		return $this->currentRow ?? $this->currentRow = $this->pdoStatement->fetch(PDO::FETCH_ASSOC) ?: null;
+		return $this->results[$this->position];
 	}
 
 	/**
@@ -122,7 +122,6 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function next(): void
 	{
-		$this->currentRow = null;
 		$this->position++;
 	}
 
@@ -145,7 +144,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function valid(): bool
 	{
-		return $this->position < $this->affectedRows;
+		return isset($this->results[$this->position]);
 	}
 
 	/**
@@ -155,13 +154,57 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function rewind(): void
 	{
-		if ($this->position === 0)
-			return;
-
-		$this->currentRow = null;
-		$this->pdoStatement->closeCursor();
-		$this->execute();
 		$this->position = 0;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws DatabaseException()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function offsetExists($offset): bool
+	{
+		if (!is_int($offset))
+			throw new DatabaseException('Offset must be instance of int.', DatabaseException::ERR_INVALID_OFFSET);
+
+		return isset($this->results[$offset]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws DatabaseException()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function offsetGet($offset)
+	{
+		if (!is_int($offset))
+			throw new DatabaseException('Offset must be instance of int.', DatabaseException::ERR_INVALID_OFFSET);
+
+		return $this->results[$offset];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws DatabaseException()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function offsetSet($offset, $value): void
+	{
+		throw new DatabaseException('ResultSet is immutabe and can therefore not be changed.', DatabaseException::ERR_IMMUTABLE);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @throws DatabaseException()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function offsetUnset($offset): void
+	{
+		throw new DatabaseException('ResultSet is immutabe and can therefore not be changed.', DatabaseException::ERR_IMMUTABLE);
 	}
 
 	/**
@@ -171,7 +214,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function count(): int
 	{
-		return $this->affectedRows;
+		return count($this->results);
 	}
 
 	/**
@@ -187,18 +230,18 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function into(string $className, ...$arguments): array
 	{
+		if (!class_exists($className))
+			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
+
 		$rows = [];
 
-		$this->rewind();
-
-		do
+		foreach ($this->results as $result)
 		{
-			$rows[] = $this->intoSingle($className, ...$arguments);
-			$this->next();
-		}
-		while ($this->valid());
+			if (!isset($result['id']))
+				throw new DatabaseException("Field `id` is not found! Cannot transform into class.", DatabaseException::ERR_FIELD_NOT_FOUND);
 
-		$this->rewind();
+			$rows[] = new $className($result['id'], $result, ...$arguments);
+		}
 
 		return $rows;
 	}
@@ -216,18 +259,9 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function intoSingle(string $className, ...$arguments)
 	{
-		if (!class_exists($className))
-			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
+		$all = $this->into($className, ...$arguments);
 
-		if (!$this->valid())
-			return null;
-
-		$result = $this->current();
-
-		if (!isset($result['id']))
-			throw new DatabaseException("Field `id` is not found! Cannot transform into class.", DatabaseException::ERR_FIELD_NOT_FOUND);
-
-		return new $className($result['id'], $result, ...$arguments);
+		return $all[0] ?? null;
 	}
 
 	/**
@@ -256,32 +290,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function model(): ?Model
 	{
-		if ($this->modelClass === null || !class_exists($this->modelClass) || !is_subclass_of($this->modelClass, Model::class))
-			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_MODEL_NOT_FOUND);
-
-		if (!$this->valid())
-			return null;
-
-		/** @var Model|string $modelClass */
-		$modelClass = $this->modelClass;
-		$result = $this->current();
-
-		if (!isset($result[$modelClass::$primaryKey]))
-			return null;
-
-		if (Cache::has($result[$modelClass::$primaryKey], $modelClass))
-		{
-			$model = Cache::get($result[$modelClass::$primaryKey], $modelClass);
-			$model->initialize($result);
-			$result = $model;
-		}
-		else
-		{
-			$result = new $modelClass($result);
-			Cache::set($result);
-		}
-
-		return $result;
+		return $this->models()[0] ?? null;
 	}
 
 	/**
@@ -294,17 +303,30 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function models(): array
 	{
-		$results = [];
+		if ($this->modelClass === null || !class_exists($this->modelClass) || !is_subclass_of($this->modelClass, Model::class))
+			throw new DatabaseException(sprintf('Could not find model %s', $this->modelClass ?? 'NULL'), DatabaseException::ERR_MODEL_NOT_FOUND);
 
-		$this->rewind();
+		/** @var Model|string $modelClass */
+		$modelClass = $this->modelClass;
+		$results = $this->toArray();
 
-		while ($this->valid())
+		foreach ($results as &$result)
 		{
-			$results[] = $this->model();
-			$this->next();
-		}
+			if (!isset($result[$modelClass::$primaryKey]))
+				continue;
 
-		$this->rewind();
+			if (Cache::has($result[$modelClass::$primaryKey], $modelClass))
+			{
+				$model = Cache::get($result[$modelClass::$primaryKey], $modelClass);
+				$model->initialize($result);
+				$result = $model;
+			}
+			else
+			{
+				$result = new $modelClass($result);
+				Cache::set($result);
+			}
+		}
 
 		return $results;
 	}
@@ -322,18 +344,13 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function rawInto(string $className, ...$arguments): array
 	{
+		if (!class_exists($className))
+			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
+
 		$rows = [];
 
-		$this->rewind();
-
-		do
-		{
-			$rows[] = $this->rawIntoSingle($className, ...$arguments);
-			$this->next();
-		}
-		while ($this->valid());
-
-		$this->rewind();
+		foreach ($this->results as $result)
+			$rows[] = new $className($result, ...$arguments);
 
 		return $rows;
 	}
@@ -351,13 +368,9 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function rawIntoSingle(string $className, ...$arguments)
 	{
-		if (!class_exists($className))
-			throw new DatabaseException("Class $className not found!", DatabaseException::ERR_CLASS_NOT_FOUND);
+		$all = $this->rawInto($className, ...$arguments);
 
-		if (!$this->valid())
-			return null;
-
-		return new $className($this->current(), ...$arguments);
+		return $all[0] ?? null;
 	}
 
 	/**
@@ -371,7 +384,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function toArray(?string $column = null): array
 	{
-		$results = iterator_to_array($this);
+		$results = $this->results;
 
 		if ($column === null)
 			return $results;
@@ -395,12 +408,9 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function toSingle(?string $column = null)
 	{
-		$this->rewind();
+		$results = $this->toArray($column);
 
-		if (!$this->valid())
-			return null;
-
-		return $column !== null ? $this->current()[$column] ?? null : $this->current();
+		return $results[0] ?? null;
 	}
 
 	/**
@@ -436,7 +446,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function rowCount(): int
 	{
-		return $this->affectedRows;
+		return $this->count();
 	}
 
 	/**
@@ -448,7 +458,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function isEmpty(): bool
 	{
-		return $this->affectedRows === 0;
+		return $this->count() === 0;
 	}
 
 	/**
@@ -460,7 +470,7 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function hasOne(): bool
 	{
-		return $this->affectedRows === 1;
+		return $this->count() === 1;
 	}
 
 	/**
@@ -474,7 +484,20 @@ final class ResultSet implements ICountable, IIterator
 	 */
 	public final function hasAtLeast(int $count): bool
 	{
-		return $this->affectedRows >= $count;
+		return $this->count() >= $count;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function __debugInfo(): array
+	{
+		return [
+			'position' => $this->position,
+			'results' => $this->results
+		];
 	}
 
 }
