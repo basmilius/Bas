@@ -39,7 +39,7 @@ final class Autoloader
 	public function __construct()
 	{
 		$this->addDirectory(dirname(__DIR__));
-		$this->require(__DIR__ . '/Util/functions.php');
+		$this->loadFile(__DIR__ . '/Util/functions.php');
 	}
 
 	/**
@@ -72,10 +72,12 @@ final class Autoloader
 		$entries = FileSystemUtil::scanDir($dir);
 
 		foreach ($entries as $entry)
+		{
 			if (is_dir($entry) && $recursive)
 				$this->loadDirectory($entry, true);
 			else if (StringUtil::endsWith($entry, '.php'))
-				$this->require($entry);
+				$this->loadFile($entry);
+		}
 	}
 
 	/**
@@ -88,7 +90,8 @@ final class Autoloader
 	 */
 	public final function loadFile(string $file): void
 	{
-		$this->require($file);
+		/** @noinspection PhpIncludeInspection */
+		require $file;
 	}
 
 	/**
@@ -140,10 +143,16 @@ final class Autoloader
 		$didAutoload = false;
 
 		foreach ($this->definitions as [$directory, $namespace, $isVirtualNamespace])
-			if ($didAutoload)
-				break;
-			else if (($file = $this->file($directory, $namespace, $isVirtualNamespace, $object)) !== null)
-				$didAutoload = $this->require($file);
+		{
+			$file = $this->file($directory, $namespace, $isVirtualNamespace, $object);
+
+			if ($file === null)
+				continue;
+
+			/** @noinspection PhpIncludeInspection */
+			require $file;
+			return true;
+		}
 
 		return $didAutoload;
 	}
@@ -172,26 +181,6 @@ final class Autoloader
 		$file = realpath($directory . DIRECTORY_SEPARATOR . $object . '.php');
 
 		return $file ?: null;
-	}
-
-	/**
-	 * Requires a file.
-	 *
-	 * @param string $file
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	private function require(string $file): bool
-	{
-		if (!is_file($file))
-			return false;
-
-		/** @noinspection PhpIncludeInspection */
-		require $file;
-
-		return true;
 	}
 
 }
