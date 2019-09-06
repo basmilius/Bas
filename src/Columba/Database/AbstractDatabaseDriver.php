@@ -99,10 +99,7 @@ abstract class AbstractDatabaseDriver
 	{
 		try
 		{
-			$smt = $this->query('SELECT FOUND_ROWS() AS found_rows');
-			$smt->execute();
-
-			return $smt->fetchColumn();
+			return $this->query('SELECT FOUND_ROWS()')->fetchColumn();
 		}
 		catch (PDOException $err)
 		{
