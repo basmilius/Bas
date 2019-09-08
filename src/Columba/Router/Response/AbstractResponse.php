@@ -55,6 +55,20 @@ abstract class AbstractResponse
 	}
 
 	/**
+	 * Adds a response header.
+	 *
+	 * @param string $name
+	 * @param string ...$values
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.3.0
+	 */
+	public final function addHeader(string $name, string ...$values): void
+	{
+		$this->headers[] = [$name, $values];
+	}
+
+	/**
 	 * Prints the response to the output buffer.
 	 *
 	 * @param Context $context
@@ -92,19 +106,5 @@ abstract class AbstractResponse
 	 * @since 1.3.0
 	 */
 	protected abstract function respond(Context $context, $value): string;
-
-	/**
-	 * Adds a response header.
-	 *
-	 * @param string $name
-	 * @param string ...$values
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	protected final function addHeader(string $name, string ...$values): void
-	{
-		$this->headers[] = [$name, $values];
-	}
 
 }
