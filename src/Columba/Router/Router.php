@@ -50,6 +50,11 @@ class Router
 	private $middlewares = [];
 
 	/**
+	 * @var string[]
+	 */
+	private $prefixes = [];
+
+	/**
 	 * @var AbstractRenderer
 	 */
 	private $renderer;
@@ -118,10 +123,11 @@ class Router
 	 */
 	public final function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
+		$prefix = implode('/', $this->prefixes);
 		$route = null;
 
 		if (mb_substr($path, 0, 1) !== '/')
-			$path = '/' . $path;
+			$path = '/' . ($prefix !== '' ? $prefix . '/' : '') . $path;
 
 		if (count($arguments) > 0 && is_callable($arguments[0]))
 			$route = new CallbackRoute($this, $requestMethods, $path, Closure::bind(Closure::fromCallable(array_shift($arguments)), $this), ...$arguments);
@@ -306,19 +312,15 @@ class Router
 	 * @param string   $path
 	 * @param callable $predicate
 	 *
-	 * @return SubRouter
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function group(string $path, callable $predicate): SubRouter
+	public function group(string $path, callable $predicate): void
 	{
-		$router = new SubRouter();
-
-		$predicate($router);
-		$this->all($path, $router);
-
-		return $router;
+		$this->prefixes[] = trim($path, '/');
+		$predicate($this);
+		array_splice($this->prefixes, count($this->prefixes) - 1, 1);
 	}
 
 	/**
