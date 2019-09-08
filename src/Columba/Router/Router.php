@@ -123,11 +123,9 @@ class Router
 	 */
 	public final function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
-		$prefix = implode('/', $this->prefixes);
+		$path = array_merge($this->prefixes, [trim($path, '/')]);
+		$path = '/' . implode('/', $path);
 		$route = null;
-
-		if (mb_substr($path, 0, 1) !== '/')
-			$path = '/' . ($prefix !== '' ? $prefix . '/' : '') . $path;
 
 		if (count($arguments) > 0 && is_callable($arguments[0]))
 			$route = new CallbackRoute($this, $requestMethods, $path, Closure::bind(Closure::fromCallable(array_shift($arguments)), $this), ...$arguments);
