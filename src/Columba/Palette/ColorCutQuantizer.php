@@ -321,13 +321,7 @@ final class ColorCutQuantizer
 	 */
 	public static function fromImage(Image $image, int $maxColors): self
 	{
-		$pixels = [];
-
-		for ($x = 0; $x < $image->getWidth(); $x++)
-			for ($y = 0; $y < $image->getHeight(); $y++)
-				$pixels[] = $image->getColorIntAt($x, $y);
-
-		return new self(new ColorHistogram($pixels), $maxColors);
+		return new self(new ColorHistogram(iterator_to_array($image->getPixels())), $maxColors);
 	}
 
 	/**

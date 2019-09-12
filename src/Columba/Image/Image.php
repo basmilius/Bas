@@ -12,141 +12,113 @@ declare(strict_types=1);
 
 namespace Columba\Image;
 
+use Columba\Palette\Palette;
+use Columba\Util\MathUtil;
+use Exception;
+use Generator;
 use InvalidArgumentException;
 
 /**
  * Class Image
  *
- * @package Columba\Image
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Image
  * @since 1.1.0
  */
-final class Image
+class Image
 {
+
+	public const BICUBIC = IMG_BICUBIC;
+	public const BICUBIC_FIXED = IMG_BICUBIC_FIXED;
+	public const BILINEAR_FIXED = IMG_BILINEAR_FIXED;
+	public const NEAREST_NEIGHBOUR = IMG_NEAREST_NEIGHBOUR;
+
+	public const CONTAIN = 1;
+	public const COVER = 2;
+	public const FILL = 4;
 
 	/**
 	 * @var resource
 	 */
-	private $imageResource;
+	protected $resource;
 
 	/**
 	 * @var int
 	 */
-	private $height;
+	protected $xDpi;
 
 	/**
 	 * @var int
 	 */
-	private $width;
+	protected $yDpi;
+
+	/**
+	 * @var int
+	 */
+	protected $height;
+
+	/**
+	 * @var int
+	 */
+	protected $width;
 
 	/**
 	 * Image constructor.
 	 *
-	 * @param resource $imageResource
+	 * @param resource $resource
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public function __construct($imageResource)
+	public function __construct($resource)
 	{
-		$this->imageResource = $imageResource;
-
-		$this->height = imagesy($this->imageResource);
-		$this->width = imagesx($this->imageResource);
+		$this->resource = $resource;
+		$this->updateSizeInfo();
 	}
 
 	/**
-	 * Gets the color int at {@see $x} and {@see $y}.
+	 * Updates the current used image resource.
 	 *
-	 * @param int $x
-	 * @param int $y
+	 * @param resource $resource
 	 *
-	 * @return int
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
+	 * @since 1.6.0
 	 */
-	public final function getColorIntAt(int $x, int $y): int
+	private function updateResource($resource): void
 	{
-		return imagecolorat($this->imageResource, $x, $y);
+		imagedestroy($this->resource);
+		$this->resource = $resource;
+
+		imagealphablending($this->resource, false);
+		imagesavealpha($this->resource, true);
+
+		$this->updateSizeInfo();
 	}
 
 	/**
-	 * Gets the image resource.
-	 *
-	 * @return resource
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
-	 */
-	public final function getResource()
-	{
-		return $this->imageResource;
-	}
-
-	/**
-	 * Gets the {@see $height} of the {@see Image}.
-	 *
-	 * @return int
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public final function getHeight(): int
-	{
-		return $this->height;
-	}
-
-	/**
-	 * Gets the {@see $width} of the {@see Image}.
-	 *
-	 * @return int
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public final function getWidth(): int
-	{
-		return $this->width;
-	}
-
-	/**
-	 * Copies the {@see Image}.
-	 *
-	 * @return Image
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
-	 */
-	public final function copy(): Image
-	{
-		$resource = imagecreatetruecolor($this->width, $this->height);
-
-		imagecopy($resource, $this->imageResource, 0, 0, 0, 0, $this->width, $this->height);
-
-		return new Image($resource);
-	}
-
-	/**
-	 * Destroys the {@see Image} resource.
+	 * Updates size information with the current image resource.
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
+	 * @since 1.6.0
 	 */
-	public final function destroy(): void
+	private function updateSizeInfo(): void
 	{
-		imagedestroy($this->imageResource);
+		[$this->xDpi, $this->yDpi] = imageresolution($this->resource);
+		$this->height = imagesy($this->resource);
+		$this->width = imagesx($this->resource);
 	}
 
 	/**
 	 * Fixes the image from exif data.
 	 *
 	 * @param array $exif
-	 * @param bool  $copy
 	 *
-	 * @return Image
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public final function fixFromExif(array $exif, bool $copy = false): Image
+	public function fixFromExif(array $exif): self
 	{
-		$image = $copy ? $this->copy() : $this;
-
 		$orientation = $exif['Orientation'] ?? 1;
 
 		$flip = false;
@@ -187,200 +159,369 @@ final class Image
 		}
 
 		if ($rotation > 0)
-			$image->rotate($rotation);
+			$this->rotate($rotation);
 
 		if ($flip)
-			$image->flip(IMG_FLIP_VERTICAL);
+			$this->flip(false, true);
 
-		return $image;
+		return $this;
 	}
 
 	/**
-	 * Flips the {@see Image}.
+	 * Gets the DPI of the image.
 	 *
-	 * @param int  $type
-	 * @param bool $copy
-	 *
-	 * @return Image
-	 * @author Bas Milius <bas@ideemedia.nl>
-	 * @since 1.4.0
+	 * @return int[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
 	 */
-	public final function flip(int $type, bool $copy = false): Image
+	public function getDpi(): array
 	{
-		$image = $copy ? $this->copy() : $this;
-
-		imageflip($image->getResource(), $type);
-
-		return $image;
+		return [$this->xDpi, $this->yDpi];
 	}
 
 	/**
-	 * Resizes the {@see Image}.
+	 * Gets the height of th eimage.
 	 *
-	 * @param int  $width
-	 * @param int  $height
-	 * @param bool $crop
-	 * @param bool $thumbnail
-	 * @param bool $copy
-	 *
-	 * @return Image
+	 * @return int
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function resize(int $width, int $height, bool $crop = false, bool $thumbnail = false, bool $copy = false): Image
+	public function getHeight(): int
 	{
-		$image = $copy ? $this->copy() : $this;
-		$oldResource = $image->imageResource;
+		return $this->height;
+	}
 
-		$ih = $height;
-		$iw = $width;
-		$x = 0;
-		$y = 0;
+	/**
+	 * Gets the width of the image.
+	 *
+	 * @return int
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public function getWidth(): int
+	{
+		return $this->width;
+	}
 
-		if ($crop && $image->width !== $image->height)
-			if ($image->width > $image->height)
-				$height = $ih = intval($image->height * ($height / $image->width));
-			else
-				$width = $iw = intval($image->width * ($width / $image->height));
+	/**
+	 * Gets size and resolution information of this image.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getSize(): array
+	{
+		return [$this->width, $this->height, $this->xDpi, $this->yDpi];
+	}
 
-		if ($thumbnail)
-		{
-			$hRatio = $height / $image->height;
-			$wRatio = $width / $image->width;
-			$ratio = max($hRatio, $wRatio);
+	/**
+	 * Creates a {@see Palette} instance.
+	 *
+	 * @return Palette
+	 * @throws Exception
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getPalette(): Palette
+	{
+		return Palette::generate($this);
+	}
 
-			if ($ratio > 1.0)
-				$ratio = 1.0;
-
-			$ih = intval(floor($image->height * $ratio));
-			$iw = intval(floor($image->width * $ratio));
-
-			$x = intval(floor(($width - $iw) / 2));
-			$y = intval(floor(($height - $ih) / 2));
-		}
-
-		$newResource = imagecreatetruecolor($width, $height);
-
-		imagealphablending($newResource, false);
-		imagesavealpha($newResource, true);
-
-		imagecopyresampled($newResource, $oldResource, $x, $y, 0, 0, $iw, $ih, $image->width, $image->height);
-		imagedestroy($oldResource);
-
-		$image->height = imagesy($newResource);
-		$image->width = imagesx($newResource);
-		$image->imageResource = $newResource;
+	/**
+	 * Takes a piece from the image and returns a new {@see Image} instance.
+	 *
+	 * @param int $x
+	 * @param int $y
+	 * @param int $width
+	 * @param int $height
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getPiece(int $x, int $y, int $width, int $height): self
+	{
+		$image = $this->copy();
+		$image->piece($x, $y, $width, $height);
 
 		return $image;
 	}
 
 	/**
-	 * Rotates an image.
+	 * Gets a pixel.
 	 *
-	 * @param int  $degrees
-	 * @param bool $copy
+	 * @param int $x
+	 * @param int $y
 	 *
-	 * @return Image
+	 * @return int
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
+	 * @since 1.6.0
 	 */
-	public final function rotate(int $degrees, bool $copy = false): Image
+	public function getPixel(int $x, int $y): int
 	{
-		$image = $copy ? $this->copy() : $this;
-		$transparent = imagecolorallocatealpha($image->imageResource, 0, 0, 0, 0);
+		if ($x < 0 || $x > $this->width || $y < 0 || $y > $this->height)
+			throw new InvalidArgumentException(sprintf('Coordinate %dx%x is out of bounds.', $x, $y));
 
-		$newResource = imagerotate($image->imageResource, $degrees, $transparent);
-		imagedestroy($image->imageResource);
-
-		$image->imageResource = $newResource;
-
-		return $image;
+		return imagecolorat($this->resource, $x, $y);
 	}
 
 	/**
-	 * Prints the {@see Image}.
+	 * Iterate over all pixels.
 	 *
-	 * @param string $type
-	 * @param int    $quality
+	 * @return Generator<int>
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getPixels(): Generator
+	{
+		for ($y = 0; $y < $this->height; $y++)
+			for ($x = 0; $x < $this->width; $x++)
+				yield $this->getPixel($x, $y);
+	}
+
+	/**
+	 * Executes a function with the image resource.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function with(callable $fn): void
+	{
+		$fn($this->resource);
+	}
+
+	/**
+	 * Copies the image.
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.1.0
+	 */
+	public function copy(): self
+	{
+		$resource = imagecreatetruecolor($this->width, $this->height);
+
+		imagecopy($resource, $this->resource, 0, 0, 0, 0, $this->width, $this->height);
+
+		return new self($resource);
+	}
+
+	/**
+	 * Destroys the image resource.
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public final function print(string $type = 'png', int $quality = 80): void
+	public function destroy(): void
 	{
-		switch ($type)
-		{
-			case 'gif':
-				header('Content-Type: image/gif');
-				imagegif($this->imageResource);
-				break;
-
-			case 'jpg':
-			case 'jpeg':
-				header('Content-Type: image/jpeg');
-				imagejpeg($this->imageResource, null, $quality);
-				break;
-
-			case 'png':
-				header('Content-Type: image/png');
-				imagepng($this->imageResource);
-				break;
-
-			case 'webp':
-				header('Content-Type: image/webp');
-				imagewebp($this->imageResource, null, $quality);
-				break;
-		}
+		imagedestroy($this->resource);
 	}
 
 	/**
-	 * Saves the {@see Image}.
+	 * Flips the image.
 	 *
-	 * @param string $filename
-	 * @param string $type
-	 * @param int    $quality
+	 * @param bool $horizontal
+	 * @param bool $vertical
 	 *
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.1.0
+	 * @since 1.6.0
 	 */
-	public final function save(string $filename, string $type = 'png', int $quality = 80): void
+	public function flip(bool $horizontal, bool $vertical): self
 	{
-		switch ($type)
-		{
-			case 'gif':
-				imagegif($this->imageResource, $filename);
-				break;
+		if ($horizontal || $vertical)
+			imageflip($this->resource, $horizontal && $vertical ? IMG_FLIP_BOTH : ($horizontal ? IMG_FLIP_HORIZONTAL : IMG_FLIP_VERTICAL));
 
-			case 'jpg':
-			case 'jpeg':
-				imagejpeg($this->imageResource, $filename, $quality);
-				break;
-
-			case 'png':
-				imagepng($this->imageResource, $filename);
-				break;
-
-			case 'webp':
-				imagewebp($this->imageResource, $filename, $quality);
-				break;
-		}
+		return $this;
 	}
 
 	/**
-	 * Creates an {@see Image} from file.
+	 * Takes a piece from the image.
+	 *
+	 * @param int $x
+	 * @param int $y
+	 * @param int $width
+	 * @param int $height
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function piece(int $x, int $y, int $width, int $height): self
+	{
+		$this->updateResource(imagecrop($this->resource, [
+			'x' => $x,
+			'y' => $y,
+			'width' => $width,
+			'height' => $height
+		]));
+
+		return $this;
+	}
+
+	/**
+	 * Resizes the image.
+	 *
+	 * @param int $width
+	 * @param int $height
+	 * @param int $mode
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function resize(int $width, int $height, int $mode = self::FILL): self
+	{
+		$resource = imagecreatetruecolor($width, $height);
+		imagefill($resource, 0, 0, imagecolorallocatealpha($resource, 0, 0, 0, 127));
+
+		$rx = $width / $this->width;
+		$ry = $height / $this->height;
+		$r = $this->width <= $this->height ? $rx : $ry;
+
+		switch ($mode)
+		{
+			case self::CONTAIN:
+				if ($r * $this->width > $width)
+					$r = $rx;
+
+				if ($r * $this->height > $height)
+					$r = $ry;
+				break;
+
+			case self::COVER:
+				if ($r * $this->width < $width)
+					$r = $rx;
+
+				if ($r * $this->height < $height)
+					$r = $ry;
+				break;
+		}
+
+		$dw = $mode === self::FILL ? $width : (int)round($this->width * $r);
+		$dh = $mode === self::FILL ? $height : (int)round($this->height * $r);
+		$dx = $mode === self::FILL ? 0 : (int)round(($dw - $width) / -2);
+		$dy = $mode === self::FILL ? 0 : (int)round(($dh - $height) / -2);
+
+		imagecopyresampled($resource, $this->resource, $dx, $dy, 0, 0, $dw, $dh, $this->width, $this->height);
+
+		$this->updateResource($resource);
+
+		return $this;
+	}
+
+	/**
+	 * Rotates the image.
+	 *
+	 * @param int $degrees
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function rotate(int $degrees): self
+	{
+		$transparent = imagecolorallocatealpha($this->resource, 0, 0, 0, 127);
+		$this->updateResource(imagerotate($this->resource, $degrees, $transparent));
+
+		return $this;
+	}
+
+	/**
+	 * Scales the image.
+	 *
+	 * @param float $scale
+	 * @param int   $mode
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function scale(float $scale, int $mode = self::BILINEAR_FIXED): self
+	{
+		$this->updateResource(imagescale($this->resource, (int)round($this->width * $scale), -1, $mode));
+
+		return $this;
+	}
+
+	/**
+	 * Creates an image in the GIF format.
+	 *
+	 * @param string|null $fileName
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function gif(?string $fileName = null): bool
+	{
+		return imagegif($this->resource, $fileName);
+	}
+
+	/**
+	 * Creates an image in the JPEG format.
+	 *
+	 * @param string|null $fileName
+	 * @param int         $quality
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function jpeg(?string $fileName = null, int $quality = 75): bool
+	{
+		return imagejpeg($this->resource, $fileName, MathUtil::clamp($quality, 0, 100));
+	}
+
+	/**
+	 * Creates an image in the PNG format.
+	 *
+	 * @param string|null $fileName
+	 * @param int         $compression
+	 * @param int         $filters
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function png(?string $fileName = null, int $compression = 9, int $filters = -1): bool
+	{
+		return imagepng($this->resource, $fileName, $compression, $filters);
+	}
+
+	/**
+	 * Creates an image in the WebP format.
+	 *
+	 * @param string|null $fileName
+	 * @param int         $quality
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function webp(?string $fileName = null, int $quality = 80): bool
+	{
+		return imagewebp($this->resource, $fileName, $quality);
+	}
+
+	/**
+	 * Creates an {@see Image} instance from file.
 	 *
 	 * @param string $fileName
 	 *
-	 * @return Image
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
 	public static function fromFile(string $fileName): self
 	{
 		if (!is_file($fileName))
-			throw new InvalidArgumentException('$fileName not found!');
+			new InvalidArgumentException(sprintf('The file "%s" does not exists.', $fileName));
 
-		return new self(imagecreatefromstring(file_get_contents($fileName)));
+		return new static(imagecreatefromstring(file_get_contents($fileName)));
 	}
 
 }
