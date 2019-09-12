@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 use Columba\Foundation\DotEnv\DotEnv;
 use function Columba\Util\dump;
-use function Columba\Util\pre;
 
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
@@ -22,10 +21,16 @@ header('Content-Type: text/plain');
 
 $env = DotEnv::create(__DIR__);
 
-pre($env->getVars());
+dump(
+	'getenv',
+	getenv('MY_API_KEY'),
+	getenv('MY_QUOTED_STRING'),
+	getenv('MY_CERTIFICATE')
+);
 
 dump(
-	getenv('MY_API_KEY'),
-	$_ENV,
-	getenv()
+	'$_ENV',
+	$_ENV['MY_API_KEY'],
+	$_ENV['MY_QUOTED_STRING'],
+	$_ENV['MY_CERTIFICATE']
 );

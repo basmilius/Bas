@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\DotEnv\Adapter;
 
-use Columba\Foundation\DotEnv\DotEnv;
-
 /**
  * Class PutEnvAdapter
  *
@@ -29,13 +27,29 @@ class PutEnvAdapter implements IAdapter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function adapt(DotEnv $env): void
+	public final function get(string $name): ?string
 	{
-		foreach ($env as $name => $value)
-		{
-			$_ENV[$name] = $value;
-			putenv($name . '=' . $value);
-		}
+		return getenv($name) ?: null;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function has(string $name): bool
+	{
+		return getenv($name) !== false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function set(string $name, string $value): void
+	{
+		putenv($name . '=' . $value);
 	}
 
 }

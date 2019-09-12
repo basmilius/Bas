@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\DotEnv\Adapter;
 
-use Columba\Foundation\DotEnv\DotEnv;
-
 /**
  * Interface IAdapter
  *
@@ -25,13 +23,36 @@ interface IAdapter
 {
 
 	/**
-	 * Does something with the defined environment variables.
+	 * Gets an environment variable.
 	 *
-	 * @param DotEnv $env
+	 * @param string $name
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function get(string $name): ?string;
+
+	/**
+	 * Returns TRUE if an environment variable exists.
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function has(string $name): bool;
+
+	/**
+	 * Adds an environment variable.
+	 *
+	 * @param string $name
+	 * @param string $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function adapt(DotEnv $env): void;
+	public function set(string $name, string $value): void;
 
 }
