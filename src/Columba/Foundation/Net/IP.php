@@ -41,7 +41,7 @@ class IP
 	 * @param string $ip
 	 * @param int    $version
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	protected function __construct(string $ip, int $version)

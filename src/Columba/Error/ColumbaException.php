@@ -32,7 +32,7 @@ abstract class ColumbaException extends Exception
 	 * @param int            $code
 	 * @param Throwable|null $previous
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(string $message, int $code = 0, ?Throwable $previous = null)
