@@ -83,7 +83,7 @@ class DotEnv implements IArray, IIterator, IJson
 	 *
 	 * @throws DotEnvException
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(string $fileName, array $adapters = self::DEFAULT_ADAPTERS)
