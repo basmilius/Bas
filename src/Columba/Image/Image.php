@@ -508,6 +508,39 @@ class Image
 	}
 
 	/**
+	 * Creates an image in the given format.
+	 *
+	 * @param string      $format
+	 * @param string|null $fileName
+	 * @param mixed       ...$arguments
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.6.0
+	 */
+	public function save(string $format, ?string $fileName = null, ...$arguments): bool
+	{
+		switch ($format)
+		{
+			case 'gif':
+				return $this->gif($fileName);
+
+			case 'jpg':
+			case 'jpeg':
+				return $this->jpeg($fileName, ...$arguments);
+
+			case 'png':
+				return $this->png($fileName, ...$arguments);
+
+			case 'webp':
+				return $this->webp($fileName, ...$arguments);
+
+			default:
+				throw new InvalidArgumentException(sprintf('Image type "%s" is not supported.', $format));
+		}
+	}
+
+	/**
 	 * Creates an {@see Image} instance from file.
 	 *
 	 * @param string $fileName
