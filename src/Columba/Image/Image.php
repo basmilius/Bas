@@ -515,7 +515,7 @@ class Image
 	 * @param mixed       ...$arguments
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function save(string $format, ?string $fileName = null, ...$arguments): bool
