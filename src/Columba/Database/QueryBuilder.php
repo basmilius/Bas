@@ -1101,7 +1101,7 @@ class QueryBuilder
 		foreach ($values as $value)
 			$vals[] = $this->addValue($value);
 
-		$this->add('VALUES', '');
+		$this->add($this->has('VALUES') ? ',' : 'VALUES', '');
 		$this->parenthesisOpen();
 		$this->add('', $vals, 0, 1, 1, self::DEFAULT_FIELD_SEPARATOR);
 		$this->parenthesisClose();
