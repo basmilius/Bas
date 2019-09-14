@@ -79,16 +79,12 @@ class Router
 	 *
 	 * @param AbstractResponse|null $response
 	 * @param AbstractRenderer|null $renderer
-	 * @param bool                  $isSubRouter
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null, bool $isSubRouter = false)
+	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
-		if (!$isSubRouter)
-			ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
-
 		$this->renderer = $renderer;
 		$this->response = $response;
 	}
@@ -257,6 +253,8 @@ class Router
 	 */
 	public function execute(string $path, string $requestMethod): void
 	{
+		ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
+
 		if (($route = $this->find($path, $requestMethod)) !== null)
 			$route->execute();
 		else
@@ -310,7 +308,6 @@ class Router
 	 * @param string   $path
 	 * @param callable $predicate
 	 *
-	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -343,8 +340,9 @@ class Router
 	 * @param string         $path
 	 * @param callable&mixed $arguments
 	 *
-	 * @author Bas Milius <bas@mili.us>
+	 * @throws RouterException
 	 * @since 1.6.0
+	 * @author Bas Milius <bas@mili.us>
 	 */
 	public final function match(array $requestMethods, string $path, ...$arguments): void
 	{
@@ -473,6 +471,8 @@ class Router
 	}
 
 	/**
+	 * Gets the current {@see AbstractRoute}.
+	 *
 	 * @return AbstractRoute|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

@@ -49,7 +49,7 @@ class SubRouter extends Router
 	 */
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
-		parent::__construct($response, $renderer, true);
+		parent::__construct($response, $renderer);
 
 		$this->parameters = [];
 	}
