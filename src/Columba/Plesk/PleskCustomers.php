@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Plesk;
 
-use Columba\Util\A;
 use Columba\Util\ArrayUtil;
 use Exception;
 
@@ -150,10 +149,10 @@ final class PleskCustomers extends PleskSubSystem
 			]);
 
 			$customers = PleskApiUtil::flatten($customer, 'customer', 'get', 'result');
-			$customers = A::map($customers, function (array $customer): array
+			$customers = array_map(function (array $customer): array
 			{
 				return $customer['data'];
-			});
+			}, $customers);
 
 			return $customers;
 		}

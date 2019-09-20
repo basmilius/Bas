@@ -18,6 +18,7 @@ use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
+use Traversable;
 
 /**
  * Class Collection
@@ -548,6 +549,23 @@ class Collection implements IArray, ICountable, IIterator, IJson
 			return $items->toArray();
 
 		return $items;
+	}
+
+	/**
+	 * Creates a collection from an iterable.
+	 *
+	 * @param iterable $items
+	 *
+	 * @return Collection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function from(iterable $items): Collection
+	{
+		if ($items instanceof Traversable)
+			$items = iterator_to_array($items);
+
+		return new static($items);
 	}
 
 }

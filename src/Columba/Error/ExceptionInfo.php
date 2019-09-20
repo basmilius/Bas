@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\Error;
 
 use Columba\Facade\IJson;
-use Columba\Util\A;
 use Columba\Util\ExceptionUtil;
 use Throwable;
 
@@ -114,10 +113,10 @@ class ExceptionInfo implements IJson
 	 */
 	public function getTrace(): array
 	{
-		return A::map($this->err->getTrace(), function (array $trace): TraceInfo
+		return array_map(function (array $trace): TraceInfo
 		{
 			return new TraceInfo($this, $trace);
-		});
+		}, $this->err->getTrace());
 	}
 
 	/**
