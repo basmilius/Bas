@@ -159,7 +159,7 @@ class QueryBuilder
 			if (in_array($field, $ignore))
 				return $field;
 
-			if (substr($field, 0, 1) === $this->escapeLeft)
+			if ($field[0] === $this->escapeLeft)
 				return $field;
 
 			return $this->escapeLeft . $field . $this->escapeRight;

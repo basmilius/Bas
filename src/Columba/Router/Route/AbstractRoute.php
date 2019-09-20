@@ -171,7 +171,7 @@ abstract class AbstractRoute
 	 */
 	public final function resolve(string $path): string
 	{
-		if (mb_substr($path, 0, 1) === '/' || mb_substr($path, 0, 4) === 'http')
+		if ($path[0] === '/' || mb_substr($path, 0, 4) === 'http')
 			return $path; // No need to resolve.
 
 		$parts = explode('/', $this->context->getFullPath() . '/' . $path);
@@ -244,12 +244,7 @@ abstract class AbstractRoute
 		$context = $this->getContext();
 		$context->setPath($this->path);
 
-		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
-			$path = mb_substr($path, 0, -1);
-
-		if ($path === '/index')
-			$path = '/';
-
+		$path = rtrim($path, '/');
 		$params = $this->getValidatableParams();
 		$paramsValues = [];
 		$pathRegex = strtr($this->path, '/*', '/(?<wildcard>.*)');

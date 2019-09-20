@@ -181,9 +181,7 @@ final class ColorUtil
 	public static function hexToRgba(string $hex): array
 	{
 		$hex = trim($hex);
-
-		$isHashtagHex = substr($hex, 0, 1) === '#';
-		$hex = $isHashtagHex ? substr($hex, 1) : $hex;
+		$hex = ltrim($hex, '#');
 
 		if (strlen($hex) === 8) // RRGGBBAA
 		{

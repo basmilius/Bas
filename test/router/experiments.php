@@ -109,7 +109,7 @@ $router->get('request-test', function (Context $context, Request $request): void
 try
 {
 	$router->define('request', new Request());
-	$router->execute('/users/edit/password', RequestMethod::GET);
+	$router->execute('/users/edit', RequestMethod::GET);
 }
 catch (RouterException $err)
 {

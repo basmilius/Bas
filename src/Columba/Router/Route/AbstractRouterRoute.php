@@ -78,6 +78,9 @@ abstract class AbstractRouterRoute extends AbstractRoute
 		if (empty($relativePath))
 			$relativePath = '/';
 
+		if ($relativePath[0] !== '/')
+			$relativePath = '/' . $relativePath;
+
 		$this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext());
 
 		if ($this->matchingRoute === null)
