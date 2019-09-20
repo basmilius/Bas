@@ -115,7 +115,7 @@ class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function next(): void
 	{
-		$this->position++;
+		++$this->position;
 	}
 
 	/**

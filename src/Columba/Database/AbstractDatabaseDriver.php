@@ -246,10 +246,10 @@ abstract class AbstractDatabaseDriver
 
 		$input = $this->guessValues($input);
 
-		for ($i = 0, $length = count($input); $i < $length; $i++)
+		for ($i = 0, $length = count($input); $i < $length; ++$i)
 			$inputParams[] = ':in' . $i;
 
-		for ($i = 0, $length = count($output); $i < $length; $i++)
+		for ($i = 0, $length = count($output); $i < $length; ++$i)
 			$outputParams[] = '@out' . $i;
 
 		$parameterList = implode(', ', array_merge($inputParams, $outputParams));
@@ -268,7 +268,7 @@ abstract class AbstractDatabaseDriver
 
 			$result = $smt->fetch();
 
-			for ($i = 0, $length = count($output); $i < $length; $i++)
+			for ($i = 0, $length = count($output); $i < $length; ++$i)
 				$output[array_keys($output)[$i]] = $result[$i] ?? null;
 		}
 		catch (PDOException $err)

@@ -275,8 +275,8 @@ class Image
 	 */
 	public function getPixels(): Generator
 	{
-		for ($y = 0; $y < $this->height; $y++)
-			for ($x = 0; $x < $this->width; $x++)
+		for ($y = 0; $y < $this->height; ++$y)
+			for ($x = 0; $x < $this->width; ++$x)
 				yield $this->getPixel($x, $y);
 	}
 

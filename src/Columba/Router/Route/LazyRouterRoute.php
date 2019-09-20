@@ -22,13 +22,8 @@ use Columba\Router\SubRouter;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-final class LazyRouterRoute extends AbstractRoute
+final class LazyRouterRoute extends AbstractRouterRoute
 {
-
-	/**
-	 * @var SubRouter|string
-	 */
-	private $router;
 
 	/**
 	 * @var mixed[]
@@ -39,11 +34,6 @@ final class LazyRouterRoute extends AbstractRoute
 	 * @var string
 	 */
 	private $routerImplementation;
-
-	/**
-	 * @var AbstractRoute|null
-	 */
-	private $matchingRoute = null;
 
 	/**
 	 * LazyRouterRoute constructor.
@@ -83,19 +73,6 @@ final class LazyRouterRoute extends AbstractRoute
 	}
 
 	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function executeImpl(): void
-	{
-		if ($this->matchingRoute === null)
-			return;
-
-		$this->matchingRoute->execute();
-	}
-
-	/**
 	 * Gets the {@see SubRouter} instance.
 	 *
 	 * @return SubRouter
@@ -118,12 +95,10 @@ final class LazyRouterRoute extends AbstractRoute
 	{
 		$this->ensureRouterInstance();
 
-		$params = [];
-
 		if ($this->router instanceof SubRouter)
-			$params = array_merge($params, $this->router->getParameters());
+			return $this->router->getParameters();
 
-		return $params;
+		return [];
 	}
 
 	/**
@@ -133,25 +108,9 @@ final class LazyRouterRoute extends AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
-		$isMatch = parent::isMatch($path, $requestMethod);
+		$this->ensureRouterInstance();
 
-		if (!$isMatch)
-			return false;
-
-		$relativePath = mb_substr($path, mb_strlen($this->getContext()->getPathValues()));
-
-		if (empty($relativePath))
-			$relativePath = '/';
-
-		if (mb_substr($relativePath, 0, 1) !== '/')
-			$relativePath = '/' . $relativePath;
-
-		$this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext());
-
-		if ($this->matchingRoute === null)
-			return $this->router->onNotFound($path, $this->getContext());
-
-		return true;
+		return parent::isMatch($path, $requestMethod);
 	}
 
 }

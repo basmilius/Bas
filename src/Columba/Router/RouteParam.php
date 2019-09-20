@@ -72,16 +72,16 @@ final class RouteParam
 	{
 		switch ($this->type)
 		{
-			case 'bool':
-				$regex = '(0|false|1|true)';
+			case 'string':
+				$regex = '[a-zA-Z0-9-_.@=,]+';
 				break;
 
 			case 'int':
 				$regex = '[0-9]+';
 				break;
 
-			case 'string':
-				$regex = '[a-zA-Z0-9-_.@=,]+';
+			case 'bool':
+				$regex = '(0|false|1|true)';
 				break;
 
 			default:
@@ -109,14 +109,14 @@ final class RouteParam
 	{
 		switch ($this->type)
 		{
-			case 'bool':
-				return $value === '1' || $value === 'true';
+			case 'string':
+				return $value;
 
 			case 'int':
 				return intval($value);
 
-			case 'string':
-				return $value;
+			case 'bool':
+				return $value === '1' || $value === 'true';
 
 			default:
 				return null;

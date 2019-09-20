@@ -164,6 +164,8 @@ final class Response
 		$this->transactionTime = curl_getinfo($this->curlHandle, CURLINFO_TOTAL_TIME);
 		$this->uploadSize = curl_getinfo($this->curlHandle, CURLINFO_SIZE_UPLOAD);
 		$this->uploadSpeed = curl_getinfo($this->curlHandle, CURLINFO_SPEED_UPLOAD);
+
+		curl_close($this->curlHandle);
 	}
 
 	/**

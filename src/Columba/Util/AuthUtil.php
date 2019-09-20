@@ -60,7 +60,7 @@ final class AuthUtil
 
 		$all = str_split($all);
 
-		for ($i = 0, $setsCount = count($sets); $i < $length - $setsCount; $i++)
+		for ($i = 0, $setsCount = count($sets); $i < $length - $setsCount; ++$i)
 			$password .= $all[array_rand($all)];
 
 		$password = str_shuffle($password);

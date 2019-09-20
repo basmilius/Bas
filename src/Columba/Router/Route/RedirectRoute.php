@@ -62,7 +62,7 @@ final class RedirectRoute extends AbstractRoute
 
 		$this->params = [];
 
-		for ($i = 0; $i < count($matches[0]); $i++)
+		for ($i = 0, $length = count($matches[0]); $i < $length; ++$i)
 			$this->params[] = new RouteParam($matches[1][$i], $matches[2][$i]);
 
 		$path = preg_replace('/\((bool|int|string)\)/', '', $path);

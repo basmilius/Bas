@@ -91,7 +91,7 @@ final class Vbox
 		$blueSum = 0;
 		$totalPopulation = 0;
 
-		for ($i = $this->lowerIndex; $i <= $this->upperIndex; $i++)
+		for ($i = $this->lowerIndex; $i <= $this->upperIndex; ++$i)
 		{
 			$color = $this->quantizer->getColors()[$i];
 			[$r, $g, $b] = ColorUtil::intToRgb($color);
@@ -143,7 +143,7 @@ final class Vbox
 
 		$dimensionMidPoint = $this->midPoint($longestDimension);
 
-		for ($i = $this->lowerIndex; $i <= $this->upperIndex; $i++)
+		for ($i = $this->lowerIndex; $i <= $this->upperIndex; ++$i)
 		{
 			$color = $this->quantizer->getColors()[$i];
 
@@ -180,7 +180,7 @@ final class Vbox
 		$this->minRed = $this->minGreen = $this->minBlue = 0xFF;
 		$this->maxRed = $this->maxGreen = $this->maxBlue = 0x0;
 
-		for ($i = $this->lowerIndex; $i <= $this->upperIndex; $i++)
+		for ($i = $this->lowerIndex; $i <= $this->upperIndex; ++$i)
 		{
 			$color = $this->quantizer->getColors()[$i];
 

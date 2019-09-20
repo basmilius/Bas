@@ -13,14 +13,13 @@ declare(strict_types=1);
 namespace Columba\Router\Route;
 
 use Columba\Http\ResponseCode;
+use Columba\Router\Context;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
-use Columba\Router\Context;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
-use Columba\Util\A;
 use Columba\Util\ServerTiming;
 use Columba\Util\Stopwatch;
 use Exception;
@@ -107,7 +106,7 @@ abstract class AbstractRoute
 		$context = $this->getContext();
 		$result = null;
 
-		$this->parent->onExecute($this, $this->getContext());
+		$this->parent->onExecute($this, $context);
 
 		$rootRouter = $this->parent instanceof SubRouter ? $this->parent->getRootRouter() : $this->parent;
 		$rootRouter->setCurrentRoute($this);
@@ -117,27 +116,28 @@ abstract class AbstractRoute
 			if ($context->getResponse()[0] === null && $context->getRedirectPath() === null)
 				$this->executeImpl();
 
-			/** @var AbstractResponse $responseImplementation */
-			[$responseImplementation, $responseValue] = $context->getResponse();
+			/** @var AbstractResponse $response */
+			[$response, $responseValue] = $context->getResponse();
+
+			$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+			$statusCode = $context->getResponseCode();
+			$statusMessage = ResponseCode::getMessage($statusCode);
 
 			if ($context->getRedirectPath() === null)
 			{
-				if ($responseImplementation === null)
+				if ($response === null)
 					return;
 
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
 				$context->setResolutionTime($time);
 
-				http_response_code($context->getResponseCode());
-				$responseImplementation->print($context, $responseValue);
+				http_response_code($statusCode);
+				header("$protocol $statusCode $statusMessage");
+				$response->print($context, $responseValue);
 			}
 			else
 			{
-				$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-				$statusCode = $context->getResponseCode();
-				$statusMessage = ResponseCode::getMessage($statusCode);
-
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
 				http_response_code($statusCode);
@@ -185,7 +185,7 @@ abstract class AbstractRoute
 			if ($part !== '..')
 				$result[] = $part;
 			else if (count($result) > 0)
-				A::pop($result);
+				array_pop($result);
 		}
 
 		return '/' . implode('/', $result);
@@ -209,7 +209,7 @@ abstract class AbstractRoute
 		}
 		else
 		{
-			$response = $this->getParentRouter()->getResponse();
+			$response = $this->parent->getResponse();
 		}
 
 		if ($response === null)
@@ -241,7 +241,8 @@ abstract class AbstractRoute
 	 */
 	public function isMatch(string $path, string $requestMethod): bool
 	{
-		$this->getContext()->setPath($this->path);
+		$context = $this->getContext();
+		$context->setPath($this->path);
 
 		if (mb_strlen($path) > 1 && mb_substr($path, -1) === '/')
 			$path = mb_substr($path, 0, -1);
@@ -251,11 +252,19 @@ abstract class AbstractRoute
 
 		$params = $this->getValidatableParams();
 		$paramsValues = [];
-		$pathRegex = str_replace('/*', '/(?<wildcard>.*)', $this->path);
+		$pathRegex = strtr($this->path, '/*', '/(?<wildcard>.*)');
 		$pathValues = $this->path;
 
 		foreach ($params as $param)
-			$pathRegex = str_replace(['/$' . $param->getName(), '.$' . $param->getName()], $param->getRegex(), $pathRegex);
+		{
+			$name = $param->getName();
+			$regex = $param->getRegex();
+
+			$pathRegex = strtr($pathRegex, [
+				'/$' . $name => $regex,
+				'.$' . $name => $regex
+			]);
+		}
 
 		$pathRegex = '#^' . $pathRegex . (!$this->allowSubRoutes ? '$' : '') . '#';
 		$isValid = preg_match($pathRegex, $path, $matches);
@@ -271,18 +280,18 @@ abstract class AbstractRoute
 			$value = $matches[$param->getName()] ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
-				$pathValues = str_replace('$' . $param->getName(), $value, $pathValues);
+				$pathValues = strtr($pathValues, '$' . $param->getName(), $value);
 		}
 
 		if (isset($matches['wildcard']))
 		{
 			$paramsValues['wildcard'] = $matches['wildcard'];
-			$pathValues = str_replace('/*', '/' . $matches['wildcard'], $pathValues);
+			$pathValues = strtr($pathValues, '/*', '/' . $matches['wildcard']);
 		}
 
-		$this->getContext()->setParams($paramsValues);
-		$this->getContext()->setPathRegex($pathRegex);
-		$this->getContext()->setPathValues($pathValues);
+		$context->setParams($paramsValues);
+		$context->setPathRegex($pathRegex);
+		$context->setPathValues($pathValues);
 
 		if (!$isValid || !(empty($this->requestMethods) || isset($this->requestMethods[$requestMethod])))
 			return false;
@@ -292,16 +301,16 @@ abstract class AbstractRoute
 		try
 		{
 			foreach ($this->parent->getMiddlewares() as $middleware)
-				$middleware->forContext($this, $this->getContext(), $isValid);
+				$middleware->forContext($this, $context, $isValid);
 
 			return $isValid;
 		}
 		catch (Exception $err)
 		{
 			if ($middleware !== null)
-				$this->parent->onException(new RouterException(sprintf("Middleware '%s' threw an exception while executing '%s'.", get_class($middleware), $this->getContext()->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $this->getContext());
+				$this->parent->onException(new RouterException(sprintf("Middleware '%s' threw an exception while executing '%s'.", get_class($middleware), $context->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $context);
 			else
-				$this->parent->onException(new RouterException(sprintf("Unkown exception while executing '%s'.", $this->getContext()->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $this->getContext());
+				$this->parent->onException(new RouterException(sprintf("Unkown exception while executing '%s'.", $context->getFullPath()), RouterException::ERR_MIDDLEWARE_THREW_EXCEPTION, $err), $context);
 
 			return false;
 		}
@@ -316,10 +325,7 @@ abstract class AbstractRoute
 	 */
 	public final function getContext(): Context
 	{
-		if ($this->context === null)
-			$this->context = new Context($this);
-
-		return $this->context;
+		return $this->context ?? $this->context = new Context($this);
 	}
 
 	/**

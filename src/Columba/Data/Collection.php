@@ -214,7 +214,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function first(?callable $fn = null, $default = null)
 	{
 		if ($fn === null)
-			return count($this) > 0 ? reset($this) : $default;
+			return $this->count() > 0 ? reset($this) : $default;
 
 		return ArrayUtil::first($this->items, $fn, $default);
 	}
@@ -404,7 +404,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 */
 	public function count(): int
 	{
-		return count($this->all());
+		return count($this->items);
 	}
 
 	/**
@@ -497,7 +497,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 */
 	public function next(): void
 	{
-		$this->position++;
+		++$this->position;
 	}
 
 	/**

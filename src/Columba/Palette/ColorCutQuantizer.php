@@ -67,7 +67,7 @@ final class ColorCutQuantizer
 
 		$this->colorPopulations = [];
 
-		for ($i = 0; $i < count($rawColors); $i++)
+		for ($i = 0; $i < count($rawColors); ++$i)
 		{
 			if (isset($this->colorPopulations[$rawColors[$i]]))
 			{
@@ -181,7 +181,7 @@ final class ColorCutQuantizer
 				break;
 
 			case self::COMPONENT_GREEN:
-				for ($i = $lowerIndex; $i <= $upperIndex; $i++)
+				for ($i = $lowerIndex; $i <= $upperIndex; ++$i)
 				{
 					$color = $this->colors[$i];
 					$this->colors[$i] = ColorUtil::rgbToInt(($color >> 8) & 0xFF, ($color >> 16) & 0xFF, $color & 0xFF);
@@ -189,7 +189,7 @@ final class ColorCutQuantizer
 				break;
 
 			case self::COMPONENT_BLUE:
-				for ($i = $lowerIndex; $i <= $upperIndex; $i++)
+				for ($i = $lowerIndex; $i <= $upperIndex; ++$i)
 				{
 					$color = $this->colors[$i];
 					$this->colors[$i] = ColorUtil::rgbToInt($color & 0xFF, ($color >> 8) & 0xFF, ($color >> 16) & 0xFF);

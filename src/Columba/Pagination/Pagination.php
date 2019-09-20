@@ -98,7 +98,7 @@ final class Pagination
 		if ($this->sizeMid < 1)
 			$this->sizeMid = 1;
 
-		for ($n = 1; $n <= $this->pages; $n++)
+		for ($n = 1; $n <= $this->pages; ++$n)
 		{
 			if ($this->current === $n)
 			{

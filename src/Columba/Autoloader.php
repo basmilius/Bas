@@ -54,7 +54,7 @@ final class Autoloader
 	 */
 	public final function addDirectory(string $directory, ?string $namespace = null, bool $isVirtualNamespace = false): void
 	{
-		$this->definitions[] = [realpath($directory), $namespace, $isVirtualNamespace];
+		$this->definitions[] = [$directory, $namespace, $isVirtualNamespace];
 	}
 
 	/**

@@ -31,7 +31,7 @@ class SubRouter extends Router
 	/**
 	 * @var RouteParam[]
 	 */
-	private $parameters;
+	private $parameters = [];
 
 	/**
 	 * @var Router
@@ -50,8 +50,6 @@ class SubRouter extends Router
 	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
 	{
 		parent::__construct($response, $renderer);
-
-		$this->parameters = [];
 	}
 
 	/**

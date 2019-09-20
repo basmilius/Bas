@@ -39,11 +39,6 @@ final class Context
 	private $callback = null;
 
 	/**
-	 * @var bool
-	 */
-	private $canExecute = true;
-
-	/**
 	 * @var array
 	 */
 	private $params = [];
@@ -190,32 +185,6 @@ final class Context
 	public final function getRoute(): AbstractRoute
 	{
 		return $this->route;
-	}
-
-	/**
-	 * Returns TRUE if the {@see AbstractRoute} is executable.
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function getCanExecute(): bool
-	{
-		return $this->canExecute;
-	}
-
-	/**
-	 * Sets if the {@see AbstractRoute} is executable.
-	 *
-	 * @param bool $canExecute
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 * @internal
-	 */
-	public final function setCanExecute(bool $canExecute)
-	{
-		$this->canExecute = $canExecute;
 	}
 
 	/**

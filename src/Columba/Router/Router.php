@@ -28,6 +28,7 @@ use Columba\Util\ServerTiming;
 use Exception;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
+use function Columba\Util\pre;
 
 /**
  * Class Router
@@ -119,7 +120,7 @@ class Router
 	 */
 	public final function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
-		$path = array_merge($this->prefixes, [trim($path, '/')]);
+		$path = array_filter(array_merge($this->prefixes, [trim($path, '/')]));
 		$path = '/' . implode('/', $path);
 		$route = null;
 
@@ -194,12 +195,11 @@ class Router
 	 * @param string $middleware
 	 * @param mixed  ...$arguments
 	 *
-	 * @return Router
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function use(string $middleware, ...$arguments): Router
+	public final function use(string $middleware, ...$arguments): void
 	{
 		if (!class_exists($middleware))
 			throw new RouterException('Middleware ' . $middleware . ' not found!', RouterException::ERR_MIDDLEWARE_NOT_FOUND);
@@ -208,8 +208,6 @@ class Router
 			throw new RouterException('Middleware needs to extend from ' . AbstractMiddleware::class, RouterException::ERR_MIDDLEWARE_INVALID);
 
 		$this->middlewares[] = new $middleware($this, ...$arguments);
-
-		return $this;
 	}
 
 	/**
@@ -521,7 +519,6 @@ class Router
 	public function onException(Exception $err, ?Context $context = null): void
 	{
 		if ($err instanceof RouterException)
-			/** @noinspection PhpUnhandledExceptionInspection */
 			throw $err;
 
 		$callbackName = function (ReflectionFunctionAbstract $callback): string

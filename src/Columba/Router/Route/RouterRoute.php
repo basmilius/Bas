@@ -22,18 +22,8 @@ use Columba\Router\SubRouter;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-final class RouterRoute extends AbstractRoute
+final class RouterRoute extends AbstractRouterRoute
 {
-
-	/**
-	 * @var SubRouter
-	 */
-	private $router;
-
-	/**
-	 * @var AbstractRoute|null
-	 */
-	private $matchingRoute = null;
 
 	/**
 	 * RouterRoute constructor.
@@ -57,19 +47,6 @@ final class RouterRoute extends AbstractRoute
 	}
 
 	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function executeImpl(): void
-	{
-		if ($this->matchingRoute === null)
-			return;
-
-		$this->matchingRoute->execute();
-	}
-
-	/**
 	 * Gets the {@see SubRouter} instance.
 	 *
 	 * @return SubRouter
@@ -88,37 +65,10 @@ final class RouterRoute extends AbstractRoute
 	 */
 	public final function getValidatableParams(): array
 	{
-		$params = [];
-
 		if ($this->router instanceof SubRouter)
-			$params = array_merge($params, $this->router->getParameters());
+			return $this->router->getParameters();
 
-		return $params;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public function isMatch(string $path, string $requestMethod): bool
-	{
-		$isMatch = parent::isMatch($path, $requestMethod);
-
-		if (!$isMatch)
-			return false;
-
-		$relativePath = mb_substr($path, mb_strlen($this->getContext()->getPathValues()));
-
-		if (empty($relativePath))
-			$relativePath = '/';
-
-		$this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext());
-
-		if ($this->matchingRoute === null)
-			return $this->router->onNotFound($path, $this->getContext());
-
-		return true;
+		return [];
 	}
 
 }

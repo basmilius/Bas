@@ -246,7 +246,7 @@ class QueryBuilder
 	 */
 	private final function repeat(int $times, string $what, string $str = ''): string
 	{
-		for ($i = 0; $i < $times; $i++)
+		for ($i = 0; $i < $times; ++$i)
 			$str .= $what;
 
 		return $str;
@@ -923,7 +923,7 @@ class QueryBuilder
 		$statement = $this->_toStatement($field, $comparator, $value);
 		$this->add('(', $statement, 1, ($statement === '' ? 0 : 1), ($statement === '' ? 0 : 1));
 
-		$this->indention++;
+		++$this->indention;
 
 		return $this;
 	}

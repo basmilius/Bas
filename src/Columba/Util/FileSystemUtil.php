@@ -44,7 +44,7 @@ final class FileSystemUtil
 		if ($bits)
 			$value *= 8;
 
-		for ($i = 0, $symbolsCount = count($symbols); $i < $symbolsCount - 1 && $value >= $factor; $i++)
+		for ($i = 0, $symbolsCount = count($symbols); $i < $symbolsCount - 1 && $value >= $factor; ++$i)
 			$value /= $factor;
 
 		return round($value, $decimals) . ' ' . $symbols[$i] . ($bits ? 'b' : 'B');

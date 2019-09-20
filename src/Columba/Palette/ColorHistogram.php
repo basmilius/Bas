@@ -99,13 +99,13 @@ final class ColorHistogram
 		$colorCount = 1;
 		$currentColor = $pixels[0];
 
-		for ($i = 1; $i < count($pixels); $i++)
+		for ($i = 1, $length = count($pixels); $i < $length; ++$i)
 		{
 			if ($pixels[$i] === $currentColor)
 				continue;
 
 			$currentColor = $pixels[$i];
-			$colorCount++;
+			++$colorCount;
 		}
 
 		return $colorCount;
@@ -133,19 +133,19 @@ final class ColorHistogram
 		if (count($pixels) === 1)
 			return;
 
-		for ($i = 1; $i < count($pixels); $i++)
+		for ($i = 1, $length = count($pixels); $i < $length; ++$i)
 		{
 			if (count($this->colors) <= $currentColorIndex)
 				continue;
 
 			if ($pixels[$i] === $currentColor)
 			{
-				$this->colorCounts[$currentColorIndex]++;
+				++$this->colorCounts[$currentColorIndex];
 			}
 			else if (count($pixels) > $i)
 			{
 				$currentColor = $pixels[$i];
-				$currentColorIndex++;
+				++$currentColorIndex;
 
 				if (count($this->colors) <= $currentColorIndex)
 					break;

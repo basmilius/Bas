@@ -114,7 +114,7 @@ class ImageExtended extends Image
 	 */
 	public function gaussianBlur(int $runs = 1): self
 	{
-		for ($i = 0; $i < $runs; $i++)
+		for ($i = 0; $i < $runs; ++$i)
 			imagefilter($this->resource, IMG_FILTER_GAUSSIAN_BLUR);
 
 		return $this;
@@ -198,7 +198,7 @@ class ImageExtended extends Image
 	 */
 	public function selectiveBlur(int $runs = 1): self
 	{
-		for ($i = 0; $i < $runs; $i++)
+		for ($i = 0; $i < $runs; ++$i)
 			imagefilter($this->resource, IMG_FILTER_SELECTIVE_BLUR);
 
 		return $this;

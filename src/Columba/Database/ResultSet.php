@@ -122,7 +122,7 @@ final class ResultSet implements IArray, ICountable, IIterator
 	 */
 	public final function next(): void
 	{
-		$this->position++;
+		++$this->position;
 	}
 
 	/**
