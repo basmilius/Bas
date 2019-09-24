@@ -247,7 +247,7 @@ abstract class AbstractRoute
 		$path = $path !== '/' ? rtrim($path, '/') : $path;
 		$params = $this->getValidatableParams();
 		$paramsValues = [];
-		$pathRegex = strtr($this->path, '/*', '/(?<wildcard>.*)');
+		$pathRegex = strtr($this->path, ['/*' => '/(?<wildcard>.*)']);
 		$pathValues = $this->path;
 
 		foreach ($params as $param)
