@@ -275,7 +275,7 @@ abstract class AbstractRoute
 			$value = $matches[$param->getName()] ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
-				$pathValues = strtr($pathValues, '$' . $param->getName(), strval($value));
+				$pathValues = str_replace('$' . $param->getName(), strval($value), $pathValues);
 		}
 
 		if (isset($matches['wildcard']))
