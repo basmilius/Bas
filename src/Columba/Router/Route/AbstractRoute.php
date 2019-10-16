@@ -271,7 +271,7 @@ abstract class AbstractRoute
 
 		foreach ($params as $index => $param)
 		{
-			$paramsValues[$param->getName()] = !empty($matches[$param->getName()]) ? $param->sanitize($matches[$param->getName()]) : (isset($_REQUEST[$param->getName()]) ? $param->sanitize($_REQUEST[$param->getName()]) : $param->getDefaultValue());
+			$paramsValues[$param->getName()] = (!empty($matches[$param->getName()]) || ($matches[$param->getName()] ?? null) === '0') ? $param->sanitize($matches[$param->getName()]) : (isset($_REQUEST[$param->getName()]) ? $param->sanitize($_REQUEST[$param->getName()]) : $param->getDefaultValue());
 			$value = $matches[$param->getName()] ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
