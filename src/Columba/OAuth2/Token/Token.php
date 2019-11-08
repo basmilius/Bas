@@ -14,6 +14,7 @@ namespace Columba\OAuth2\Token;
 
 use Columba\OAuth2\OAuth2;
 use Columba\OAuth2\OAuth2Object;
+use function time;
 
 /**
  * Class Token

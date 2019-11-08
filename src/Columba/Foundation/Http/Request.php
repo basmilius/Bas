@@ -17,6 +17,22 @@ use Columba\Foundation\Net\IP;
 use Columba\Foundation\Store;
 use Columba\Http\HttpUtil;
 use Columba\Util\ArrayUtil;
+use function array_merge;
+use function array_pop;
+use function array_shift;
+use function count;
+use function explode;
+use function file_get_contents;
+use function fseek;
+use function fwrite;
+use function json_decode;
+use function ltrim;
+use function parse_str;
+use function preg_match;
+use function preg_split;
+use function rtrim;
+use function strstr;
+use function tmpfile;
 
 /**
  * Class Request

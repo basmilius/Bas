@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Http;
 
 use Columba\Columba;
+use function phpversion;
 
 /**
  * Class Request

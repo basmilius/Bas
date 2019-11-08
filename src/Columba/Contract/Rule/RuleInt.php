@@ -12,6 +12,11 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use function floatval;
+use function intval;
+use function is_int;
+use function is_numeric;
+
 /**
  * Class RuleInt
  *

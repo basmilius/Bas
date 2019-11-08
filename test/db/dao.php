@@ -40,7 +40,7 @@ class User extends Model
 
 }
 
-$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', '', '');
+$driver = new MySQLDatabaseDriver('127.0.0.1', 'latte', 'root', '');
 
 Model::init($driver);
 

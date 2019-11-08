@@ -15,6 +15,8 @@ namespace Columba\Router\Response;
 use Columba\Http\ResponseCode;
 use Columba\Router\Context;
 use Columba\Util\ServerTiming;
+use function header;
+use function http_response_code;
 
 /**
  * Class AbstractResponse
@@ -29,30 +31,17 @@ abstract class AbstractResponse
 	/**
 	 * @var string
 	 */
-	private $body;
+	private $body = '';
 
 	/**
 	 * @var int
 	 */
-	private $code;
+	private $code = ResponseCode::OK;
 
 	/**
 	 * @var array
 	 */
-	private $headers;
-
-	/**
-	 * AbstractResponse constructor.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public function __construct()
-	{
-		$this->body = '';
-		$this->code = 200;
-		$this->headers = [];
-	}
+	private $headers = [];
 
 	/**
 	 * Adds a response header.
@@ -82,7 +71,7 @@ abstract class AbstractResponse
 		$output = $this->respond($context, $value);
 
 		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-		$statusCode = http_response_code() ?: 200;
+		$statusCode = http_response_code() ?: ResponseCode::OK;
 		$statusMessage = ResponseCode::getMessage($statusCode);
 
 		header("$protocol $statusCode $statusMessage");

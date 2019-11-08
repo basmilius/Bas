@@ -32,8 +32,6 @@ class JavaScriptResponse extends AbstractResponse
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-
 		$this->addHeader('Content-Type', 'text/javascript; charset=utf-8');
 	}
 

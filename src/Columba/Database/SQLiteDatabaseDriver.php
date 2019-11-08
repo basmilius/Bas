@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
+use function is_readable;
+
 /**
  * Class SQLiteDatabaseDriver
  *

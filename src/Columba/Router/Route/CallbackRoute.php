@@ -18,6 +18,7 @@ use Columba\Router\Router;
 use Columba\Router\RouterException;
 use ReflectionException;
 use ReflectionFunction;
+use function class_exists;
 
 /**
  * Class CallbackRoute

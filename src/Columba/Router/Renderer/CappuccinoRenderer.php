@@ -19,6 +19,7 @@ use Cappuccino\Error\SyntaxError;
 use Cappuccino\Extension\ExtensionInterface;
 use Cappuccino\Loader\FilesystemLoader;
 use Cappuccino\Loader\LoaderInterface;
+use function array_merge;
 
 /**
  * Class CappuccinoRenderer

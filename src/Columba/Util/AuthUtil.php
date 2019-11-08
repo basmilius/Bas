@@ -12,6 +12,16 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function array_rand;
+use function count;
+use function floor;
+use function sqrt;
+use function str_shuffle;
+use function str_split;
+use function strlen;
+use function strpos;
+use function substr;
+
 /**
  * Class AuthUtil
  *

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Net;
 
+use function filter_var;
+
 /**
  * Class IP
  *

@@ -17,6 +17,18 @@ use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
+use function array_combine;
+use function array_keys;
+use function array_search;
+use function array_values;
+use function count;
+use function file_get_contents;
+use function in_array;
+use function is_array;
+use function is_readable;
+use function json_decode;
+use function json_last_error;
+use function sprintf;
 
 /**
  * Class Preferences

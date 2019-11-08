@@ -12,6 +12,22 @@ declare(strict_types=1);
 
 namespace Columba\SSH;
 
+use function fgets;
+use function flush;
+use function header;
+use function json_encode;
+use function ob_end_flush;
+use function ob_flush;
+use function ob_start;
+use function ssh2_connect;
+use function ssh2_disconnect;
+use function ssh2_exec;
+use function ssh2_scp_recv;
+use function ssh2_scp_send;
+use function str_pad;
+use function stream_get_contents;
+use function stream_set_blocking;
+
 /**
  * Class SSHConnection
  *

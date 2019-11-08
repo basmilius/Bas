@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use function is_string;
+
 /**
  * Class RuleString
  *

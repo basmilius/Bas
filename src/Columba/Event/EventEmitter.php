@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Event;
 
+use function array_search;
+
 /**
  * Trait EventEmitter
  *
@@ -22,18 +24,7 @@ namespace Columba\Event;
 trait EventEmitter
 {
 
-	private $listeners;
-
-	/**
-	 * EventEmitter constructor.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	protected function __construct()
-	{
-		$this->listeners = [];
-	}
+	private $listeners = [];
 
 	/**
 	 * Adds an event listener.

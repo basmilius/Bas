@@ -15,6 +15,7 @@ namespace Columba\Palette;
 use Columba\Color\Color;
 use Columba\Color\ColorUtil;
 use Exception;
+use function round;
 
 /**
  * Class Vbox
@@ -155,10 +156,12 @@ final class Vbox
 					if ($r >= $dimensionMidPoint)
 						return $i;
 					break;
+
 				case ColorCutQuantizer::COMPONENT_GREEN:
 					if ($g >= $dimensionMidPoint)
 						return $i;
 					break;
+
 				case ColorCutQuantizer::COMPONENT_BLUE:
 					if ($b > $dimensionMidPoint)
 						return $i;

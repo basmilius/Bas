@@ -28,7 +28,23 @@ use Columba\Util\ServerTiming;
 use Exception;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
-use function Columba\Util\pre;
+use function array_filter;
+use function array_merge;
+use function array_push;
+use function array_shift;
+use function array_splice;
+use function array_unshift;
+use function class_exists;
+use function count;
+use function get_called_class;
+use function implode;
+use function is_array;
+use function is_callable;
+use function is_string;
+use function is_subclass_of;
+use function sprintf;
+use function strpos;
+use function trim;
 
 /**
  * Class Router
@@ -519,6 +535,7 @@ class Router
 	public function onException(Exception $err, ?Context $context = null): void
 	{
 		if ($err instanceof RouterException)
+			/** @noinspection PhpUnhandledExceptionInspection */
 			throw $err;
 
 		$callbackName = function (ReflectionFunctionAbstract $callback): string

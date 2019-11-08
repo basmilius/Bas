@@ -15,6 +15,8 @@ namespace Columba\Database;
 use PDO;
 use PDOException;
 use PDOStatement;
+use function intval;
+use function time;
 
 /**
  * Class PreparedStatement
@@ -201,7 +203,7 @@ final class PreparedStatement
 					throw new DatabaseException('Retrieving result took too long.', DatabaseException::ERR_QUERY_FAILED);
 			}
 
-			// I know, this isn't the perfect solution, but it worked!
+			// I know, this isn't the perfect solution, but it works!
 		}
 
 		return new ResultSet($this, $this->statement, $modelClass);

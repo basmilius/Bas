@@ -15,6 +15,7 @@ namespace Columba\Database\Dao;
 use Columba\Database\DatabaseException;
 use Columba\Facade\IArray;
 use Columba\Facade\IJson;
+use function get_called_class;
 
 /**
  * Class AbstractModel

@@ -16,6 +16,9 @@ use Columba\Http\ResponseCode;
 use Columba\OAuth2\Client\Client;
 use Columba\OAuth2\Token\ITokenFactory;
 use Columba\OAuth2\Token\TokenGenerator;
+use function header;
+use function http_response_code;
+use function urlencode;
 
 /**
  * Class TokenResponseType

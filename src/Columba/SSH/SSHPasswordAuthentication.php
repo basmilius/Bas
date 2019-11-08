@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\SSH;
 
+use function ssh2_auth_password;
+
 /**
  * Class SSHPasswordAuthentication
  *

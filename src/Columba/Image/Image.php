@@ -17,6 +17,34 @@ use Columba\Util\MathUtil;
 use Exception;
 use Generator;
 use InvalidArgumentException;
+use const IMG_FLIP_BOTH;
+use const IMG_FLIP_HORIZONTAL;
+use const IMG_FLIP_VERTICAL;
+use function file_get_contents;
+use function imagealphablending;
+use function imagecolorallocatealpha;
+use function imagecolorat;
+use function imagecopy;
+use function imagecopyresampled;
+use function imagecreatefromstring;
+use function imagecreatetruecolor;
+use function imagecrop;
+use function imagedestroy;
+use function imagefill;
+use function imageflip;
+use function imagegif;
+use function imagejpeg;
+use function imagepng;
+use function imageresolution;
+use function imagerotate;
+use function imagesavealpha;
+use function imagescale;
+use function imagesx;
+use function imagesy;
+use function imagewebp;
+use function is_file;
+use function round;
+use function sprintf;
 
 /**
  * Class Image

@@ -12,6 +12,22 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function array_map;
+use function array_pop;
+use function count;
+use function explode;
+use function implode;
+use function join;
+use function mb_strlen;
+use function mb_strtolower;
+use function mb_substr;
+use function preg_match_all;
+use function preg_replace;
+use function preg_split;
+use function strtolower;
+use function transliterator_transliterate;
+use function trim;
+
 /**
  * Class StringUtil
  *

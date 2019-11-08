@@ -15,6 +15,7 @@ namespace Columba\Router;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseMethods;
+use function array_merge;
 
 /**
  * Class SubRouter

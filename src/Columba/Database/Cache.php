@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use Columba\Database\Dao\Model;
+use function get_class;
 
 /**
  * Class Cache

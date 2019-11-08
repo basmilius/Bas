@@ -16,6 +16,27 @@ use Columba\Foundation\Http\Parameters;
 use Columba\Foundation\Net\IP;
 use Columba\Foundation\Net\IPException;
 use SimpleXMLElement;
+use const CURLINFO_EFFECTIVE_URL;
+use const CURLINFO_HEADER_SIZE;
+use const CURLINFO_LOCAL_IP;
+use const CURLINFO_LOCAL_PORT;
+use const CURLINFO_PRIMARY_IP;
+use const CURLINFO_PRIMARY_PORT;
+use const CURLINFO_RESPONSE_CODE;
+use const CURLINFO_SIZE_DOWNLOAD;
+use const CURLINFO_SIZE_UPLOAD;
+use const CURLINFO_SPEED_DOWNLOAD;
+use const CURLINFO_SPEED_UPLOAD;
+use const CURLINFO_TOTAL_TIME;
+use function curl_close;
+use function curl_errno;
+use function curl_error;
+use function curl_exec;
+use function curl_getinfo;
+use function imagecreatefromstring;
+use function json_decode;
+use function simplexml_load_string;
+use function substr;
 
 /**
  * Class Response
@@ -183,13 +204,15 @@ final class Response
 	/**
 	 * Gets the response as JSON.
 	 *
-	 * @return array
+	 * @param bool $assoc
+	 *
+	 * @return array|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function asJson(): ?array
+	public final function asJson(bool $assoc = true): ?array
 	{
-		return json_decode($this->responseText, true);
+		return json_decode($this->responseText, $assoc);
 	}
 
 	/**

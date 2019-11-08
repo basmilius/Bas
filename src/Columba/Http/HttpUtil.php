@@ -14,6 +14,15 @@ namespace Columba\Http;
 
 use Columba\Foundation\System;
 use Columba\Util\ArrayUtil;
+use function array_filter;
+use function array_map;
+use function explode;
+use function function_exists;
+use function getallheaders;
+use function implode;
+use function strlen;
+use function strtolower;
+use function substr;
 
 /**
  * Class HttpUtil

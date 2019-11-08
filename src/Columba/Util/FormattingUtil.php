@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function abs;
+use function floor;
+
 /**
  * Class FormattingUtil
  *

@@ -15,6 +15,8 @@ namespace Columba\Error;
 use Columba\Facade\IJson;
 use Columba\Util\ExceptionUtil;
 use Throwable;
+use function array_map;
+use function get_class;
 
 /**
  * Class ExceptionInfo

@@ -12,6 +12,19 @@ declare(strict_types=1);
 
 namespace Columba\SSH;
 
+use const ENT_QUOTES;
+use const ENT_SUBSTITUTE;
+use const PHP_VERSION_ID;
+use const PREG_OFFSET_CAPTURE;
+use function explode;
+use function htmlspecialchars;
+use function in_array;
+use function preg_match_all;
+use function preg_replace;
+use function sprintf;
+use function strlen;
+use function substr;
+
 /**
  * Class AnsiToHtmlConverter
  *

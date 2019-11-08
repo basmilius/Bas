@@ -15,6 +15,12 @@ namespace Columba\Util;
 use ArrayAccess;
 use Columba\Database\AbstractDatabaseDriver;
 use Columba\Database\DatabaseException;
+use function array_reduce;
+use function ceil;
+use function floor;
+use function max;
+use function min;
+use function round;
 
 /**
  * Class MathUtil

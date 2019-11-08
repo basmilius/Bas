@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Contract;
 
+use function array_merge;
+
 /**
  * Class Contract
  *

@@ -16,6 +16,7 @@ use Columba\Router\Context;
 use Columba\Util\XmlUtil;
 use DOMDocument;
 use SimpleXMLElement;
+use function is_array;
 
 /**
  * Class XmlResponse
@@ -56,8 +57,6 @@ class XmlResponse extends AbstractResponse
 	 */
 	public function __construct(bool $withDefaults = true, bool $prettyPrint = false, string $root = self::ROOT)
 	{
-		parent::__construct();
-
 		$this->prettyPrint = $prettyPrint;
 		$this->root = $root;
 		$this->withDefaults = $withDefaults;

@@ -12,6 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function array_filter;
+use function array_keys;
+use function array_values;
+use function count;
+use function is_null;
+
 /**
  * Class ArrayUtil
  *

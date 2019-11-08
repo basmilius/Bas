@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use function array_merge;
+use function in_array;
+use function is_bool;
+
 /**
  * Class RuleBoolean
  *

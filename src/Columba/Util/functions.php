@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use Columba\Foundation\System;
+use function count;
+use function headers_list;
+
 /**
  * Calls {@see $fn} and wraps it with <pre> tags, or not if we're in cli.
  *
@@ -23,7 +27,7 @@ namespace Columba\Util;
  */
 function _pre(callable $fn, ...$data)
 {
-	$shouldEcho = php_sapi_name() !== 'cli' && !in_array('Content-type: text/plain;charset=UTF-8', headers_list());
+	$shouldEcho = !System::isCLI() && !in_array('Content-type: text/plain;charset=UTF-8', headers_list());
 
 	if (count($data) === 1 && ArrayUtil::isSequentialArray($data))
 		$data = $data[0];

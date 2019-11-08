@@ -23,6 +23,23 @@ use Columba\Router\SubRouter;
 use Columba\Util\ServerTiming;
 use Columba\Util\Stopwatch;
 use Exception;
+use function array_flip;
+use function array_keys;
+use function array_pop;
+use function count;
+use function explode;
+use function get_class;
+use function header;
+use function http_response_code;
+use function implode;
+use function is_scalar;
+use function mb_strlen;
+use function mb_substr;
+use function preg_match;
+use function rtrim;
+use function sprintf;
+use function str_replace;
+use function strtr;
 
 /**
  * Class AbstractRoute

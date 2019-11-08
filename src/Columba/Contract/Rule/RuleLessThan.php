@@ -14,6 +14,8 @@ namespace Columba\Contract\Rule;
 
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
+use function is_numeric;
+use function sprintf;
 
 /**
  * Class RuleLessThan

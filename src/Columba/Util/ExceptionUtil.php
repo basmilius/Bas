@@ -16,6 +16,9 @@ use Columba\Error\ExceptionInfo;
 use Columba\Http\ResponseCode;
 use Generator;
 use Throwable;
+use function dechex;
+use function get_class;
+use function strtoupper;
 
 /**
  * Class ExceptionUtil

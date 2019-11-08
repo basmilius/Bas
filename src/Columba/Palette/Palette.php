@@ -14,6 +14,10 @@ namespace Columba\Palette;
 
 use Columba\Image\Image;
 use Exception;
+use function abs;
+use function count;
+use function intval;
+use function min;
 
 /**
  * Class Palette

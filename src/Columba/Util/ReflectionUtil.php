@@ -16,6 +16,8 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionFunctionAbstract;
 use ReflectionParameter;
+use function get_class;
+use function gettype;
 
 /**
  * Class ReflectionUtil

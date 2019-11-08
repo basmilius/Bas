@@ -16,6 +16,12 @@ use Columba\Color\Color;
 use Columba\Color\ColorUtil;
 use Columba\Image\Image;
 use Exception;
+use function array_shift;
+use function array_slice;
+use function array_splice;
+use function count;
+use function iterator_to_array;
+use function sort;
 
 /**
  * Class ColorCutQuantizer
@@ -70,13 +76,9 @@ final class ColorCutQuantizer
 		for ($i = 0; $i < count($rawColors); ++$i)
 		{
 			if (isset($this->colorPopulations[$rawColors[$i]]))
-			{
 				$this->colorPopulations[$rawColors[$i]] += $rawColorCounts[$i];
-			}
 			else
-			{
 				$this->colorPopulations[$rawColors[$i]] = $rawColorCounts[$i];
-			}
 		}
 
 		$this->colors = [];

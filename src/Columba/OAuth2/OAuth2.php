@@ -31,6 +31,13 @@ use Columba\OAuth2\ResponseType\TokenResponseType;
 use Columba\OAuth2\Scope\IScopeFactory;
 use Columba\OAuth2\Token\ITokenFactory;
 use Exception;
+use function base64_decode;
+use function count;
+use function explode;
+use function header;
+use function http_response_code;
+use function strpos;
+use function urlencode;
 
 /**
  * Class OAuth2
@@ -60,12 +67,18 @@ class OAuth2
 	/**
 	 * @var string[]
 	 */
-	private $grantTypes;
+	private $grantTypes = [
+		'authorization_code' => AuthorizationCodeGrantType::class,
+		'refresh_token' => RefreshTokenGrantType::class
+	];
 
 	/**
 	 * @var string[]
 	 */
-	private $responseTypes;
+	private $responseTypes = [
+		'code' => CodeResponseType::class,
+		'token' => TokenResponseType::class
+	];
 
 	/**
 	 * OAuth2 constructor.
@@ -87,16 +100,6 @@ class OAuth2
 
 		$this->tokenFactory = $tokenFactory;
 		$this->tokenFactory->setOAuth2($this);
-
-		$this->grantTypes = [
-			'authorization_code' => AuthorizationCodeGrantType::class,
-			'refresh_token' => RefreshTokenGrantType::class
-		];
-
-		$this->responseTypes = [
-			'code' => CodeResponseType::class,
-			'token' => TokenResponseType::class
-		];
 	}
 
 	/**

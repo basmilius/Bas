@@ -57,7 +57,6 @@ abstract class OAuth2Router extends SubRouter
 		parent::__construct($response, $renderer);
 
 		$this->get('/authorize', [$this, 'onGetAuthorize']);
-
 		$this->post('/authorize', [$this, 'onPostAuthorize']);
 		$this->post('/token', [$this, 'onPostToken']);
 	}

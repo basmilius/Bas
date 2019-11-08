@@ -20,6 +20,8 @@ use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Context;
 use Columba\Router\Router;
+use function explode;
+use function strpos;
 
 /**
  * Class OAuth2Middleware

@@ -18,6 +18,7 @@ use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Router;
+use function strval;
 
 /**
  * Class RateLimitMiddleware

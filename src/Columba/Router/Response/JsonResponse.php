@@ -13,6 +13,13 @@ declare(strict_types=1);
 namespace Columba\Router\Response;
 
 use Columba\Router\Context;
+use function is_array;
+use function json_encode;
+use const JSON_BIGINT_AS_STRING;
+use const JSON_HEX_AMP;
+use const JSON_HEX_APOS;
+use const JSON_HEX_QUOT;
+use const JSON_HEX_TAG;
 
 /**
  * Class JsonResponse
@@ -47,8 +54,6 @@ class JsonResponse extends AbstractResponse
 	 */
 	public function __construct(bool $withDefaults = true, int $options = self::DEFAULT_OPTIONS)
 	{
-		parent::__construct();
-
 		$this->withDefaults = $withDefaults;
 		$this->options = $options;
 

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
+use function parse_str;
+
 /**
  * Class QueryString
  *

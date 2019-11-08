@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Palette;
 
+use function array_fill;
+use function count;
+use function sort;
+
 /**
  * Class ColorHistogram
  *

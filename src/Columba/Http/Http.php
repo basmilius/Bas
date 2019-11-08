@@ -12,6 +12,19 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
+use const CURLOPT_BINARYTRANSFER;
+use const CURLOPT_CUSTOMREQUEST;
+use const CURLOPT_ENCODING;
+use const CURLOPT_FOLLOWLOCATION;
+use const CURLOPT_HEADER;
+use const CURLOPT_HTTP_VERSION;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_URL;
+use const CURLOPT_USERAGENT;
+use function curl_init;
+use function curl_setopt;
+
 /**
  * Class Http
  *

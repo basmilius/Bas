@@ -14,6 +14,8 @@ namespace Columba\Router\Route;
 
 use Columba\Router\Router;
 use Columba\Router\SubRouter;
+use function mb_strlen;
+use function mb_substr;
 
 /**
  * Class AbstractRouterRoute

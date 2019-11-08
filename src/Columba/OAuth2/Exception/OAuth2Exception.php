@@ -14,6 +14,7 @@ namespace Columba\OAuth2\Exception;
 
 use Columba\Error\ColumbaException;
 use Columba\Facade\IJson;
+use function http_response_code;
 
 /**
  * Class OAuth2Exception

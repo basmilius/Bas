@@ -14,6 +14,15 @@ namespace Columba\Util;
 
 use JsonSerializable;
 use SimpleXMLElement;
+use function dom_import_simplexml;
+use function htmlspecialchars;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_string;
+use function strip_tags;
+use function strval;
+use function substr;
 
 /**
  * Class XmlUtil
@@ -63,7 +72,6 @@ final class XmlUtil
 			else if (is_string($value) && $value !== strip_tags($value))
 			{
 				$xml->{$key} = null;
-				/** @noinspection PhpParamsInspection */
 				$node = dom_import_simplexml($xml->{$key});
 				$no = $node->ownerDocument;
 				$node->appendChild($no->createCDATASection($value));

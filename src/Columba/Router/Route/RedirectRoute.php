@@ -14,6 +14,10 @@ namespace Columba\Router\Route;
 
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
+use function count;
+use function preg_match_all;
+use function preg_replace;
+use function str_replace;
 
 /**
  * Class RedirectRoute

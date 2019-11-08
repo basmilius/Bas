@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Pagination;
 
+use function ceil;
+use function max;
+use function min;
+
 /**
  * Class Pagination
  *

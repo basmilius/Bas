@@ -14,6 +14,23 @@ namespace Columba\Color;
 
 use Columba\Util\MathUtil;
 use InvalidArgumentException;
+use const STR_PAD_LEFT;
+use function abs;
+use function array_map;
+use function array_shift;
+use function array_walk;
+use function dechex;
+use function fmod;
+use function intval;
+use function ltrim;
+use function max;
+use function min;
+use function pow;
+use function preg_match;
+use function round;
+use function str_pad;
+use function strlen;
+use function trim;
 
 /**
  * Class ColorUtil
@@ -47,14 +64,12 @@ final class ColorUtil
 		$weight1 = (($scaledWeight * $alphaDiff === -1 ? $scaledWeight : ($scaledWeight + $alphaDiff) / (1 + $scaledWeight * $alphaDiff)) + 1) / 2;
 		$weight2 = 1 - $weight1;
 
-		$rgba = [
+		return [
 			intval(round($color1[0] * $weight1 + $color2[0] * $weight2)),
 			intval(round($color1[1] * $weight1 + $color2[1] * $weight2)),
 			intval(round($color1[2] * $weight1 + $color2[2] * $weight2)),
 			$color1[3] ?? 1
 		];
-
-		return $rgba;
 	}
 
 	/**
@@ -343,7 +358,11 @@ final class ColorUtil
 	 */
 	public static function rgbaToHex(int $r, int $g, int $b, float $a, bool $includeHashtag = false): string
 	{
-		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT) . str_pad(dechex($a * 255), 2, '0', STR_PAD_LEFT);
+		return ($includeHashtag ? '#' : '') .
+			str_pad(dechex($r), 2, '0', STR_PAD_LEFT) .
+			str_pad(dechex($g), 2, '0', STR_PAD_LEFT) .
+			str_pad(dechex($b), 2, '0', STR_PAD_LEFT) .
+			str_pad(dechex($a * 255), 2, '0', STR_PAD_LEFT);
 	}
 
 	/**
@@ -360,7 +379,10 @@ final class ColorUtil
 	 */
 	public static function rgbToHex(int $r, int $g, int $b, bool $includeHashtag = false): string
 	{
-		return ($includeHashtag ? '#' : '') . str_pad(dechex($r), 2, '0', STR_PAD_LEFT) . str_pad(dechex($g), 2, '0', STR_PAD_LEFT) . str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
+		return ($includeHashtag ? '#' : '') .
+			str_pad(dechex($r), 2, '0', STR_PAD_LEFT) .
+			str_pad(dechex($g), 2, '0', STR_PAD_LEFT) .
+			str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
 	}
 
 	/**

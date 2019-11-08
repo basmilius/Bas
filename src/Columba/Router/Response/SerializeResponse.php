@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router\Response;
 
 use Columba\Router\Context;
+use function serialize;
 
 /**
  * Class SerializeResponse

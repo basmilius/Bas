@@ -14,6 +14,11 @@ namespace Columba\Contract\Rule;
 
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
+use function floatval;
+use function is_float;
+use function is_int;
+use function is_numeric;
+use function sprintf;
 
 /**
  * Class RuleBetween

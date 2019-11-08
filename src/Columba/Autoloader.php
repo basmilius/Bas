@@ -14,6 +14,16 @@ namespace Columba;
 
 use Columba\Util\FileSystemUtil;
 use Columba\Util\StringUtil;
+use const DIRECTORY_SEPARATOR;
+use function dirname;
+use function is_dir;
+use function realpath;
+use function spl_autoload_call;
+use function spl_autoload_register;
+use function spl_autoload_unregister;
+use function str_replace;
+use function strlen;
+use function substr;
 
 /**
  * Class Autoloader

@@ -19,6 +19,14 @@ use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use PDO;
 use PDOStatement;
+use function array_values;
+use function array_walk;
+use function class_exists;
+use function count;
+use function is_int;
+use function is_subclass_of;
+use function sprintf;
+use function strstr;
 
 /**
  * Class ResultSet

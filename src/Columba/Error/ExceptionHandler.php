@@ -15,6 +15,11 @@ namespace Columba\Error;
 use Columba\Http\ResponseCode;
 use Columba\Util\ExceptionUtil;
 use Throwable;
+use function header;
+use function headers_sent;
+use function http_response_code;
+use function set_exception_handler;
+use function sprintf;
 
 /**
  * Class ExceptionHandler

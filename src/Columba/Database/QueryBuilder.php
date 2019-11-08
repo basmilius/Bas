@@ -13,6 +13,17 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use PDO;
+use function array_map;
+use function array_shift;
+use function count;
+use function explode;
+use function get_class;
+use function implode;
+use function in_array;
+use function is_array;
+use function str_replace;
+use function stristr;
+use function strpos;
 
 /**
  * Class QueryBuilder
@@ -1204,9 +1215,7 @@ class QueryBuilder
 	public final function debug(bool $pretty = true): array
 	{
 		$wasDebug = $this->pretty;
-
 		$this->pretty = $pretty;
-
 		$raw = $query = $this->__toString();
 
 		foreach ($this->params as [$name, $value, $type])

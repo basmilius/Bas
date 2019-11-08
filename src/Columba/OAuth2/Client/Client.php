@@ -14,6 +14,8 @@ namespace Columba\OAuth2\Client;
 
 use Columba\OAuth2\OAuth2;
 use Columba\OAuth2\OAuth2Object;
+use function explode;
+use function in_array;
 
 /**
  * Class Client

@@ -25,24 +25,12 @@ final class RequestValidator
 	/**
 	 * @var RequestValidatorOption[]
 	 */
-	private $options;
+	private $options = [];
 
 	/**
 	 * @var array
 	 */
-	private $params;
-
-	/**
-	 * RequestValidator constructor.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
-	 */
-	private function __construct()
-	{
-		$this->options = [];
-		$this->params = [];
-	}
+	private $params = [];
 
 	/**
 	 * Validates {@see $params} with our options.

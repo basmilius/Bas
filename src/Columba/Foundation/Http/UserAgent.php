@@ -12,6 +12,26 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
+use const PREG_PATTERN_ORDER;
+use function array_intersect;
+use function array_map;
+use function array_search;
+use function array_unique;
+use function count;
+use function ctype_upper;
+use function is_array;
+use function is_numeric;
+use function preg_grep;
+use function preg_match;
+use function preg_match_all;
+use function preg_replace;
+use function reset;
+use function strlen;
+use function strpos;
+use function strtolower;
+use function substr;
+use function version_compare;
+
 /**
  * Class UserAgent
  *

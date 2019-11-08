@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function count;
+use function header;
+use function implode;
+
 /**
  * Class ServerTiming
  *

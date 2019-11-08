@@ -12,6 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function array_shift;
+use function count;
+use function realpath;
+use function round;
+use function scandir;
+
 /**
  * Class FileSystemUtil
  *

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\SSH;
 
+use function ssh2_auth_pubkey_file;
+
 /**
  * Class SSHPublicKeyAuthentication
  *

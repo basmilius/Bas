@@ -14,6 +14,7 @@ namespace Columba\Foundation\Http\RateLimit;
 
 use Columba\Error\ColumbaException;
 use Columba\Facade\IJson;
+use Columba\Http\ResponseCode;
 
 /**
  * Class RateLimitExceededException
@@ -34,7 +35,7 @@ final class RateLimitExceededException extends ColumbaException implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $message = 'Rate limit exceeded. Try again later.', int $code = 429)
+	public function __construct(string $message = 'Rate limit exceeded. Try again later.', int $code = ResponseCode::TOO_MANY_REQUESTS)
 	{
 		parent::__construct($message, $code);
 	}

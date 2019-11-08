@@ -12,6 +12,11 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use const JSON_ERROR_NONE;
+use function is_string;
+use function json_decode;
+use function json_last_error;
+
 /**
  * Class RuleJson
  *

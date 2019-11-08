@@ -15,6 +15,23 @@ namespace Columba\Database;
 use PDO;
 use PDOException;
 use PDOStatement;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function count;
+use function file_get_contents;
+use function floatval;
+use function implode;
+use function intval;
+use function is_array;
+use function is_bool;
+use function is_file;
+use function is_float;
+use function is_int;
+use function is_numeric;
+use function is_string;
+use function sprintf;
+use function strlen;
 
 /**
  * Class AbstractDatabaseDriver
@@ -123,7 +140,7 @@ abstract class AbstractDatabaseDriver
 			return [null, PDO::PARAM_NULL, 'null'];
 
 		if (is_array($value))
-			return $value; // This should be valid...?
+			return $value; // Assume that this is valid.
 
 		if (is_int($value) || (is_numeric($value) && intval($value) == floatval($value)))
 			return [intval($value), PDO::PARAM_INT, 'int'];

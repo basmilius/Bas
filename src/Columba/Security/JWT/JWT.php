@@ -12,6 +12,36 @@ declare(strict_types=1);
 
 namespace Columba\Security\JWT;
 
+use const JSON_BIGINT_AS_STRING;
+use const JSON_ERROR_CTRL_CHAR;
+use const JSON_ERROR_DEPTH;
+use const JSON_ERROR_NONE;
+use const JSON_ERROR_STATE_MISMATCH;
+use const JSON_ERROR_SYNTAX;
+use const JSON_ERROR_UTF8;
+use function array_shift;
+use function base64_decode;
+use function base64_encode;
+use function count;
+use function date;
+use function explode;
+use function hash_equals;
+use function hash_hmac;
+use function implode;
+use function in_array;
+use function json_decode;
+use function json_encode;
+use function json_last_error;
+use function openssl_error_string;
+use function openssl_sign;
+use function openssl_verify;
+use function sprintf;
+use function str_repeat;
+use function str_replace;
+use function strlen;
+use function strtr;
+use function time;
+
 /**
  * Class JWT
  *

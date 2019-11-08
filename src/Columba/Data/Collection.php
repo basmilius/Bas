@@ -19,6 +19,27 @@ use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
 use Traversable;
+use function array_chunk;
+use function array_column;
+use function array_diff;
+use function array_filter;
+use function array_map;
+use function array_merge;
+use function array_pop;
+use function array_reverse;
+use function array_shift;
+use function array_slice;
+use function array_splice;
+use function array_sum;
+use function array_unshift;
+use function count;
+use function in_array;
+use function is_array;
+use function is_null;
+use function iterator_to_array;
+use function reset;
+use function shuffle;
+use function usort;
 
 /**
  * Class Collection
@@ -116,7 +137,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 			if (is_array($values))
 				$result = array_merge($result, $values);
 			else
-				$result[] = $values; // Assuming a single value.s
+				$result[] = $values;
 		}
 
 		return new static($result);

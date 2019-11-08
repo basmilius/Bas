@@ -14,6 +14,8 @@ namespace Columba\Router\Response;
 
 use Columba\Router\Context;
 use Columba\Router\RouterException;
+use function is_scalar;
+use function strval;
 
 /**
  * Class PlainResponse

@@ -18,7 +18,7 @@ require __DIR__ . '/../bootstrap-test.php';
 
 header('Content-Type: text/plain');
 
-$driver = new MySQLDatabaseDriver('127.0.0.1', 'dev_latte', '', '');
+$driver = new MySQLDatabaseDriver('127.0.0.1', 'latte', 'root', '');
 
 $query = $driver->select()
 	->from('user')

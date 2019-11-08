@@ -17,6 +17,7 @@ use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Route\LazyRouterRoute;
 use Columba\Router\Route\RouterRoute;
 use ReflectionFunctionAbstract;
+use function array_merge;
 
 /**
  * Class Context

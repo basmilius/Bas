@@ -17,6 +17,8 @@ use Columba\Facade\IArray;
 use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
+use function array_keys;
+use function count;
 
 /**
  * Class Parameters
@@ -137,7 +139,7 @@ class Parameters implements IArray, ICountable, IIterator, IJson
 	 */
 	public final function valid(): bool
 	{
-		return $this->keys()[$this->position] ?? null !== null;
+		return ($this->keys()[$this->position] ?? null) !== null;
 	}
 
 	/**

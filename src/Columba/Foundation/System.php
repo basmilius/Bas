@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Foundation;
 
+use function php_sapi_name;
+
 /**
  * Class System
  *

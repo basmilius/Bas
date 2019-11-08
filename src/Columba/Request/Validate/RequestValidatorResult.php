@@ -14,6 +14,7 @@ namespace Columba\Request\Validate;
 
 use ArrayAccess;
 use ErrorException;
+use function count;
 
 /**
  * Class RequestValidatorResult
@@ -28,24 +29,12 @@ final class RequestValidatorResult implements ArrayAccess
 	/**
 	 * @var RequestValidatorException[]
 	 */
-	private $errors;
+	private $errors = [];
 
 	/**
 	 * @var mixed[]
 	 */
-	private $params;
-
-	/**
-	 * RequestValidatorResult constructor.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.2.0
-	 */
-	public function __construct()
-	{
-		$this->errors = [];
-		$this->params = [];
-	}
+	private $params = [];
 
 	/**
 	 * Adds an error.

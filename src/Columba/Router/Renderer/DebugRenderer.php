@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Columba\Router\Renderer;
 
 use Columba\Util\ArrayUtil;
+use function count;
+use function print_r;
 
 /**
  * Class DebugRenderer

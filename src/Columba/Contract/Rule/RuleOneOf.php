@@ -14,6 +14,7 @@ namespace Columba\Contract\Rule;
 
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
+use function in_array;
 
 /**
  * Class RuleOneOf

@@ -14,6 +14,9 @@ namespace Columba\Contract\Rule;
 
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
+use function is_string;
+use function preg_match;
+use function sprintf;
 
 /**
  * Class RuleMatches

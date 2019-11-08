@@ -12,6 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use function function_exists;
+use function hrtime;
+use function microtime;
+
 /**
  * Class Stopwatch
  *

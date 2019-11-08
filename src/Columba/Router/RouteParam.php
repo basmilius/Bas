@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Router;
 
+use function intval;
+
 /**
  * Class RouteParam
  *

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Error;
 
 use Columba\Facade\IJson;
+use function sprintf;
 
 /**
  * Class TraceInfo

@@ -13,6 +13,10 @@ declare(strict_types=1);
 namespace Columba\OAuth2\Token;
 
 use Exception;
+use function base64_encode;
+use function hash;
+use function openssl_random_pseudo_bytes;
+use function random_bytes;
 
 /**
  * Class TokenGenerator

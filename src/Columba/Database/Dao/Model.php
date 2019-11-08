@@ -21,6 +21,12 @@ use Columba\Database\Transaction;
 use Columba\Pagination\Pagination;
 use Columba\Util\StringUtil;
 use PDO;
+use function class_exists;
+use function get_called_class;
+use function implode;
+use function is_array;
+use function strval;
+use function substr;
 
 /**
  * Class Model
@@ -367,7 +373,7 @@ abstract class Model extends AbstractModel
 		if ($table === '')
 			$table = static::table();
 
-		return sprintf('`%s`.`%s`', $table, $column);
+		return "`$table`.`$column`";
 	}
 
 	/**

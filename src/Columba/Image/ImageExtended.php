@@ -13,6 +13,22 @@ declare(strict_types=1);
 namespace Columba\Image;
 
 use Columba\Util\MathUtil;
+use const IMG_FILTER_BRIGHTNESS;
+use const IMG_FILTER_COLORIZE;
+use const IMG_FILTER_CONTRAST;
+use const IMG_FILTER_EDGEDETECT;
+use const IMG_FILTER_EMBOSS;
+use const IMG_FILTER_GAUSSIAN_BLUR;
+use const IMG_FILTER_GRAYSCALE;
+use const IMG_FILTER_MEAN_REMOVAL;
+use const IMG_FILTER_NEGATE;
+use const IMG_FILTER_SELECTIVE_BLUR;
+use const IMG_FILTER_SMOOTH;
+use function imagecolorat;
+use function imagecolorclosest;
+use function imagecolorsforindex;
+use function imagefilledrectangle;
+use function imagefilter;
 
 /**
  * Class ImageExtended

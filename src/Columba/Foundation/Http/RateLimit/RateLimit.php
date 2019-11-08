@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Columba\Foundation\Http\RateLimit;
 
 use Columba\Foundation\Http\RateLimit\Storage\IStorageAdapter;
+use function floor;
+use function max;
 
 /**
  * Class RateLimit
@@ -43,10 +45,6 @@ abstract class RateLimit
 	 * @var IStorageAdapter
 	 */
 	protected $storage;
-
-	/**
-	 *
-	 */
 
 	/**
 	 * RateLimit constructor.
