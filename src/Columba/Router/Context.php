@@ -290,6 +290,9 @@ final class Context
 	public final function setResponseCode(int $responseCode): void
 	{
 		$this->responseCode = $responseCode;
+
+		if ($this->parent !== null)
+			$this->parent->setResponseCode($responseCode);
 	}
 
 	/**

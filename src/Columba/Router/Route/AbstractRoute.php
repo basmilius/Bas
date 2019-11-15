@@ -142,15 +142,16 @@ abstract class AbstractRoute
 
 			if ($context->getRedirectPath() === null)
 			{
-				if ($response === null)
-					return;
+				http_response_code($statusCode);
+				header("$protocol $statusCode $statusMessage");
 
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
 				$context->setResolutionTime($time);
 
-				http_response_code($statusCode);
-				header("$protocol $statusCode $statusMessage");
+				if ($response === null)
+					return;
+
 				$response->print($context, $responseValue);
 			}
 			else
