@@ -142,21 +142,27 @@ abstract class AbstractRoute
 
 			if ($context->getRedirectPath() === null)
 			{
-				http_response_code($statusCode);
-				header("$protocol $statusCode $statusMessage");
+				if (!headers_sent())
+				{
+					http_response_code($statusCode);
+					header("$protocol $statusCode $statusMessage");
+				}
+
+				if ($response === null)
+					return;
 
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
 
 				$context->setResolutionTime($time);
-
-				if ($response === null)
-					return;
 
 				$response->print($context, $responseValue);
 			}
 			else
 			{
 				ServerTiming::stop(Router::class, $time, Stopwatch::UNIT_SECONDS);
+
+				if (headers_sent())
+					return;
 
 				http_response_code($statusCode);
 				header("$protocol $statusCode $statusMessage");
