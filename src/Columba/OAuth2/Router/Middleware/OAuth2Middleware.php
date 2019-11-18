@@ -20,7 +20,6 @@ use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Context;
 use Columba\Router\Router;
-use function Columba\Util\preDie;
 use function explode;
 use function strpos;
 
@@ -86,7 +85,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function forContext(AbstractRoute $route, Context $context, bool &$isValid): void
+	public function forContext(AbstractRoute $route, Context $context, bool &$isValid): void
 	{
 		if (!$isValid)
 			return;
@@ -123,7 +122,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isAuthBasic(): bool
+	protected function isAuthBasic(): bool
 	{
 		return $this->isOAuth2Request && $this->authType === 'Basic';
 	}
@@ -135,7 +134,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isAuthBearer(): bool
+	protected function isAuthBearer(): bool
 	{
 		return $this->isOAuth2Request && $this->authType === 'Bearer';
 	}
@@ -147,7 +146,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isOAuth2Request(): bool
+	protected function isOAuth2Request(): bool
 	{
 		return $this->isOAuth2Request;
 	}
@@ -161,7 +160,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function isScopeAllowed(string $scope): bool
+	protected function isScopeAllowed(string $scope): bool
 	{
 		$validInToken = false;
 
@@ -184,7 +183,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function validateScope(string $scope): void
+	protected function validateScope(string $scope): void
 	{
 		if (!$this->isScopeAllowed($scope))
 			throw new InsufficientClientScopeException();
