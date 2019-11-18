@@ -42,7 +42,7 @@ final class UnsupportedGrantTypeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getError(): string
+	public final function getError(): string
 	{
 		return 'unsupported_grant_type';
 	}
@@ -54,7 +54,7 @@ final class UnsupportedGrantTypeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getResponseCode(): int
+	public final function getResponseCode(): int
 	{
 		return 400;
 	}

@@ -14,7 +14,6 @@ namespace Columba\OAuth2\Exception;
 
 use Columba\Error\ColumbaException;
 use Columba\Facade\IJson;
-use function http_response_code;
 
 /**
  * Class OAuth2Exception
@@ -33,7 +32,7 @@ abstract class OAuth2Exception extends ColumbaException implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function getError(): string;
+	public abstract function getError(): string;
 
 	/**
 	 * Gets the response code.
@@ -42,7 +41,7 @@ abstract class OAuth2Exception extends ColumbaException implements IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected abstract function getResponseCode(): int;
+	public abstract function getResponseCode(): int;
 
 	/**
 	 * {@inheritdoc}
@@ -51,9 +50,6 @@ abstract class OAuth2Exception extends ColumbaException implements IJson
 	 */
 	public function jsonSerialize(): array
 	{
-		// TODO(Bas): Figure out a way to integrate this with Router.
-		http_response_code($this->getResponseCode());
-
 		return [
 			'code' => $this->getResponseCode(),
 			'error' => $this->getError(),

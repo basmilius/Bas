@@ -20,6 +20,7 @@ use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Context;
 use Columba\Router\Router;
+use function Columba\Util\preDie;
 use function explode;
 use function strpos;
 
@@ -110,6 +111,7 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 		}
 		catch (OAuth2Exception $err)
 		{
+			$context->setResponseCode($err->getResponseCode());
 			$context->setResponse(new JsonResponse(false), $err);
 		}
 	}

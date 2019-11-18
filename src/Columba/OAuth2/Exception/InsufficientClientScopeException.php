@@ -42,7 +42,7 @@ final class InsufficientClientScopeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getError(): string
+	public final function getError(): string
 	{
 		return 'insufficient_client_scope';
 	}
@@ -54,7 +54,7 @@ final class InsufficientClientScopeException extends OAuth2Exception
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected final function getResponseCode(): int
+	public final function getResponseCode(): int
 	{
 		return 403;
 	}
