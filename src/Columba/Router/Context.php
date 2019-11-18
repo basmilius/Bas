@@ -156,7 +156,7 @@ final class Context
 	 */
 	public final function redirect(string $redirectPath, int $responseCode = 302, $returnValue = '')
 	{
-		$this->responseCode = $responseCode;
+		$this->setResponseCode($responseCode);
 		$this->redirectPath = $redirectPath;
 
 		return $returnValue;
