@@ -384,6 +384,26 @@ class QueryBuilder
 	}
 
 	/**
+	 * Adds conditional parenthesis.
+	 *
+	 * @param bool     $condition
+	 * @param callable $fn
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function conditionalParenthesis(bool $condition, callable $fn): self
+	{
+		if (!$condition)
+			return $this;
+
+		$this->parentheses($fn);
+
+		return $this;
+	}
+
+	/**
 	 * Adds a conditional parenthesis.
 	 *
 	 * @param bool $condition
