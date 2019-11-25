@@ -303,6 +303,33 @@ class Request implements IJson
 	}
 
 	/**
+	 * Gets the request accepted languages.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function languages(): array
+	{
+		$accept = $this->headers->get('accept-language');
+		$accept = explode(',', $accept);
+		$languages = [];
+
+		foreach ($accept as $lang)
+		{
+			$lang = explode(';', $lang);
+			parse_str($lang[1] ?? 'q=1.0', $props);
+
+			$props['cca2'] = explode('-', $lang[0])[0];
+			$props['code'] = $lang[0];
+
+			$languages[] = $props;
+		}
+
+		return $languages;
+	}
+
+	/**
 	 * Gets the request method.
 	 *
 	 * @return string
