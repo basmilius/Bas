@@ -1208,6 +1208,20 @@ class QueryBuilder
 	}
 
 	/**
+	 * Removes a model association.
+	 *
+	 * @return QueryBuilder
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function noModel(): self
+	{
+		$this->modelClass = null;
+
+		return $this;
+	}
+
+	/**
 	 * Associates a model with the query.
 	 *
 	 * @param string $modelClass
