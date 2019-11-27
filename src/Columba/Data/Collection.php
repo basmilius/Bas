@@ -242,6 +242,25 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
+	 * Groups the data with the given predicate.
+	 *
+	 * @param callable $fn
+	 *
+	 * @return Collection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function groupBy(callable $fn): self
+	{
+		$items = [];
+
+		foreach ($this->items as $item)
+			$items[$fn($item)][] = $item;
+
+		return new static(array_values($items));
+	}
+
+	/**
 	 * Maps a callable over each item in the collection.
 	 *
 	 * @param callable $fn
