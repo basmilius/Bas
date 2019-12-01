@@ -49,8 +49,8 @@ final class Response
 {
 
 	private Request $request;
-	private int $downloadSize;
-	private int $downloadSpeed;
+	private float $downloadSize;
+	private float $downloadSpeed;
 	private string $effectiveUrl;
 	private ?IP $localIp = null;
 	private ?int $localPort = null;
@@ -59,9 +59,9 @@ final class Response
 	private ?int $responseCode = null;
 	private ?Parameters $responseHeaders = null;
 	private ?string $responseText = null;
-	private int $transactionTime;
-	private int $uploadSize;
-	private int $uploadSpeed;
+	private float $transactionTime;
+	private float $uploadSize;
+	private float $uploadSpeed;
 
 	/** @var resource */
 	private $curlHandle;
