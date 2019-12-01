@@ -25,25 +25,10 @@ use PDOException;
 abstract class DatabaseDriver extends AbstractDatabaseDriver
 {
 
-	/**
-	 * @var string
-	 */
-	private $dsn;
-
-	/**
-	 * @var string
-	 */
-	private $username;
-
-	/**
-	 * @var string
-	 */
-	private $password;
-
-	/**
-	 * @var array
-	 */
-	private $options;
+	private string $dsn;
+	private string $username;
+	private string $password;
+	private array $options;
 
 	/**
 	 * DatabaseDriver constructor.

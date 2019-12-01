@@ -26,15 +26,8 @@ use SimpleXMLElement;
 final class PleskApiClient
 {
 
-	/**
-	 * @var Client
-	 */
-	private $client;
-
-	/**
-	 * @var array
-	 */
-	private $requestOptions;
+	private Client $client;
+	private array $requestOptions;
 
 	/**
 	 * PleskApiClient constructor.

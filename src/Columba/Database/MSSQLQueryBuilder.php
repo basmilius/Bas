@@ -22,15 +22,8 @@ namespace Columba\Database;
 class MSSQLQueryBuilder extends QueryBuilder
 {
 
-	/**
-	 * @var string
-	 */
-	protected $escapeLeft = '[';
-
-	/**
-	 * @var string
-	 */
-	protected $escapeRight = ']';
+	protected string $escapeLeft = '[';
+	protected string $escapeRight = ']';
 
 	/**
 	 * {@inheritdoc}

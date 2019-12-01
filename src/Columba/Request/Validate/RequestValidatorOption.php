@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Request\Validate;
 
-use const FILTER_VALIDATE_EMAIL;
-use const FILTER_VALIDATE_URL;
 use function filter_var;
 use function floatval;
 use function intval;
@@ -23,6 +21,8 @@ use function mb_strlen;
 use function preg_match;
 use function strval;
 use function substr;
+use const FILTER_VALIDATE_EMAIL;
+use const FILTER_VALIDATE_URL;
 
 /**
  * Class RequestValidatorOption
@@ -34,20 +34,9 @@ use function substr;
 final class RequestValidatorOption
 {
 
-	/**
-	 * @var string
-	 */
-	private $fieldName;
-
-	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * @var callable[]
-	 */
-	private $validators = [];
+	private string $fieldName;
+	private string $name;
+	private array $validators = [];
 
 	/**
 	 * RequestValidatorOption constructor.

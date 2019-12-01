@@ -56,40 +56,19 @@ use function trim;
 class Router
 {
 
-	/**
-	 * @var array
-	 */
-	private $globals = [];
+	private array $globals = [];
+	private ?AbstractRenderer $renderer;
+	private ?AbstractResponse $response;
+	private ?AbstractRoute $currentRoute = null;
 
-	/**
-	 * @var AbstractMiddleware[]
-	 */
-	private $middlewares = [];
+	/** @var AbstractMiddleware[] */
+	private array $middlewares = [];
 
-	/**
-	 * @var string[]
-	 */
-	private $prefixes = [];
+	/** @var string[] */
+	private array $prefixes = [];
 
-	/**
-	 * @var AbstractRenderer
-	 */
-	private $renderer;
-
-	/**
-	 * @var AbstractResponse
-	 */
-	private $response;
-
-	/**
-	 * @var AbstractRoute[]
-	 */
-	private $routes = [];
-
-	/**
-	 * @var AbstractRoute|null
-	 */
-	private $currentRoute = null;
+	/** @var AbstractRoute[] */
+	private array $routes = [];
 
 	/**
 	 * Router constructor.

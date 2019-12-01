@@ -29,15 +29,10 @@ class SubRouter extends Router
 
 	use ResponseMethods;
 
-	/**
-	 * @var RouteParam[]
-	 */
-	private $parameters = [];
+	private Router $parent;
 
-	/**
-	 * @var Router
-	 */
-	private $parent;
+	/** @var RouteParam[] */
+	private array $parameters = [];
 
 	/**
 	 * SubRouter constructor.
@@ -144,6 +139,8 @@ class SubRouter extends Router
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
+	 *
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function onNotFound(string $requestPath, Context $context): bool
 	{

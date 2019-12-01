@@ -26,9 +26,9 @@ use function sort;
 final class ColorHistogram
 {
 
-	private $colors;
-	private $colorCounts;
-	private $numberOfColors;
+	private array $colors;
+	private array $colorCounts;
+	private int $numberOfColors;
 
 	/**
 	 * ColorHistogram constructor.

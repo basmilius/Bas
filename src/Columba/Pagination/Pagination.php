@@ -26,18 +26,16 @@ use function min;
 final class Pagination
 {
 
-	private $base;
-
-	private $current;
-	private $items;
-	private $itemsPerPage;
-	private $pages = 0;
-	private $sizeEnd;
-	private $sizeMid;
-
-	private $available = true;
-	private $data;
-	private $isMade = false;
+	private string $base;
+	private int $current;
+	private int $items;
+	private int $itemsPerPage;
+	private int $pages = 0;
+	private int $sizeEnd;
+	private int $sizeMid;
+	private bool $available = true;
+	private array $data;
+	private bool $isMade = false;
 
 	/**
 	 * Pagination constructor.

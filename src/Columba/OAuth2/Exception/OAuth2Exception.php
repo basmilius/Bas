@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\OAuth2\Exception;
 
 use Columba\Error\ColumbaException;
-use Columba\Facade\IJson;
 
 /**
  * Class OAuth2Exception
@@ -22,7 +21,7 @@ use Columba\Facade\IJson;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-abstract class OAuth2Exception extends ColumbaException implements IJson
+abstract class OAuth2Exception extends ColumbaException
 {
 
 	/**

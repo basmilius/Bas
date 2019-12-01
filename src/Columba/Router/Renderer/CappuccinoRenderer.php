@@ -35,20 +35,9 @@ class CappuccinoRenderer extends AbstractRenderer
 		'debug' => false
 	];
 
-	/**
-	 * @var Cappuccino
-	 */
-	protected $cappuccino;
-
-	/**
-	 * @var LoaderInterface
-	 */
-	protected $loader;
-
-	/**
-	 * @var array
-	 */
-	protected $options;
+	protected Cappuccino $cappuccino;
+	protected LoaderInterface $loader;
+	protected array $options;
 
 	/**
 	 * CappuccinoRenderer constructor.

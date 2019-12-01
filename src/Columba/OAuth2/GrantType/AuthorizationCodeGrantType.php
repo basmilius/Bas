@@ -28,10 +28,7 @@ use Columba\OAuth2\Token\TokenGenerator;
 final class AuthorizationCodeGrantType implements IGrantType
 {
 
-	/**
-	 * @var OAuth2
-	 */
-	private $oAuth2;
+	private OAuth2 $oAuth2;
 
 	/**
 	 * AuthorizationCodeGrantType constructor.

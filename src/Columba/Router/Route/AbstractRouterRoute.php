@@ -27,15 +27,8 @@ use function mb_substr;
 abstract class AbstractRouterRoute extends AbstractRoute
 {
 
-	/**
-	 * @var SubRouter
-	 */
-	protected $router;
-
-	/**
-	 * @var AbstractRoute|null
-	 */
-	protected $matchingRoute = null;
+	protected ?SubRouter $router = null;
+	protected ?AbstractRoute $matchingRoute = null;
 
 	/**
 	 * AbstractRouterRoute constructor.

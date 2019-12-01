@@ -38,50 +38,16 @@ class QueryBuilder
 	protected const DEFAULT_FIELD_SEPARATOR = ", ";
 	protected const DEFAULT_INDENT = "    ";
 
-	/**
-	 * @var AbstractDatabaseDriver
-	 */
-	protected $driver;
+	protected ?AbstractDatabaseDriver $driver;
+	protected string $escapeLeft = '`';
+	protected string $escapeRight = '`';
 
-	/**
-	 * @var string
-	 */
-	protected $escapeLeft = '`';
-
-	/**
-	 * @var string
-	 */
-	protected $escapeRight = '`';
-
-	/**
-	 * @var int
-	 */
-	private $indention = 0;
-
-	/**
-	 * @var string|null
-	 */
-	protected $modelClass = null;
-
-	/**
-	 * @var array
-	 */
-	protected $params = [];
-
-	/**
-	 * @var array
-	 */
-	private $parts;
-
-	/**
-	 * @var bool
-	 */
-	private $pretty = false;
-
-	/**
-	 * @var string|null
-	 */
-	private $previousClause = null;
+	private int $indention = 0;
+	protected ?string $modelClass = null;
+	protected array $params = [];
+	private array $parts;
+	private bool $pretty = false;
+	private ?string $previousClause = null;
 
 	/**
 	 * QueryBuilder constructor.
@@ -514,7 +480,7 @@ class QueryBuilder
 	/**
 	 * Adds a FROM clause.
 	 *
-	 * @param string ...$tables
+	 * @param mixed $tables
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -530,7 +496,7 @@ class QueryBuilder
 	/**
 	 * Adds a GROUP BY clause.
 	 *
-	 * @param string ...$fields
+	 * @param mixed $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -565,8 +531,8 @@ class QueryBuilder
 	/**
 	 * Creates an INSERT IGNORE INTO query.
 	 *
-	 * @param string   $table
-	 * @param string[] $fields
+	 * @param string $table
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -585,8 +551,8 @@ class QueryBuilder
 	/**
 	 * Creates an INSERT INTO query.
 	 *
-	 * @param string   $table
-	 * @param string[] $fields
+	 * @param string $table
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -606,7 +572,7 @@ class QueryBuilder
 	 * Creates an INSERT INTO {@see $table} (...) VALUES (...) query.
 	 *
 	 * @param string $table
-	 * @param array  ...$data
+	 * @param mixed  $data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -633,7 +599,7 @@ class QueryBuilder
 	 * Creates a REPLACE INTO query.
 	 *
 	 * @param string $table
-	 * @param string ...$fields
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -653,7 +619,7 @@ class QueryBuilder
 	 * Creates a REPLACE INTO {@see $table} (...) VALUES (...) query.
 	 *
 	 * @param string $table
-	 * @param array  ...$data
+	 * @param mixed  $data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -807,7 +773,7 @@ class QueryBuilder
 	/**
 	 * Adds an ON DUPLICATE KEY UPDATE clause.
 	 *
-	 * @param string ...$fields
+	 * @param mixed $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -831,7 +797,7 @@ class QueryBuilder
 	/**
 	 * Creates an OPTIMIZE TABLE query.
 	 *
-	 * @param string ...$table
+	 * @param mixed $table
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -866,7 +832,7 @@ class QueryBuilder
 	/**
 	 * Adds an ORDER BY clause.
 	 *
-	 * @param string ...$fields
+	 * @param mixed $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>

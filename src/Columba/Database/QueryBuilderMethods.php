@@ -22,10 +22,7 @@ namespace Columba\Database;
 trait QueryBuilderMethods
 {
 
-	/**
-	 * @var AbstractDatabaseDriver
-	 */
-	protected $driver;
+	protected AbstractDatabaseDriver $driver;
 
 	/**
 	 * Creates a custom query.
@@ -82,7 +79,7 @@ trait QueryBuilderMethods
 	 * Creates an INSERT IGNORE INTO query.
 	 *
 	 * @param string $table
-	 * @param string ...$fields
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -100,7 +97,7 @@ trait QueryBuilderMethods
 	 * Creates an INSERT INTO query.
 	 *
 	 * @param string $table
-	 * @param string ...$fields
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -118,7 +115,7 @@ trait QueryBuilderMethods
 	 * Creates an INSERT INTO (...) VALUES (...) query.
 	 *
 	 * @param string $table
-	 * @param array  ...$data
+	 * @param mixed  $data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -136,7 +133,7 @@ trait QueryBuilderMethods
 	 * Creates an REPLACE INTO query.
 	 *
 	 * @param string $table
-	 * @param string ...$fields
+	 * @param mixed  $fields
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -154,7 +151,7 @@ trait QueryBuilderMethods
 	 * Creates an REPLACE INTO (...) VALUES (...) query.
 	 *
 	 * @param string $table
-	 * @param array  ...$data
+	 * @param mixed  $data
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>
@@ -171,7 +168,7 @@ trait QueryBuilderMethods
 	/**
 	 * Creates an OPTIMIZE TABLE query.
 	 *
-	 * @param string ...$table
+	 * @param mixed $table
 	 *
 	 * @return QueryBuilder
 	 * @author Bas Milius <bas@mili.us>

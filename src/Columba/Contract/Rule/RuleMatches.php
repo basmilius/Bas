@@ -28,10 +28,7 @@ use function sprintf;
 final class RuleMatches extends AbstractRule
 {
 
-	/**
-	 * @var string
-	 */
-	private $pattern;
+	private string $pattern;
 
 	/**
 	 * RuleMatches constructor.

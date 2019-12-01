@@ -51,35 +51,16 @@ use function strtr;
 abstract class AbstractRoute
 {
 
-	/**
-	 * @var bool
-	 */
-	private $allowSubRoutes = false;
+	private bool $allowSubRoutes = false;
+	private ?Context $context = null;
+	private array $options;
+	private string $path;
 
-	/**
-	 * @var Context
-	 */
-	private $context = null;
+	/** @var Router&SubRouter */
+	private Router $parent;
 
-	/**
-	 * @var array
-	 */
-	private $options;
-
-	/**
-	 * @var string
-	 */
-	private $path;
-
-	/**
-	 * @var string[]
-	 */
-	private $requestMethods;
-
-	/**
-	 * @var Router&SubRouter
-	 */
-	private $parent;
+	/** @var string[] */
+	private array $requestMethods;
 
 	/**
 	 * AbstractRoute constructor.

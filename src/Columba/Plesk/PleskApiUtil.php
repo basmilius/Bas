@@ -27,7 +27,7 @@ final class PleskApiUtil
 	/**
 	 * Creates an dataset array.
 	 *
-	 * @param string ...$sets
+	 * @param mixed $sets
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -47,7 +47,7 @@ final class PleskApiUtil
 	 * Flattens a Plesk response.
 	 *
 	 * @param array  $data
-	 * @param string ...$keys
+	 * @param mixed $keys
 	 *
 	 * @return array|mixed|null
 	 * @author Bas Milius <bas@mili.us>

@@ -29,20 +29,11 @@ use function str_replace;
 final class RedirectRoute extends AbstractRoute
 {
 
-	/**
-	 * @var string
-	 */
-	private $destination;
+	private string $destination;
+	private int $responseCode;
 
-	/**
-	 * @var RouteParam[]
-	 */
-	private $params;
-
-	/**
-	 * @var int
-	 */
-	private $responseCode;
+	/** @var RouteParam[] */
+	private array $params;
 
 	/**
 	 * CallbackRoute constructor.

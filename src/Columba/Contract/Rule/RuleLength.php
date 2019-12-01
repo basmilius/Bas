@@ -27,10 +27,7 @@ use function mb_strlen;
 final class RuleLength extends AbstractRule
 {
 
-	/**
-	 * @var int
-	 */
-	private $length;
+	private int $length;
 
 	/**
 	 * RuleLength constructor.

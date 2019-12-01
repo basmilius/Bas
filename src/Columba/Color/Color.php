@@ -24,25 +24,10 @@ use Columba\Facade\IJson;
 class Color implements IJson
 {
 
-	/**
-	 * @var int
-	 */
-	protected $r;
-
-	/**
-	 * @var int
-	 */
-	protected $g;
-
-	/**
-	 * @var int
-	 */
-	protected $b;
-
-	/**
-	 * @var float
-	 */
-	protected $a;
+	protected int $r;
+	protected int $g;
+	protected int $b;
+	protected float $a;
 
 	/**
 	 * Color constructor.

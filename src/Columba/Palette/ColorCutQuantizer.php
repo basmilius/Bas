@@ -40,20 +40,14 @@ final class ColorCutQuantizer
 	public const COMPONENT_GREEN = -2;
 	public const COMPONENT_BLUE = -1;
 
-	/**
-	 * @var int[]
-	 */
-	private $colors;
+	/** @var int[] */
+	private array $colors;
 
-	/**
-	 * @var int[]
-	 */
-	private $colorPopulations;
+	/** @var int[] */
+	private array $colorPopulations;
 
-	/**
-	 * @var Swatch[]
-	 */
-	private $quantizedColors;
+	/** @var Swatch[] */
+	private array $quantizedColors;
 
 	/**
 	 * ColorCutQuantizer constructor.

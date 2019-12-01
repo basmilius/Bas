@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
-use const PREG_PATTERN_ORDER;
 use function array_intersect;
 use function array_map;
 use function array_search;
@@ -31,6 +30,7 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function version_compare;
+use const PREG_PATTERN_ORDER;
 
 /**
  * Class UserAgent
@@ -42,25 +42,10 @@ use function version_compare;
 class UserAgent
 {
 
-	/**
-	 * @var string
-	 */
-	protected $userAgent;
-
-	/**
-	 * @var string|null
-	 */
-	protected $browser = null;
-
-	/**
-	 * @var string|null
-	 */
-	protected $platform = null;
-
-	/**
-	 * @var string|null
-	 */
-	protected $version = null;
+	protected string $userAgent;
+	protected ?string $browser = null;
+	protected ?string $platform = null;
+	protected ?string $version = null;
 
 	/**
 	 * UserAgent constructor.

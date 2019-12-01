@@ -24,25 +24,10 @@ use function ssh2_auth_pubkey_file;
 final class SSHPublicKeyAuthentication extends SSHAuthentication
 {
 
-	/**
-	 * @var string
-	 */
-	private $username;
-
-	/**
-	 * @var string
-	 */
-	private $publicKeyFile;
-
-	/**
-	 * @var string
-	 */
-	private $privateKeyFile;
-
-	/**
-	 * @var string
-	 */
-	private $passphrase;
+	private string $username;
+	private string $publicKeyFile;
+	private string $privateKeyFile;
+	private string $passphrase;
 
 	/**
 	 * SSHPublicKeyAuthentication constructor.

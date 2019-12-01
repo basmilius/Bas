@@ -27,15 +27,8 @@ class IP
 	public const V4 = 1;
 	public const V6 = 2;
 
-	/**
-	 * @var string
-	 */
-	protected $ip;
-
-	/**
-	 * @var int
-	 */
-	protected $version;
+	protected string $ip;
+	protected int $version;
 
 	/**
 	 * IP constructor.

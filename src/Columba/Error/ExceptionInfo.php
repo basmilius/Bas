@@ -28,10 +28,7 @@ use function get_class;
 class ExceptionInfo implements IJson
 {
 
-	/**
-	 * @var Throwable
-	 */
-	private $err;
+	private Throwable $err;
 
 	/**
 	 * ExceptionInfo constructor.
@@ -115,10 +112,7 @@ class ExceptionInfo implements IJson
 	 */
 	public function getTrace(): array
 	{
-		return array_map(function (array $trace): TraceInfo
-		{
-			return new TraceInfo($this, $trace);
-		}, $this->err->getTrace());
+		return array_map(fn(array $trace): TraceInfo => new TraceInfo($this, $trace), $this->err->getTrace());
 	}
 
 	/**

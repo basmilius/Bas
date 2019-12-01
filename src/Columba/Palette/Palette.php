@@ -55,45 +55,16 @@ final class Palette
 	public const MIN_CONTRAST_TITLE_TEXT = 3.0;
 	public const MIN_CONTRAST_BODY_TEXT = 4.5;
 
-	/**
-	 * @var Swatch|null
-	 */
-	private $mutedSwatch;
+	private ?Swatch $mutedSwatch;
+	private ?Swatch $vibrantSwatch;
+	private ?Swatch $darkMutedSwatch;
+	private ?Swatch $darkVibrantSwatch;
+	private ?Swatch $lightMutedSwatch;
+	private ?Swatch $lightVibrantSwatch;
+	private int $highestPopulation;
 
-	/**
-	 * @var Swatch|null
-	 */
-	private $vibrantSwatch;
-
-	/**
-	 * @var Swatch|null
-	 */
-	private $darkMutedSwatch;
-
-	/**
-	 * @var Swatch|null
-	 */
-	private $darkVibrantSwatch;
-
-	/**
-	 * @var Swatch|null
-	 */
-	private $lightMutedSwatch;
-
-	/**
-	 * @var Swatch|null
-	 */
-	private $lightVibrantSwatch;
-
-	/**
-	 * @var int
-	 */
-	private $highestPopulation;
-
-	/**
-	 * @var Swatch[]
-	 */
-	private $swatches;
+	/** @var Swatch[] */
+	private array $swatches;
 
 	/**
 	 * Palette constructor.
@@ -333,7 +304,7 @@ final class Palette
 	/**
 	 * Some Googly calculation.
 	 *
-	 * @param float ...$values
+	 * @param mixed $values
 	 *
 	 * @return float
 	 * @author Bas Milius <bas@mili.us>

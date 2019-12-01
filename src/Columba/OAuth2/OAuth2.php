@@ -49,33 +49,16 @@ use function urlencode;
 class OAuth2
 {
 
-	/**
-	 * @var IClientFactory
-	 */
-	private $clientFactory;
+	private IClientFactory $clientFactory;
+	private IScopeFactory $scopeFactory;
+	private ITokenFactory $tokenFactory;
 
-	/**
-	 * @var IScopeFactory
-	 */
-	private $scopeFactory;
-
-	/**
-	 * @var ITokenFactory
-	 */
-	private $tokenFactory;
-
-	/**
-	 * @var string[]
-	 */
-	private $grantTypes = [
+	private array $grantTypes = [
 		'authorization_code' => AuthorizationCodeGrantType::class,
 		'refresh_token' => RefreshTokenGrantType::class
 	];
 
-	/**
-	 * @var string[]
-	 */
-	private $responseTypes = [
+	private array $responseTypes = [
 		'code' => CodeResponseType::class,
 		'token' => TokenResponseType::class
 	];

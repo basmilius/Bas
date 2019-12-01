@@ -22,10 +22,7 @@ namespace Columba\Plesk;
 abstract class PleskSubSystem
 {
 
-	/**
-	 * @var PleskApiClient
-	 */
-	protected $client;
+	protected PleskApiClient $client;
 
 	/**
 	 * PleskSubSystem constructor.

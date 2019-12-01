@@ -26,15 +26,8 @@ use function count;
 final class RequestValidatorResult implements ArrayAccess
 {
 
-	/**
-	 * @var RequestValidatorException[]
-	 */
-	private $errors = [];
-
-	/**
-	 * @var mixed[]
-	 */
-	private $params = [];
+	private array $errors = [];
+	private array $params = [];
 
 	/**
 	 * Adds an error.

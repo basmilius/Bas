@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
+use Columba\Facade\IJson;
+use Columba\Util\ExceptionUtil;
 use Exception;
 use Throwable;
 
@@ -22,7 +24,7 @@ use Throwable;
  * @package Columba\Error
  * @since 1.6.0
  */
-abstract class ColumbaException extends Exception
+abstract class ColumbaException extends Exception implements IJson
 {
 
 	/**
@@ -38,6 +40,20 @@ abstract class ColumbaException extends Exception
 	public function __construct(string $message, int $code = 0, ?Throwable $previous = null)
 	{
 		parent::__construct($message, $code, $previous);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function jsonSerialize(): array
+	{
+		return [
+			'code' => $this->getCode(),
+			'error' => ExceptionUtil::getExceptionCode($this),
+			'error_description' => $this->getMessage()
+		];
 	}
 
 }

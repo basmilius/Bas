@@ -24,15 +24,8 @@ use function ssh2_auth_password;
 final class SSHPasswordAuthentication extends SSHAuthentication
 {
 
-	/**
-	 * @var string
-	 */
-	private $username;
-
-	/**
-	 * @var string
-	 */
-	private $password;
+	private string $username;
+	private string $password;
 
 	/**
 	 * SSHPasswordAuthentication constructor.

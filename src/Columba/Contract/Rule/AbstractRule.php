@@ -26,15 +26,8 @@ use Columba\Contract\Term;
 abstract class AbstractRule
 {
 
-	/**
-	 * @var Contract
-	 */
-	protected $contract;
-
-	/**
-	 * @var Term
-	 */
-	protected $term;
+	protected Contract $contract;
+	protected Term $term;
 
 	/**
 	 * AbstractRule constructor.

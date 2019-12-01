@@ -26,10 +26,7 @@ use function in_array;
 final class RuleOneOf extends AbstractRule
 {
 
-	/**
-	 * @var array
-	 */
-	private $values;
+	private array $values;
 
 	/**
 	 * RuleOneOf constructor.

@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\Foundation\Http\RateLimit;
 
 use Columba\Error\ColumbaException;
-use Columba\Facade\IJson;
 use Columba\Http\ResponseCode;
 
 /**
@@ -23,7 +22,7 @@ use Columba\Http\ResponseCode;
  * @package Columba\Foundation\Http\RateLimit
  * @since 1.6.0
  */
-final class RateLimitExceededException extends ColumbaException implements IJson
+final class RateLimitExceededException extends ColumbaException
 {
 
 	/**

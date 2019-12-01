@@ -31,10 +31,7 @@ final class Stopwatch
 	public const UNIT_MILLISECONDS = 4;
 	public const UNIT_SECONDS = 8;
 
-	/**
-	 * @var array
-	 */
-	private static $registry = [];
+	private static array $registry = [];
 
 	/**
 	 * Starts a stopwatch.

@@ -24,20 +24,11 @@ use function array_merge;
 class Contract
 {
 
-	/**
-	 * @var array
-	 */
-	protected $errors = [];
+	protected array $errors = [];
+	private bool $quickBreach = false;
 
-	/**
-	 * @var Term[]
-	 */
-	protected $terms = [];
-
-	/**
-	 * @var bool
-	 */
-	private $quickBreach = false;
+	/** @var Term[] */
+	protected array $terms = [];
 
 	/**
 	 * Terms have been violated, create an error here.

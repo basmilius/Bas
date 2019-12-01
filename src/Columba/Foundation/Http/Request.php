@@ -44,40 +44,13 @@ use function tmpfile;
 class Request implements IJson
 {
 
-	/**
-	 * @var Store
-	 */
-	protected $localStorage;
-
-	/**
-	 * @var Parameters
-	 */
-	protected $cookies;
-
-	/**
-	 * @var Parameters
-	 */
-	protected $files;
-
-	/**
-	 * @var Parameters
-	 */
-	protected $headers;
-
-	/**
-	 * @var Parameters
-	 */
-	protected $post;
-
-	/**
-	 * @var QueryString
-	 */
-	protected $queryString;
-
-	/**
-	 * @var Parameters
-	 */
-	protected $server;
+	protected Store $localStorage;
+	protected Parameters $cookies;
+	protected Parameters $files;
+	protected Parameters $headers;
+	protected Parameters $post;
+	protected QueryString $queryString;
+	protected Parameters $server;
 
 	/**
 	 * Request constructor.
@@ -106,10 +79,7 @@ class Request implements IJson
 	 */
 	public final function body(): string
 	{
-		return $this->localStorage->getOrCreate(__METHOD__, function (): string
-		{
-			return file_get_contents('php://input');
-		});
+		return $this->localStorage->getOrCreate(__METHOD__, fn() => file_get_contents('php://input'));
 	}
 
 	/**
@@ -121,10 +91,7 @@ class Request implements IJson
 	 */
 	public final function bodyJson()
 	{
-		return $this->localStorage->getOrCreate(__METHOD__, function ()
-		{
-			return json_decode($this->body(), true);
-		});
+		return $this->localStorage->getOrCreate(__METHOD__, fn() => json_decode($this->body(), true));
 	}
 
 	/**
@@ -284,10 +251,7 @@ class Request implements IJson
 	 */
 	public final function ip(): ?IP
 	{
-		return $this->localStorage->getOrCreate(__METHOD__, function (): ?IP
-		{
-			return IP::parse($this->server->get('REMOTE_ADDR'));
-		});
+		return $this->localStorage->getOrCreate(__METHOD__, fn(): IP => IP::parse($this->server->get('REMOTE_ADDR')));
 	}
 
 	/**
@@ -376,10 +340,7 @@ class Request implements IJson
 	 */
 	public final function userAgent(): UserAgent
 	{
-		return $this->localStorage->getOrCreate(__METHOD__, function (): UserAgent
-		{
-			return new UserAgent($this->server->get('HTTP_USER_AGENT'));
-		});
+		return $this->localStorage->getOrCreate(__METHOD__, fn(): UserAgent => new UserAgent($this->server->get('HTTP_USER_AGENT')));
 	}
 
 	/**

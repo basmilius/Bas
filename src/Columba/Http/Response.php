@@ -48,80 +48,23 @@ use function substr;
 final class Response
 {
 
-	/**
-	 * @var resource
-	 */
+	private Request $request;
+	private int $downloadSize;
+	private int $downloadSpeed;
+	private string $effectiveUrl;
+	private ?IP $localIp = null;
+	private ?int $localPort = null;
+	private ?IP $remoteIp = null;
+	private ?int $remotePort = null;
+	private ?int $responseCode = null;
+	private ?Parameters $responseHeaders = null;
+	private ?string $responseText = null;
+	private int $transactionTime;
+	private int $uploadSize;
+	private int $uploadSpeed;
+
+	/** @var resource */
 	private $curlHandle;
-
-	/**
-	 * @var Request
-	 */
-	private $request;
-
-	/**
-	 * @var int
-	 */
-	private $downloadSize;
-
-	/**
-	 * @var int
-	 */
-	private $downloadSpeed;
-
-	/**
-	 * @var string
-	 */
-	private $effectiveUrl;
-
-	/**
-	 * @var IP|null
-	 */
-	private $localIp = null;
-
-	/**
-	 * @var int|null
-	 */
-	private $localPort = null;
-
-	/**
-	 * @var IP|null
-	 */
-	private $remoteIp = null;
-
-	/**
-	 * @var int|null
-	 */
-	private $remotePort = null;
-
-	/**
-	 * @var int|null
-	 */
-	private $responseCode = null;
-
-	/**
-	 * @var Parameters|null
-	 */
-	private $responseHeaders = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $responseText = null;
-
-	/**
-	 * @var int
-	 */
-	private $transactionTime;
-
-	/**
-	 * @var int
-	 */
-	private $uploadSize;
-
-	/**
-	 * @var int
-	 */
-	private $uploadSpeed;
 
 	/**
 	 * Response constructor.

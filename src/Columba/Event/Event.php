@@ -22,19 +22,10 @@ namespace Columba\Event;
 class Event
 {
 
-	/**
-	 * @var bool
-	 */
-	private $cancelled;
+	private bool $cancelled;
+	private array $data;
 
-	/**
-	 * @var array|mixed
-	 */
-	private $data;
-
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $target;
 
 	/**

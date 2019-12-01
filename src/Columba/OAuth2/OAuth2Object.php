@@ -25,15 +25,8 @@ use Columba\Facade\IJson;
 class OAuth2Object implements IArray, IJson
 {
 
-	/**
-	 * @var array
-	 */
-	protected $data;
-
-	/**
-	 * @var OAuth2
-	 */
-	protected $oAuth2;
+	protected array $data;
+	protected OAuth2 $oAuth2;
 
 	/**
 	 * OAuth2Object constructor.

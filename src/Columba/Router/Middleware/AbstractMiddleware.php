@@ -27,10 +27,7 @@ use Columba\Router\RouterException;
 abstract class AbstractMiddleware
 {
 
-	/**
-	 * @var Router
-	 */
-	protected $router;
+	protected Router $router;
 
 	/**
 	 * AbstractRoute constructor.

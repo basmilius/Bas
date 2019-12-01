@@ -22,10 +22,7 @@ namespace Columba\Foundation;
 class Store
 {
 
-	/**
-	 * @var array
-	 */
-	private $data = [];
+	private array $data = [];
 
 	/**
 	 * Gets an item or returns {@see $defaultValue} when it's not stored.

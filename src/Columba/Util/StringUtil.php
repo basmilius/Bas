@@ -41,7 +41,7 @@ final class StringUtil
 	/**
 	 * Implodes commas between strings and replaces the last comma with an &.
 	 *
-	 * @param string ...$strings
+	 * @param mixed $strings
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>

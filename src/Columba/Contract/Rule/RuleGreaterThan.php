@@ -27,9 +27,7 @@ use function sprintf;
 final class RuleGreaterThan extends AbstractRule
 {
 
-	/**
-	 * @var float|int
-	 */
+	/** @var float|int */
 	private $value;
 
 	/**

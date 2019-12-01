@@ -25,10 +25,7 @@ use Columba\Contract\Term;
 final class RuleInstanceOf extends AbstractRule
 {
 
-	/**
-	 * @var string
-	 */
-	private $className;
+	private string $className;
 
 	/**
 	 * RuleInstanceOf constructor.

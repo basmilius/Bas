@@ -15,11 +15,11 @@ namespace Columba\OAuth2\Router;
 use Columba\OAuth2\Exception\InvalidScopeException;
 use Columba\OAuth2\Exception\OAuth2Exception;
 use Columba\OAuth2\OAuth2;
+use Columba\Router\Context;
 use Columba\Router\Renderer\AbstractRenderer;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Response\ResponseWrapper;
-use Columba\Router\Context;
 use Columba\Router\RouterException;
 use Columba\Router\SubRouter;
 use Exception;
@@ -34,10 +34,7 @@ use Exception;
 abstract class OAuth2Router extends SubRouter
 {
 
-	/**
-	 * @var OAuth2
-	 */
-	private $oAuth2;
+	private OAuth2 $oAuth2;
 
 	/**
 	 * OAuth2Router constructor.

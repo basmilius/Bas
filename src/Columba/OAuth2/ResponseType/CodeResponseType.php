@@ -31,10 +31,7 @@ use function urlencode;
 final class CodeResponseType implements IResponseType
 {
 
-	/**
-	 * @var ITokenFactory
-	 */
-	private $tokenFactory;
+	private ITokenFactory $tokenFactory;
 
 	/**
 	 * CodeResponseType constructor.

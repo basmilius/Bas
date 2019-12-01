@@ -18,6 +18,7 @@ use Columba\Router\Router;
 use Columba\Router\RouterException;
 use ReflectionException;
 use ReflectionFunction;
+use ReflectionNamedType;
 use function class_exists;
 
 /**
@@ -30,15 +31,8 @@ use function class_exists;
 class CallbackRoute extends AbstractRoute
 {
 
-	/**
-	 * @var callable
-	 */
-	protected $callback;
-
-	/**
-	 * @var ReflectionFunction|null
-	 */
-	protected $reflection = null;
+	protected Closure $callback;
+	protected ?ReflectionFunction $reflection = null;
 
 	/**
 	 * CallbackRoute constructor.
@@ -99,8 +93,13 @@ class CallbackRoute extends AbstractRoute
 			$parameters = $this->getReflection()->getParameters();
 
 			foreach ($parameters as $parameter)
-				if ($parameter->getType() !== null && !class_exists($parameter->getType()->getName()))
-					$params[] = new RouteParam($parameter->getName(), $parameter->getType()->getName(), $parameter->getType()->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
+			{
+				/** @var ReflectionNamedType $type */
+				$type = $parameter->getType();
+
+				if ($type !== null && !class_exists($type->getName()))
+					$params[] = new RouteParam($parameter->getName(), $type->getName(), $type->allowsNull(), $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
+			}
 
 			return $params;
 		}

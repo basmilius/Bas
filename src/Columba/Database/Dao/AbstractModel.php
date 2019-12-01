@@ -27,15 +27,8 @@ use function get_called_class;
 abstract class AbstractModel implements IArray, IJson
 {
 
-	/**
-	 * @var array
-	 */
-	protected $data;
-
-	/**
-	 * @var bool
-	 */
-	private $dirty = false;
+	protected array $data;
+	protected bool $dirty = false;
 
 	/**
 	 * AbstractModel constructor.

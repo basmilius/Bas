@@ -24,30 +24,11 @@ use Columba\Color\Color;
 final class Swatch
 {
 
-	/**
-	 * @var Color
-	 */
-	private $color;
-
-	/**
-	 * @var int
-	 */
-	private $population;
-
-	/**
-	 * @var bool
-	 */
-	private $generatedTextColors = false;
-
-	/**
-	 * @var Color
-	 */
-	private $textColorBody;
-
-	/**
-	 * @var Color
-	 */
-	private $textColorTitle;
+	private Color $color;
+	private int $population;
+	private bool $generatedTextColors = false;
+	private ?Color $textColorBody;
+	private ?Color $textColorTitle;
 
 	/**
 	 * Swatch constructor.

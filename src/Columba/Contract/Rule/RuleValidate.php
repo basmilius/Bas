@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use Closure;
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
 
@@ -25,22 +26,19 @@ use Columba\Contract\Term;
 final class RuleValidate extends AbstractRule
 {
 
-	/**
-	 * @var callable
-	 */
-	private $predicate;
+	private Closure $predicate;
 
 	/**
 	 * RuleValidate constructor.
 	 *
 	 * @param Contract $contract
 	 * @param Term     $term
-	 * @param callable $predicate
+	 * @param Closure $predicate
 	 *
 	 * @author Bas Milius <bas@ideemedia.nl>
 	 * @since 1.6.0
 	 */
-	public function __construct(Contract $contract, Term $term, callable $predicate)
+	public function __construct(Contract $contract, Term $term, Closure $predicate)
 	{
 		parent::__construct($contract, $term);
 

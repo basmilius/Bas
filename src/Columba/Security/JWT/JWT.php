@@ -52,20 +52,9 @@ use function time;
 final class JWT
 {
 
-	/**
-	 * @var int|null
-	 */
-	public static $currentTime = null;
-
-	/**
-	 * @var int
-	 */
-	public static $leeway = 0;
-
-	/**
-	 * @var array
-	 */
-	public static $supportedAlgorithms = [
+	public static ?int $currentTime = null;
+	public static int $leeway = 0;
+	public static array $supportedAlgorithms = [
 		'HS256' => ['hash_hmac', 'SHA256'],
 		'HS512' => ['hash_hmac', 'SHA512'],
 		'HS384' => ['hash_hmac', 'SHA384'],

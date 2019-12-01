@@ -29,64 +29,19 @@ use function array_merge;
 final class Context
 {
 
-	/**
-	 * @var AbstractRoute
-	 */
-	private $route;
+	private AbstractRoute $route;
+	private ?ReflectionFunctionAbstract $callback = null;
+	private array $params = [];
+	private ?Context $parent = null;
+	private ?string $path = null;
+	private ?string $pathRegex = null;
+	private ?string $pathValues = null;
+	private ?string $redirectPath = null;
+	private float $resolutionTime = -1;
+	private ?AbstractResponse $responseClass = null;
+	private int $responseCode = 200;
 
-	/**
-	 * @var ReflectionFunctionAbstract|null
-	 */
-	private $callback = null;
-
-	/**
-	 * @var array
-	 */
-	private $params = [];
-
-	/**
-	 * @var Context|null
-	 */
-	private $parent = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $path = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $pathRegex = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $pathValues = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $redirectPath = null;
-
-	/**
-	 * @var float
-	 */
-	private $resolutionTime = -1;
-
-	/**
-	 * @var AbstractResponse
-	 */
-	private $responseClass = null;
-
-	/**
-	 * @var int
-	 */
-	private $responseCode = 200;
-
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $responseValue = null;
 
 	/**

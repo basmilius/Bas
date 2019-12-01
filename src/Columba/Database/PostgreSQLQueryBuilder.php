@@ -22,14 +22,7 @@ namespace Columba\Database;
 class PostgreSQLQueryBuilder extends QueryBuilder
 {
 
-	/**
-	 * @var string
-	 */
-	protected $escapeLeft = '"';
-
-	/**
-	 * @var string
-	 */
-	protected $escapeRight = '"';
+	protected string $escapeLeft = '"';
+	protected string $escapeRight = '"';
 
 }

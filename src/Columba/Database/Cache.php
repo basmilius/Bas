@@ -25,10 +25,7 @@ use function get_class;
 final class Cache
 {
 
-	/**
-	 * @var array
-	 */
-	private static $cache = [];
+	private static array $cache = [];
 
 	/**
 	 * Gets a cached result.

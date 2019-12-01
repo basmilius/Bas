@@ -38,45 +38,16 @@ use function substr;
 abstract class Model extends AbstractModel
 {
 
-	/**
-	 * @var DatabaseDriver|null
-	 */
-	private static $originalDb = null;
+	private static ?DatabaseDriver $originalDb = null;
+	protected static ?AbstractDatabaseDriver $db = null;
+	protected static array $mappings = [];
+	public static string $order = 'ASC';
+	public static string $orderBy = 'id';
+	public static string $primaryKey = 'id';
+	public static ?string $table = null;
 
-	/**
-	 * @var string[]
-	 */
-	private static $tables = [];
-
-	/**
-	 * @var DatabaseDriver|Transaction|AbstractDatabaseDriver|null
-	 */
-	protected static $db = null;
-
-	/**
-	 * @var array
-	 */
-	protected static $mappings = [];
-
-	/**
-	 * @var string
-	 */
-	public static $order = 'ASC';
-
-	/**
-	 * @var string
-	 */
-	public static $orderBy = 'id';
-
-	/**
-	 * @var string
-	 */
-	public static $primaryKey = 'id';
-
-	/**
-	 * @var string|null
-	 */
-	public static $table = null;
+	/** @var string[] */
+	private static array $tables = [];
 
 	/**
 	 * Model constructor.

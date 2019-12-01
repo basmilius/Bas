@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Contract;
 
+use Closure;
 use Columba\Contract\Rule\AbstractRule;
 use Columba\Contract\Rule\RuleArray;
 use Columba\Contract\Rule\RuleBetween;
@@ -46,25 +47,14 @@ use Columba\Contract\Rule\RuleValidate;
 class Term
 {
 
-	/**
-	 * @var Contract
-	 */
-	protected $contract;
-
-	/**
-	 * @var string
-	 */
-	protected $name;
+	protected Contract $contract;
+	protected string $name;
+	private bool $isOptional = false;
 
 	/**
 	 * @var AbstractRule[]
 	 */
-	protected $rules = [];
-
-	/**
-	 * @var bool
-	 */
-	private $isOptional = false;
+	protected array $rules = [];
 
 	/**
 	 * Term constructor.
@@ -437,13 +427,13 @@ class Term
 	 * Validates the value with the given predicate.
 	 * Predicates should accept a reference to $value and return a bool.
 	 *
-	 * @param callable $predicate
+	 * @param Closure $predicate
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function validate(callable $predicate): self
+	public function validate(Closure $predicate): self
 	{
 		return $this->addRule(RuleValidate::class, $predicate);
 	}

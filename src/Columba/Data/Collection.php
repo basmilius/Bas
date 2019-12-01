@@ -51,15 +51,8 @@ use function usort;
 class Collection implements IArray, ICountable, IIterator, IJson
 {
 
-	/**
-	 * @var array
-	 */
-	private $items;
-
-	/**
-	 * @var int
-	 */
-	private $position = 0;
+	private array $items;
+	private int $position = 0;
 
 	/**
 	 * Collection constructor.
@@ -146,7 +139,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Gets a collection column as a new collection.
 	 *
-	 * @param string ...$column
+	 * @param mixed $column
 	 *
 	 * @return Collection
 	 * @author Bas Milius <bas@mili.us>

@@ -30,14 +30,10 @@ use function sprintf;
 final class RuleBetween extends AbstractRule
 {
 
-	/**
-	 * @var float|int
-	 */
+	/** @var float|int */
 	private $min;
 
-	/**
-	 * @var float|int
-	 */
+	/** @var float|int */
 	private $max;
 
 	/**

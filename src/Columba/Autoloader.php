@@ -35,10 +35,7 @@ use function substr;
 final class Autoloader
 {
 
-	/**
-	 * @var array
-	 */
-	private $definitions = [];
+	private array $definitions = [];
 
 	/**
 	 * Autoloader constructor.

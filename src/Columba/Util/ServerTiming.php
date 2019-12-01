@@ -26,10 +26,7 @@ use function implode;
 class ServerTiming
 {
 
-	/**
-	 * @var array
-	 */
-	private static $timings = [];
+	private static array $timings = [];
 
 	/**
 	 * Appends the Server-Timing header.

@@ -30,20 +30,9 @@ class XmlResponse extends AbstractResponse
 
 	public const ROOT = '<response></response>';
 
-	/**
-	 * @var bool
-	 */
-	private $prettyPrint;
-
-	/**
-	 * @var string
-	 */
-	private $root;
-
-	/**
-	 * @var bool
-	 */
-	private $withDefaults;
+	private bool $prettyPrint;
+	private string $root;
+	private bool $withDefaults;
 
 	/**
 	 * XmlResponse constructor.

@@ -25,35 +25,12 @@ use function phpversion;
 final class Request
 {
 
-	/**
-	 * @var string|null
-	 */
-	protected $body;
-
-	/**
-	 * @var string[]
-	 */
-	protected $headers;
-
-	/**
-	 * @var array
-	 */
-	protected $options;
-
-	/**
-	 * @var string|null
-	 */
-	protected $requestMethod;
-
-	/**
-	 * @var string|null
-	 */
-	protected $requestUrl;
-
-	/**
-	 * @var string
-	 */
-	protected $userAgent;
+	protected ?string $body = null;
+	protected array $headers = [];
+	protected array $options = [];
+	protected ?string $requestMethod;
+	protected ?string $requestUrl;
+	protected string $userAgent;
 
 	/**
 	 * Request constructor.
@@ -66,13 +43,9 @@ final class Request
 	 */
 	public function __construct(?string $requestUrl = null, ?string $requestMethod = null)
 	{
-		$this->body = null;
-		$this->headers = [];
-		$this->options = [];
-		$this->userAgent = 'ColumbaHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
-
 		$this->requestMethod = $requestMethod;
 		$this->requestUrl = $requestUrl;
+		$this->userAgent = 'ColumbaHttpClient/' . Columba::VERSION . ' PHP/' . phpversion();
 	}
 
 	/**

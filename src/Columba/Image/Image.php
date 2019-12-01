@@ -65,30 +65,13 @@ class Image
 	public const COVER = 2;
 	public const FILL = 4;
 
-	/**
-	 * @var resource
-	 */
+	protected int $xDpi;
+	protected int $yDpi;
+	protected int $height;
+	protected int $width;
+
+	/** @var resource */
 	protected $resource;
-
-	/**
-	 * @var int
-	 */
-	protected $xDpi;
-
-	/**
-	 * @var int
-	 */
-	protected $yDpi;
-
-	/**
-	 * @var int
-	 */
-	protected $height;
-
-	/**
-	 * @var int
-	 */
-	protected $width;
 
 	/**
 	 * Image constructor.

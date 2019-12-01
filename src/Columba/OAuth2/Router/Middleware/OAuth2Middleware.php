@@ -15,10 +15,10 @@ namespace Columba\OAuth2\Router\Middleware;
 use Columba\OAuth2\Exception\InsufficientClientScopeException;
 use Columba\OAuth2\Exception\OAuth2Exception;
 use Columba\OAuth2\OAuth2;
+use Columba\Router\Context;
 use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
-use Columba\Router\Context;
 use Columba\Router\Router;
 use function explode;
 use function strpos;
@@ -33,30 +33,11 @@ use function strpos;
 abstract class OAuth2Middleware extends AbstractMiddleware
 {
 
-	/**
-	 * @var OAuth2
-	 */
-	private $oAuth2;
-
-	/**
-	 * @var string|null
-	 */
-	private $authType;
-
-	/**
-	 * @var bool
-	 */
-	private $isOAuth2Request;
-
-	/**
-	 * @var int
-	 */
-	private $ownerId;
-
-	/**
-	 * @var array
-	 */
-	private $scopes;
+	private OAuth2 $oAuth2;
+	private ?string $authType;
+	private bool $isOAuth2Request;
+	private int $ownerId;
+	private array $scopes;
 
 	/**
 	 * OAuth2Middleware constructor.

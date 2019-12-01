@@ -38,40 +38,13 @@ use function strstr;
 final class ResultSet implements IArray, ICountable, IIterator
 {
 
-	/**
-	 * @var PDOStatement
-	 */
-	private $pdoStatement;
-
-	/**
-	 * @var PreparedStatement
-	 */
-	private $statement;
-
-	/**
-	 * @var int
-	 */
-	private $affectedRows;
-
-	/**
-	 * @var int
-	 */
-	private $foundRows;
-
-	/**
-	 * @var string|null
-	 */
-	private $modelClass;
-
-	/**
-	 * @var int
-	 */
-	private $position;
-
-	/**
-	 * @var array
-	 */
-	private $results;
+	private PDOStatement $pdoStatement;
+	private PreparedStatement $statement;
+	private int $affectedRows;
+	private int $foundRows;
+	private ?string $modelClass;
+	private int $position;
+	private array $results;
 
 	/**
 	 * ResultSet constructor.

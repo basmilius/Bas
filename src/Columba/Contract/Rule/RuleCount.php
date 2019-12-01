@@ -27,10 +27,7 @@ use function is_countable;
 final class RuleCount extends AbstractRule
 {
 
-	/**
-	 * @var int
-	 */
-	private $count;
+	private int $count;
 
 	/**
 	 * RuleCount constructor.

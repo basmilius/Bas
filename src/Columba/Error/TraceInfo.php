@@ -25,15 +25,8 @@ use function sprintf;
 class TraceInfo implements IJson
 {
 
-	/**
-	 * @var ExceptionInfo
-	 */
-	private $exceptionInfo;
-
-	/**
-	 * @var array
-	 */
-	private $trace;
+	private ExceptionInfo $exceptionInfo;
+	private array $trace;
 
 	/**
 	 * TraceInfo constructor.

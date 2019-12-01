@@ -38,30 +38,13 @@ use function stream_set_blocking;
 final class SSHConnection
 {
 
-	/**
-	 * @var string
-	 */
-	private $hostname;
+	private string $hostname;
+	private int $port;
+	private bool $authenticated = false;
+	private SSHAuthentication $authentication;
 
-	/**
-	 * @var int
-	 */
-	private $port;
-
-	/**
-	 * @var resource
-	 */
+	/** @var resource */
 	private $ssh;
-
-	/**
-	 * @var bool
-	 */
-	private $authenticated = false;
-
-	/**
-	 * @var SSHAuthentication
-	 */
-	private $authentication;
 
 	/**
 	 * SSHConnection constructor.

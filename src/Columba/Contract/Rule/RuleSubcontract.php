@@ -25,10 +25,7 @@ use Columba\Contract\Term;
 final class RuleSubcontract extends AbstractRule
 {
 
-	/**
-	 * @var Contract
-	 */
-	private $other;
+	private Contract $other;
 
 	/**
 	 * RuleSubcontract constructor.

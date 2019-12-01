@@ -24,7 +24,7 @@ use function array_search;
 trait EventEmitter
 {
 
-	private $listeners = [];
+	private array $listeners = [];
 
 	/**
 	 * Adds an event listener.

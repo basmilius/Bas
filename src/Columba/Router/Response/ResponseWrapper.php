@@ -22,14 +22,9 @@ namespace Columba\Router\Response;
 final class ResponseWrapper
 {
 
-	/**
-	 * @var AbstractResponse
-	 */
-	private $response;
+	private AbstractResponse $response;
 
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $value;
 
 	/**

@@ -30,10 +30,7 @@ use function strval;
 class RateLimitMiddleware extends AbstractMiddleware
 {
 
-	/**
-	 * @var RateLimit
-	 */
-	private $rateLimit;
+	private RateLimit $rateLimit;
 
 	/**
 	 * RateLimitMiddleware constructor.

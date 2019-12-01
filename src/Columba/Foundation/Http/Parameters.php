@@ -32,15 +32,8 @@ class Parameters implements IArray, ICountable, IIterator, IJson
 
 	use GetHasSetUnset;
 
-	/**
-	 * @var array
-	 */
-	protected $data;
-
-	/**
-	 * @var int
-	 */
-	protected $position = 0;
+	protected array $data;
+	protected int $position = 0;
 
 	/**
 	 * Parameters constructor.

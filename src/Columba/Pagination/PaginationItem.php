@@ -24,35 +24,12 @@ use Columba\Facade\IJson;
 final class PaginationItem implements IJson
 {
 
-	/**
-	 * @var int
-	 */
-	private $page;
-
-	/**
-	 * @var bool
-	 */
-	private $isCurrent;
-
-	/**
-	 * @var bool
-	 */
-	private $isDisabled;
-
-	/**
-	 * @var bool
-	 */
-	private $isDots;
-
-	/**
-	 * @var bool
-	 */
-	private $isNav;
-
-	/**
-	 * @var string
-	 */
-	private $label;
+	private int $page;
+	private bool $isCurrent;
+	private bool $isDisabled;
+	private bool $isDots;
+	private bool $isNav;
+	private string $label;
 
 	/**
 	 * PaginationItem constructor.

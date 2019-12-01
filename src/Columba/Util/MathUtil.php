@@ -133,10 +133,7 @@ final class MathUtil
 	 */
 	public static function sumArrayKey(array $arr, string $key, float $startWith = 0): float
 	{
-		return array_reduce($arr, function (float $sum, ArrayAccess $obj) use ($key): float
-		{
-			return $sum + $obj[$key];
-		}, $startWith);
+		return array_reduce($arr, fn(float $sum, ArrayAccess $obj): float => $sum + $obj[$key], $startWith);
 	}
 
 }

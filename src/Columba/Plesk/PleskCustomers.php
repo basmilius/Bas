@@ -149,10 +149,7 @@ final class PleskCustomers extends PleskSubSystem
 			]);
 
 			$customers = PleskApiUtil::flatten($customer, 'customer', 'get', 'result');
-			$customers = array_map(function (array $customer): array
-			{
-				return $customer['data'];
-			}, $customers);
+			$customers = array_map(fn(array $customer): array => $customer['data'], $customers);
 
 			return $customers;
 		}

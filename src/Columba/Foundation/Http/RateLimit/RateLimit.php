@@ -26,25 +26,10 @@ use function max;
 abstract class RateLimit
 {
 
-	/**
-	 * @var string
-	 */
-	protected $name;
-
-	/**
-	 * @var int
-	 */
-	protected $period;
-
-	/**
-	 * @var int
-	 */
-	protected $requests;
-
-	/**
-	 * @var IStorageAdapter
-	 */
-	protected $storage;
+	protected string $name;
+	protected int $period;
+	protected int $requests;
+	protected IStorageAdapter $storage;
 
 	/**
 	 * RateLimit constructor.

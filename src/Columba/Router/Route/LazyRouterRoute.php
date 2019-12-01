@@ -25,15 +25,8 @@ use Columba\Router\SubRouter;
 final class LazyRouterRoute extends AbstractRouterRoute
 {
 
-	/**
-	 * @var mixed[]
-	 */
-	private $routerArguments;
-
-	/**
-	 * @var string
-	 */
-	private $routerImplementation;
+	private array $routerArguments;
+	private string $routerImplementation;
 
 	/**
 	 * LazyRouterRoute constructor.

@@ -30,10 +30,7 @@ use function urlencode;
 final class TokenResponseType implements IResponseType
 {
 
-	/**
-	 * @var ITokenFactory
-	 */
-	private $tokenFactory;
+	private ITokenFactory $tokenFactory;
 
 	/**
 	 * TokenResponseType constructor.

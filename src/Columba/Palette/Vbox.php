@@ -27,25 +27,15 @@ use function round;
 final class Vbox
 {
 
-	/**
-	 * @var ColorCutQuantizer
-	 */
-	private $quantizer;
-
-	/**
-	 * @var int
-	 */
-	private $lowerIndex;
-
-	/**
-	 * @var int
-	 */
-	private $upperIndex;
-
-	/**
-	 * @var int
-	 */
-	private $minRed, $maxRed, $minGreen, $maxGreen, $minBlue, $maxBlue;
+	private ColorCutQuantizer $quantizer;
+	private int $lowerIndex;
+	private int $upperIndex;
+	private int $maxRed;
+	private int $minRed;
+	private int $maxGreen;
+	private int $minGreen;
+	private int $maxBlue;
+	private int $minBlue;
 
 	/**
 	 * Vbox constructor.

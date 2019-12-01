@@ -25,10 +25,7 @@ use InvalidArgumentException;
 class TypedCollection extends Collection
 {
 
-	/**
-	 * @var string
-	 */
-	private $type = '';
+	private string $type = '';
 
 	/**
 	 * TypedCollection constructor.

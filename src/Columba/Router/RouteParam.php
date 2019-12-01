@@ -24,25 +24,12 @@ use function intval;
 final class RouteParam
 {
 
-	/**
-	 * @var bool
-	 */
-	private $allowsNull;
+	private bool $allowsNull;
+	private string $name;
+	private string $type;
 
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $defaultValue;
-
-	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * @var string
-	 */
-	private $type;
 
 	/**
 	 * RouteParam constructor.

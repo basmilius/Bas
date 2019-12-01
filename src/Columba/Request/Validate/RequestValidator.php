@@ -22,15 +22,8 @@ namespace Columba\Request\Validate;
 final class RequestValidator
 {
 
-	/**
-	 * @var RequestValidatorOption[]
-	 */
-	private $options = [];
-
-	/**
-	 * @var array
-	 */
-	private $params = [];
+	private array $options = [];
+	private array $params = [];
 
 	/**
 	 * Validates {@see $params} with our options.

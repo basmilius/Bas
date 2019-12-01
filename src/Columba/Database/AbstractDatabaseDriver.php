@@ -45,10 +45,7 @@ abstract class AbstractDatabaseDriver
 
 	use QueryBuilderMethods;
 
-	/**
-	 * @var PDO|null
-	 */
-	protected $pdo = null;
+	protected ?PDO $pdo = null;
 
 	/**
 	 * AbstractDatabaseDriver constructor.

@@ -28,26 +28,13 @@ use function http_response_code;
 abstract class AbstractResponse
 {
 
-	/**
-	 * @var string
-	 */
-	private $body = '';
-
-	/**
-	 * @var int
-	 */
-	private $code = ResponseCode::OK;
-
-	/**
-	 * @var array
-	 */
-	private $headers = [];
+	private array $headers = [];
 
 	/**
 	 * Adds a response header.
 	 *
 	 * @param string $name
-	 * @param string ...$values
+	 * @param mixed $values
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

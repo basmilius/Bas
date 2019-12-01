@@ -40,25 +40,10 @@ use function sprintf;
 final class Preferences implements IArray, ICountable, IIterator, IJson
 {
 
-	/**
-	 * @var Preferences|null
-	 */
-	private $parent;
-
-	/**
-	 * @var int
-	 */
-	private $position;
-
-	/**
-	 * @var string[]
-	 */
-	private $keys;
-
-	/**
-	 * @var mixed[]
-	 */
-	private $values;
+	private ?Preferences $parent;
+	private int $position;
+	private array $keys;
+	private array $values;
 
 	/**
 	 * Preferences constructor.
