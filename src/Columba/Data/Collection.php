@@ -229,7 +229,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function first(?callable $fn = null, $default = null)
 	{
 		if ($fn === null)
-			return $this->count() > 0 ? reset($this) : $default;
+			return $this->count() > 0 ? reset($this->items) : $default;
 
 		return ArrayUtil::first($this->items, $fn, $default);
 	}
