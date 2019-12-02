@@ -130,7 +130,7 @@ class Image
 	 */
 	public function fixFromExif(array $exif): self
 	{
-		$orientation = $exif['Orientation'] ?? 1;
+		$orientation = $exif['Orientation'] ?? $exif['IFD0']['Orientation'] ?? 1;
 
 		$flip = false;
 		$rotation = 0;
