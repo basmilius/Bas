@@ -80,6 +80,20 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
+	 * Returns TRUE if there is any item matching the given predicate.
+	 *
+	 * @param callable $fn
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function any(callable $fn): bool
+	{
+		return count(array_filter($this->items, $fn)) > 0;
+	}
+
+	/**
 	 * Appends an item to the collection.
 	 *
 	 * @param $item
