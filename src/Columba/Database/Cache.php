@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) 2019 - Bas Milius <bas@mili.us>.
+ * Copyright (c) 2017 - 2019 - Bas Milius <bas@mili.us>
  *
- * This file is part of the Columba package.
+ * This file is part of the Latte Framework package.
  *
  * For the full copyright and license information, please view the
  * LICENSE file that was distributed with this source code.
@@ -12,52 +12,52 @@ declare(strict_types=1);
 
 namespace Columba\Database;
 
-use Columba\Database\Dao\Model;
+use Columba\Database\Model\Model;
 use function get_class;
 
 /**
  * Class Cache
  *
- * @package Columba\Database
  * @author Bas Milius <bas@mili.us>
- * @since 1.4.0
+ * @package Columba\Database
+ * @since 1.6.0
  */
-final class Cache
+class Cache
 {
 
-	private static array $cache = [];
+	private array $cache = [];
 
 	/**
 	 * Gets a cached result.
 	 *
-	 * @param mixed  $id
+	 * @param mixed  $primaryKey
 	 * @param string $modelClass
 	 *
 	 * @return Model|null
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
-	public static function get($id, string $modelClass): ?Model
+	public function get($primaryKey, string $modelClass): ?Model
 	{
-		return self::$cache[$modelClass][$id] ?? null;
+		return $this->cache[$modelClass][$primaryKey] ?? null;
 	}
 
 	/**
 	 * Returns all cached results matching ids.
 	 *
-	 * @param array  $ids
+	 * @param array  $primaryKeys
 	 * @param string $modelClass
 	 *
 	 * @return Model[]
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
-	public static function getAll(array $ids, string $modelClass): array
+	public function getAll(array $primaryKeys, string $modelClass): array
 	{
 		$results = [];
 
-		foreach ($ids as $id)
-			$results[] = self::get($id, $modelClass);
+		foreach ($primaryKeys as $primaryKey)
+			$results[] = self::get($primaryKey, $modelClass);
 
 		return $results;
 	}
@@ -65,35 +65,16 @@ final class Cache
 	/**
 	 * Returns TRUE if a model is cached.
 	 *
-	 * @param mixed  $id
+	 * @param mixed  $primaryKey
 	 * @param string $modelClass
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
-	public static function has($id, string $modelClass): bool
+	public function has($primaryKey, string $modelClass): bool
 	{
-		return isset(self::$cache[$modelClass][$id]);
-	}
-
-	/**
-	 * Returns TRUE if all results are cached.
-	 *
-	 * @param array  $ids
-	 * @param string $modelClass
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public static function hasAll(array $ids, string $modelClass): bool
-	{
-		foreach ($ids as $id)
-			if (!self::has($id, $modelClass))
-				return false;
-
-		return true;
+		return isset($this->cache[$modelClass][$primaryKey]);
 	}
 
 	/**
@@ -102,22 +83,37 @@ final class Cache
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function purge(): void
+	public function purge(): void
 	{
-		self::$cache = [];
+		$this->cache = [];
+	}
+
+	/**
+	 * Removes a model from cache.
+	 *
+	 * @param mixed  $primaryKey
+	 * @param string $modelClass
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function remove($primaryKey, string $modelClass): void
+	{
+		unset($this->cache[$modelClass][$primaryKey]);
 	}
 
 	/**
 	 * Adds a model to cache.
 	 *
+	 * @param mixed $primaryKey
 	 * @param Model $model
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
-	public static function set(Model $model): void
+	public function set($primaryKey, Model $model): void
 	{
-		self::$cache[get_class($model)][$model[$model::$primaryKey]] = $model;
+		$this->cache[get_class($model)][$primaryKey] = $model;
 	}
 
 }
