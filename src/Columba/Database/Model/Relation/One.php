@@ -25,25 +25,25 @@ use Columba\Database\Query\Builder\Builder;
 class One extends Relation
 {
 
-	private string $referencedKey;
+	private string $referenceKey;
 	private string $selfKey;
 
 	/**
 	 * One constructor.
 	 *
 	 * @param Model|string $referencedModel
-	 * @param string|null  $referencedKey
 	 * @param string|null  $selfKey
+	 * @param string|null  $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $referencedModel, ?string $referencedKey = null, ?string $selfKey = null)
+	public function __construct(string $referencedModel, ?string $selfKey = null, ?string $referenceKey = null)
 	{
 		parent::__construct($referencedModel);
 
-		$this->referencedKey = $referencedKey ?? $referencedModel::table() . '_id';
-		$this->selfKey = $selfKey ?? 'id';
+		$this->referenceKey = $referenceKey ?? $referencedModel::table() . '.id';
+		$this->selfKey = $selfKey ?? $referencedModel::table() . '_id';
 	}
 
 	/**
@@ -63,7 +63,7 @@ class One extends Relation
 	 */
 	protected function buildBaseQuery(): Builder
 	{
-		return $this->where($this->selfKey, $this->model[$this->referencedKey] ?? 0);
+		return $this->where($this->referenceKey, $this->model[$this->selfKey] ?? 0);
 	}
 
 }

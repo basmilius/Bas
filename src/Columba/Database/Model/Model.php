@@ -95,6 +95,17 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Deletes the current model instance by its primary key.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function destroy(): void
+	{
+		self::delete($this[static::$primaryKey]);
+	}
+
+	/**
 	 * Gets the connection instance.
 	 *
 	 * @return Connection
@@ -164,7 +175,14 @@ abstract class Model extends Base
 		$columnsAndValues = [];
 
 		foreach ($this->modified as $column)
-			$columnsAndValues[$column] = $this[$column];
+		{
+			$value = $this[$column];
+
+			if (is_bool($value))
+				$value = $value ? 1 : 0;
+
+			$columnsAndValues[$column] = $value;
+		}
 
 		static::update($this[static::$primaryKey], $columnsAndValues);
 	}
@@ -281,6 +299,22 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Deletes an instance by its primary key.
+	 *
+	 * @param string|int $primaryKey
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function delete($primaryKey): void
+	{
+		self::query()
+			->deleteFrom(static::$table)
+			->where(static::$primaryKey, $primaryKey)
+			->run();
+	}
+
+	/**
 	 * Finds multiple instances by primary key.
 	 *
 	 * @param array $primaryKeys
@@ -302,7 +336,7 @@ abstract class Model extends Base
 	/**
 	 * Gets a single model instance by primary key.
 	 *
-	 * @param $primaryKey
+	 * @param string|int $primaryKey
 	 *
 	 * @return $this|null
 	 * @author Bas Milius <bas@mili.us>
@@ -349,6 +383,18 @@ abstract class Model extends Base
 	{
 		return (new Builder(static::connection()))
 			->model(static::class);
+	}
+
+	/**
+	 * Gets the primary key.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function primaryKey(): string
+	{
+		return static::$primaryKey;
 	}
 
 	/**

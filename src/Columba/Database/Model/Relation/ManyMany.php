@@ -15,36 +15,40 @@ namespace Columba\Database\Model\Relation;
 use Columba\Data\Collection;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Builder\Builder;
+use function Columba\Util\preDie;
 
 /**
- * Class Many
+ * Class ManyMany
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Database\Model\Relation
  * @since 1.6.0
  */
-class Many extends Relation
+class ManyMany extends Relation
 {
 
+	private string $linkingTable;
 	private string $referenceKey;
 	private string $selfKey;
 
 	/**
-	 * Many constructor.
+	 * ManyMany constructor.
 	 *
-	 * @param Model|string $referenceModel
-	 * @param string|null  $referenceKey
-	 * @param string|null  $selfKey
+	 * @param Model|string $referencedModel
+	 * @param string       $linkingTable
+	 * @param string       $selfKey
+	 * @param string       $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $referenceModel, ?string $referenceKey = null, ?string $selfKey = null)
+	public function __construct(string $referencedModel, string $linkingTable, ?string $selfKey = null, ?string $referenceKey = null)
 	{
-		parent::__construct($referenceModel);
+		parent::__construct($referencedModel);
 
-		$this->referenceKey = $referenceKey ?? $referenceModel::table() . '_id';
-		$this->selfKey = $selfKey ?? 'id';
+		$this->linkingTable = $linkingTable;
+		$this->referenceKey = $referenceKey ?? $referencedModel::table() . '.id';
+		$this->selfKey = $selfKey ?? $referencedModel::table() . '_id';
 	}
 
 	/**
@@ -64,7 +68,10 @@ class Many extends Relation
 	 */
 	protected function buildBaseQuery(): Builder
 	{
-		return $this->where($this->referenceKey, $this->model[$this->selfKey] ?? 0);
+		return $this
+			->leftJoin($this->linkingTable, fn(Builder $query) => $query
+				->on($this->referenceKey, '=', $this->referencedModel::column($this->referencedModel::primaryKey())))
+			->where(Model::column($this->selfKey, $this->linkingTable), '=', $this->model[$this->model::primaryKey()]);
 	}
 
 }
