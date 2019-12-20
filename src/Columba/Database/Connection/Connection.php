@@ -105,19 +105,6 @@ abstract class Connection
 	}
 
 	/**
-	 * Gets a connection attribute.
-	 *
-	 * @return int
-	 * @see PDO::getAttribute()
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public function foundRows(): int
-	{
-		return $this->pdo->query($this->dialect->foundRows($this->query())->build())->fetchColumn();
-	}
-
-	/**
 	 * Executes the given query and returns the amount of affected rows.
 	 *
 	 * @param string $query
@@ -136,6 +123,19 @@ abstract class Connection
 			return $result;
 
 		throw $this->throwFromErrorInfo();
+	}
+
+	/**
+	 * Gets a connection attribute.
+	 *
+	 * @return int
+	 * @see PDO::getAttribute()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function foundRows(): int
+	{
+		return $this->queryColumn($this->dialect->foundRows($this->query())->build());
 	}
 
 	/**
@@ -196,6 +196,20 @@ abstract class Connection
 	public function query(): Builder
 	{
 		return new Builder($this);
+	}
+
+	/**
+	 * Executes the given query and returns the first column.
+	 *
+	 * @param string $query
+	 *
+	 * @return mixed
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function queryColumn(string $query)
+	{
+		return $this->pdo->query($query)->fetchColumn();
 	}
 
 	/**

@@ -62,6 +62,9 @@ class Base
 	{
 		++static::$num;
 
+		if (static::$num === 1)
+			require_once __DIR__ . '/functions.php';
+
 		if ($connection !== null)
 			$this->setConnection($connection);
 	}
@@ -221,6 +224,9 @@ class Base
 	 */
 	public function addParam($value)
 	{
+		if ($value instanceof Value)
+			return $value->value($this);
+
 		if (is_array($value) && count($value) === 2)
 			$param = $value;
 		else if (is_string($value) && strpos($value, '(')) // TODO(Bas): Map all sql functions and proper check this.

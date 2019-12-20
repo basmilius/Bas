@@ -149,6 +149,19 @@ class Db
 	}
 
 	/**
+	 * @param string|null $id
+	 *
+	 * @return int
+	 * @see Connection::foundRows()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function foundRows(?string $id = null): int
+	{
+		return self::getOrFail($id)->foundRows();
+	}
+
+	/**
 	 * @param string|null $name
 	 * @param string|null $id
 	 *
@@ -202,6 +215,20 @@ class Db
 	public static function query(?string $id = null): Builder
 	{
 		return self::getOrFail($id)->query();
+	}
+
+	/**
+	 * @param string      $query
+	 * @param string|null $id
+	 *
+	 * @return mixed
+	 * @see Connection::queryColumn()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function queryColumn(string $query, ?string $id = null)
+	{
+		return self::getOrFail($id)->queryColumn($query);
 	}
 
 	/**
