@@ -14,6 +14,7 @@ namespace Columba\Database\Model;
 
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
+use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
 use PDO;
@@ -21,6 +22,11 @@ use function array_keys;
 use function array_map;
 use function array_unshift;
 use function implode;
+use const JSON_BIGINT_AS_STRING;
+use const JSON_HEX_AMP;
+use const JSON_HEX_APOS;
+use const JSON_HEX_QUOT;
+use const JSON_HEX_TAG;
 
 /**
  * Class Model
@@ -44,6 +50,7 @@ abstract class Model extends Base
 	protected static int $primaryKeyType = PDO::PARAM_INT;
 	protected static string $table = '';
 
+	protected static array $jsonColumns = [];
 	protected static array $macros = [];
 	protected static array $relationships = [];
 
@@ -62,6 +69,7 @@ abstract class Model extends Base
 		if (!isset(static::$initialized[static::class]))
 		{
 			static::define();
+			static::$jsonColumns[static::class] ??= [];
 			static::$macros[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
@@ -178,7 +186,9 @@ abstract class Model extends Base
 		{
 			$value = $this[$column];
 
-			if (is_bool($value))
+			if (isset(static::$jsonColumns[static::class][$column]) && $value !== null)
+				$value = json_encode($value, JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
+			else if (is_bool($value))
 				$value = $value ? 1 : 0;
 
 			$columnsAndValues[$column] = $value;
@@ -244,6 +254,32 @@ abstract class Model extends Base
 			return true;
 
 		return parent::hasValue($column);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function setValue(string $column, $value): void
+	{
+		if (isset(static::$macros[static::class][$column]))
+			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+
+		parent::setValue($column, $value);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function unsetValue(string $column): void
+	{
+		if (isset(static::$macros[static::class][$column]))
+			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+
+		parent::unsetValue($column);
 	}
 
 	/**
@@ -611,6 +647,26 @@ abstract class Model extends Base
 	 */
 	protected static function define(): void
 	{
+	}
+
+	/**
+	 * Decodes a JSON column and saves the column name for saving.
+	 *
+	 * @param string      $column
+	 * @param string|null $json
+	 *
+	 * @return array|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected static function json(string $column, ?string $json = null): ?array
+	{
+		static::$jsonColumns[static::class][$column] = true;
+
+		if ($json === null)
+			return null;
+
+		return json_decode($json, true);
 	}
 
 }
