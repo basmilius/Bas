@@ -17,6 +17,7 @@ use Columba\Database\Connector\Connector;
 use Columba\Database\Error\ConnectionException;
 use Columba\Database\Query\Builder\Builder;
 use Columba\Database\Query\Statement;
+use PDO;
 use function is_subclass_of;
 use function sprintf;
 
@@ -232,6 +233,21 @@ class Db
 	}
 
 	/**
+	 * @param mixed       $value
+	 * @param int         $type
+	 * @param string|null $id
+	 *
+	 * @return string
+	 * @see Connection::quote()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function quote($value, int $type = PDO::PARAM_STR, ?string $id = null): string
+	{
+		return self::getOrFail($id)->quote($value, $type);
+	}
+
+	/**
 	 * @param string      $table
 	 * @param string|null $database
 	 * @param string|null $id
@@ -260,6 +276,19 @@ class Db
 	public static function wildcard(string $value, bool $left = true, bool $right = true, ?string $id = null): array
 	{
 		return self::getOrFail($id)->wildcard($value, $left, $right);
+	}
+
+	/**
+	 * @param string|null $id
+	 *
+	 * @return Cache
+	 * @see Connection::getCache()
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function cache(?string $id = null): Cache
+	{
+		return self::getOrFail($id)->getCache();
 	}
 
 	/**

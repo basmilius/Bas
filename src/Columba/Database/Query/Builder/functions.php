@@ -13,6 +13,42 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 /**
+ * @param string $column
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function asc(string $column): Literal
+{
+	return new Literal("$column ASC");
+}
+
+/**
+ * @param string $column
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function desc(string $column): Literal
+{
+	return new Literal("$column DESC");
+}
+
+/**
+ * Returns an "IS NOT NULL" {@see Literal} instance.
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function isNotNull(): Literal
+{
+	return new ComparatorAwareLiteral('IS NOT NULL');
+}
+
+/**
  * Returns an "IS NULL" {@see Literal} instance.
  *
  * @return Literal
@@ -21,7 +57,7 @@ namespace Columba\Database\Query\Builder;
  */
 function isNull(): Literal
 {
-	return new Literal('IS NULL');
+	return new ComparatorAwareLiteral('IS NULL');
 }
 
 /**
@@ -39,6 +75,22 @@ function literal($literal): Literal
 		$literal = $literal ? 1 : 0;
 
 	return new Literal(strval($literal));
+}
+
+/**
+ * Returns a string {@see Literal} instance.
+ *
+ * @param string $literal
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.0.0
+ */
+function stringLiteral(string $literal): Literal
+{
+	$literal = addslashes($literal);
+
+	return new Literal("'$literal'");
 }
 
 /**

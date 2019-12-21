@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Database\Query\Builder;
 
-use Columba\Util\ArrayUtil;
 use Columba\Database\Error\QueryException;
+use Columba\Util\ArrayUtil;
 use function array_keys;
 use function array_map;
 use function array_values;
@@ -234,10 +234,13 @@ class Builder extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function orderBy(string ...$orders): self
+	public function orderBy(...$orders): self
 	{
 		$orders = array_map(function ($field): string
 		{
+			if ($field instanceof Literal)
+				return $field->value($this);
+
 			if (strpos($field, ' ASC'))
 				return $this->dialect->escapeColumn(str_replace(' ASC', '', $field)) . ' ASC';
 
@@ -772,7 +775,7 @@ class Builder extends Base
 	 */
 	private function baseJoin(string $clause, string $table, ?callable $fn = null): self
 	{
-		$this->addPiece($clause, $this->dialect->escapeField($table), 1, 0, 0, null);
+		$this->addPiece($clause, $this->dialect->escapeTable($table), 1, 0, 0, null);
 
 		$this->indent();
 

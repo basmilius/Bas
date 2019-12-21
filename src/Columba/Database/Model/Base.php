@@ -77,7 +77,7 @@ abstract class Base implements IArray, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function getValue(string $column)
+	public function getValue(string $column)
 	{
 		return $this->data[$column];
 	}
@@ -91,7 +91,7 @@ abstract class Base implements IArray, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function hasValue(string $column): bool
+	public function hasValue(string $column): bool
 	{
 		return isset($this->data[$column]);
 	}
@@ -105,7 +105,7 @@ abstract class Base implements IArray, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function setValue(string $column, $value): void
+	public function setValue(string $column, $value): void
 	{
 		if (static::$isImmutable)
 			throw new ModelException(sprintf('The model %s is immutable.', static::class), ModelException::ERR_IMMUTABLE);
@@ -127,7 +127,7 @@ abstract class Base implements IArray, IJson
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function unsetValue(string $column): void
+	public function unsetValue(string $column): void
 	{
 		if (static::$isImmutable)
 			throw new ModelException(sprintf('The model %s is immutable.', static::class), ModelException::ERR_IMMUTABLE);

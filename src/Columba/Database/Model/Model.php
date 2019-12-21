@@ -88,7 +88,7 @@ abstract class Model extends Base
 	 */
 	public function cache(): void
 	{
-		static::connection()->getCache()->set($this[static::$primaryKey], $this);
+		static::connection()->getCache()->set($this->getValue(static::$primaryKey), $this);
 	}
 
 	/**
@@ -184,7 +184,7 @@ abstract class Model extends Base
 
 		foreach ($this->modified as $column)
 		{
-			$value = $this[$column];
+			$value = $this->getValue($column);
 
 			if (isset(static::$jsonColumns[static::class][$column]) && $value !== null)
 				$value = json_encode($value, JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -194,7 +194,7 @@ abstract class Model extends Base
 			$columnsAndValues[$column] = $value;
 		}
 
-		static::update($this[static::$primaryKey], $columnsAndValues);
+		static::update($this->getValue(static::$primaryKey), $columnsAndValues);
 	}
 
 	/**
@@ -224,7 +224,7 @@ abstract class Model extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function getValue(string $column)
+	public function getValue(string $column)
 	{
 		if (isset(static::$macros[static::class][$column]))
 			return $this->resolveMacro($column);
@@ -245,7 +245,7 @@ abstract class Model extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function hasValue(string $column): bool
+	public function hasValue(string $column): bool
 	{
 		if (isset(static::$macros[static::class][$column]))
 			return true;
@@ -261,7 +261,7 @@ abstract class Model extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function setValue(string $column, $value): void
+	public function setValue(string $column, $value): void
 	{
 		if (isset(static::$macros[static::class][$column]))
 			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
@@ -274,7 +274,7 @@ abstract class Model extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function unsetValue(string $column): void
+	public function unsetValue(string $column): void
 	{
 		if (isset(static::$macros[static::class][$column]))
 			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
@@ -361,6 +361,9 @@ abstract class Model extends Base
 	 */
 	public static function find(array $primaryKeys): array
 	{
+		if (empty($primaryKeys))
+			return [];
+
 		$connection = static::connection();
 		$primaryKeys = array_map(fn($primaryKey) => $connection->quote($primaryKey, static::$primaryKeyType), $primaryKeys);
 

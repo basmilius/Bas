@@ -165,13 +165,24 @@ class Base
 			$comparator = '=';
 		}
 
-		if ($addParam && $comparator !== null)
+		if ($value instanceof ComparatorAwareLiteral)
+		{
+			$comparator = null;
+			$value = $value->value($this);
+		}
+		else if ($value instanceof Literal)
+		{
+			$value = $value->value($this);
+		}
+		else if ($addParam && $comparator !== null)
+		{
 			$value = $this->addParam($value);
+		}
 
 		if ($column !== null)
 		{
-			if ($column === null)
-				$expression = '';
+			if ($comparator === null && $value !== null)
+				$expression = $this->dialect->escapeColumn($column) . ' ' . $value;
 			else if ($comparator === null)
 				$expression = $column;
 			else
@@ -229,6 +240,8 @@ class Base
 
 		if (is_array($value) && count($value) === 2)
 			$param = $value;
+		else if (is_bool($value))
+			return $value ? 1 : 0;
 		else if (is_string($value) && strpos($value, '(')) // TODO(Bas): Map all sql functions and proper check this.
 			return $value;
 		else

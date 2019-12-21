@@ -101,7 +101,13 @@ class Dialect
 	 */
 	public function escapeTable(string $table): string
 	{
-		return $this->escapeFields($table);
+		if (strpos($table, ' ') === false)
+			return $this->escapeFields($table);
+
+		$parts = explode(' ', $table, 2);
+		$parts[0] = $this->escapeFields($parts[0]);
+
+		return implode(' ', $parts);
 	}
 
 	/**

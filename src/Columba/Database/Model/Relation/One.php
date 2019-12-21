@@ -63,7 +63,7 @@ class One extends Relation
 	 */
 	protected function buildBaseQuery(): Builder
 	{
-		return $this->where($this->referenceKey, $this->model[$this->selfKey] ?? 0);
+		return $this->where($this->referenceKey, $this->model->getValue($this->selfKey) ?? 0);
 	}
 
 }
