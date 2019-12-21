@@ -275,7 +275,7 @@ class Request implements IJson
 	 */
 	public final function languages(): array
 	{
-		$accept = $this->headers->get('accept-language');
+		$accept = $this->headers->get('accept-language', 'en');
 		$accept = explode(',', $accept);
 		$languages = [];
 
