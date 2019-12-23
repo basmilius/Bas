@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 /**
+ * Returns a "x ASC" {@see Literal} instance.
+ *
  * @param string $column
  *
  * @return Literal
@@ -25,6 +27,8 @@ function asc(string $column): Literal
 }
 
 /**
+ * Returns a "x DESC" {@see Literal} instance.
+ *
  * @param string $column
  *
  * @return Literal
@@ -34,6 +38,21 @@ function asc(string $column): Literal
 function desc(string $column): Literal
 {
 	return new Literal("$column DESC");
+}
+
+/**
+ * Returns a "BETWEEN x AND y" {@see Literal} instance.
+ *
+ * @param int $from
+ * @param int $to
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function between(int $from, int $to): Literal
+{
+	return new ComparatorAwareLiteral("BETWEEN $from AND $to");
 }
 
 /**
