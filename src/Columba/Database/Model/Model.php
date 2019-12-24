@@ -195,6 +195,8 @@ abstract class Model extends Base
 		}
 
 		static::update($this->getValue(static::$primaryKey), $columnsAndValues);
+
+		$this->modified = [];
 	}
 
 	/**

@@ -22,9 +22,7 @@ use Generator;
 use function count;
 use function implode;
 use function is_array;
-use function is_string;
 use function strlen;
-use function strpos;
 
 /**
  * Class Base
@@ -242,8 +240,6 @@ class Base
 			$param = $value;
 		else if (is_bool($value))
 			return $value ? 1 : 0;
-		else if (is_string($value) && strpos($value, '(')) // TODO(Bas): Map all sql functions and proper check this.
-			return $value;
 		else
 			$param = [$value, null];
 
