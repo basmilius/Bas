@@ -129,6 +129,18 @@ class GIFDecoder
 	}
 
 	/**
+	 * Gets the stream.
+	 *
+	 * @return Stream
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getStream(): Stream
+	{
+		return $this->stream;
+	}
+
+	/**
 	 * Gets the amount of loop iterations.
 	 *
 	 * @return int
