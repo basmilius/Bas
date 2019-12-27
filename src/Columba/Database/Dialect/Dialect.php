@@ -78,7 +78,7 @@ class Dialect
 	 */
 	public function escapeFields(string $fields): string
 	{
-		if (strpos($fields, '(') !== false || strpos($fields, ':=') !== false)
+		if (strpos($fields, '(') !== false || strpos($fields, ' ') !== false || strpos($fields, ':=') !== false)
 			return $fields;
 
 		if (strpos($fields, '.') === false)
