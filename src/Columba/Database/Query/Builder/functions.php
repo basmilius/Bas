@@ -13,6 +13,34 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 /**
+ * Returns an "EXISTS $query" {@see Literal} instance.
+ *
+ * @param Builder $query
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function exists(Builder $query): Literal
+{
+	return new SubQueryLiteral($query, 'EXISTS');
+}
+
+/**
+ * Returns a "$query" {@see Literal} instance.
+ *
+ * @param Builder $query
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function subQuery(Builder $query): Literal
+{
+	return new SubQueryLiteral($query);
+}
+
+/**
  * Returns a "x ASC" {@see Literal} instance.
  *
  * @param string $column

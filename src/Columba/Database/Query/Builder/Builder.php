@@ -220,7 +220,7 @@ class Builder extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function or(?string $column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function or($column = null, $comparator = null, $value = null, bool $addParam = true)
 	{
 		return $this->addExpression('OR', $column, $comparator, $value, $addParam);
 	}
@@ -809,6 +809,9 @@ class Builder extends Base
 			{
 				if (is_array($column) && count($column) === 2)
 					return $this->dialect->escapeColumn($column[0]) . ' AS ' . $this->dialect->escapeColumn($column[1]);
+
+				if (is_numeric($column))
+					return (string)$column;
 
 				return $this->dialect->escapeColumn((string)$column);
 			}, $columns);

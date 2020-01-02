@@ -143,11 +143,11 @@ class Base
 	/**
 	 * Adds an expression.
 	 *
-	 * @param string      $clause
-	 * @param string|null $column
-	 * @param mixed       $comparator
-	 * @param mixed       $value
-	 * @param bool        $addParam
+	 * @param string $clause
+	 * @param mixed  $column
+	 * @param mixed  $comparator
+	 * @param mixed  $value
+	 * @param bool   $addParam
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -155,21 +155,42 @@ class Base
 	 * @codeCoverageIgnore
 	 * @internal
 	 */
-	public function addExpression(string $clause, ?string $column = null, $comparator = null, $value = null, bool $addParam = true): self
+	public function addExpression(string $clause, $column = null, $comparator = null, $value = null, bool $addParam = true): self
 	{
+		/** @var IAfterPiece[] $afters */
+		$afters = [];
+		/** @var IBeforePiece[] $befores */
+		$befores = [];
+
+		if ($column instanceof IAfterPiece)
+			$afters[] = $column;
+
+		if ($comparator instanceof IAfterPiece)
+			$afters[] = $comparator;
+
+		if ($value instanceof IAfterPiece)
+			$afters[] = $value;
+
+		if ($column instanceof IBeforePiece)
+			$befores[] = $column;
+
+		if ($comparator instanceof IBeforePiece)
+			$befores[] = $comparator;
+
+		if ($value instanceof IBeforePiece)
+			$befores[] = $value;
+
 		if ($value === null && $comparator !== null)
 		{
 			$value = $comparator;
 			$comparator = '=';
 		}
 
-		if ($value instanceof ComparatorAwareLiteral)
+		if ($value instanceof Literal)
 		{
-			$comparator = null;
-			$value = $value->value($this);
-		}
-		else if ($value instanceof Literal)
-		{
+			if ($value instanceof ComparatorAwareLiteral)
+				$comparator = null;
+
 			$value = $value->value($this);
 		}
 		else if ($addParam && $comparator !== null)
@@ -179,19 +200,32 @@ class Base
 
 		if ($column !== null)
 		{
+			if (is_string($column))
+				$column = $this->dialect->escapeColumn($column);
+			else if ($column instanceof Literal)
+				$column = $column->value($this);
+
 			if ($comparator === null && $value !== null)
-				$expression = $this->dialect->escapeColumn($column) . ' ' . $value;
+				$expression = "$column $value";
 			else if ($comparator === null)
 				$expression = $column;
 			else
-				$expression = $this->dialect->escapeColumn($column) . ' ' . $comparator . ' ' . $value;
+				$expression = "$column $comparator $value";
 		}
 		else
 		{
 			$expression = '';
 		}
 
-		return $this->addPiece($clause, $expression, 0, ($expression === '' ? 0 : 1), ($expression === '' ? 0 : 1));
+		foreach ($befores as $know)
+			$know->before($this);
+
+		$this->addPiece($clause, $expression, 0, ($expression === '' ? 0 : 1), ($expression === '' ? 0 : 1));
+
+		foreach ($afters as $know)
+			$know->after($this);
+
+		return $this;
 	}
 
 	/**
@@ -410,6 +444,29 @@ class Base
 	}
 
 	/**
+	 * Merges another {@see Base} builder.
+	 *
+	 * @param Base $other
+	 * @param int  $extraIndent
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 * @internal
+	 * @codeCoverageIgnore
+	 */
+	public function merge(self $other, int $extraIndent = 0): self
+	{
+		foreach ($other->pieces as [$clause, $data, $indentSelf, $indent, $newLine, $separator])
+			$this->pieces[] = [$clause, $data, $indentSelf + $extraIndent, $indent + $extraIndent, $newLine, $separator];
+
+		foreach ($other->params as $param)
+			$this->params[] = $param;
+
+		return $this;
+	}
+
+	/**
 	 * Wraps the given function with parenthesis.
 	 *
 	 * @param callable $fn
@@ -509,27 +566,6 @@ class Base
 	protected function outdent(): void
 	{
 		--$this->indent;
-	}
-
-	/**
-	 * Merges another {@see Base} builder.
-	 *
-	 * @param Base $other
-	 * @param int  $extraIndent
-	 *
-	 * @return $this
-	 * @since 1.6.0
-	 * @author Bas Milius <bas@mili.us>
-	 */
-	protected function merge(self $other, int $extraIndent = 0): self
-	{
-		foreach ($other->pieces as [$clause, $data, $indentSelf, $indent, $newLine, $separator])
-			$this->pieces[] = [$clause, $data, $indentSelf + $extraIndent, $indent + $extraIndent, $newLine, $separator];
-
-		foreach ($other->params as $param)
-			$this->params[] = $param;
-
-		return $this;
 	}
 
 	/**
