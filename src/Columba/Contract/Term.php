@@ -48,6 +48,7 @@ class Term
 {
 
 	protected Contract $contract;
+	protected string $alias = '';
 	protected string $name;
 	private bool $isOptional = false;
 
@@ -89,6 +90,21 @@ class Term
 	}
 
 	/**
+	 * Gets the alias name of this term.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getAlias(): string
+	{
+		if (!empty($this->alias))
+			return $this->alias;
+
+		return $this->name;
+	}
+
+	/**
 	 * Gets the name of the term.
 	 *
 	 * @return string
@@ -110,6 +126,22 @@ class Term
 	public function isOptional(): bool
 	{
 		return $this->isOptional;
+	}
+
+	/**
+	 * Gives the term an alias.
+	 *
+	 * @param string $alias
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function alias(string $alias): self
+	{
+		$this->alias = $alias;
+
+		return $this;
 	}
 
 	/**

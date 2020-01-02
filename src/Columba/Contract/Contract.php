@@ -25,7 +25,7 @@ class Contract
 {
 
 	protected array $errors = [];
-	private bool $quickBreach = false;
+	protected bool $quickBreach = false;
 
 	/** @var Term[] */
 	protected array $terms = [];
@@ -43,9 +43,21 @@ class Contract
 	 */
 	public function breach(Term $term, int $reason, string $message = ''): bool
 	{
-		$this->errors[] = [$term->getName(), $reason, $message];
+		$this->errors[] = [$term->getAlias(), $reason, $message];
 
 		return false;
+	}
+
+	/**
+	 * Gets all thrown errors.
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getErrors(): array
+	{
+		return $this->errors;
 	}
 
 	/**

@@ -62,6 +62,16 @@ final class RuleBetween extends AbstractRule
 	 */
 	public final function met(&$value): bool
 	{
+		if (is_string($value))
+		{
+			$length = mb_strlen($value);
+
+			if ($length >= $this->min && $length <= $this->max)
+				return true;
+
+			return $this->breach(sprintf('The given value length is not between %g and %g.', $this->min, $this->max));
+		}
+
 		if (!is_numeric($value))
 			return $this->breach('The given value is not numeric.');
 
