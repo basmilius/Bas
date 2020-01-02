@@ -76,6 +76,15 @@ abstract class Relation extends Builder
 	public abstract function get();
 
 	/**
+	 * Returns an array with relevant columns.
+	 *
+	 * @return string[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public abstract function relevantColumns(): array;
+
+	/**
 	 * Builds the base query.
 	 *
 	 * @return Builder

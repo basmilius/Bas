@@ -14,6 +14,7 @@ namespace Columba\Database\Model;
 
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
+use Columba\Database\Error\DatabaseException;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
@@ -22,6 +23,7 @@ use function array_keys;
 use function array_map;
 use function array_unshift;
 use function implode;
+use function in_array;
 use const JSON_BIGINT_AS_STRING;
 use const JSON_HEX_AMP;
 use const JSON_HEX_APOS;
@@ -52,6 +54,8 @@ abstract class Model extends Base
 
 	protected static array $jsonColumns = [];
 	protected static array $macros = [];
+
+	/** @var Relation[][] */
 	protected static array $relationships = [];
 
 	private array $relationCache = [];
@@ -59,12 +63,12 @@ abstract class Model extends Base
 	/**
 	 * Model constructor.
 	 *
-	 * @param array $data
+	 * @param array|null $data
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(array $data)
+	public function __construct(array $data = null)
 	{
 		if (!isset(static::$initialized[static::class]))
 		{
@@ -73,6 +77,15 @@ abstract class Model extends Base
 			static::$macros[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
+
+			$this->columns = static::connection()->query()
+				->select(['COLUMN_NAME'])
+				->from('information_schema.COLUMNS')
+				->where('TABLE_SCHEMA', static::connection()->getConnector()->getDatabase())
+				->and('TABLE_NAME', 'intranet_contact')
+				->collection()
+				->column('COLUMN_NAME')
+				->toArray();
 		}
 
 		parent::__construct($data);
@@ -88,6 +101,9 @@ abstract class Model extends Base
 	 */
 	public function cache(): void
 	{
+		if ($this->isNew)
+			return;
+
 		static::connection()->getCache()->set($this->getValue(static::$primaryKey), $this);
 	}
 
@@ -194,12 +210,76 @@ abstract class Model extends Base
 			$columnsAndValues[$column] = $value;
 		}
 
-		static::update($this->getValue(static::$primaryKey), $columnsAndValues);
+		if ($this->isNew)
+		{
+			static::transaction();
+
+			try
+			{
+				static::query()
+					->insertIntoValues(static::table(), $columnsAndValues)
+					->run();
+
+				$newPrimaryKey = static::connection()->lastInsertIdInteger();
+
+				$this->isNew = false;
+				$this->data = static::where(static::column(static::$primaryKey), $newPrimaryKey)
+					->model(null)
+					->single();
+
+				$this->initialize();
+				$this->cache();
+
+				static::transactionCommit();
+			}
+			catch (DatabaseException $err)
+			{
+				static::transactionRollBack();
+
+				throw $err;
+			}
+		}
+		else
+		{
+			static::update($this->getValue(static::$primaryKey), $columnsAndValues);
+		}
 
 		$this->modified = [];
 	}
 
 	/**
+	 * Throws an exception when the given column name is immutable.
+	 *
+	 * @param string $column
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function checkImmutable(string $column): void
+	{
+		if (isset(static::$macros[static::class][$column]))
+			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+
+		if (isset(static::$relationships[static::class][$column]))
+			throw new ModelException(sprintf('%s is a relationship and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+	}
+
+	/**
+	 * Checks if the given column is used in a {@see Relation} and unsets it in cache.
+	 *
+	 * @param string $column
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function checkRelations(string $column): void
+	{
+		foreach (static::$relationships[static::class] as $relationColumn => $relation)
+			if (in_array($column, $relation->relevantColumns()))
+				unset($this->relationCache[$relationColumn]);
+	}
+
+		/**
 	 * {@inheritDoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -265,8 +345,8 @@ abstract class Model extends Base
 	 */
 	public function setValue(string $column, $value): void
 	{
-		if (isset(static::$macros[static::class][$column]))
-			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+		$this->checkImmutable($column);
+		$this->checkRelations($column);
 
 		parent::setValue($column, $value);
 	}
@@ -278,8 +358,8 @@ abstract class Model extends Base
 	 */
 	public function unsetValue(string $column): void
 	{
-		if (isset(static::$macros[static::class][$column]))
-			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
+		$this->checkImmutable($column);
+		$this->checkRelations($column);
 
 		parent::unsetValue($column);
 	}

@@ -15,7 +15,6 @@ namespace Columba\Database\Model\Relation;
 use Columba\Data\Collection;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Builder\Builder;
-use function Columba\Util\preDie;
 
 /**
  * Class ManyMany
@@ -59,6 +58,16 @@ class ManyMany extends Relation
 	public function get(): Collection
 	{
 		return $this->collection();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function relevantColumns(): array
+	{
+		return [];
 	}
 
 	/**

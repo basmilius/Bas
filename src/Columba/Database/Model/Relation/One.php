@@ -61,6 +61,16 @@ class One extends Relation
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
+	public function relevantColumns(): array
+	{
+		return [$this->selfKey];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
 	protected function buildBaseQuery(): Builder
 	{
 		return $this->where($this->referenceKey, $this->model->getValue($this->selfKey) ?? 0);

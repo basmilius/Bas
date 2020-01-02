@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model;
 
-use Columba\Facade\IArray;
-use Columba\Facade\IJson;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Mixin\ArrayAccess;
 use Columba\Database\Model\Mixin\ObjectAccess;
+use Columba\Facade\IArray;
+use Columba\Facade\IJson;
 use function array_keys;
 use function in_array;
 use function sprintf;
@@ -34,9 +34,9 @@ abstract class Base implements IArray, IJson
 	use ArrayAccess;
 	use ObjectAccess;
 
-	private array $columns;
-	private array $data = [];
-
+	protected array $columns = [];
+	protected array $data = [];
+	protected bool $isNew;
 	protected array $modified = [];
 
 	protected static array $immutable = [];
@@ -45,15 +45,16 @@ abstract class Base implements IArray, IJson
 	/**
 	 * Base constructor.
 	 *
-	 * @param array $data
+	 * @param array|null $data
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function __construct(array $data)
+	protected function __construct(?array $data = null)
 	{
-		$this->columns = array_keys($data);
-		$this->data = $data;
+		$this->data = $data ?? [];
+		$this->isNew = $data === null;
+
 		$this->initialize();
 	}
 
@@ -65,6 +66,9 @@ abstract class Base implements IArray, IJson
 	 */
 	protected function initialize(): void
 	{
+		if ($this->isNew)
+			return;
+
 		$this->prepare($this->data);
 	}
 

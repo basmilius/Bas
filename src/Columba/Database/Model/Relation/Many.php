@@ -62,6 +62,16 @@ class Many extends Relation
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
+	public function relevantColumns(): array
+	{
+		return [];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
 	protected function buildBaseQuery(): Builder
 	{
 		return $this->where($this->referenceKey, $this->model[$this->selfKey] ?? 0);
