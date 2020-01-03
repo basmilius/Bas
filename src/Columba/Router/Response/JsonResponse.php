@@ -33,8 +33,8 @@ class JsonResponse extends AbstractResponse
 
 	public const DEFAULT_OPTIONS = JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG;
 
-	private int $options;
-	private bool $withDefaults;
+	protected int $options;
+	protected bool $withDefaults;
 
 	/**
 	 * JsonResponse constructor.
