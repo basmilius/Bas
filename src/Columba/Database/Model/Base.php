@@ -17,7 +17,6 @@ use Columba\Database\Model\Mixin\ArrayAccess;
 use Columba\Database\Model\Mixin\ObjectAccess;
 use Columba\Facade\IArray;
 use Columba\Facade\IJson;
-use function array_keys;
 use function in_array;
 use function sprintf;
 
@@ -34,11 +33,11 @@ abstract class Base implements IArray, IJson
 	use ArrayAccess;
 	use ObjectAccess;
 
-	protected array $columns = [];
 	protected array $data = [];
 	protected bool $isNew;
 	protected array $modified = [];
 
+	protected static array $columns = [];
 	protected static array $immutable = [];
 	protected static bool $isImmutable = false;
 
@@ -119,7 +118,7 @@ abstract class Base implements IArray, IJson
 
 		$this->data[$column] = $value;
 
-		if (in_array($column, $this->columns))
+		if (in_array($column, static::$columns[static::class]))
 			$this->modified[] = $column;
 	}
 
@@ -141,7 +140,7 @@ abstract class Base implements IArray, IJson
 
 		$this->data[$column] = null;
 
-		if (in_array($column, $this->columns))
+		if (in_array($column, static::$columns[static::class]))
 			$this->modified[] = $column;
 	}
 

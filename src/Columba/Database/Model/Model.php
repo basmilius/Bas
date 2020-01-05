@@ -14,7 +14,6 @@ namespace Columba\Database\Model;
 
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
-use Columba\Database\Error\DatabaseException;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
@@ -73,19 +72,19 @@ abstract class Model extends Base
 		if (!isset(static::$initialized[static::class]))
 		{
 			static::define();
+
+			static::$columns[static::class] ??= static::connection()->query()
+				->select(['COLUMN_NAME'])
+				->from('information_schema.COLUMNS')
+				->where('TABLE_SCHEMA', static::connection()->getConnector()->getDatabase())
+				->and('TABLE_NAME', static::table())
+				->collection()
+				->column('COLUMN_NAME')
+				->toArray();
 			static::$jsonColumns[static::class] ??= [];
 			static::$macros[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
-
-			$this->columns = static::connection()->query()
-				->select(['COLUMN_NAME'])
-				->from('information_schema.COLUMNS')
-				->where('TABLE_SCHEMA', static::connection()->getConnector()->getDatabase())
-				->and('TABLE_NAME', 'intranet_contact')
-				->collection()
-				->column('COLUMN_NAME')
-				->toArray();
 		}
 
 		parent::__construct($data);
@@ -212,32 +211,16 @@ abstract class Model extends Base
 
 		if ($this->isNew)
 		{
-			static::transaction();
+			static::query()
+				->insertIntoValues(static::table(), $columnsAndValues)
+				->run();
 
-			try
-			{
-				static::query()
-					->insertIntoValues(static::table(), $columnsAndValues)
-					->run();
+			$newPrimaryKey = static::connection()->lastInsertIdInteger();
 
-				$newPrimaryKey = static::connection()->lastInsertIdInteger();
-
-				$this->isNew = false;
-				$this->data = static::where(static::column(static::$primaryKey), $newPrimaryKey)
-					->model(null)
-					->single();
-
-				$this->initialize();
-				$this->cache();
-
-				static::transactionCommit();
-			}
-			catch (DatabaseException $err)
-			{
-				static::transactionRollBack();
-
-				throw $err;
-			}
+			$this->isNew = false;
+			$this->afterInsert($newPrimaryKey);
+			$this->initialize();
+			$this->cache();
 		}
 		else
 		{
@@ -245,6 +228,43 @@ abstract class Model extends Base
 		}
 
 		$this->modified = [];
+	}
+
+	/**
+	 * Executed after a new record is inserted to the database.
+	 *
+	 * @param int $newPrimaryKey
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function afterInsert(int $newPrimaryKey): void
+	{
+		$this->data = static::where(static::column(static::$primaryKey), $newPrimaryKey)
+			->model(null)
+			->single();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function prepare(array &$data): void
+	{
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function publish(array &$data): void
+	{
+		foreach (static::$macros[static::class] as $name => $fn)
+			$data[$name] = $fn($this);
+
+		$data['@type'] = static::class;
 	}
 
 	/**
@@ -277,28 +297,6 @@ abstract class Model extends Base
 		foreach (static::$relationships[static::class] as $relationColumn => $relation)
 			if (in_array($column, $relation->relevantColumns()))
 				unset($this->relationCache[$relationColumn]);
-	}
-
-		/**
-	 * {@inheritDoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	protected function prepare(array &$data): void
-	{
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	protected function publish(array &$data): void
-	{
-		foreach (static::$macros[static::class] as $name => $fn)
-			$data[$name] = $fn($this);
-
-		$data['@type'] = static::class;
 	}
 
 	/**
