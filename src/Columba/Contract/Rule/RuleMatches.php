@@ -55,10 +55,10 @@ final class RuleMatches extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!is_string($value))
-			return $this->breach('The given value is not a string.');
+			return $this->breach('The given value is not a string.', $value);
 
 		if (!preg_match($this->pattern, $value))
-			return $this->breach(sprintf('The given value does not match "%s".', $this->pattern));
+			return $this->breach(sprintf('The given value does not match "%s".', $this->pattern), $value);
 
 		return true;
 	}

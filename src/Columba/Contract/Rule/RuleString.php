@@ -32,7 +32,7 @@ final class RuleString extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!is_string($value))
-			return $this->breach('The given value is not a string.');
+			return $this->breach('The given value is not a string.', $value);
 
 		return true;
 	}

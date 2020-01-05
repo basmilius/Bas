@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
+use Traversable;
 use function is_array;
 use function is_iterable;
 use function iterator_to_array;
@@ -33,7 +34,7 @@ final class RuleArray extends AbstractRule
 	 */
 	public final function met(&$value): bool
 	{
-		if (is_iterable($value))
+		if (is_iterable($value) && $value instanceof Traversable)
 			$value = iterator_to_array($value);
 
 		if (!is_array($value))

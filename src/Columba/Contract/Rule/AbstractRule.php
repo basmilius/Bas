@@ -48,15 +48,16 @@ abstract class AbstractRule
 	 * Adds an error to the contract result because the given value failed on this rule.
 	 *
 	 * @param string $message
+	 * @param mixed  $value
 	 * @param int    $reason
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected final function breach(string $message, int $reason = ContractBreachException::ERR_RULE_NOT_SATISFIABLE): bool
+	protected final function breach(string $message, $value = null, int $reason = ContractBreachException::ERR_RULE_NOT_SATISFIABLE): bool
 	{
-		return $this->contract->breach($this->term, $reason, $message);
+		return $this->contract->breach($this->term, $reason, $message, $value);
 	}
 
 	/**

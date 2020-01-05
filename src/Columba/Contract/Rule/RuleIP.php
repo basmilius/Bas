@@ -32,7 +32,7 @@ final class RuleIP extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!filter_var($value, FILTER_VALIDATE_IP))
-			return $this->breach('The given value is not an ip address.');
+			return $this->breach('The given value is not an ip address.', $value);
 
 		return true;
 	}

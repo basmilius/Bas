@@ -54,10 +54,10 @@ final class RuleLength extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!is_string($value))
-			return $this->breach('The given value is not a string.');
+			return $this->breach('The given value is not a string.', $value);
 
 		if (mb_strlen($value) !== $this->length)
-			return $this->breach('The given value does not have a length of ' . $this->length);
+			return $this->breach('The given value does not have a length of ' . $this->length, $value);
 
 		return true;
 	}

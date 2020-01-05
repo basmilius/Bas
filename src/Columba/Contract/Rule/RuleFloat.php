@@ -37,7 +37,7 @@ final class RuleFloat extends AbstractRule
 			return true;
 
 		if (!is_numeric($value))
-			return $this->breach('The given value is not numeric.');
+			return $this->breach('The given value is not numeric.', $value);
 
 		$value = floatval($value);
 

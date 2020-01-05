@@ -55,10 +55,10 @@ final class RuleLessThan extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!is_numeric($value))
-			return $this->breach('The given value is not numeric.');
+			return $this->breach('The given value is not numeric.', $value);
 
 		if ($this->value <= $value)
-			return $this->breach(sprintf('The given value not less than %g', $this->value));
+			return $this->breach(sprintf('The given value not less than %g', $this->value), $value);
 
 		return true;
 	}

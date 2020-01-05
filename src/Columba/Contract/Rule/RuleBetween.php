@@ -69,11 +69,11 @@ final class RuleBetween extends AbstractRule
 			if ($length >= $this->min && $length <= $this->max)
 				return true;
 
-			return $this->breach(sprintf('The given value length is not between %g and %g.', $this->min, $this->max));
+			return $this->breach(sprintf('The given value length is not between %g and %g.', $this->min, $this->max), $value);
 		}
 
 		if (!is_numeric($value))
-			return $this->breach('The given value is not numeric.');
+			return $this->breach('The given value is not numeric.', $value);
 
 		if (!is_float($value) && !is_int($value))
 			$value = floatval($value);
@@ -81,7 +81,7 @@ final class RuleBetween extends AbstractRule
 		if ($value >= $this->min && $value <= $this->max)
 			return true;
 
-		return $this->breach(sprintf('The given value is not between %g and %g', $this->min, $this->max));
+		return $this->breach(sprintf('The given value is not between %g and %g.', $this->min, $this->max), $value);
 	}
 
 }

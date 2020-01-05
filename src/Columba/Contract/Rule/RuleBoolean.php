@@ -41,7 +41,7 @@ final class RuleBoolean extends AbstractRule
 		$allValues = array_merge($trueValues, $falseValues);
 
 		if (!in_array($value, $allValues))
-			return $this->breach('The given value is not a boolean value.');
+			return $this->breach('The given value is not a boolean value.', $value);
 
 		$value = in_array($value, $trueValues);
 

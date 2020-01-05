@@ -36,14 +36,15 @@ class Contract
 	 * @param Term   $term
 	 * @param int    $reason
 	 * @param string $message
+	 * @param mixed  $value
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function breach(Term $term, int $reason, string $message = ''): bool
+	public function breach(Term $term, int $reason, string $message = '', $value = null): bool
 	{
-		$this->errors[] = [$term->getAlias(), $reason, $message];
+		$this->errors[] = [$term->getAlias(), $reason, $message, $value];
 
 		return false;
 	}
@@ -97,7 +98,10 @@ class Contract
 
 			$termName = $term->getName();
 
-			if (!isset($data[$termName]) && !$term->isOptional())
+			if ($term->isOptional() && (!isset($data[$termName]) || $data[$termName] === ''))
+				continue;
+
+			if (!isset($data[$termName]) || $data[$termName] === '')
 			{
 				$this->breach($term, ContractBreachException::ERR_VALUE_REQUIRED, 'Value is required.');
 				$breach = $breach || true;

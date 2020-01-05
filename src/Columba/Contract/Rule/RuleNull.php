@@ -30,7 +30,7 @@ final class RuleNull extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if ($value !== null)
-			return $this->breach('The given value is not NULL.');
+			return $this->breach('The given value is not NULL.', $value);
 
 		return true;
 	}

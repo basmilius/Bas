@@ -38,10 +38,10 @@ final class RuleInt extends AbstractRule
 			return true;
 
 		if (!is_numeric($value))
-			return $this->breach('The given value is not numeric.');
+			return $this->breach('The given value is not numeric.', $value);
 
 		if (intval($value) != floatval($value))
-			return $this->breach('The given value is not an integer.');
+			return $this->breach('The given value is not an integer.', $value);
 
 		$value = intval($value);
 

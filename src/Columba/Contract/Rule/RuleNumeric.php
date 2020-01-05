@@ -32,7 +32,7 @@ final class RuleNumeric extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!is_numeric($value))
-			return $this->breach('The given value is not numeric.');
+			return $this->breach('The given value is not numeric.', $value);
 
 		return true;
 	}

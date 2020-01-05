@@ -34,7 +34,7 @@ final class RuleEmail extends AbstractRule
 		if (filter_var($value, FILTER_VALIDATE_EMAIL))
 			return true;
 
-		return $this->breach('The given value is not an e-mailaddress.');
+		return $this->breach('The given value is not an e-mailaddress.', $value);
 	}
 
 }

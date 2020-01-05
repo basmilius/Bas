@@ -53,7 +53,7 @@ final class RuleOneOf extends AbstractRule
 	public final function met(&$value): bool
 	{
 		if (!in_array($value, $this->values))
-			return $this->breach('The given value was not present in the allowed values.');
+			return $this->breach('The given value was not present in the allowed values.', $value);
 
 		return true;
 	}
