@@ -27,6 +27,20 @@ function exists(Builder $query): Literal
 }
 
 /**
+ * Returns an "NOT EXISTS $query" {@see Literal} instance.
+ *
+ * @param Builder $query
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function notExists(Builder $query): Literal
+{
+	return new SubQueryLiteral($query, 'NOT EXISTS');
+}
+
+/**
  * Returns a "$query" {@see Literal} instance.
  *
  * @param Builder $query
@@ -122,6 +136,20 @@ function literal($literal): Literal
 		$literal = $literal ? 1 : 0;
 
 	return new Literal(strval($literal));
+}
+
+/**
+ * Returns a comparator aware {@see Literal}.
+ *
+ * @param string $literal
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function comparatorLiteral(string $literal): Literal
+{
+	return new ComparatorAwareLiteral($literal);
 }
 
 /**

@@ -44,7 +44,7 @@ class Builder extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function and(?string $column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function and($column = null, $comparator = null, $value = null, bool $addParam = true)
 	{
 		return $this->addExpression('AND', $column, $comparator, $value, $addParam);
 	}
@@ -121,7 +121,7 @@ class Builder extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function having(?string $column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function having($column = null, $comparator = null, $value = null, bool $addParam = true)
 	{
 		return $this->addExpression('HAVING', $column, $comparator, $value, $addParam);
 	}
@@ -403,7 +403,7 @@ class Builder extends Base
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function where(?string $column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function where($column = null, $comparator = null, $value = null, bool $addParam = true)
 	{
 		return $this->addExpression($this->hasClause('WHERE') ? 'AND' : 'WHERE', $column, $comparator, $value, $addParam);
 	}
