@@ -33,9 +33,9 @@ abstract class Base implements IArray, IJson
 	use ArrayAccess;
 	use ObjectAccess;
 
-	protected array $data = [];
 	protected bool $isNew;
 	protected array $modified = [];
+	private array $data = [];
 
 	protected static array $columns = [];
 	protected static array $immutable = [];
@@ -69,6 +69,19 @@ abstract class Base implements IArray, IJson
 			return;
 
 		$this->prepare($this->data);
+	}
+
+	/**
+	 * Sets the model's data.
+	 *
+	 * @param array $data
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function setData(array $data): void
+	{
+		$this->data = $data;
 	}
 
 	/**

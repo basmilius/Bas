@@ -240,9 +240,11 @@ abstract class Model extends Base
 	 */
 	protected function afterInsert(int $newPrimaryKey): void
 	{
-		$this->data = static::where(static::column(static::$primaryKey), $newPrimaryKey)
-			->model(null)
-			->single();
+		$this->setData(
+			static::where(static::column(static::$primaryKey), $newPrimaryKey)
+				->model(null)
+				->single()
+		);
 	}
 
 	/**
