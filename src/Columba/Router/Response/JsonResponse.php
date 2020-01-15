@@ -96,7 +96,7 @@ class JsonResponse extends AbstractResponse
 
 		$response = json_encode($result, $this->options);
 
-		if ($response === false)
+		if (is_bool($response))
 			throw new RouterException('Got a JSON error: [' . json_last_error() . ']' . json_last_error_msg(), RouterException::ERR_ILLEGAL);
 
 		return $response;
