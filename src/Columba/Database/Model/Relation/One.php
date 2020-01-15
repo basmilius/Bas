@@ -42,7 +42,7 @@ class One extends Relation
 	{
 		parent::__construct($referencedModel);
 
-		$this->referenceKey = $referenceKey ?? $referencedModel::table() . '.id';
+		$this->referenceKey = $referenceKey ?? $referencedModel::column('id');
 		$this->selfKey = $selfKey ?? $referencedModel::table() . '_id';
 	}
 
@@ -53,6 +53,15 @@ class One extends Relation
 	 */
 	public function get(): ?Model
 	{
+		if ($this->referencedModel::column($this->referencedModel::primaryKey()) === $this->referenceKey)
+		{
+			$cache = $this->referencedModel::connection()->getCache();
+			$key = $this->model->getValue($this->selfKey);
+
+			if ($cache->has($key, $this->referencedModel))
+				return $cache->get($key, $this->referencedModel);
+		}
+
 		return $this->collection()->first();
 	}
 

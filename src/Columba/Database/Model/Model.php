@@ -417,6 +417,18 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Gets the {@see Connection} instance based on our {@see self::$connectionId}.
+	 *
+	 * @return Connection
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function connection(): Connection
+	{
+		return static::$connections[static::$connectionId] ??= Db::getOrFail(static::$connectionId);
+	}
+
+	/**
 	 * Deletes an instance by its primary key.
 	 *
 	 * @param string|int $primaryKey
@@ -710,18 +722,6 @@ abstract class Model extends Base
 	{
 		return $selectCallable($columns)
 			->from(static::$table);
-	}
-
-	/**
-	 * Gets the {@see Connection} instance based on our {@see self::$connectionId}.
-	 *
-	 * @return Connection
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	protected static function connection(): Connection
-	{
-		return static::$connections[static::$connectionId] ??= Db::getOrFail(static::$connectionId);
 	}
 
 	/**
