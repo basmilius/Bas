@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Router\Response;
 
 use Columba\Router\Context;
+use Columba\Router\RouterException;
 use function is_array;
 use function json_encode;
 use const JSON_BIGINT_AS_STRING;
@@ -93,7 +94,12 @@ class JsonResponse extends AbstractResponse
 			$result = $value;
 		}
 
-		return json_encode($result, $this->options);
+		$response = json_encode($result, $this->options);
+
+		if ($response === false)
+			throw new RouterException('Got a JSON error: [' . json_last_error() . ']' . json_last_error_msg(), RouterException::ERR_ILLEGAL);
+
+		return $response;
 	}
 
 }
