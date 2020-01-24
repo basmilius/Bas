@@ -37,15 +37,14 @@ use function in_array;
 use function is_array;
 use function is_null;
 use function iterator_to_array;
-use function reset;
 use function shuffle;
 use function usort;
 
 /**
  * Class Collection
  *
- * @package Columba\Data
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Data
  * @since 1.4.0
  */
 class Collection implements IArray, ICountable, IIterator, IJson
@@ -231,7 +230,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
-	 * Returns the first element of the collection passing the truth check.
+	 * Returns the first element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
 	 * @param mixed         $default
@@ -243,7 +242,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function first(?callable $fn = null, $default = null)
 	{
 		if ($fn === null)
-			return $this->count() > 0 ? reset($this->items) : $default;
+			return $this->count() > 0 ? ArrayUtil::first($this->items) : $default;
 
 		return ArrayUtil::first($this->items, $fn, $default);
 	}
@@ -265,6 +264,24 @@ class Collection implements IArray, ICountable, IIterator, IJson
 			$items[$fn($item)][] = $item;
 
 		return new static(array_values($items));
+	}
+
+	/**
+	 * Returns the last element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
+	 *
+	 * @param callable|null $fn
+	 * @param mixed         $default
+	 *
+	 * @return mixed|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function last(?callable $fn = null, $default = null)
+	{
+		if ($fn === null)
+			return $this->count() > 0 ? ArrayUtil::last($this->items) : $default;
+
+		return ArrayUtil::last($this->items, $fn, $default);
 	}
 
 	/**

@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Columba\Util;
 
 use function array_filter;
+use function array_key_first;
 use function array_keys;
+use function array_reverse;
 use function array_values;
 use function count;
 use function is_null;
@@ -21,15 +23,15 @@ use function is_null;
 /**
  * Class ArrayUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.0.0
  */
 final class ArrayUtil
 {
 
 	/**
-	 * Returns the first element of an array passing the truth check.
+	 * Returns the first element of the given array. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param array         $arr
 	 * @param callable|null $fn
@@ -46,8 +48,12 @@ final class ArrayUtil
 			if (empty($arr))
 				return $default;
 
-			foreach ($arr as $item)
-				return $item;
+			$key = array_key_first($arr);
+
+			if ($key === null)
+				return $default;
+
+			return $arr[$key];
 		}
 
 		foreach ($arr as $key => $value)
@@ -55,6 +61,24 @@ final class ArrayUtil
 				return $value;
 
 		return $default;
+	}
+
+	/**
+	 * Returns the last element of the given array. When {@see $fn} is given, it's used as a truth check.
+	 *
+	 * @param array         $arr
+	 * @param callable|null $fn
+	 * @param mixed         $default
+	 *
+	 * @return mixed|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function last(array $arr, callable $fn = null, $default = null)
+	{
+		$arr = array_reverse($arr);
+
+		return self::first($arr, $fn, $default);
 	}
 
 	/**
