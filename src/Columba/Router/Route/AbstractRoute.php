@@ -44,8 +44,8 @@ use function strtr;
 /**
  * Class AbstractRoute
  *
- * @package Columba\Router\Route
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Route
  * @since 1.3.0
  */
 abstract class AbstractRoute
@@ -104,13 +104,13 @@ abstract class AbstractRoute
 		$context = $this->getContext();
 		$result = null;
 
-		$this->parent->onExecute($this, $context);
-
-		$rootRouter = $this->parent instanceof SubRouter ? $this->parent->getRootRouter() : $this->parent;
-		$rootRouter->setCurrentRoute($this);
-
 		try
 		{
+			$this->parent->onExecute($this, $context);
+
+			$rootRouter = $this->parent instanceof SubRouter ? $this->parent->getRootRouter() : $this->parent;
+			$rootRouter->setCurrentRoute($this);
+
 			if ($context->getResponse()[0] === null && $context->getRedirectPath() === null)
 				$this->executeImpl();
 
