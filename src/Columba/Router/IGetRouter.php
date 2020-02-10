@@ -25,7 +25,7 @@ interface IGetRouter
 	/**
 	 * Gets the {@see Router} instance.
 	 *
-	 * @return Router
+	 * @return Router&SubRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */

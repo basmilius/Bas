@@ -70,7 +70,7 @@ final class RouteParam
 				break;
 
 			case 'bool':
-				$regex = '(0|false|1|true)';
+				$regex = '(1|0|true|false)';
 				break;
 
 			default:

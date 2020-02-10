@@ -93,7 +93,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function add(AbstractRoute $route): void
+	public function add(AbstractRoute $route): void
 	{
 		if (strpos($route->getPath(), '/*') !== false)
 			array_push($this->routes, $route);
@@ -113,7 +113,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
+	public function addFromArguments(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
 		$path = array_filter(array_merge($this->prefixes, [trim($path, '/')]));
 		$path = '/' . implode('/', $path);
@@ -153,7 +153,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function define(string $name, $value): void
+	public function define(string $name, $value): void
 	{
 		$this->globals[$name] = $value;
 	}
@@ -179,7 +179,7 @@ class Router
 	 * @since 1.3.0
 	 * @internal
 	 */
-	public final function getMiddlewares(): array
+	public function getMiddlewares(): array
 	{
 		return $this->middlewares;
 	}
@@ -194,7 +194,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function use(string $middleware, ...$arguments): void
+	public function use(string $middleware, ...$arguments): void
 	{
 		if (!class_exists($middleware))
 			throw new RouterException('Middleware ' . $middleware . ' not found!', RouterException::ERR_MIDDLEWARE_NOT_FOUND);
@@ -321,7 +321,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function all(string $path, ...$arguments): void
+	public function all(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([], $path, ...$arguments);
 	}
@@ -337,7 +337,7 @@ class Router
 	 * @since 1.6.0
 	 * @author Bas Milius <bas@mili.us>
 	 */
-	public final function match(array $requestMethods, string $path, ...$arguments): void
+	public function match(array $requestMethods, string $path, ...$arguments): void
 	{
 		$this->addFromArguments($requestMethods, $path, ...$arguments);
 	}
@@ -352,7 +352,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function delete(string $path, ...$arguments): void
+	public function delete(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::DELETE], $path, ...$arguments);
 	}
@@ -367,7 +367,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function get(string $path, ...$arguments): void
+	public function get(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::GET], $path, ...$arguments);
 	}
@@ -382,7 +382,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function head(string $path, ...$arguments): void
+	public function head(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::HEAD], $path, ...$arguments);
 	}
@@ -397,7 +397,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function options(string $path, ...$arguments): void
+	public function options(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::OPTIONS], $path, ...$arguments);
 	}
@@ -412,7 +412,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function patch(string $path, ...$arguments): void
+	public function patch(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::PATCH], $path, ...$arguments);
 	}
@@ -427,7 +427,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function post(string $path, ...$arguments): void
+	public function post(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::POST], $path, ...$arguments);
 	}
@@ -442,7 +442,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function put(string $path, ...$arguments): void
+	public function put(string $path, ...$arguments): void
 	{
 		$this->addFromArguments([RequestMethod::PUT], $path, ...$arguments);
 	}
@@ -458,7 +458,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public final function redirect(string $path, string $destination, array $requestMethods = [], int $responseCode = ResponseCode::SEE_OTHER): void
+	public function redirect(string $path, string $destination, array $requestMethods = [], int $responseCode = ResponseCode::SEE_OTHER): void
 	{
 		$this->add(new RedirectRoute($this, $requestMethods, $path, $destination, $responseCode));
 	}
@@ -470,7 +470,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getCurrentRoute(): ?AbstractRoute
+	public function getCurrentRoute(): ?AbstractRoute
 	{
 		return $this->currentRoute;
 	}
@@ -481,7 +481,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function setCurrentRoute(?AbstractRoute $currentRoute)
+	public function setCurrentRoute(?AbstractRoute $currentRoute)
 	{
 		$this->currentRoute = $currentRoute;
 	}

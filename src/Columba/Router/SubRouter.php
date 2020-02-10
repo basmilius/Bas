@@ -35,20 +35,6 @@ class SubRouter extends Router
 	private array $parameters = [];
 
 	/**
-	 * SubRouter constructor.
-	 *
-	 * @param AbstractResponse|null $response
-	 * @param AbstractRenderer|null $renderer
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
-	{
-		parent::__construct($response, $renderer);
-	}
-
-	/**
 	 * Adds a route param.
 	 *
 	 * @param string $name

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Route;
 
+use Columba\Facade\Debuggable;
 use Columba\Http\ResponseCode;
 use Columba\Router\Context;
 use Columba\Router\Response\AbstractResponse;
@@ -48,7 +49,7 @@ use function strtr;
  * @package Columba\Router\Route
  * @since 1.3.0
  */
-abstract class AbstractRoute
+abstract class AbstractRoute implements Debuggable
 {
 
 	private bool $allowSubRoutes = false;
@@ -276,11 +277,14 @@ abstract class AbstractRoute
 
 		foreach ($params as $index => $param)
 		{
-			$paramsValues[$param->getName()] = (!empty($matches[$param->getName()]) || ($matches[$param->getName()] ?? null) === '0') ? $param->sanitize($matches[$param->getName()]) : (isset($_REQUEST[$param->getName()]) ? $param->sanitize($_REQUEST[$param->getName()]) : $param->getDefaultValue());
-			$value = $matches[$param->getName()] ?? $param->getDefaultValue();
+			$name = $param->getName();
+			$match = $matches[$name] ?? null;
+
+			$paramsValues[$name] = (!empty($match) || $match === '0') ? $param->sanitize($match) : (isset($_REQUEST[$name]) ? $param->sanitize($_REQUEST[$name]) : $param->getDefaultValue());
+			$value = $match ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
-				$pathValues = str_replace('$' . $param->getName(), strval($value), $pathValues);
+				$pathValues = str_replace('$' . $name, strval($value), $pathValues);
 		}
 
 		if (isset($matches['wildcard']))
