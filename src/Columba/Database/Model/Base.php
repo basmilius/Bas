@@ -15,8 +15,13 @@ namespace Columba\Database\Model;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Mixin\ArrayAccess;
 use Columba\Database\Model\Mixin\ObjectAccess;
+use Columba\Facade\Debuggable;
+use Columba\Facade\Gettable;
 use Columba\Facade\IArray;
 use Columba\Facade\IJson;
+use Columba\Facade\IsSettable;
+use Columba\Facade\Settable;
+use Columba\Facade\Unsettable;
 use function in_array;
 use function sprintf;
 
@@ -27,7 +32,7 @@ use function sprintf;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-abstract class Base implements IArray, IJson
+abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
 {
 
 	use ArrayAccess;
@@ -35,7 +40,7 @@ abstract class Base implements IArray, IJson
 
 	protected bool $isNew;
 	protected array $modified = [];
-	private array $data = [];
+	private array $data;
 
 	protected static array $columns = [];
 	protected static array $immutable = [];
