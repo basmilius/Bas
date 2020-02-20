@@ -10,18 +10,8 @@
 
 namespace PHPSTORM_META;
 
-expectedArguments(
-	\Columba\Util\Stopwatch::stop(),
-	2,
-	\Columba\Util\Stopwatch::UNIT_MICROSECONDS,
-	\Columba\Util\Stopwatch::UNIT_MILLISECONDS,
-	\Columba\Util\Stopwatch::UNIT_NANOSECONDS,
-	\Columba\Util\Stopwatch::UNIT_SECONDS
-);
-
-expectedArguments(
-	\Columba\Router\Context::setResponseCode(),
-	0,
+registerArgumentsSet(
+	'columba_response_codes',
 	\Columba\Http\ResponseCode::CONTINUE,
 	\Columba\Http\ResponseCode::SWITCHING_PROTOCOLS,
 	\Columba\Http\ResponseCode::PROCESSING,
@@ -85,3 +75,19 @@ expectedArguments(
 	\Columba\Http\ResponseCode::NOT_EXTENDED,
 	\Columba\Http\ResponseCode::NETWORK_AUTHENTICATION_REQUIRED
 );
+
+registerArgumentsSet(
+	'columba_stopwatch_units',
+	\Columba\Util\Stopwatch::UNIT_MICROSECONDS,
+	\Columba\Util\Stopwatch::UNIT_MILLISECONDS,
+	\Columba\Util\Stopwatch::UNIT_NANOSECONDS,
+	\Columba\Util\Stopwatch::UNIT_SECONDS
+);
+
+expectedArguments(\Columba\Util\Stopwatch::stop(), 2, argumentsSet('columba_stopwatch_units'));
+
+expectedArguments(\Columba\Router\Context::setResponseCode(), 0, argumentsSet('columba_response_codes'));
+
+expectedReturnValues(\Columba\Http\Response::getResponseCode(), argumentsSet('columba_response_codes'));
+expectedReturnValues(\Columba\OAuth2\Exception\OAuth2Exception::getResponseCode(), argumentsSet('columba_response_codes'));
+expectedReturnValues(\Columba\Router\Context::getResponseCode(), argumentsSet('columba_response_codes'));
