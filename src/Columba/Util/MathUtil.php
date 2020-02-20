@@ -49,33 +49,6 @@ final class MathUtil
 	}
 
 	/**
-	 * Generates an unique id based on {@see $seed} and {@see $id}.
-	 *
-	 * @param AbstractDatabaseDriver $db
-	 * @param int                    $seed
-	 * @param int                    $id
-	 *
-	 * @return string|null
-	 * @throws DatabaseException
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public static function generateUniqueId(AbstractDatabaseDriver $db, int $seed, int $id): ?string
-	{
-		return $db
-			->prepare('SELECT CONCAT(
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed:=ROUND(rand(' . ($seed + $id) . ')*4294967296))*64+1), 1),
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed:=ROUND(rand(@seed)*4294967296))*64+1), 1),
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed:=ROUND(rand(@seed)*4294967296))*64+1), 1),
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed:=ROUND(rand(@seed)*4294967296))*64+1), 1),
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed:=ROUND(rand(@seed)*4294967296))*64+1), 1),
-			              SUBSTRING(\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-\', FLOOR(RAND(@seed)*64+1), 1)
-			          ) AS unique_id')
-			->execute()
-			->toSingle('unique_id');
-	}
-
-	/**
 	 * Rounds the value up to the nearest multiple.
 	 *
 	 * @param float|int $value

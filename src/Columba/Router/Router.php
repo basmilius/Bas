@@ -481,7 +481,7 @@ class Router
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function setCurrentRoute(?AbstractRoute $currentRoute)
+	public function setCurrentRoute(?AbstractRoute $currentRoute): void
 	{
 		$this->currentRoute = $currentRoute;
 	}

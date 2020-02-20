@@ -77,6 +77,17 @@ registerArgumentsSet(
 );
 
 registerArgumentsSet(
+	'columba_request_methods',
+	\Columba\Http\RequestMethod::DELETE,
+	\Columba\Http\RequestMethod::GET,
+	\Columba\Http\RequestMethod::HEAD,
+	\Columba\Http\RequestMethod::OPTIONS,
+	\Columba\Http\RequestMethod::PATCH,
+	\Columba\Http\RequestMethod::POST,
+	\Columba\Http\RequestMethod::PUT
+);
+
+registerArgumentsSet(
 	'columba_stopwatch_units',
 	\Columba\Util\Stopwatch::UNIT_MICROSECONDS,
 	\Columba\Util\Stopwatch::UNIT_MILLISECONDS,
@@ -84,10 +95,23 @@ registerArgumentsSet(
 	\Columba\Util\Stopwatch::UNIT_SECONDS
 );
 
+exitPoint(\Columba\Util\dumpDie());
+exitPoint(\Columba\Util\preDie());
+
 expectedArguments(\Columba\Util\Stopwatch::stop(), 2, argumentsSet('columba_stopwatch_units'));
 
+expectedArguments(\Columba\Http\Request::__construct(), 1, argumentsSet('columba_request_methods'));
+expectedArguments(\Columba\Http\Request::setRequestMethod(), 0, argumentsSet('columba_request_methods'));
+expectedArguments(\Columba\Http\ResponseCode::getMessage(), 0, argumentsSet('columba_response_codes'));
 expectedArguments(\Columba\Router\Context::setResponseCode(), 0, argumentsSet('columba_response_codes'));
+expectedArguments(\Columba\Router\Router::addFromArguments(), 0, argumentsSet('columba_request_methods'));
 
+expectedReturnValues(\Columba\Http\Request::getRequestMethod(), argumentsSet('columba_request_methods'));
 expectedReturnValues(\Columba\Http\Response::getResponseCode(), argumentsSet('columba_response_codes'));
+expectedReturnValues(\Columba\Http\ResponseCode::getCode(), argumentsSet('columba_response_codes'));
 expectedReturnValues(\Columba\OAuth2\Exception\OAuth2Exception::getResponseCode(), argumentsSet('columba_response_codes'));
 expectedReturnValues(\Columba\Router\Context::getResponseCode(), argumentsSet('columba_response_codes'));
+
+override(\Columba\Database\Db::create(), type(0));
+override(\Columba\Util\ArrayUtil::first(), elementType(0));
+override(\Columba\Util\ArrayUtil::last(), elementType(0));
