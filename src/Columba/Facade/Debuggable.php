@@ -25,10 +25,10 @@ interface Debuggable
 	/**
 	 * Returns debug information of the current object.
 	 *
-	 * @return array
+	 * @return array|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __debugInfo(): array;
+	public function __debugInfo(): ?array;
 
 }
