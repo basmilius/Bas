@@ -43,12 +43,11 @@ final class RedirectRoute extends AbstractRoute
 	 * @param string   $path
 	 * @param string   $destination
 	 * @param int      $responseCode
-	 * @param array    $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public function __construct(Router $parent, array $requestMethods, string $path, string $destination, int $responseCode, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path, string $destination, int $responseCode)
 	{
 		$this->destination = $destination;
 		$this->responseCode = $responseCode;
@@ -62,7 +61,7 @@ final class RedirectRoute extends AbstractRoute
 
 		$path = preg_replace('/\((bool|int|string)\)/', '', $path);
 
-		parent::__construct($parent, $requestMethods, $path, $options);
+		parent::__construct($parent, $requestMethods, $path);
 	}
 
 	/**
@@ -88,6 +87,18 @@ final class RedirectRoute extends AbstractRoute
 	public final function getValidatableParams(): array
 	{
 		return $this->params;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		return array_merge(parent::__debugInfo(), [
+			'destination' => $this->destination
+		]);
 	}
 
 }

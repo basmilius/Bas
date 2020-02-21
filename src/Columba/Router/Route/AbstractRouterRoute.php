@@ -14,6 +14,7 @@ namespace Columba\Router\Route;
 
 use Columba\Router\Router;
 use Columba\Router\SubRouter;
+use function array_merge;
 use function mb_strlen;
 use function mb_substr;
 
@@ -76,12 +77,36 @@ abstract class AbstractRouterRoute extends AbstractRoute
 		if ($relativePath[0] !== '/')
 			$relativePath = '/' . $relativePath;
 
+		$this->ensureRouterInstance();
+
 		$this->matchingRoute = $this->router->find($relativePath, $requestMethod, $this->getContext());
 
 		if ($this->matchingRoute === null)
 			return $this->router->onNotFound($path, $this->getContext());
 
 		return true;
+	}
+
+	/**
+	 * Ensures that a router instance is available.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function ensureRouterInstance(): void
+	{
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		return array_merge(parent::__debugInfo(), [
+			'children' => $this->getRouter()->getRoutes()
+		]);
 	}
 
 }

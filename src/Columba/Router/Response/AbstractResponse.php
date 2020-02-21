@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Response;
 
+use Columba\Facade\Debuggable;
 use Columba\Http\ResponseCode;
 use Columba\Router\Context;
 use Columba\Util\ServerTiming;
@@ -25,7 +26,7 @@ use function http_response_code;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-abstract class AbstractResponse
+abstract class AbstractResponse implements Debuggable
 {
 
 	private array $headers = [];
@@ -34,7 +35,7 @@ abstract class AbstractResponse
 	 * Adds a response header.
 	 *
 	 * @param string $name
-	 * @param mixed $values
+	 * @param mixed  $values
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -82,5 +83,15 @@ abstract class AbstractResponse
 	 * @since 1.3.0
 	 */
 	protected abstract function respond(Context $context, $value): string;
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		return [];
+	}
 
 }

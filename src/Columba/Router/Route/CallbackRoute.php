@@ -16,6 +16,7 @@ use Closure;
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
+use Columba\Util\ReflectionUtil;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionNamedType;
@@ -41,14 +42,13 @@ class CallbackRoute extends AbstractRoute
 	 * @param string[] $requestMethods
 	 * @param string   $path
 	 * @param Closure  $callback
-	 * @param array    $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, array $requestMethods, string $path, Closure $callback, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path, Closure $callback)
 	{
-		parent::__construct($parent, $requestMethods, $path, $options);
+		parent::__construct($parent, $requestMethods, $path);
 
 		$this->callback = $callback;
 	}
@@ -130,6 +130,18 @@ class CallbackRoute extends AbstractRoute
 		{
 			throw new RouterException('Could not create reflection instance.', RouterException::ERR_REFLECTION_FAILED, $err);
 		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		return array_merge(parent::__debugInfo(), [
+			'callable' => ReflectionUtil::getClosureName($this->callback)
+		]);
 	}
 
 }

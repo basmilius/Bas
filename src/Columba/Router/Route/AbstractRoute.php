@@ -54,7 +54,7 @@ abstract class AbstractRoute implements Debuggable
 
 	private bool $allowSubRoutes = false;
 	private ?Context $context = null;
-	private array $options;
+	private array $options = [];
 	private string $path;
 
 	/** @var Router&SubRouter */
@@ -69,14 +69,12 @@ abstract class AbstractRoute implements Debuggable
 	 * @param Router   $parent
 	 * @param string[] $requestMethods
 	 * @param string   $path
-	 * @param array    $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $parent, array $requestMethods, string $path, array $options = [])
+	public function __construct(Router $parent, array $requestMethods, string $path)
 	{
-		$this->options = $options;
 		$this->requestMethods = array_flip($requestMethods);
 		$this->path = $path;
 		$this->parent = $parent;
@@ -165,6 +163,22 @@ abstract class AbstractRoute implements Debuggable
 	 * @since 1.3.0
 	 */
 	public abstract function executeImpl(): void;
+
+	/**
+	 * Sets the options of the route.
+	 *
+	 * @param array $options
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function options(array $options): self
+	{
+		$this->options = $options;
+
+		return $this;
+	}
 
 	/**
 	 * Resolves a path relative to this {@see AbstractRoute}.
@@ -373,12 +387,11 @@ abstract class AbstractRoute implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function __debugInfo(): array
+	public function __debugInfo(): array
 	{
 		return [
-			'context:' . Context::class => $this->context,
-			'path:string' => $this->path,
-			'requestMethod:array' => array_keys($this->requestMethods)
+			'path' => $this->path,
+			'requestMethods' => implode(', ', array_keys($this->requestMethods))
 		];
 	}
 

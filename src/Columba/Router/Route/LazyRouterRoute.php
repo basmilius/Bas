@@ -51,21 +51,6 @@ final class LazyRouterRoute extends AbstractRouterRoute
 	}
 
 	/**
-	 * Ensures that a router instance is available.
-	 *
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
-	 */
-	public final function ensureRouterInstance(): void
-	{
-		if ($this->router !== null)
-			return;
-
-		$this->router = new $this->routerImplementation(...$this->routerArguments);
-		$this->router->setParent($this->getParentRouter());
-	}
-
-	/**
 	 * Gets the {@see SubRouter} instance.
 	 *
 	 * @return SubRouter
@@ -97,13 +82,15 @@ final class LazyRouterRoute extends AbstractRouterRoute
 	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.3.0
+	 * @since 1.6.0
 	 */
-	public function isMatch(string $path, string $requestMethod): bool
+	protected function ensureRouterInstance(): void
 	{
-		$this->ensureRouterInstance();
+		if ($this->router !== null)
+			return;
 
-		return parent::isMatch($path, $requestMethod);
+		$this->router = new $this->routerImplementation(...$this->routerArguments);
+		$this->router->setParent($this->getParentRouter());
 	}
 
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Router\Middleware;
 
+use Columba\Facade\Debuggable;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Context;
 use Columba\Router\Router;
@@ -24,7 +25,7 @@ use Columba\Router\RouterException;
  * @author Bas Milius <bas@mili.us>
  * @since 1.3.0
  */
-abstract class AbstractMiddleware
+abstract class AbstractMiddleware implements Debuggable
 {
 
 	protected Router $router;
@@ -54,5 +55,15 @@ abstract class AbstractMiddleware
 	 * @since 1.3.0
 	 */
 	public abstract function forContext(AbstractRoute $route, Context $context, bool &$isValid): void;
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		return [];
+	}
 
 }

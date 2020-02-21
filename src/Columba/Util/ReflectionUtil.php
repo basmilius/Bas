@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace Columba\Util;
 
+use Closure;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionParameter;
 use function get_class;
@@ -61,6 +63,29 @@ final class ReflectionUtil
 		}
 
 		return false;
+	}
+
+	/**
+	 * Gets the name of a closure.
+	 *
+	 * @param Closure $closure
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function getClosureName(Closure $closure): string
+	{
+		try
+		{
+			$ref = new ReflectionFunction($closure);
+
+			return get_class($ref->getClosureThis()) . '::' . $ref->getName();
+		}
+		catch (ReflectionException $err)
+		{
+			return '{closure}';
+		}
 	}
 
 	/**
