@@ -175,7 +175,7 @@ class Domain implements Debuggable
 					if ($realKey === '@')
 						$this->strings[$key] = $string;
 					else
-						$this->strings[$key] = fn(int $count) => $count === 0 ? $string[0] : ($count === 1 ? $string[1] : $string[2]);
+						$this->strings[$key] = fn($count) => $count === 0 ? $string[0] : ($count === 1 ? $string[1] : $string[2]);
 				}
 				else
 				{
