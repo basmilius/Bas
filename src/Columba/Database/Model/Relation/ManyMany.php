@@ -79,7 +79,7 @@ class ManyMany extends Relation
 	{
 		return $this
 			->leftJoin($this->linkingTable, fn(Builder $query) => $query
-				->on($this->referenceKey, '=', $this->referencedModel::column($this->referencedModel::primaryKey())))
+				->on(Model::column($this->referenceKey, $this->linkingTable), '=', $this->referencedModel::column($this->referencedModel::primaryKey())))
 			->where(Model::column($this->selfKey, $this->linkingTable), '=', $this->model[$this->model::primaryKey()]);
 	}
 
