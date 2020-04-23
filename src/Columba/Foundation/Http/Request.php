@@ -279,6 +279,9 @@ class Request implements IJson
 		$accept = explode(',', $accept);
 		$languages = [];
 
+		if (isset($_GET['language']) && strlen($_GET['language']) === 2 && ctype_alpha($_GET['language']))
+			$languages[] = ['q' => '2.0', 'cca2' => $_GET['language'], 'code' => $_GET['language']];
+
 		foreach ($accept as $lang)
 		{
 			$lang = explode(';', $lang);
