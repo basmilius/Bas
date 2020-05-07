@@ -267,6 +267,18 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
+	 * Returns TRUE if the collection is empty.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @since 1.6.0
+	 */
+	public function isEmpty(): bool
+	{
+		return count($this->items) === 0;
+	}
+
+	/**
 	 * Returns the last element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
