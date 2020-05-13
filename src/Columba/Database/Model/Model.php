@@ -12,22 +12,19 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model;
 
+use Columba\Database\Cast\ICast;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
 use PDO;
+use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function array_unshift;
 use function implode;
 use function in_array;
-use const JSON_BIGINT_AS_STRING;
-use const JSON_HEX_AMP;
-use const JSON_HEX_APOS;
-use const JSON_HEX_QUOT;
-use const JSON_HEX_TAG;
 
 /**
  * Class Model
@@ -39,6 +36,7 @@ use const JSON_HEX_TAG;
 abstract class Model extends Base
 {
 
+	private static array $castInstances = [];
 	private static array $connections = [];
 	private static array $initialized = [];
 
@@ -51,7 +49,7 @@ abstract class Model extends Base
 	protected static int $primaryKeyType = PDO::PARAM_INT;
 	protected static string $table = '';
 
-	protected static array $jsonColumns = [];
+	protected static array $casts = [];
 	protected static array $macros = [];
 
 	/** @var Relation[][] */
@@ -81,7 +79,6 @@ abstract class Model extends Base
 				->collection()
 				->column('COLUMN_NAME')
 				->toArray();
-			static::$jsonColumns[static::class] ??= [];
 			static::$macros[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
@@ -201,10 +198,14 @@ abstract class Model extends Base
 		{
 			$value = $this->getValue($column);
 
-			if (isset(static::$jsonColumns[static::class][$column]) && $value !== null)
-				$value = json_encode($value, JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
-			else if (is_bool($value))
-				$value = $value ? 1 : 0;
+			if (array_key_exists($column, static::$casts))
+			{
+				/** @var ICast $cast */
+				$castClass = static::$casts[$column];
+				$cast = self::$castInstances[$castClass] ?? self::$castInstances[$castClass] = new $castClass();
+
+				$value = $cast->set($this, $column, $value, $this->modified);
+			}
 
 			$columnsAndValues[$column] = $value;
 		}
@@ -254,6 +255,16 @@ abstract class Model extends Base
 	 */
 	protected function prepare(array &$data): void
 	{
+		foreach (static::$casts as $key => $castClass)
+		{
+			if (!array_key_exists($key, $data))
+				continue;
+
+			/** @var ICast $cast */
+			$cast = self::$castInstances[$castClass] ?? self::$castInstances[$castClass] = new $castClass();
+
+			$data[$key] = $cast->get($this, $key, $data[$key], $data);
+		}
 	}
 
 	/**
@@ -400,7 +411,7 @@ abstract class Model extends Base
 	/**
 	 * Returns a fully qualified column name for the given column.
 	 *
-	 * @param string      $column
+	 * @param string $column
 	 * @param string|null $table
 	 *
 	 * @return string
@@ -493,7 +504,7 @@ abstract class Model extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -562,7 +573,7 @@ abstract class Model extends Base
 	 * Initiates a query builder with a SELECT [$suffix] clause assigned to the current model.
 	 *
 	 * @param string $suffix
-	 * @param array  $columns
+	 * @param array $columns
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -644,7 +655,7 @@ abstract class Model extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -659,7 +670,7 @@ abstract class Model extends Base
 	/**
 	 * Creates a model instance.
 	 *
-	 * @param array      $data
+	 * @param array $data
 	 * @param array|null $arguments
 	 *
 	 * @return static
@@ -683,7 +694,7 @@ abstract class Model extends Base
 	/**
 	 * Adds a macro.
 	 *
-	 * @param string   $name
+	 * @param string $name
 	 * @param callable $fn
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -697,7 +708,7 @@ abstract class Model extends Base
 	/**
 	 * Defines a relationship.
 	 *
-	 * @param string   $name
+	 * @param string $name
 	 * @param Relation $relation
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -712,7 +723,7 @@ abstract class Model extends Base
 	 * Base SELECT builder.
 	 *
 	 * @param callable $selectCallable
-	 * @param array    $columns
+	 * @param array $columns
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -732,26 +743,6 @@ abstract class Model extends Base
 	 */
 	protected static function define(): void
 	{
-	}
-
-	/**
-	 * Decodes a JSON column and saves the column name for saving.
-	 *
-	 * @param string      $column
-	 * @param string|null $json
-	 *
-	 * @return array|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	protected static function json(string $column, ?string $json = null): ?array
-	{
-		static::$jsonColumns[static::class][$column] = true;
-
-		if ($json === null)
-			return null;
-
-		return json_decode($json, true);
 	}
 
 }
