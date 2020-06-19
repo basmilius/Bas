@@ -138,7 +138,7 @@ class Builder extends Base
 	 */
 	public function limit(int $limit, int $offset = 0): self
 	{
-		$this->addPiece('LIMIT', $this->addParam($limit), 0, 1, 1);
+		$this->addPiece('LIMIT', $limit, 0, 1, 1);
 
 		if ($offset > 0)
 			$this->offset($offset);
@@ -157,7 +157,7 @@ class Builder extends Base
 	 */
 	public function offset(int $offset): self
 	{
-		return $this->addPiece('OFFSET', $this->addParam($offset), 0, 1, 1);
+		return $this->addPiece('OFFSET', $offset, 0, 1, 1);
 	}
 
 	/**
