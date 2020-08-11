@@ -33,15 +33,18 @@ class Db
 
 	/** @var Connection[] */
 	private static array $connections = [];
+
 	protected static string $defaultConnectionId = 'default';
+
+	private static array $connected = [];
 
 	/**
 	 * Creates a connection instance.
 	 *
-	 * @param string    $connectionClass
+	 * @param string $connectionClass
 	 * @param Connector $connector
-	 * @param string    $id
-	 * @param bool      $connect
+	 * @param string $id
+	 * @param bool $connect
 	 *
 	 * @return Connection
 	 * @author Bas Milius <bas@mili.us>
@@ -56,7 +59,10 @@ class Db
 		$connection = new $connectionClass($connector, $id);
 
 		if ($connect)
+		{
+			static::$connected[$id] = true;
 			$connection->connect();
+		}
 
 		self::register($connection, $id);
 
@@ -74,7 +80,19 @@ class Db
 	 */
 	public static function get(?string $id = null): ?Connection
 	{
-		return self::$connections[$id ?? static::$defaultConnectionId] ?? null;
+		$id ??= static::$defaultConnectionId;
+		$connection = self::$connections[$id] ?? null;
+
+		if ($connection === null)
+			return null;
+
+		if (!isset(static::$connected[$id]) && $connection->getPdo() === null)
+		{
+			static::$connected[$id] = true;
+			$connection->connect();
+		}
+
+		return $connection;
 	}
 
 	/**
@@ -88,16 +106,18 @@ class Db
 	 */
 	public static function getOrFail(?string $id = null): Connection
 	{
-		if (!isset(self::$connections[$id ?? static::$defaultConnectionId]))
+		$id ??= static::$defaultConnectionId;
+
+		if (!isset(self::$connections[$id]))
 			throw new ConnectionException(sprintf('Database connection with id %s not found.', $id), ConnectionException::ERR_UNDEFINED_CONNECTION);
 
-		return self::$connections[$id ?? static::$defaultConnectionId];
+		return static::get($id);
 	}
 
 	/**
 	 * Registers a connection.
 	 *
-	 * @param Connection  $connection
+	 * @param Connection $connection
 	 * @param string|null $id
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -122,7 +142,7 @@ class Db
 	}
 
 	/**
-	 * @param int         $attribute
+	 * @param int $attribute
 	 * @param string|null $id
 	 *
 	 * @return mixed
@@ -136,7 +156,7 @@ class Db
 	}
 
 	/**
-	 * @param string      $query
+	 * @param string $query
 	 * @param string|null $id
 	 *
 	 * @return int
@@ -191,8 +211,8 @@ class Db
 	}
 
 	/**
-	 * @param string      $query
-	 * @param array       $options
+	 * @param string $query
+	 * @param array $options
 	 * @param string|null $id
 	 *
 	 * @return Statement
@@ -219,7 +239,7 @@ class Db
 	}
 
 	/**
-	 * @param string      $query
+	 * @param string $query
 	 * @param string|null $id
 	 *
 	 * @return mixed
@@ -233,8 +253,8 @@ class Db
 	}
 
 	/**
-	 * @param mixed       $value
-	 * @param int         $type
+	 * @param mixed $value
+	 * @param int $type
 	 * @param string|null $id
 	 *
 	 * @return string
@@ -248,7 +268,7 @@ class Db
 	}
 
 	/**
-	 * @param string      $table
+	 * @param string $table
 	 * @param string|null $database
 	 * @param string|null $id
 	 *
@@ -263,9 +283,9 @@ class Db
 	}
 
 	/**
-	 * @param string      $value
-	 * @param bool        $left
-	 * @param bool        $right
+	 * @param string $value
+	 * @param bool $left
+	 * @param bool $right
 	 * @param string|null $id
 	 *
 	 * @return array
