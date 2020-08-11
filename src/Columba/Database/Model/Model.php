@@ -340,7 +340,7 @@ abstract class Model extends Base
 	protected function publish(array &$data): void
 	{
 		foreach (static::$macros[static::class] as $name => $fn)
-			if (in_array($name, $this->visible))
+			if (in_array($name, $this->visible) || in_array($name, static::$columns[static::class]))
 				$data[$name] = $fn($this);
 
 		foreach ($this->hidden as $column)
@@ -452,7 +452,7 @@ abstract class Model extends Base
 		$data = parent::toArray();
 
 		foreach (array_keys(static::$macros[static::class]) as $macro)
-			if (in_array($macro, $this->visible))
+			if (in_array($macro, $this->visible) || in_array($macro, static::$columns[static::class]))
 				$data[$macro] = $this->resolveMacro($macro);
 
 		return $data;
