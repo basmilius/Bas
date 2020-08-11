@@ -1,0 +1,19 @@
+{
+    "name": "basmilius/columba",
+    "description": "Stuff that I personally use a lot in other projects.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bas Milius",
+            "email": "bas@mili.us"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Columba\\": "src/Columba"
+        }
+    },
+    "require": {}
+}
