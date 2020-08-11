@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Columba\Util;
 
 use function array_filter;
+use function array_flip;
+use function array_intersect_key;
 use function array_key_first;
 use function array_keys;
 use function array_reverse;
@@ -33,9 +35,9 @@ final class ArrayUtil
 	/**
 	 * Returns the first element of the given array. When {@see $fn} is given, it's used as a truth check.
 	 *
-	 * @param array         $arr
+	 * @param array $arr
 	 * @param callable|null $fn
-	 * @param mixed         $default
+	 * @param mixed $default
 	 *
 	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
@@ -66,9 +68,9 @@ final class ArrayUtil
 	/**
 	 * Returns the last element of the given array. When {@see $fn} is given, it's used as a truth check.
 	 *
-	 * @param array         $arr
+	 * @param array $arr
 	 * @param callable|null $fn
-	 * @param mixed         $default
+	 * @param mixed $default
 	 *
 	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
@@ -99,6 +101,21 @@ final class ArrayUtil
 			$result[$item[$key]][] = $item;
 
 		return array_values($result);
+	}
+
+	/**
+	 * Returns a subset of the given array.
+	 *
+	 * @param array $arr
+	 * @param array $keys
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function only(array $arr, array $keys): array
+	{
+		return array_intersect_key($arr, array_flip($keys));
 	}
 
 	/**
