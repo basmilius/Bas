@@ -11,6 +11,10 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
+        "files": [
+            "src/Columba/Database/Query/Builder/functions.php",
+            "src/Columba/Util/functions.php"
+        ],
         "psr-4": {
             "Columba\\": "src/Columba"
         }
