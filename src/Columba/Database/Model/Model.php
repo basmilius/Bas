@@ -18,10 +18,12 @@ use Columba\Database\Db;
 use Columba\Database\Error\ModelException;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
+use Columba\Util\ArrayUtil;
 use PDO;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
+use function array_search;
 use function array_unshift;
 use function implode;
 use function in_array;
@@ -54,6 +56,9 @@ abstract class Model extends Base
 
 	/** @var Relation[][] */
 	protected static array $relationships = [];
+
+	protected array $hidden = [];
+	protected array $visible = [];
 
 	private array $relationCache = [];
 
@@ -157,6 +162,66 @@ abstract class Model extends Base
 		$relationship->setModel($this);
 
 		return $relationship;
+	}
+
+	/**
+	 * Marks the given columns as hidden.
+	 *
+	 * @param string[] $columns
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function makeHidden(array $columns): self
+	{
+		foreach ($columns as $column)
+		{
+			if (($key = array_search($column, $this->visible)) !== false)
+				unset($this->visible[$key]);
+
+			if (in_array($column, static::$columns[static::class]) && !in_array($column, $this->hidden))
+				$this->hidden[] = $column;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Marks the given columns as visible.
+	 *
+	 * @param string[] $columns
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function makeVisible(array $columns): self
+	{
+		foreach ($columns as $column)
+		{
+			if (($key = array_search($column, $this->hidden)) !== false)
+				unset($this->hidden[$key]);
+
+			if (!in_array($column, static::$columns[static::class]) && !in_array($column, $this->visible))
+				$this->visible[] = $column;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Returns only the given columns of the model instance.
+	 *
+	 * @param array $columns
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function only(array $columns): array
+	{
+		return ArrayUtil::only($this->toArray(), $columns);
 	}
 
 	/**
@@ -275,7 +340,11 @@ abstract class Model extends Base
 	protected function publish(array &$data): void
 	{
 		foreach (static::$macros[static::class] as $name => $fn)
-			$data[$name] = $fn($this);
+			if (in_array($name, $this->visible))
+				$data[$name] = $fn($this);
+
+		foreach ($this->hidden as $column)
+			unset($data[$column]);
 	}
 
 	/**
@@ -383,7 +452,8 @@ abstract class Model extends Base
 		$data = parent::toArray();
 
 		foreach (array_keys(static::$macros[static::class]) as $macro)
-			$data[$macro] = $this->resolveMacro($macro);
+			if (in_array($macro, $this->visible))
+				$data[$macro] = $this->resolveMacro($macro);
 
 		return $data;
 	}
