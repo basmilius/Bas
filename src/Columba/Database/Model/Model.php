@@ -276,8 +276,6 @@ abstract class Model extends Base
 	{
 		foreach (static::$macros[static::class] as $name => $fn)
 			$data[$name] = $fn($this);
-
-		$data['@type'] = static::class;
 	}
 
 	/**
