@@ -134,7 +134,7 @@ class Contract
 	public function metOrThrow(array &$data): void
 	{
 		if (!$this->met($data))
-			throw new ContractBreachException('Data did not met contract terms.');
+			throw new ContractBreachException($this->errors, 'Data did not met contract terms.');
 	}
 
 	/**

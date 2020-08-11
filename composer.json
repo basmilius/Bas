@@ -19,5 +19,7 @@
             "Columba\\": "src/Columba"
         }
     },
-    "require": {}
+    "require": {
+        "ext-json": "*"
+    }
 }
