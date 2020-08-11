@@ -38,7 +38,7 @@ class Builder extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -115,7 +115,7 @@ class Builder extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -214,7 +214,7 @@ class Builder extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -257,7 +257,7 @@ class Builder extends Base
 	 * Adds a SET clause.
 	 *
 	 * @param string $column
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -356,7 +356,7 @@ class Builder extends Base
 	 * Adds a UPDATE ... SET ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columnsAndValues
+	 * @param array $columnsAndValues
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -397,7 +397,7 @@ class Builder extends Base
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return Builder
 	 * @author Bas Milius <bas@mili.us>
@@ -411,7 +411,7 @@ class Builder extends Base
 	/**
 	 * Adds a WITH expression.
 	 *
-	 * @param string  $name
+	 * @param string $name
 	 * @param Builder $query
 	 *
 	 * @return $this
@@ -426,7 +426,7 @@ class Builder extends Base
 	/**
 	 * Adds a WITH RECURSIVE expression.
 	 *
-	 * @param string  $name
+	 * @param string $name
 	 * @param Builder $query
 	 *
 	 * @return $this
@@ -442,7 +442,7 @@ class Builder extends Base
 	 * Adds a INSERT INTO ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columns
+	 * @param array $columns
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -457,7 +457,7 @@ class Builder extends Base
 	 * Adds a INSERT IGNORE INTO ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columns
+	 * @param array $columns
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -472,7 +472,7 @@ class Builder extends Base
 	 * Adds a INSERT INTO ... VALUES ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columnsAndValues
+	 * @param array $columnsAndValues
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -494,7 +494,7 @@ class Builder extends Base
 	 * Adds a INSERT IGNORE INTO ... VALUES ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columnsAndValues
+	 * @param array $columnsAndValues
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -516,7 +516,7 @@ class Builder extends Base
 	 * Adds a REPLACE INTO ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columns
+	 * @param array $columns
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -531,7 +531,7 @@ class Builder extends Base
 	 * Adds a REPLACE INTO ... VALUES ... clause.
 	 *
 	 * @param string $table
-	 * @param array  $columnsAndValues
+	 * @param array $columnsAndValues
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -595,7 +595,7 @@ class Builder extends Base
 	 * Adds a SELECT clause with a suffix.
 	 *
 	 * @param string $suffix
-	 * @param array  $columns
+	 * @param array $columns
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -609,7 +609,7 @@ class Builder extends Base
 	/**
 	 * Adds a FULL JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -624,7 +624,7 @@ class Builder extends Base
 	/**
 	 * Adds an INNER JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -639,7 +639,7 @@ class Builder extends Base
 	/**
 	 * Adds a JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -654,7 +654,7 @@ class Builder extends Base
 	/**
 	 * Adds a LEFT JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -669,7 +669,7 @@ class Builder extends Base
 	/**
 	 * Adds a LEFT OUTER JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -684,7 +684,7 @@ class Builder extends Base
 	/**
 	 * Adds a RIGHT JOIN clause.
 	 *
-	 * @param string        $table
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -699,11 +699,11 @@ class Builder extends Base
 	/**
 	 * Adds a conditional AND clause.
 	 *
-	 * @param bool  $condition
+	 * @param bool $condition
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -720,11 +720,11 @@ class Builder extends Base
 	/**
 	 * Adds a conditional OR clause.
 	 *
-	 * @param bool  $condition
+	 * @param bool $condition
 	 * @param mixed $column
 	 * @param mixed $comparator
 	 * @param mixed $value
-	 * @param bool  $addParam
+	 * @param bool $addParam
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -741,8 +741,8 @@ class Builder extends Base
 	/**
 	 * Base function to create INSERT INTO clauses.
 	 *
-	 * @param string   $clause
-	 * @param string   $table
+	 * @param string $clause
+	 * @param string $table
 	 * @param string[] $columns
 	 *
 	 * @return $this
@@ -765,8 +765,8 @@ class Builder extends Base
 	/**
 	 * Base function to create JOIN clauses.
 	 *
-	 * @param string        $clause
-	 * @param string        $table
+	 * @param string $clause
+	 * @param string $table
 	 * @param callable|null $fn
 	 *
 	 * @return $this
@@ -790,7 +790,7 @@ class Builder extends Base
 	/**
 	 * Base function to create SELECT clauses.
 	 *
-	 * @param string   $clause
+	 * @param string $clause
 	 * @param string[] $columns
 	 *
 	 * @return $this
@@ -802,6 +802,30 @@ class Builder extends Base
 		if (count($columns) === 0)
 		{
 			$columns[] = '*';
+		}
+		else if (ArrayUtil::isAssociativeArray($columns))
+		{
+			$result = [];
+
+			foreach ($columns as $alias => $expression)
+			{
+				if (is_bool($expression))
+				{
+					$result[] = $this->dialect->escapeColumn($alias);
+				}
+				else if ($expression instanceof Base)
+				{
+					$sql = $expression->build();
+
+					$result[] = '(' . $sql . ') AS ' . $this->dialect->escapeColumn($alias);
+				}
+				else
+				{
+					$result[] = $this->dialect->escapeColumn($expression) . ' AS ' . $this->dialect->escapeColumn($alias);
+				}
+			}
+
+			$columns = $result;
 		}
 		else
 		{
@@ -823,8 +847,8 @@ class Builder extends Base
 	/**
 	 * Base function to create WITH clauses.
 	 *
-	 * @param string  $clause
-	 * @param string  $name
+	 * @param string $clause
+	 * @param string $name
 	 * @param Builder $query
 	 *
 	 * @return $this
