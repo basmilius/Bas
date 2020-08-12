@@ -243,6 +243,28 @@ class Request implements IJson
 	}
 
 	/**
+	 * Gets the bearer token of the request, if available.
+	 *
+	 * @return string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function bearerToken(): ?string
+	{
+		$header = $this->headers->get('authorization');
+
+		if ($header === null)
+			return null;
+
+		$parts = explode(' ', $header, 2);
+
+		if (count($parts) !== 2 || $parts[0] !== 'Bearer')
+			return null;
+
+		return $parts[1];
+	}
+
+	/**
 	 * Gets the request ip.
 	 *
 	 * @return IP|null
@@ -350,10 +372,10 @@ class Request implements IJson
 	 * Handles multi part data. Override this method to add your own.
 	 *
 	 * @param callable $addItem
-	 * @param string   $body
-	 * @param array    $headers
-	 * @param string   $contentType
-	 * @param array    $contentDisposition
+	 * @param string $body
+	 * @param array $headers
+	 * @param string $contentType
+	 * @param array $contentDisposition
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
