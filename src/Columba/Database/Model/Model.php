@@ -546,7 +546,7 @@ abstract class Model extends Base
 	}
 
 	/**
-	 * Gets a single model instance by primary key.
+	 * Gets a single model instance by its primary key.
 	 *
 	 * @param string|int $primaryKey
 	 *
@@ -564,6 +564,25 @@ abstract class Model extends Base
 		return static::where(self::column(static::$primaryKey), '=', $primaryKey)
 			->collection()
 			->first();
+	}
+
+	/**
+	 * Gets a single model instance by its primary key and throw an exception if nothing was found.
+	 *
+	 * @param string|int $primaryKey
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function getOrFail($primaryKey): self
+	{
+		$model = static::get($primaryKey);
+
+		if ($model === null)
+			throw new ModelException(sprintf('Model with primary key "%s" not found.', strval($primaryKey)), ModelException::ERR_NOT_FOUND);
+
+		return $model;
 	}
 
 	/**

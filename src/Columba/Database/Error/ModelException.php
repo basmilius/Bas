@@ -23,5 +23,6 @@ class ModelException extends DatabaseException
 {
 
 	public const ERR_IMMUTABLE = 1;
+	public const ERR_NOT_FOUND = 2;
 
 }
