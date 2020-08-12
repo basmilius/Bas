@@ -50,8 +50,8 @@ use function trim;
 /**
  * Class Router
  *
- * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router
  * @since 1.3.0
  */
 class Router implements Debuggable
@@ -106,8 +106,8 @@ class Router implements Debuggable
 	 * Tries to guess the {@see AbstractRoute} instance and adds it.
 	 *
 	 * @param string[] $requestMethods
-	 * @param string   $path
-	 * @param mixed    ...$arguments
+	 * @param string $path
+	 * @param mixed ...$arguments
 	 *
 	 * @return AbstractRoute
 	 * @throws RouterException
@@ -150,7 +150,7 @@ class Router implements Debuggable
 	 * Defines a global parameter.
 	 *
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
@@ -203,7 +203,7 @@ class Router implements Debuggable
 	 * Adds a {@see AbstractRoute} to use.
 	 *
 	 * @param string $middleware
-	 * @param mixed  ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>
@@ -223,8 +223,8 @@ class Router implements Debuggable
 	/**
 	 * Searches for a matching {@see AbstractRoute}.
 	 *
-	 * @param string       $path
-	 * @param string       $requestMethod
+	 * @param string $path
+	 * @param string $requestMethod
 	 * @param Context|null $context
 	 *
 	 * @return AbstractRoute|null
@@ -273,7 +273,7 @@ class Router implements Debuggable
 	 * Renders a {@see $template} with the given {@see $context} using an {@see AbstractRenderer}.
 	 *
 	 * @param string $template
-	 * @param array  $context
+	 * @param array $context
 	 *
 	 * @return string
 	 * @throws RouterException
@@ -294,8 +294,8 @@ class Router implements Debuggable
 	 * Sends a custom response.
 	 *
 	 * @param string $implementation
-	 * @param mixed  $value
-	 * @param mixed  ...$options
+	 * @param mixed $value
+	 * @param mixed ...$options
 	 *
 	 * @return ResponseWrapper
 	 * @throws RouterException
@@ -313,7 +313,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a Router group.
 	 *
-	 * @param string   $path
+	 * @param string $path
 	 * @param callable $predicate
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -335,7 +335,7 @@ class Router implements Debuggable
 	/**
 	 * Adds an ALL {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -351,14 +351,14 @@ class Router implements Debuggable
 	/**
 	 * Adds a route that matches everything in {@see $requestMethods}.
 	 *
-	 * @param array          $requestMethods
-	 * @param string         $path
+	 * @param array $requestMethods
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
 	 * @throws RouterException
-	 * @since 1.6.0
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
 	 */
 	public function match(array $requestMethods, string $path, ...$arguments): AbstractRoute
 	{
@@ -368,7 +368,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a DELETE {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -384,7 +384,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a GET {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -400,7 +400,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a HEAD {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -416,7 +416,7 @@ class Router implements Debuggable
 	/**
 	 * Adds an OPTIONS {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -432,7 +432,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a PATCH {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -448,7 +448,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a POST {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -464,7 +464,7 @@ class Router implements Debuggable
 	/**
 	 * Adds a PUT {@see AbstractRoute}.
 	 *
-	 * @param string         $path
+	 * @param string $path
 	 * @param callable&mixed $arguments
 	 *
 	 * @return AbstractRoute
@@ -480,10 +480,10 @@ class Router implements Debuggable
 	/**
 	 * Adds a redirect {@see AbstractRoute}.
 	 *
-	 * @param string   $path
-	 * @param string   $destination
+	 * @param string $path
+	 * @param string $destination
 	 * @param string[] $requestMethods
-	 * @param int      $responseCode
+	 * @param int $responseCode
 	 *
 	 * @return AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
@@ -525,7 +525,7 @@ class Router implements Debuggable
 	 * Invoked when a {@see AbstractRoute} is executed.
 	 *
 	 * @param AbstractRoute $route
-	 * @param Context       $context
+	 * @param Context $context
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -539,7 +539,7 @@ class Router implements Debuggable
 	 *
 	 * Invoked when an {@see Exception} is thrown.
 	 *
-	 * @param Exception    $err
+	 * @param Exception $err
 	 * @param Context|null $context
 	 *
 	 * @throws RouterException
@@ -548,6 +548,12 @@ class Router implements Debuggable
 	 */
 	public function onException(Exception $err, ?Context $context = null): void
 	{
+		if ($this instanceof SubRouter && ($parent = $this->getParent()) !== null)
+		{
+			$parent->onException($err, $context);
+			return;
+		}
+
 		if ($err instanceof RouterException)
 			/** @noinspection PhpUnhandledExceptionInspection */
 			throw $err;

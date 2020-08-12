@@ -15,6 +15,7 @@ namespace Columba\Router\Route;
 use Columba\Facade\Debuggable;
 use Columba\Http\ResponseCode;
 use Columba\Router\Context;
+use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\AbstractResponse;
 use Columba\Router\Response\ResponseWrapper;
 use Columba\Router\RouteParam;
@@ -27,6 +28,7 @@ use Exception;
 use function array_flip;
 use function array_keys;
 use function array_pop;
+use function class_exists;
 use function count;
 use function explode;
 use function get_class;
@@ -34,6 +36,7 @@ use function header;
 use function http_response_code;
 use function implode;
 use function is_scalar;
+use function is_subclass_of;
 use function mb_strlen;
 use function mb_substr;
 use function preg_match;
@@ -60,15 +63,18 @@ abstract class AbstractRoute implements Debuggable
 	/** @var Router&SubRouter */
 	private Router $parent;
 
+	/** @var AbstractMiddleware[] */
+	private array $middlewares = [];
+
 	/** @var string[] */
 	private array $requestMethods;
 
 	/**
 	 * AbstractRoute constructor.
 	 *
-	 * @param Router   $parent
+	 * @param Router $parent
 	 * @param string[] $requestMethods
-	 * @param string   $path
+	 * @param string $path
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -163,6 +169,30 @@ abstract class AbstractRoute implements Debuggable
 	 * @since 1.3.0
 	 */
 	public abstract function executeImpl(): void;
+
+	/**
+	 * Adds a {@see AbstractRoute} to use.
+	 *
+	 * @param string $middleware
+	 * @param mixed ...$arguments
+	 *
+	 * @return $this
+	 * @throws RouterException
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function middleware(string $middleware, ...$arguments): self
+	{
+		if (!class_exists($middleware))
+			throw new RouterException(sprintf('Middleware %s not found.', $middleware), RouterException::ERR_MIDDLEWARE_NOT_FOUND);
+
+		if (!is_subclass_of($middleware, AbstractMiddleware::class))
+			throw new RouterException(sprintf('Class %s needs to extend from %s to be a valid middleware.', $middleware, AbstractMiddleware::class), RouterException::ERR_MIDDLEWARE_INVALID);
+
+		$this->middlewares[] = new $middleware($this->parent, ...$arguments);
+
+		return $this;
+	}
 
 	/**
 	 * Sets the options of the route.
@@ -318,7 +348,12 @@ abstract class AbstractRoute implements Debuggable
 
 		try
 		{
-			foreach ($this->parent->getMiddlewares() as $middleware)
+			$routerMiddlewares = $this->parent->getMiddlewares();
+
+			foreach ($routerMiddlewares as $middleware)
+				$middleware->forContext($this, $context, $isValid);
+
+			foreach ($this->middlewares as $middleware)
 				$middleware->forContext($this, $context, $isValid);
 
 			return $isValid;
