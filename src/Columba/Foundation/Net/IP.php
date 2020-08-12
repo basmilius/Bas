@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Net;
 
+use JsonSerializable;
 use function filter_var;
 
 /**
@@ -21,7 +22,7 @@ use function filter_var;
  * @package Columba\Foundation\Net
  * @since 1.6.0
  */
-class IP
+class IP implements JsonSerializable
 {
 
 	public const V4 = 1;
@@ -34,7 +35,7 @@ class IP
 	 * IP constructor.
 	 *
 	 * @param string $ip
-	 * @param int    $version
+	 * @param int $version
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -67,6 +68,16 @@ class IP
 	public final function getVersion(): int
 	{
 		return $this->version;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function jsonSerialize(): string
+	{
+		return $this->ip;
 	}
 
 	/**
@@ -125,7 +136,7 @@ class IP
 	 * Parses an IP.
 	 *
 	 * @param string $ip
-	 * @param bool   $throw
+	 * @param bool $throw
 	 *
 	 * @return IP|null
 	 * @throws IPException
