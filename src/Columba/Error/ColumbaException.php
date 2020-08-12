@@ -30,8 +30,8 @@ abstract class ColumbaException extends Exception implements IJson
 	/**
 	 * ColumbaException constructor.
 	 *
-	 * @param string         $message
-	 * @param int            $code
+	 * @param string $message
+	 * @param int $code
 	 * @param Throwable|null $previous
 	 *
 	 * @author Bas Milius <bas@mili.us>

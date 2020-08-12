@@ -37,7 +37,7 @@ class GIFEncoder
 	 * GIFEncoder constructor.
 	 *
 	 * @param Stream $output
-	 * @param int    $iterations
+	 * @param int $iterations
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -203,7 +203,7 @@ class GIFEncoder
 	 * Checks if the given frame index is animated or something, idk, was needed..!
 	 *
 	 * @param string $bytes
-	 * @param int    $index
+	 * @param int $index
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

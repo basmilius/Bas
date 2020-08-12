@@ -18,8 +18,8 @@ use function serialize;
 /**
  * Class SerializeResponse
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 class SerializeResponse extends AbstractResponse

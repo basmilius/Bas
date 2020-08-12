@@ -56,7 +56,7 @@ abstract class Stream
 	/**
 	 * Reads the given amount of bytes and puts it into the given array buffer.
 	 *
-	 * @param int   $bytesCount
+	 * @param int $bytesCount
 	 * @param array $buffer
 	 *
 	 * @author Bas Milius <bas@mili.us>

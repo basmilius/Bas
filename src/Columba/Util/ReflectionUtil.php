@@ -24,8 +24,8 @@ use function gettype;
 /**
  * Class ReflectionUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.4.0
  */
 final class ReflectionUtil
@@ -35,8 +35,8 @@ final class ReflectionUtil
 	 * Finds the name of a constant by value.
 	 *
 	 * @param string $class
-	 * @param mixed  $value
-	 * @param mixed  $constant
+	 * @param mixed $value
+	 * @param mixed $constant
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>

@@ -18,8 +18,8 @@ use function floor;
 /**
  * Class FormattingUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.0.0
  */
 final class FormattingUtil

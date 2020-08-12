@@ -23,8 +23,8 @@ use function strtoupper;
 /**
  * Class ExceptionUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.4.0
  */
 final class ExceptionUtil

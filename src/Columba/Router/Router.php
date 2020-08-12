@@ -551,6 +551,7 @@ class Router implements Debuggable
 		if ($this instanceof SubRouter && ($parent = $this->getParent()) !== null)
 		{
 			$parent->onException($err, $context);
+
 			return;
 		}
 

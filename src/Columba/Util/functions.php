@@ -20,7 +20,7 @@ use function headers_list;
  * Calls {@see $fn} and wraps it with <pre> tags, or not if we're in cli.
  *
  * @param callable $fn
- * @param mixed    ...$data
+ * @param mixed ...$data
  *
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0

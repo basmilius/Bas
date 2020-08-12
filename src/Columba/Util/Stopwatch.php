@@ -19,8 +19,8 @@ use function microtime;
 /**
  * Class Stopwatch
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.5.0
  */
 final class Stopwatch
@@ -49,9 +49,9 @@ final class Stopwatch
 	/**
 	 * Stops a stopwatch and calculates the result.
 	 *
-	 * @param string     $id
+	 * @param string $id
 	 * @param float|null $time
-	 * @param int        $unit
+	 * @param int $unit
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0

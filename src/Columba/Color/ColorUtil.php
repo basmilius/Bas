@@ -14,7 +14,6 @@ namespace Columba\Color;
 
 use Columba\Util\MathUtil;
 use InvalidArgumentException;
-use const STR_PAD_LEFT;
 use function abs;
 use function array_map;
 use function array_shift;
@@ -31,12 +30,13 @@ use function round;
 use function str_pad;
 use function strlen;
 use function trim;
+use const STR_PAD_LEFT;
 
 /**
  * Class ColorUtil
  *
- * @package Columba\Color
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Color
  * @since 1.1.0
  */
 final class ColorUtil
@@ -47,7 +47,7 @@ final class ColorUtil
 	 *
 	 * @param array $color1
 	 * @param array $color2
-	 * @param int   $weight
+	 * @param int $weight
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -76,7 +76,7 @@ final class ColorUtil
 	 * Returns a shade of {@see $color} with {@see $weight}.
 	 *
 	 * @param array $color
-	 * @param int   $weight
+	 * @param int $weight
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -91,7 +91,7 @@ final class ColorUtil
 	 * Returns a tint of {@see $color} with {@see $weight}.
 	 *
 	 * @param array $color
-	 * @param int   $weight
+	 * @param int $weight
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -346,11 +346,11 @@ final class ColorUtil
 	/**
 	 * Converts RGBA to HEX.
 	 *
-	 * @param int   $r
-	 * @param int   $g
-	 * @param int   $b
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
 	 * @param float $a
-	 * @param bool  $includeHashtag
+	 * @param bool $includeHashtag
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
@@ -368,9 +368,9 @@ final class ColorUtil
 	/**
 	 * Converts RGB to HEX.
 	 *
-	 * @param int  $r
-	 * @param int  $g
-	 * @param int  $b
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
 	 * @param bool $includeHashtag
 	 *
 	 * @return string

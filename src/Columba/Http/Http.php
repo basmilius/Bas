@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Http;
 
+use function curl_init;
+use function curl_setopt;
 use const CURLOPT_BINARYTRANSFER;
 use const CURLOPT_CUSTOMREQUEST;
 use const CURLOPT_ENCODING;
@@ -22,14 +24,12 @@ use const CURLOPT_HTTPHEADER;
 use const CURLOPT_RETURNTRANSFER;
 use const CURLOPT_URL;
 use const CURLOPT_USERAGENT;
-use function curl_init;
-use function curl_setopt;
 
 /**
  * Class Http
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
  * @since 1.2.0
  */
 final class Http
@@ -38,7 +38,7 @@ final class Http
 	/**
 	 * Performs a DELETE request.
 	 *
-	 * @param string        $url
+	 * @param string $url
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -59,7 +59,7 @@ final class Http
 	/**
 	 * Performs a GET request.
 	 *
-	 * @param string        $url
+	 * @param string $url
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -80,7 +80,7 @@ final class Http
 	/**
 	 * Performs a HEAD request.
 	 *
-	 * @param string        $url
+	 * @param string $url
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -101,7 +101,7 @@ final class Http
 	/**
 	 * Performs a OPTIONS request.
 	 *
-	 * @param string        $url
+	 * @param string $url
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -122,8 +122,8 @@ final class Http
 	/**
 	 * Performs a PATCH request.
 	 *
-	 * @param string        $url
-	 * @param string        $body
+	 * @param string $url
+	 * @param string $body
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -145,8 +145,8 @@ final class Http
 	/**
 	 * Performs a POST request.
 	 *
-	 * @param string        $url
-	 * @param string        $body
+	 * @param string $url
+	 * @param string $body
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -168,8 +168,8 @@ final class Http
 	/**
 	 * Performs a PUT request.
 	 *
-	 * @param string        $url
-	 * @param string        $body
+	 * @param string $url
+	 * @param string $body
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response

@@ -22,8 +22,8 @@ use function http_response_code;
 /**
  * Class AbstractResponse
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 abstract class AbstractResponse implements Debuggable
@@ -35,7 +35,7 @@ abstract class AbstractResponse implements Debuggable
 	 * Adds a response header.
 	 *
 	 * @param string $name
-	 * @param mixed  $values
+	 * @param mixed $values
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -49,7 +49,7 @@ abstract class AbstractResponse implements Debuggable
 	 * Prints the response to the output buffer.
 	 *
 	 * @param Context $context
-	 * @param mixed   $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -76,7 +76,7 @@ abstract class AbstractResponse implements Debuggable
 	 * Respond to the webbrowser.
 	 *
 	 * @param Context $context
-	 * @param mixed   $value
+	 * @param mixed $value
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>

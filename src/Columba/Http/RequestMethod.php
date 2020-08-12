@@ -15,8 +15,8 @@ namespace Columba\Http;
 /**
  * Class RequestMethod
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
  * @since 1.2.0
  */
 final class RequestMethod

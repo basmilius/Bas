@@ -17,8 +17,8 @@ use Columba\OAuth2\Client\Client;
 /**
  * Interface IResponseType
  *
- * @package Columba\OAuth2\ResponseType
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\ResponseType
  * @since 1.3.0
  */
 interface IResponseType
@@ -27,10 +27,10 @@ interface IResponseType
 	/**
 	 * Handles the /authorize response.
 	 *
-	 * @param Client      $client
-	 * @param int         $ownerId
-	 * @param string      $redirectUri
-	 * @param string      $scope
+	 * @param Client $client
+	 * @param int $ownerId
+	 * @param string $redirectUri
+	 * @param string $scope
 	 * @param string|null $state
 	 *
 	 * @author Bas Milius <bas@mili.us>

@@ -17,8 +17,8 @@ use Columba\OAuth2\OAuth2;
 /**
  * Interface IClientFactory
  *
- * @package Columba\OAuth2\Client
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Client
  * @since 1.3.0
  */
 interface IClientFactory

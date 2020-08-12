@@ -18,8 +18,8 @@ use Columba\OAuth2\OAuth2;
 /**
  * Interface IScopeFactory
  *
- * @package Columba\OAuth2\Scope
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Scope
  * @since 1.3.0
  */
 interface IScopeFactory
@@ -61,7 +61,7 @@ interface IScopeFactory
 	/**
 	 * Validates if a {@see $scope} is valid for {@see $ownerId}.
 	 *
-	 * @param int    $ownerId
+	 * @param int $ownerId
 	 * @param string $scope
 	 *
 	 * @return bool

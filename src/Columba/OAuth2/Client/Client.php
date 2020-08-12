@@ -20,8 +20,8 @@ use function in_array;
 /**
  * Class Client
  *
- * @package Columba\OAuth2\Client
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Client
  * @since 1.3.0
  */
 final class Client extends OAuth2Object
@@ -30,7 +30,7 @@ final class Client extends OAuth2Object
 	/**
 	 * Client constructor.
 	 *
-	 * @param array  $data
+	 * @param array $data
 	 * @param OAuth2 $oAuth2
 	 *
 	 * @author Bas Milius <bas@mili.us>

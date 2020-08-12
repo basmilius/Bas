@@ -16,6 +16,15 @@ use Columba\Foundation\Http\Parameters;
 use Columba\Foundation\Net\IP;
 use Columba\Foundation\Net\IPException;
 use SimpleXMLElement;
+use function curl_close;
+use function curl_errno;
+use function curl_error;
+use function curl_exec;
+use function curl_getinfo;
+use function imagecreatefromstring;
+use function json_decode;
+use function simplexml_load_string;
+use function substr;
 use const CURLINFO_EFFECTIVE_URL;
 use const CURLINFO_HEADER_SIZE;
 use const CURLINFO_LOCAL_IP;
@@ -28,21 +37,12 @@ use const CURLINFO_SIZE_UPLOAD;
 use const CURLINFO_SPEED_DOWNLOAD;
 use const CURLINFO_SPEED_UPLOAD;
 use const CURLINFO_TOTAL_TIME;
-use function curl_close;
-use function curl_errno;
-use function curl_error;
-use function curl_exec;
-use function curl_getinfo;
-use function imagecreatefromstring;
-use function json_decode;
-use function simplexml_load_string;
-use function substr;
 
 /**
  * Class Response
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
  * @since 1.2.0
  */
 final class Response
@@ -69,7 +69,7 @@ final class Response
 	/**
 	 * Response constructor.
 	 *
-	 * @param Request  $request
+	 * @param Request $request
 	 * @param resource $curlHandle
 	 *
 	 * @throws HttpException

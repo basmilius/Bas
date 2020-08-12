@@ -21,8 +21,8 @@ use function scandir;
 /**
  * Class FileSystemUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.4.0
  */
 final class FileSystemUtil
@@ -31,8 +31,8 @@ final class FileSystemUtil
 	/**
 	 * Formats bytes into a string representation.
 	 *
-	 * @param int  $value
-	 * @param int  $decimals
+	 * @param int $value
+	 * @param int $decimals
 	 * @param bool $siMode
 	 * @param bool $bits
 	 *

@@ -17,8 +17,8 @@ use Columba\OAuth2\OAuth2;
 /**
  * Interface ITokenFactory
  *
- * @package Columba\OAuth2\Token
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Token
  * @since 1.3.0
  */
 interface ITokenFactory
@@ -63,12 +63,12 @@ interface ITokenFactory
 	/**
 	 * Saves an access token.
 	 *
-	 * @param string      $clientId
-	 * @param int         $ownerId
-	 * @param string      $scope
-	 * @param string      $token
+	 * @param string $clientId
+	 * @param int $ownerId
+	 * @param string $scope
+	 * @param string $token
 	 * @param string|null $associatedToken
-	 * @param int         $expiresIn
+	 * @param int $expiresIn
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
@@ -80,11 +80,11 @@ interface ITokenFactory
 	 * Saves an authorization token.
 	 *
 	 * @param string $clientId
-	 * @param int    $ownerId
+	 * @param int $ownerId
 	 * @param string $redirectUri
 	 * @param string $scope
 	 * @param string $token
-	 * @param int    $expiresIn
+	 * @param int $expiresIn
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
@@ -96,10 +96,10 @@ interface ITokenFactory
 	 * Saves a refresh token.
 	 *
 	 * @param string $clientId
-	 * @param int    $ownerId
+	 * @param int $ownerId
 	 * @param string $scope
 	 * @param string $token
-	 * @param int    $expiresIn
+	 * @param int $expiresIn
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>

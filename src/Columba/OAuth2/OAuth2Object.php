@@ -18,8 +18,8 @@ use Columba\Facade\IJson;
 /**
  * Class OAuth2Object
  *
- * @package Columba\OAuth2
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2
  * @since
  */
 class OAuth2Object implements IArray, IJson
@@ -31,7 +31,7 @@ class OAuth2Object implements IArray, IJson
 	/**
 	 * OAuth2Object constructor.
 	 *
-	 * @param array  $data
+	 * @param array $data
 	 * @param OAuth2 $oAuth2
 	 *
 	 * @author Bas Milius <bas@mili.us>

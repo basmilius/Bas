@@ -42,8 +42,8 @@ use function urlencode;
 /**
  * Class OAuth2
  *
- * @package Columba\OAuth2
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2
  * @since 1.3.0
  */
 class OAuth2
@@ -67,8 +67,8 @@ class OAuth2
 	 * OAuth2 constructor.
 	 *
 	 * @param IClientFactory $clientFactory
-	 * @param IScopeFactory  $scopeFactory
-	 * @param ITokenFactory  $tokenFactory
+	 * @param IScopeFactory $scopeFactory
+	 * @param ITokenFactory $tokenFactory
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -124,13 +124,13 @@ class OAuth2
 	/**
 	 * Handles the authorize request.
 	 *
-	 * @param string      $clientId
-	 * @param int         $ownerId
-	 * @param string      $responseType
-	 * @param string      $redirectUri
-	 * @param string      $scope
+	 * @param string $clientId
+	 * @param int $ownerId
+	 * @param string $responseType
+	 * @param string $redirectUri
+	 * @param string $scope
 	 * @param string|null $state
-	 * @param bool        $authorize
+	 * @param bool $authorize
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -143,6 +143,7 @@ class OAuth2
 		{
 			http_response_code(ResponseCode::SEE_OTHER);
 			header('Location: ' . $redirectUri . (strpos($redirectUri, '?') ? '&' : '?') . 'error=access_denied' . ($state !== null ? '&state=' . urlencode($state) : ''));
+
 			return;
 		}
 
@@ -186,7 +187,7 @@ class OAuth2
 	 * Validates the authorize request.
 	 *
 	 * @param string|null $clientId
-	 * @param int         $ownerId
+	 * @param int $ownerId
 	 * @param string|null $responseType
 	 * @param string|null $redirectUri
 	 * @param string|null $scope

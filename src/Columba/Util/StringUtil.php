@@ -31,8 +31,8 @@ use function trim;
 /**
  * Class StringUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.4.0
  */
 final class StringUtil
@@ -151,7 +151,7 @@ final class StringUtil
 	 * Creates an excerpt.
 	 *
 	 * @param string $text
-	 * @param int    $wordCount
+	 * @param int $wordCount
 	 * @param string $ending
 	 *
 	 * @return string

@@ -24,8 +24,8 @@ use function array_merge;
 /**
  * Class CappuccinoRenderer
  *
- * @package Columba\Router\Renderer
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Renderer
  * @since 1.3.0
  */
 class CappuccinoRenderer extends AbstractRenderer
@@ -42,7 +42,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	/**
 	 * CappuccinoRenderer constructor.
 	 *
-	 * @param array                $options
+	 * @param array $options
 	 * @param LoaderInterface|null $loader
 	 *
 	 * @throws LoaderError
@@ -78,7 +78,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * Adds a global variable.
 	 *
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

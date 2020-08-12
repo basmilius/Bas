@@ -21,8 +21,8 @@ use function is_array;
 /**
  * Class XmlResponse
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 class XmlResponse extends AbstractResponse
@@ -37,8 +37,8 @@ class XmlResponse extends AbstractResponse
 	/**
 	 * XmlResponse constructor.
 	 *
-	 * @param bool   $withDefaults
-	 * @param bool   $prettyPrint
+	 * @param bool $withDefaults
+	 * @param bool $prettyPrint
 	 * @param string $root
 	 *
 	 * @author Bas Milius <bas@mili.us>

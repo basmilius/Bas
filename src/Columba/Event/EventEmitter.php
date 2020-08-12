@@ -17,8 +17,8 @@ use function array_search;
 /**
  * Trait EventEmitter
  *
- * @package Columba\Event
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Event
  * @since 1.0.0
  */
 trait EventEmitter
@@ -29,7 +29,7 @@ trait EventEmitter
 	/**
 	 * Adds an event listener.
 	 *
-	 * @param string   $eventName
+	 * @param string $eventName
 	 * @param callable $callback
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -46,7 +46,7 @@ trait EventEmitter
 	 * Dispatches an {@see Event}.
 	 *
 	 * @param string $eventName
-	 * @param Event  $event
+	 * @param Event $event
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -63,7 +63,7 @@ trait EventEmitter
 	/**
 	 * Removes an event listener.
 	 *
-	 * @param string   $eventName
+	 * @param string $eventName
 	 * @param callable $callback
 	 *
 	 * @author Bas Milius <bas@mili.us>

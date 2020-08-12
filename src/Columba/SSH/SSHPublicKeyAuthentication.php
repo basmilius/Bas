@@ -17,8 +17,8 @@ use function ssh2_auth_pubkey_file;
 /**
  * Class SSHPublicKeyAuthentication
  *
- * @package Columba\SSH
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\SSH
  * @since 1.3.0
  */
 final class SSHPublicKeyAuthentication extends SSHAuthentication

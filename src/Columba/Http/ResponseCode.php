@@ -15,8 +15,8 @@ namespace Columba\Http;
 /**
  * Class ResponseCode
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
  * @since 1.3.0
  */
 final class ResponseCode

@@ -30,8 +30,8 @@ class GIFFrame
 
 	public const DISPOSAL_UNKNOWN = 0;
 	public const DISPOSAL_OFF = 1;
-	public CONST DISPOSAL_RESTORE_BACKGROUND = 2;
-	public CONST DISPOSAL_RESTORE_PREVIOUS = 3;
+	public const DISPOSAL_RESTORE_BACKGROUND = 2;
+	public const DISPOSAL_RESTORE_PREVIOUS = 3;
 
 	protected Stream $stream;
 	protected int $disposalMethod;

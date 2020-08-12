@@ -26,7 +26,7 @@ interface Settable
 	 * Sets a property that doesn't really exist on the current object.
 	 *
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

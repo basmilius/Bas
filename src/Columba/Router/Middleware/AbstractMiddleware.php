@@ -13,16 +13,16 @@ declare(strict_types=1);
 namespace Columba\Router\Middleware;
 
 use Columba\Facade\Debuggable;
-use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Context;
+use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 
 /**
  * Class AbstractRoute
  *
- * @package Columba\Router\Middleware
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Middleware
  * @since 1.3.0
  */
 abstract class AbstractMiddleware implements Debuggable
@@ -47,8 +47,8 @@ abstract class AbstractMiddleware implements Debuggable
 	 * Performs our this {@see Middlware} for a {@see $route} {@see $context}.
 	 *
 	 * @param AbstractRoute $route
-	 * @param Context       $context
-	 * @param bool          $isValid
+	 * @param Context $context
+	 * @param bool $isValid
 	 *
 	 * @throws RouterException
 	 * @author Bas Milius <bas@mili.us>

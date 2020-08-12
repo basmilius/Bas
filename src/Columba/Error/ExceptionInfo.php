@@ -21,8 +21,8 @@ use function get_class;
 /**
  * Class ExceptionInfo
  *
- * @package Columba\Error
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Error
  * @since 1.4.0
  */
 class ExceptionInfo implements IJson

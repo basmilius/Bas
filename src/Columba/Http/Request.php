@@ -18,8 +18,8 @@ use function phpversion;
 /**
  * Class Request
  *
- * @package Columba\Http
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Http
  * @since 1.2.0
  */
 final class Request
@@ -127,7 +127,7 @@ final class Request
 	/**
 	 * Sets an option.
 	 *
-	 * @param int   $option
+	 * @param int $option
 	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>

@@ -15,8 +15,8 @@ namespace Columba\Router\Response;
 /**
  * Class ResponseWrapper
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 final class ResponseWrapper
@@ -31,7 +31,7 @@ final class ResponseWrapper
 	 * ResponseWrapper constructor.
 	 *
 	 * @param AbstractResponse $response
-	 * @param mixed            $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

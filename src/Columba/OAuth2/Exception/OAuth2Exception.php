@@ -17,8 +17,8 @@ use Columba\Error\ColumbaException;
 /**
  * Class OAuth2Exception
  *
- * @package Columba\OAuth2\Exception
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Exception
  * @since 1.3.0
  */
 abstract class OAuth2Exception extends ColumbaException

@@ -23,8 +23,8 @@ use function urlencode;
 /**
  * Class TokenResponseType
  *
- * @package Columba\OAuth2\ResponseType
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\ResponseType
  * @since 1.3.0
  */
 final class TokenResponseType implements IResponseType

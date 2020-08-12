@@ -18,8 +18,8 @@ use Exception;
 /**
  * Class PleskCustomers
  *
- * @package Columba\Plesk
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Plesk
  * @since 1.4.0
  */
 final class PleskCustomers extends PleskSubSystem

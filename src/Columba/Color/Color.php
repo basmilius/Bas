@@ -17,8 +17,8 @@ use Columba\Facade\IJson;
 /**
  * Class Color
  *
- * @package Columba\Color
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Color
  * @since 1.1.0
  */
 class Color implements IJson
@@ -32,9 +32,9 @@ class Color implements IJson
 	/**
 	 * Color constructor.
 	 *
-	 * @param int   $r
-	 * @param int   $g
-	 * @param int   $b
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
 	 * @param float $a
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -92,7 +92,7 @@ class Color implements IJson
 	 * Blends with another {@see Color}.
 	 *
 	 * @param Color $other
-	 * @param int   $weight
+	 * @param int $weight
 	 *
 	 * @return Color
 	 * @author Bas Milius <bas@mili.us>
@@ -313,9 +313,9 @@ class Color implements IJson
 	/**
 	 * Creates a new instance of {@see Color} from RGBA values.
 	 *
-	 * @param int   $r
-	 * @param int   $g
-	 * @param int   $b
+	 * @param int $r
+	 * @param int $g
+	 * @param int $b
 	 * @param float $a
 	 *
 	 * @return Color

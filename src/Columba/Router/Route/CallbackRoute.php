@@ -25,8 +25,8 @@ use function class_exists;
 /**
  * Class CallbackRoute
  *
- * @package Columba\Router\Route
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Route
  * @since 1.3.0
  */
 class CallbackRoute extends AbstractRoute
@@ -38,10 +38,10 @@ class CallbackRoute extends AbstractRoute
 	/**
 	 * CallbackRoute constructor.
 	 *
-	 * @param Router   $parent
+	 * @param Router $parent
 	 * @param string[] $requestMethods
-	 * @param string   $path
-	 * @param Closure  $callback
+	 * @param string $path
+	 * @param Closure $callback
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

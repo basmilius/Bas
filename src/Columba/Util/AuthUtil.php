@@ -25,8 +25,8 @@ use function substr;
 /**
  * Class AuthUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.4.0
  */
 final class AuthUtil
@@ -35,8 +35,8 @@ final class AuthUtil
 	/**
 	 * Creates a random password.
 	 *
-	 * @param int    $length
-	 * @param bool   $addDashes
+	 * @param int $length
+	 * @param bool $addDashes
 	 * @param string $availableSets
 	 *
 	 * @return string

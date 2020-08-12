@@ -19,8 +19,8 @@ use SimpleXMLElement;
 /**
  * Class PleskApiClient
  *
- * @package Columba\Plesk
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Plesk
  * @since 1.0.0
  */
 final class PleskApiClient
@@ -32,10 +32,10 @@ final class PleskApiClient
 	/**
 	 * PleskApiClient constructor.
 	 *
-	 * @param string      $hostname
-	 * @param string      $usernameOrSecretKey
+	 * @param string $hostname
+	 * @param string $usernameOrSecretKey
 	 * @param string|null $password
-	 * @param array       $requestOptions
+	 * @param array $requestOptions
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -55,7 +55,7 @@ final class PleskApiClient
 	 * Performs an API request to Plesk.
 	 *
 	 * @param array $request
-	 * @param bool  $full
+	 * @param bool $full
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -73,9 +73,9 @@ final class PleskApiClient
 	/**
 	 * Converts an array to XML.
 	 *
-	 * @param array                 $arr
+	 * @param array $arr
 	 * @param SimpleXMLElement|null $xml
-	 * @param string|null           $parentKey
+	 * @param string|null $parentKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0

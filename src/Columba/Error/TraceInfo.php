@@ -18,8 +18,8 @@ use function sprintf;
 /**
  * Class TraceInfo
  *
- * @package Columba\Error
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Error
  * @since 1.4.0
  */
 class TraceInfo implements IJson
@@ -32,7 +32,7 @@ class TraceInfo implements IJson
 	 * TraceInfo constructor.
 	 *
 	 * @param ExceptionInfo $exceptionInfo
-	 * @param array         $trace
+	 * @param array $trace
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0

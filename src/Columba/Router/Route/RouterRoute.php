@@ -18,8 +18,8 @@ use Columba\Router\SubRouter;
 /**
  * Class RouterRoute
  *
- * @package Columba\Router\Route
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Route
  * @since 1.3.0
  */
 final class RouterRoute extends AbstractRouterRoute
@@ -28,9 +28,9 @@ final class RouterRoute extends AbstractRouterRoute
 	/**
 	 * RouterRoute constructor.
 	 *
-	 * @param Router    $parent
-	 * @param string[]  $requestMethods
-	 * @param string    $path
+	 * @param Router $parent
+	 * @param string[] $requestMethods
+	 * @param string $path
 	 * @param SubRouter $router
 	 *
 	 * @author Bas Milius <bas@mili.us>

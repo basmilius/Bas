@@ -25,8 +25,8 @@ use function round;
 /**
  * Class MathUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.1.0
  */
 final class MathUtil
@@ -52,7 +52,7 @@ final class MathUtil
 	 * Rounds the value up to the nearest multiple.
 	 *
 	 * @param float|int $value
-	 * @param int       $step
+	 * @param int $step
 	 *
 	 * @return float|int
 	 * @author Bas Milius <bas@mili.us>
@@ -67,7 +67,7 @@ final class MathUtil
 	 * Rounds the value down to the nearest multiple.
 	 *
 	 * @param float|int $value
-	 * @param int       $step
+	 * @param int $step
 	 *
 	 * @return float|int
 	 * @author Bas Milius <bas@mili.us>
@@ -82,7 +82,7 @@ final class MathUtil
 	 * Rounds the value to the nearest multiple.
 	 *
 	 * @param float|int $value
-	 * @param int       $step
+	 * @param int $step
 	 *
 	 * @return float|int
 	 * @author Bas Milius <bas@mili.us>
@@ -96,9 +96,9 @@ final class MathUtil
 	/**
 	 * Sums an array by sub-key.
 	 *
-	 * @param array  $arr
+	 * @param array $arr
 	 * @param string $key
-	 * @param float  $startWith
+	 * @param float $startWith
 	 *
 	 * @return float
 	 * @author Bas Milius <bas@mili.us>

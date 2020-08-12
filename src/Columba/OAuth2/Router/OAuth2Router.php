@@ -27,8 +27,8 @@ use Exception;
 /**
  * Class OAuth2Router
  *
- * @package Columba\OAuth2\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Router
  * @since 1.3.0
  */
 abstract class OAuth2Router extends SubRouter
@@ -39,7 +39,7 @@ abstract class OAuth2Router extends SubRouter
 	/**
 	 * OAuth2Router constructor.
 	 *
-	 * @param OAuth2                $oAuth2
+	 * @param OAuth2 $oAuth2
 	 * @param AbstractResponse|null $response
 	 * @param AbstractRenderer|null $renderer
 	 *
@@ -61,7 +61,7 @@ abstract class OAuth2Router extends SubRouter
 	/**
 	 * Invoked when GET /authorize is requested.
 	 *
-	 * @param Context     $context
+	 * @param Context $context
 	 * @param string|null $client_id
 	 * @param string|null $redirect_uri
 	 * @param string|null $response_type
@@ -83,6 +83,7 @@ abstract class OAuth2Router extends SubRouter
 		if ($ownerId === null)
 		{
 			$this->onOwnerNull($context);
+
 			return '';
 		}
 

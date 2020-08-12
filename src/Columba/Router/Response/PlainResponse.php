@@ -20,8 +20,8 @@ use function strval;
 /**
  * Class PlainResponse
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 class PlainResponse extends AbstractResponse

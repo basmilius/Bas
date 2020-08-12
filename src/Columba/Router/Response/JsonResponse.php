@@ -25,8 +25,8 @@ use const JSON_HEX_TAG;
 /**
  * Class JsonResponse
  *
- * @package Columba\Router\Response
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Response
  * @since 1.3.0
  */
 class JsonResponse extends AbstractResponse
@@ -41,7 +41,7 @@ class JsonResponse extends AbstractResponse
 	 * JsonResponse constructor.
 	 *
 	 * @param bool $withDefaults
-	 * @param int  $options
+	 * @param int $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

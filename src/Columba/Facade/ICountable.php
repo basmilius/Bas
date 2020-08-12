@@ -17,8 +17,8 @@ use Countable;
 /**
  * Interface ICountable
  *
- * @package Columba\Facade
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Facade
  * @since 1.4.0
  */
 interface ICountable extends Countable

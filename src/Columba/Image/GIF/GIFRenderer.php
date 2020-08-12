@@ -58,7 +58,7 @@ class GIFRenderer
 	 * Renders a single frame.
 	 *
 	 * @param GIFFrame $frame
-	 * @param int      $index
+	 * @param int $index
 	 *
 	 * @return Image
 	 * @author Bas Milius <bas@mili.us>
@@ -150,7 +150,7 @@ class GIFRenderer
 	 * Restores the background color.
 	 *
 	 * @param GIFFrame $frame
-	 * @param int      $backgroundColor
+	 * @param int $backgroundColor
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

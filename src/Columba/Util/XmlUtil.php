@@ -27,8 +27,8 @@ use function substr;
 /**
  * Class XmlUtil
  *
- * @package Columba\Util
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Util
  * @since 1.3.0
  */
 final class XmlUtil
@@ -37,9 +37,9 @@ final class XmlUtil
 	/**
 	 * Converts an array to an XML object.
 	 *
-	 * @param array                 $array
+	 * @param array $array
 	 * @param SimpleXMLElement|null $xml
-	 * @param string|null           $parentName
+	 * @param string|null $parentName
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

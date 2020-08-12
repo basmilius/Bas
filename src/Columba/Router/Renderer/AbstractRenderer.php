@@ -18,8 +18,8 @@ use Throwable;
 /**
  * Class AbstractRenderer
  *
- * @package Columba\Router\Renderer
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Renderer
  * @since 1.3.0
  */
 abstract class AbstractRenderer
@@ -43,7 +43,7 @@ abstract class AbstractRenderer
 	 * Renders a {@see $template} with a {@see $context}.
 	 *
 	 * @param string $template
-	 * @param array  $context
+	 * @param array $context
 	 *
 	 * @return string
 	 * @throws RouterException

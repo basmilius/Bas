@@ -58,8 +58,8 @@ trait ResponseMethods
 	 * Returns a json response.
 	 *
 	 * @param mixed $data
-	 * @param bool  $withDefaults
-	 * @param int   $options
+	 * @param bool $withDefaults
+	 * @param int $options
 	 *
 	 * @return ResponseWrapper
 	 * @author Bas Milius <bas@mili.us>
@@ -107,9 +107,9 @@ trait ResponseMethods
 	/**
 	 * Returns a XML response.
 	 *
-	 * @param mixed  $data
-	 * @param bool   $withDefaults
-	 * @param bool   $prettyPrint
+	 * @param mixed $data
+	 * @param bool $withDefaults
+	 * @param bool $prettyPrint
 	 * @param string $root
 	 *
 	 * @return ResponseWrapper

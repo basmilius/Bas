@@ -17,9 +17,6 @@ use Columba\Util\MathUtil;
 use Exception;
 use Generator;
 use InvalidArgumentException;
-use const IMG_FLIP_BOTH;
-use const IMG_FLIP_HORIZONTAL;
-use const IMG_FLIP_VERTICAL;
 use function file_get_contents;
 use function imagealphablending;
 use function imagecolorallocatealpha;
@@ -45,6 +42,9 @@ use function imagewebp;
 use function is_file;
 use function round;
 use function sprintf;
+use const IMG_FLIP_BOTH;
+use const IMG_FLIP_HORIZONTAL;
+use const IMG_FLIP_VERTICAL;
 
 /**
  * Class Image
@@ -445,7 +445,7 @@ class Image
 	 * Scales the image.
 	 *
 	 * @param float $scale
-	 * @param int   $mode
+	 * @param int $mode
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -476,7 +476,7 @@ class Image
 	 * Creates an image in the JPEG format.
 	 *
 	 * @param string|null $fileName
-	 * @param int         $quality
+	 * @param int $quality
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
@@ -491,8 +491,8 @@ class Image
 	 * Creates an image in the PNG format.
 	 *
 	 * @param string|null $fileName
-	 * @param int         $compression
-	 * @param int         $filters
+	 * @param int $compression
+	 * @param int $filters
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
@@ -507,7 +507,7 @@ class Image
 	 * Creates an image in the WebP format.
 	 *
 	 * @param string|null $fileName
-	 * @param int         $quality
+	 * @param int $quality
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
@@ -521,9 +521,9 @@ class Image
 	/**
 	 * Creates an image in the given format.
 	 *
-	 * @param string      $format
+	 * @param string $format
 	 * @param string|null $fileName
-	 * @param mixed       ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>

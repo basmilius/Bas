@@ -356,7 +356,7 @@ class GIFDecoder
 	 * Converts the given offset of the given buffer to an unsigned short.
 	 *
 	 * @param array $buffer
-	 * @param int   $offset
+	 * @param int $offset
 	 *
 	 * @return int
 	 * @author Bas Milius <bas@mili.us>

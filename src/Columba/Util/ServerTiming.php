@@ -69,9 +69,9 @@ class ServerTiming
 	/**
 	 * Stops a timer.
 	 *
-	 * @param string   $id
+	 * @param string $id
 	 * @param int|null $time
-	 * @param int      $unit
+	 * @param int $unit
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0

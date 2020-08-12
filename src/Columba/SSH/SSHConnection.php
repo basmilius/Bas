@@ -31,8 +31,8 @@ use function stream_set_blocking;
 /**
  * Class SSHConnection
  *
- * @package Columba\SSH
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\SSH
  * @since 1.3.0
  */
 final class SSHConnection
@@ -50,7 +50,7 @@ final class SSHConnection
 	 * SSHConnection constructor.
 	 *
 	 * @param string $hostname
-	 * @param int    $port
+	 * @param int $port
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -120,7 +120,7 @@ final class SSHConnection
 	/**
 	 * Executes a command and streams the output to php://output.
 	 *
-	 * @param string        $command
+	 * @param string $command
 	 * @param callable|null $before
 	 * @param callable|null $after
 	 *
@@ -170,8 +170,8 @@ final class SSHConnection
 	/**
 	 * Sends a file.
 	 *
-	 * @param string   $filename
-	 * @param string   $remoteFilename
+	 * @param string $filename
+	 * @param string $remoteFilename
 	 * @param int|null $createMode
 	 *
 	 * @author Bas Milius <bas@mili.us>

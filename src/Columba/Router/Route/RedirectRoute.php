@@ -22,8 +22,8 @@ use function str_replace;
 /**
  * Class RedirectRoute
  *
- * @package Columba\Router\Route
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Route
  * @since 1.3.1
  */
 final class RedirectRoute extends AbstractRoute
@@ -38,11 +38,11 @@ final class RedirectRoute extends AbstractRoute
 	/**
 	 * CallbackRoute constructor.
 	 *
-	 * @param Router   $parent
+	 * @param Router $parent
 	 * @param string[] $requestMethods
-	 * @param string   $path
-	 * @param string   $destination
-	 * @param int      $responseCode
+	 * @param string $path
+	 * @param string $destination
+	 * @param int $responseCode
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1

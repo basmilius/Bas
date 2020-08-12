@@ -17,8 +17,8 @@ use PleskX\Api\XmlResponse;
 /**
  * Class PleskApiUtil
  *
- * @package Columba\Plesk
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Plesk
  * @since 1.0.0
  */
 final class PleskApiUtil
@@ -46,7 +46,7 @@ final class PleskApiUtil
 	/**
 	 * Flattens a Plesk response.
 	 *
-	 * @param array  $data
+	 * @param array $data
 	 * @param mixed $keys
 	 *
 	 * @return array|mixed|null
@@ -64,7 +64,7 @@ final class PleskApiUtil
 	/**
 	 * Converts an array of properties to an assocative array.
 	 *
-	 * @param array  $properties
+	 * @param array $properties
 	 * @param string $nameKey
 	 * @param string $valueKey
 	 *

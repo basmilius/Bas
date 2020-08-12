@@ -26,8 +26,8 @@ use function strpos;
 /**
  * Class OAuth2Middleware
  *
- * @package Columba\OAuth2\Router\Middleware
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Router\Middleware
  * @since 1.3.0
  */
 abstract class OAuth2Middleware extends AbstractMiddleware

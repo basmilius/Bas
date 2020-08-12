@@ -19,8 +19,8 @@ use Throwable;
 /**
  * Class PleskException
  *
- * @package Columba\Plesk
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Plesk
  * @since 1.4.0
  */
 final class PleskException extends Exception implements IJson
@@ -29,8 +29,8 @@ final class PleskException extends Exception implements IJson
 	/**
 	 * PleskException constructor.
 	 *
-	 * @param string         $message
-	 * @param int            $code
+	 * @param string $message
+	 * @param int $code
 	 * @param Throwable|null $previous
 	 *
 	 * @author Bas Milius <bas@mili.us>

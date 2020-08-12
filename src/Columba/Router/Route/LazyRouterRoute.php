@@ -18,8 +18,8 @@ use Columba\Router\SubRouter;
 /**
  * Class LazyRouterRoute
  *
- * @package Columba\Router\Route
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router\Route
  * @since 1.3.0
  */
 final class LazyRouterRoute extends AbstractRouterRoute
@@ -31,11 +31,11 @@ final class LazyRouterRoute extends AbstractRouterRoute
 	/**
 	 * LazyRouterRoute constructor.
 	 *
-	 * @param Router   $parent
+	 * @param Router $parent
 	 * @param string[] $requestMethods
-	 * @param string   $path
-	 * @param string   $routerImplementation
-	 * @param mixed    ...$routerArguments
+	 * @param string $path
+	 * @param string $routerImplementation
+	 * @param mixed ...$routerArguments
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0

@@ -233,7 +233,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * Returns the first element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
-	 * @param mixed         $default
+	 * @param mixed $default
 	 *
 	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
@@ -282,7 +282,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * Returns the last element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
-	 * @param mixed         $default
+	 * @param mixed $default
 	 *
 	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
@@ -390,7 +390,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Returns a slice of the collection.
 	 *
-	 * @param int      $offset
+	 * @param int $offset
 	 * @param int|null $length
 	 *
 	 * @return Collection
@@ -421,8 +421,8 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Splice the collection.
 	 *
-	 * @param int   $offset
-	 * @param int   $length
+	 * @param int $offset
+	 * @param int $length
 	 * @param mixed ...$replacement
 	 *
 	 * @return Collection

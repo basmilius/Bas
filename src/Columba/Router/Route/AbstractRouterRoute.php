@@ -35,7 +35,7 @@ abstract class AbstractRouterRoute extends AbstractRoute
 	 * AbstractRouterRoute constructor.
 	 *
 	 * @param Router $router
-	 * @param array  $requestMethods
+	 * @param array $requestMethods
 	 * @param string $path
 	 *
 	 * @author Bas Milius <bas@ideemedia.nl>

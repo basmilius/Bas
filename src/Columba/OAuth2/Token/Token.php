@@ -19,8 +19,8 @@ use function time;
 /**
  * Class Token
  *
- * @package Columba\OAuth2\Token
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\OAuth2\Token
  * @since 1.3.0
  */
 final class Token extends OAuth2Object
@@ -29,7 +29,7 @@ final class Token extends OAuth2Object
 	/**
 	 * Token constructor.
 	 *
-	 * @param array  $data
+	 * @param array $data
 	 * @param OAuth2 $oAuth2
 	 *
 	 * @author Bas Milius <bas@mili.us>
