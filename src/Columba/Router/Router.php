@@ -71,6 +71,11 @@ class Router implements Debuggable
 	/** @var AbstractRoute[] */
 	private array $routes = [];
 
+	private ?int $groupId = null;
+	private array $groupMiddlewares = [];
+	/** @var AbstractRoute[][] */
+	private array $groupRoutes = [];
+
 	/**
 	 * Router constructor.
 	 *
@@ -100,6 +105,9 @@ class Router implements Debuggable
 			array_push($this->routes, $route);
 		else
 			array_unshift($this->routes, $route);
+
+		if ($this->groupId !== null)
+			$this->groupRoutes[$this->groupId][] = $route;
 	}
 
 	/**
@@ -140,8 +148,7 @@ class Router implements Debuggable
 		else if ($route === null)
 			throw new RouterException(sprintf("Could not determine route implementation for '%s' in '%s'.", $path, get_called_class()), RouterException::ERR_NO_ROUTE_IMPLEMENTATION);
 
-		if (count($this->prefixes) === 0)
-			$this->add($route);
+		$this->add($route);
 
 		return $route;
 	}
@@ -217,7 +224,10 @@ class Router implements Debuggable
 		if (!is_subclass_of($middleware, AbstractMiddleware::class))
 			throw new RouterException(sprintf('Class %s needs to extend from %s to be a valid middleware.', $middleware, AbstractMiddleware::class), RouterException::ERR_MIDDLEWARE_INVALID);
 
-		$this->middlewares[] = new $middleware($this, ...$arguments);
+		if ($this->groupId !== null)
+			$this->groupMiddlewares[$this->groupId][] = [$middleware, $arguments];
+		else
+			$this->middlewares[] = new $middleware($this, ...$arguments);
 	}
 
 	/**
@@ -321,15 +331,22 @@ class Router implements Debuggable
 	 */
 	public function group(string $path, callable $predicate): void
 	{
+		$this->groupId = count($this->prefixes);
+		$this->groupMiddlewares[$this->groupId] = [];
+
 		$this->prefixes[] = trim($path, '/');
 
-		$routes = $predicate($this) ?? null;
+		$predicate($this);
 
-		if (is_array($routes))
-			foreach ($routes as $route)
-				$this->add($route);
+		foreach ($this->groupMiddlewares[$this->groupId] as [$middleware, $arguments])
+			foreach ($this->groupRoutes[$this->groupId] as $route)
+				$route->middleware($middleware, ...$arguments);
 
-		array_splice($this->prefixes, count($this->prefixes) - 1, 1);
+		unset($this->groupMiddlewares[$this->groupId]);
+		unset($this->groupRoutes[$this->groupId]);
+
+		array_splice($this->prefixes, $this->groupId, 1);
+		$this->groupId = ($count = count($this->prefixes)) === 0 ? null : $count;
 	}
 
 	/**

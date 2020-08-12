@@ -426,7 +426,8 @@ abstract class AbstractRoute implements Debuggable
 	{
 		return [
 			'path' => $this->path,
-			'requestMethods' => implode(', ', array_keys($this->requestMethods))
+			'requestMethods' => implode(', ', array_keys($this->requestMethods)),
+			'middlewares' => $this->middlewares
 		];
 	}
 
