@@ -84,6 +84,38 @@ final class ArrayUtil
 	}
 
 	/**
+	 * Flattens the given array.
+	 *
+	 * @param array $array
+	 * @param int $depth
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function flatten(array $array, int $depth = 25): array
+	{
+		$result = [];
+
+		foreach ($array as $item)
+		{
+			if (!is_array($item))
+			{
+				$result[] = $item;
+			}
+			else
+			{
+				$values = $depth === 1 ? array_values($item) : self::flatten($item, --$depth);
+
+				foreach ($values as $value)
+					$result[] = $value;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Groups a multidimensional array by key.
 	 *
 	 * @param array $arr

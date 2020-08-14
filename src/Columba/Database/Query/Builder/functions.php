@@ -105,8 +105,8 @@ function between(int $from, int $to): Literal
  * @param array $options
  *
  * @return Literal
- * @author Bas Milius <bas@glybe.nl>
- * @since 2.0.0
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
  */
 function in(array $options): Literal
 {
