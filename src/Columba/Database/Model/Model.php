@@ -343,6 +343,10 @@ abstract class Model extends Base
 			if (in_array($name, $this->visible) || in_array($name, static::$columns[static::class]))
 				$data[$name] = $fn($this);
 
+		foreach (array_keys(static::$relationships[static::class]) as $relation)
+			if (in_array($relation, $this->visible))
+				$data[$relation] = $this->getValue($relation);
+
 		foreach ($this->hidden as $column)
 			unset($data[$column]);
 	}
@@ -454,6 +458,10 @@ abstract class Model extends Base
 		foreach (array_keys(static::$macros[static::class]) as $macro)
 			if (in_array($macro, $this->visible) || in_array($macro, static::$columns[static::class]))
 				$data[$macro] = $this->resolveMacro($macro);
+
+		foreach (array_keys(static::$relationships[static::class]) as $relation)
+			if (in_array($relation, $this->visible))
+				$data[$relation] = $this->getValue($relation);
 
 		return $data;
 	}
