@@ -25,6 +25,7 @@ use function array_keys;
 use function array_map;
 use function array_search;
 use function array_unshift;
+use function Columba\Database\Query\Builder\stringLiteral;
 use function implode;
 use function in_array;
 
@@ -79,8 +80,8 @@ abstract class Model extends Base
 			static::$columns[static::class] ??= static::connection()->query()
 				->select(['COLUMN_NAME'])
 				->from('information_schema.COLUMNS')
-				->where('TABLE_SCHEMA', static::connection()->getConnector()->getDatabase())
-				->and('TABLE_NAME', static::table())
+				->where('TABLE_SCHEMA', stringLiteral(static::connection()->getConnector()->getDatabase()))
+				->and('TABLE_NAME', stringLiteral(static::table()))
 				->collection()
 				->column('COLUMN_NAME')
 				->toArray();
