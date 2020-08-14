@@ -68,6 +68,26 @@ final class StringUtil
 	}
 
 	/**
+	 * Implementation of substr_replace with multibyte support.
+	 *
+	 * @param string $str
+	 * @param string $replacement
+	 * @param int $start
+	 * @param int|null $length
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function multiByteSubstringReplace(string $str, string $replacement, int $start, ?int $length = null): string
+	{
+		$before = mb_substr($str, 0, $start);
+		$after = mb_substr($str, $start + ($length ?? 0));
+
+		return $before . $replacement . $after;
+	}
+
+	/**
 	 * Slugifies a string.
 	 *
 	 * @param string $str
