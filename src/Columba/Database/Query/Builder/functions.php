@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Database\Query\Builder;
 
+use Columba\Database\Db;
+
 /**
  * Returns an "EXISTS $query" {@see Literal} instance.
  *
@@ -95,6 +97,23 @@ function desc(string $column): Literal
 function between(int $from, int $to): Literal
 {
 	return new ComparatorAwareLiteral("BETWEEN $from AND $to");
+}
+
+/**
+ * Returns a "IN (x)" {@see Literal} instance.
+ *
+ * @param array $options
+ *
+ * @return Literal
+ * @author Bas Milius <bas@glybe.nl>
+ * @since 2.0.0
+ */
+function in(array $options): Literal
+{
+	$options = array_map(fn($option) => is_int($option) ? $option : Db::quote($option), $options);
+	$options = implode(',', $options);
+
+	return new ComparatorAwareLiteral("IN ($options)");
 }
 
 /**
