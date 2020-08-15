@@ -44,7 +44,7 @@ final class RuleBetween extends AbstractRule
 	 * @param float|int $min
 	 * @param float|int $max
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, $min, $max)

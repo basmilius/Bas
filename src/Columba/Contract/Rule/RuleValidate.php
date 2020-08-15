@@ -35,7 +35,7 @@ final class RuleValidate extends AbstractRule
 	 * @param Term     $term
 	 * @param Closure $predicate
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, Closure $predicate)

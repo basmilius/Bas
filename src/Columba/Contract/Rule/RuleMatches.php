@@ -37,7 +37,7 @@ final class RuleMatches extends AbstractRule
 	 * @param Term     $term
 	 * @param string   $pattern
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, string $pattern)

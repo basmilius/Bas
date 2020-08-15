@@ -19,6 +19,7 @@ use Columba\Contract\Rule\RuleBetween;
 use Columba\Contract\Rule\RuleBoolean;
 use Columba\Contract\Rule\RuleCount;
 use Columba\Contract\Rule\RuleEmail;
+use Columba\Contract\Rule\RuleExists;
 use Columba\Contract\Rule\RuleFloat;
 use Columba\Contract\Rule\RuleGreaterOrEqualTo;
 use Columba\Contract\Rule\RuleGreaterThan;
@@ -30,6 +31,7 @@ use Columba\Contract\Rule\RuleLength;
 use Columba\Contract\Rule\RuleLessOrEqualTo;
 use Columba\Contract\Rule\RuleLessThan;
 use Columba\Contract\Rule\RuleMatches;
+use Columba\Contract\Rule\RuleNotExists;
 use Columba\Contract\Rule\RuleNull;
 use Columba\Contract\Rule\RuleNumeric;
 use Columba\Contract\Rule\RuleOneOf;
@@ -61,9 +63,9 @@ class Term
 	 * Term constructor.
 	 *
 	 * @param Contract $contract
-	 * @param string   $name
+	 * @param string $name
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, string $name)
@@ -76,7 +78,7 @@ class Term
 	 * Adds a rule to the term.
 	 *
 	 * @param string $className
-	 * @param mixed  ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -243,6 +245,36 @@ class Term
 	public function email(): self
 	{
 		return $this->addRule(RuleEmail::class);
+	}
+
+	/**
+	 * Checks if the value exists.
+	 *
+	 * @param string $model
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function exists(string $model, string $column = 'id'): self
+	{
+		return $this->addRule(RuleExists::class, $model, $column);
+	}
+
+	/**
+	 * Checks if the value does not exists.
+	 *
+	 * @param string $model
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function notExists(string $model, string $column = 'id'): self
+	{
+		return $this->addRule(RuleNotExists::class, $model, $column);
 	}
 
 	/**

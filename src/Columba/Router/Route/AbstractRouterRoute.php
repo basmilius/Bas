@@ -38,7 +38,7 @@ abstract class AbstractRouterRoute extends AbstractRoute
 	 * @param array $requestMethods
 	 * @param string $path
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Router $router, array $requestMethods, string $path)

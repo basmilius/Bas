@@ -588,6 +588,19 @@ abstract class Model extends Base
 			->run();
 	}
 
+	public static function exists($primarykey): bool
+	{
+		$cache = static::connection()->getCache();
+
+		if ($cache->has($primarykey, static::class))
+			return true;
+
+		return static::select([1])
+				->where(self::column(static::$primaryKey), $primarykey)
+				->model(null)
+				->single() !== null;
+	}
+
 	/**
 	 * Finds multiple instances by primary key.
 	 *
@@ -626,9 +639,8 @@ abstract class Model extends Base
 		if ($cache->has($primaryKey, static::class))
 			return $cache->get($primaryKey, static::class);
 
-		return static::where(self::column(static::$primaryKey), '=', $primaryKey)
-			->collection()
-			->first();
+		return static::where(self::column(static::$primaryKey), $primaryKey)
+			->single();
 	}
 
 	/**

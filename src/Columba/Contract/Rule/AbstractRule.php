@@ -35,7 +35,7 @@ abstract class AbstractRule
 	 * @param Contract $contract
 	 * @param Term     $term
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term)

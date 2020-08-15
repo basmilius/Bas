@@ -37,7 +37,7 @@ final class RuleGreaterThan extends AbstractRule
 	 * @param Term      $term
 	 * @param float|int $value
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, $value)

@@ -36,7 +36,7 @@ final class RuleLength extends AbstractRule
 	 * @param Term     $term
 	 * @param int      $length
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, int $length)

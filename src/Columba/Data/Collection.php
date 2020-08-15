@@ -271,7 +271,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * Returns TRUE if the collection is empty.
 	 *
 	 * @return bool
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function isEmpty(): bool

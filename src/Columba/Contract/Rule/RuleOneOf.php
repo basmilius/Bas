@@ -35,7 +35,7 @@ final class RuleOneOf extends AbstractRule
 	 * @param Term     $term
 	 * @param array    $values
 	 *
-	 * @author Bas Milius <bas@ideemedia.nl>
+	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public function __construct(Contract $contract, Term $term, array $values)
