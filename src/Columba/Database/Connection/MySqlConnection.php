@@ -15,6 +15,7 @@ namespace Columba\Database\Connection;
 use Columba\Database\Connector\MySqlConnector;
 use Columba\Database\Dialect\Dialect;
 use Columba\Database\Dialect\MySqlDialect;
+use function Columba\Database\Query\Builder\stringLiteral;
 
 /**
  * Class MySqlConnection
@@ -47,6 +48,29 @@ class MySqlConnection extends Connection
 	protected function createDialectInstance(): Dialect
 	{
 		return new MySqlDialect();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function loadTablesWithColumns(): void
+	{
+		$result = $this
+			->query()
+			->select(['TABLE_NAME', 'COLUMN_NAME'])
+			->from('information_schema.COLUMNS')
+			->where('TABLE_SCHEMA', stringLiteral($this->getConnector()->getDatabase()))
+			->collection();
+
+		foreach ($result as ['TABLE_NAME' => $table, 'COLUMN_NAME' => $column])
+		{
+			if (!isset($this->tablesWithColumns[$table]))
+				$this->tablesWithColumns[$table] = [];
+
+			$this->tablesWithColumns[$table][] = $column;
+		}
 	}
 
 }

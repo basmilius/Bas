@@ -39,6 +39,8 @@ abstract class Connection
 	private Dialect $dialect;
 	private ?PDO $pdo = null;
 
+	protected array $tablesWithColumns = [];
+
 	/**
 	 * Connection constructor.
 	 *
@@ -76,6 +78,8 @@ abstract class Connection
 	public function connect(): void
 	{
 		$this->pdo = $this->connector->createPdoInstance();
+
+		$this->loadTablesWithColumns();
 	}
 
 	/**
@@ -95,9 +99,9 @@ abstract class Connection
 	 * @param int $attribute
 	 *
 	 * @return mixed
-	 * @see PDO::getAttribute()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::getAttribute()
 	 */
 	public function attribute(int $attribute)
 	{
@@ -111,9 +115,9 @@ abstract class Connection
 	 *
 	 * @return int
 	 * @throws DatabaseException
-	 * @see PDO::exec()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::exec()
 	 */
 	public function execute(string $query): int
 	{
@@ -129,13 +133,27 @@ abstract class Connection
 	 * Gets a connection attribute.
 	 *
 	 * @return int
-	 * @see PDO::getAttribute()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::getAttribute()
 	 */
 	public function foundRows(): int
 	{
 		return $this->queryColumn($this->dialect->foundRows($this->query())->build());
+	}
+
+	/**
+	 * Gets the columns of the given table.
+	 *
+	 * @param string $table
+	 *
+	 * @return string[]|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getTableColumns(string $table): ?array
+	{
+		return $this->tablesWithColumns[$table] ?? null;
 	}
 
 	/**
@@ -144,9 +162,9 @@ abstract class Connection
 	 * @param string|null $name
 	 *
 	 * @return string
-	 * @see PDO::lastInsertId()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::lastInsertId()
 	 */
 	public function lastInsertId(?string $name = null): string
 	{
@@ -159,9 +177,9 @@ abstract class Connection
 	 * @param string|null $name
 	 *
 	 * @return int
-	 * @see PDO::lastInsertId()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::lastInsertId()
 	 */
 	public function lastInsertIdInteger(?string $name = null): int
 	{
@@ -172,13 +190,13 @@ abstract class Connection
 	 * Initiates a prepared {@see Statement}.
 	 *
 	 * @param string $query
-	 * @param array  $options
+	 * @param array $options
 	 *
 	 * @return Statement
 	 * @throws DatabaseException
-	 * @see Statement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Statement
 	 */
 	public function prepare(string $query, array $options = []): Statement
 	{
@@ -189,9 +207,9 @@ abstract class Connection
 	 * Creates a query {@see Builder} instance.
 	 *
 	 * @return Builder
-	 * @see Builder
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Builder
 	 */
 	public function query(): Builder
 	{
@@ -216,12 +234,12 @@ abstract class Connection
 	 * Quotes the given value.
 	 *
 	 * @param mixed $value
-	 * @param int   $type
+	 * @param int $type
 	 *
 	 * @return string
-	 * @see PDO::quote()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see PDO::quote()
 	 */
 	public function quote($value, int $type = PDO::PARAM_STR): string
 	{
@@ -231,7 +249,7 @@ abstract class Connection
 	/**
 	 * Checks if the given table exists in the current database.
 	 *
-	 * @param string      $table
+	 * @param string $table
 	 * @param string|null $database
 	 *
 	 * @return bool
@@ -255,8 +273,8 @@ abstract class Connection
 	 * Adds wildcards to the given value.
 	 *
 	 * @param string $value
-	 * @param bool   $left
-	 * @param bool   $right
+	 * @param bool $left
+	 * @param bool $right
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -326,6 +344,14 @@ abstract class Connection
 	{
 		return $this->pdo->beginTransaction();
 	}
+
+	/**
+	 * Loads all tables with columns.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public abstract function loadTablesWithColumns(): void;
 
 	/**
 	 * Gets the used {@see Cache} instance.
