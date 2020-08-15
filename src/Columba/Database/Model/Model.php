@@ -588,6 +588,15 @@ abstract class Model extends Base
 			->run();
 	}
 
+	/**
+	 * Returns TRUE if the given primary key exists.
+	 *
+	 * @param $primarykey
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
 	public static function exists($primarykey): bool
 	{
 		$cache = static::connection()->getCache();
