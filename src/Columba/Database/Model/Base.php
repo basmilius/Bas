@@ -42,7 +42,6 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 	protected array $modified = [];
 	private array $data;
 
-	protected static array $columns = [];
 	protected static array $immutable = [];
 	protected static bool $isImmutable = false;
 
@@ -121,7 +120,7 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 	 * Sets a value.
 	 *
 	 * @param string $column
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -136,7 +135,7 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 
 		$this->data[$column] = $value;
 
-		if (in_array($column, static::$columns[static::class]))
+		if ($this->hasColumn($column))
 			$this->modified[] = $column;
 	}
 
@@ -158,7 +157,7 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 
 		$this->data[$column] = null;
 
-		if (in_array($column, static::$columns[static::class]))
+		if ($this->hasColumn($column))
 			$this->modified[] = $column;
 	}
 
@@ -175,6 +174,17 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 	{
 		return static::$isImmutable || in_array($column, static::$immutable);
 	}
+
+	/**
+	 * Returns TRUE if the given column exists in the table linked to this {@see Model}.
+	 *
+	 * @param string $column
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public abstract function hasColumn(string $column): bool;
 
 	/**
 	 * Prepares the data before the model can be used.

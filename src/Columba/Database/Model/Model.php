@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model;
 
+use Columba\Data\Collection;
 use Columba\Database\Cast\ICast;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
@@ -23,10 +24,10 @@ use PDO;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
-use function array_search;
 use function array_unshift;
 use function implode;
 use function in_array;
+use function method_exists;
 
 /**
  * Class Model
@@ -62,6 +63,8 @@ abstract class Model extends Base
 
 	private array $relationCache = [];
 
+	private bool $isMockCall = false;
+
 	/**
 	 * Model constructor.
 	 *
@@ -76,7 +79,6 @@ abstract class Model extends Base
 		{
 			static::define();
 
-			static::$columns[static::class] ??= static::connection()->getTableColumns(static::table());
 			static::$macros[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
@@ -158,26 +160,61 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Returns a new {@see Mock} object.
+	 *
+	 * @return static|Mock
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function mock(): Mock
+	{
+		return new Mock(
+			$this,
+			$this->hidden,
+			$this->visible,
+			static::$macros[static::class],
+			static::$relationships[static::class]
+		);
+	}
+
+	/**
+	 * Calls a protected or private function on the model from a {@see Mock}.
+	 *
+	 * @param string $method
+	 * @param $data
+	 * @param mixed ...$remaining
+	 *
+	 * @return mixed
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 * @internal
+	 */
+	public final function mockCall(string $method, &$data = null, ...$remaining)
+	{
+		if (!method_exists($this, $method))
+			throw new ModelException(sprintf('Method "%s" does not exist on this model.', $method), ModelException::ERR_BAD_METHOD_CALL);
+
+		$this->isMockCall = true;
+		$result = $this->{$method}($data, ...$remaining);
+		$this->isMockCall = false;
+
+		return $result;
+	}
+
+	/**
 	 * Marks the given columns as hidden.
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return $this
+	 * @return static|Mock
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function makeHidden(array $columns): self
+	public function makeHidden(array $columns): Mock
 	{
-		foreach ($columns as $column)
-		{
-			if (($key = array_search($column, $this->visible)) !== false)
-				unset($this->visible[$key]);
-
-			if (in_array($column, static::$columns[static::class]) && !in_array($column, $this->hidden))
-				$this->hidden[] = $column;
-		}
-
-		return $this;
+		return $this
+			->mock()
+			->makeHidden($columns);
 	}
 
 	/**
@@ -185,22 +222,15 @@ abstract class Model extends Base
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return $this
+	 * @return static|Mock
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function makeVisible(array $columns): self
+	public function makeVisible(array $columns): Mock
 	{
-		foreach ($columns as $column)
-		{
-			if (($key = array_search($column, $this->hidden)) !== false)
-				unset($this->hidden[$key]);
-
-			if (!in_array($column, static::$columns[static::class]) && !in_array($column, $this->visible))
-				$this->visible[] = $column;
-		}
-
-		return $this;
+		return $this
+			->mock()
+			->makeVisible($columns);
 	}
 
 	/**
@@ -210,7 +240,7 @@ abstract class Model extends Base
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
 	public function only(array $columns): array
 	{
@@ -307,6 +337,16 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function hasColumn(string $column): bool
+	{
+		return static::connection()->tableHasColumn(static::table(), $column);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -332,9 +372,12 @@ abstract class Model extends Base
 	 */
 	protected function publish(array &$data): void
 	{
-		foreach (static::$macros[static::class] as $name => $fn)
-			if (in_array($name, $this->visible) || in_array($name, static::$columns[static::class]))
-				$data[$name] = $fn($this);
+		if ($this->isMockCall)
+			return;
+
+		foreach (static::$macros[static::class] as $macro => $fn)
+			if (in_array($macro, $this->visible) || $this->hasColumn($macro))
+				$data[$macro] = $this->resolveMacro($macro);
 
 		foreach (array_keys(static::$relationships[static::class]) as $relation)
 			if (in_array($relation, $this->visible))
@@ -448,8 +491,11 @@ abstract class Model extends Base
 	{
 		$data = parent::toArray();
 
+		if ($this->isMockCall)
+			return $data;
+
 		foreach (array_keys(static::$macros[static::class]) as $macro)
-			if (in_array($macro, $this->visible) || in_array($macro, static::$columns[static::class]))
+			if (in_array($macro, $this->visible) || $this->hasColumn($macro))
 				$data[$macro] = $this->resolveMacro($macro);
 
 		foreach (array_keys(static::$relationships[static::class]) as $relation)
@@ -475,6 +521,24 @@ abstract class Model extends Base
 			->orderBy(static::$orderBy . ' ' . static::$order)
 			->limit($limit, $offset)
 			->array();
+	}
+
+	/**
+	 * Returns all rows as a {@see Collection}.
+	 *
+	 * @param int $offset
+	 * @param int $limit
+	 *
+	 * @return Collection|$this[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function allCollection(int $offset = 0, int $limit = 20): Collection
+	{
+		return static::select()
+			->orderBy(static::$orderBy . ' ' . static::$order)
+			->limit($limit, $offset)
+			->collection();
 	}
 
 	/**

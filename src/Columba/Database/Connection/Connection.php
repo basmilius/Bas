@@ -143,20 +143,6 @@ abstract class Connection
 	}
 
 	/**
-	 * Gets the columns of the given table.
-	 *
-	 * @param string $table
-	 *
-	 * @return string[]|null
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public function getTableColumns(string $table): ?array
-	{
-		return $this->tablesWithColumns[$table] ?? null;
-	}
-
-	/**
 	 * Gets the last insert id as string.
 	 *
 	 * @param string|null $name
@@ -343,6 +329,38 @@ abstract class Connection
 	public function transaction(): bool
 	{
 		return $this->pdo->beginTransaction();
+	}
+
+	/**
+	 * Returns all columns of the given table.
+	 *
+	 * @param string $table
+	 *
+	 * @return array|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function tableAllColumns(string $table): ?array
+	{
+		return $this->tablesWithColumns[$table] ?? null;
+	}
+
+	/**
+	 * Returns TRUE if the given column exists in the given table.
+	 *
+	 * @param string $table
+	 * @param string $column
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function tableHasColumn(string $table, string $column): bool
+	{
+		if (!isset($this->tablesWithColumns[$table]))
+			return false;
+
+		return \in_array($column, $this->tablesWithColumns[$table]);
 	}
 
 	/**

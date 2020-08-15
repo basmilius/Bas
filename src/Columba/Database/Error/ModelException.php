@@ -24,5 +24,6 @@ class ModelException extends DatabaseException
 
 	public const ERR_IMMUTABLE = 1;
 	public const ERR_NOT_FOUND = 2;
+	public const ERR_BAD_METHOD_CALL = 4;
 
 }

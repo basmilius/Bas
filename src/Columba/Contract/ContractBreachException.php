@@ -39,7 +39,7 @@ final class ContractBreachException extends ColumbaException
 	 * @param Throwable|null $previous
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 2.0.0
+	 * @since 1.6.0
 	 */
 	public function __construct(array $errors, string $message, int $code = 0, ?Throwable $previous = null)
 	{
@@ -53,7 +53,7 @@ final class ContractBreachException extends ColumbaException
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 2.0.0
+	 * @since 1.6.0
 	 */
 	public final function getErrors(): array
 	{
