@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Data;
 
 use Closure;
+use Columba\Database\Model\Model;
 use Columba\Facade\IArray;
 use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
@@ -110,7 +111,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param int $size
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -127,7 +128,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Collapses the collection.
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -154,7 +155,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param mixed $column
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -190,7 +191,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param array|IArray|self $items
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -204,7 +205,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -220,7 +221,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -252,7 +253,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -301,7 +302,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -315,13 +316,36 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param array|IArray|self $items
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
 	public function merge($items): self
 	{
 		return new static(array_merge($this->items, $this->ensureArray($items)));
+	}
+
+	/**
+	 * Returns the given keys for all items in this collection.
+	 *
+	 * @param array $keys
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.4.0
+	 */
+	public function only(array $keys): self
+	{
+		return $this->map(function ($item) use ($keys)
+		{
+			if (is_array($item))
+				return ArrayUtil::only($item, $keys);
+
+			if ($item instanceof Model)
+				return $item->only($keys);
+
+			return $item;
+		});
 	}
 
 	/**
@@ -352,7 +376,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Reverses the collection.
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -376,7 +400,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Shuffles the collection.
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -393,7 +417,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @param int $offset
 	 * @param int|null $length
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -407,7 +431,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -425,7 +449,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 * @param int $length
 	 * @param mixed ...$replacement
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -451,7 +475,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param callable $fn
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -465,7 +489,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Copies the Collection to a new instance.
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -632,7 +656,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 *
 	 * @param iterable $items
 	 *
-	 * @return Collection
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
