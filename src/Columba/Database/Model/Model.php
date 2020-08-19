@@ -310,6 +310,8 @@ abstract class Model extends Base
 			$this->afterInsert($newPrimaryKey);
 			$this->initialize();
 			$this->cache();
+
+			$this->relationCache = [];
 		}
 		else
 		{
