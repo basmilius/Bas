@@ -192,7 +192,7 @@ final class StringUtil
 			$excerpt .= $ending;
 		}
 
-		return $excerpt;
+		return trim($excerpt);
 	}
 
 }
