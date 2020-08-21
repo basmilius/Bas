@@ -97,6 +97,20 @@ abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, 
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
+	public function getOriginalValue(string $column)
+	{
+		return $this->data[$column];
+	}
+
+	/**
+	 * Gets a value.
+	 *
+	 * @param string $column
+	 *
+	 * @return mixed
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
 	public function getValue(string $column)
 	{
 		return $this->data[$column];

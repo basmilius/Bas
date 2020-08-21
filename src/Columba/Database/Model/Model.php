@@ -43,6 +43,10 @@ abstract class Model extends Base
 	private static array $connections = [];
 	private static array $initialized = [];
 
+	private static array $casts = [];
+	private static array $macros = [];
+	private static array $macrosToCache = [];
+
 	protected static string $connectionId = 'default';
 
 	public static string $order = 'ASC';
@@ -52,15 +56,13 @@ abstract class Model extends Base
 	protected static int $primaryKeyType = PDO::PARAM_INT;
 	protected static string $table = '';
 
-	protected static array $casts = [];
-	protected static array $macros = [];
-
 	/** @var Relation[][] */
 	protected static array $relationships = [];
 
 	protected array $hidden = [];
 	protected array $visible = [];
 
+	private array $macroCache = [];
 	private array $relationCache = [];
 
 	private bool $isMockCall = false;
@@ -79,7 +81,9 @@ abstract class Model extends Base
 		{
 			static::define();
 
+			static::$casts[static::class] ??= [];
 			static::$macros[static::class] ??= [];
+			static::$macrosToCache[static::class] ??= [];
 			static::$relationships[static::class] ??= [];
 			static::$initialized[static::class] = true;
 		}
@@ -259,12 +263,19 @@ abstract class Model extends Base
 	public function resolveMacro(string $column)
 	{
 		$macros = static::$macros[static::class];
+		$macrosToCache = static::$macrosToCache[static::class];
 
 		if (!isset($macros[$column]))
 			return null;
 
+		if (isset($this->macroCache[$column]))
+			return $this->macroCache[$column];
+
 		$macro = $macros[$column];
 		$value = $macro($this);
+
+		if (in_array($column, $macrosToCache))
+			$this->macroCache[$column] = $value;
 
 		if ($value instanceof Relation)
 			return $value->get();
@@ -280,16 +291,17 @@ abstract class Model extends Base
 	 */
 	public function save(): void
 	{
+		$casters = static::$casts[static::class];
 		$columnsAndValues = [];
 
 		foreach ($this->modified as $column)
 		{
 			$value = $this->getValue($column);
 
-			if (array_key_exists($column, static::$casts))
+			if (array_key_exists($column, $casters))
 			{
 				/** @var ICast $cast */
-				$castClass = static::$casts[$column];
+				$castClass = $casters[$column];
 				$cast = self::$castInstances[$castClass] ?? self::$castInstances[$castClass] = new $castClass();
 
 				$value = $cast->set($this, $column, $value, $this->modified);
@@ -311,6 +323,7 @@ abstract class Model extends Base
 			$this->initialize();
 			$this->cache();
 
+			$this->macroCache = [];
 			$this->relationCache = [];
 		}
 		else
@@ -355,13 +368,13 @@ abstract class Model extends Base
 	 */
 	protected function prepare(array &$data): void
 	{
-		foreach (static::$casts as $key => $castClass)
+		foreach (static::$casts[static::class] as $key => $caster)
 		{
 			if (!array_key_exists($key, $data))
 				continue;
 
 			/** @var ICast $cast */
-			$cast = self::$castInstances[$castClass] ?? self::$castInstances[$castClass] = new $castClass();
+			$cast = self::$castInstances[$caster] ??= new $caster();
 
 			$data[$key] = $cast->get($this, $key, $data[$key], $data);
 		}
@@ -864,6 +877,61 @@ abstract class Model extends Base
 		array_unshift($arguments, $data);
 
 		return new static(...$arguments);
+	}
+
+	/**
+	 * Casts the given column with the given caster class.
+	 *
+	 * @param string $column
+	 * @param string $casterClass
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function cast(string $column, string $casterClass): void
+	{
+		static::$casts[static::class][$column] = $casterClass;
+	}
+
+	/**
+	 * Casts the given columns.
+	 *
+	 * @param array $casts
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function casts(array $casts): void
+	{
+		foreach ($casts as $column => $casterClass)
+			static::$casts[static::class][$column] = $casterClass;
+	}
+
+	/**
+	 * Marks the given macro as cacheable.
+	 *
+	 * @param string $macro
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function cacheMacro(string $macro): void
+	{
+		static::$macrosToCache[static::class][] = $macro;
+	}
+
+	/**
+	 * Marks the given macros as cacheable.
+	 *
+	 * @param string[] $macros
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function cacheMacros(array $macros): void
+	{
+		foreach ($macros as $macro)
+			static::$macrosToCache[static::class][] = $macro;
 	}
 
 	/**
