@@ -335,6 +335,30 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Runs the given function on the value of the given column.
+	 *
+	 * @param string $column
+	 * @param callable $fn
+	 *
+	 * @return Model
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function withColumn(string $column, callable $fn): self
+	{
+		if ($this->hasValue($column))
+		{
+			$value = $this->getValue($column);
+			$value = $fn($value);
+
+			// todo(Bas): Probably need another cache for this.
+			$this->relationCache[$column] = $value;
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Executed after a new record is inserted to the database.
 	 *
 	 * @param int $newPrimaryKey
