@@ -32,8 +32,8 @@ class One extends Relation
 	 * One constructor.
 	 *
 	 * @param Model|string $referencedModel
-	 * @param string|null  $selfKey
-	 * @param string|null  $referenceKey
+	 * @param string|null $selfKey
+	 * @param string|null $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -62,7 +62,7 @@ class One extends Relation
 				return $cache->get($key, $this->referencedModel);
 		}
 
-		return $this->collection()->first();
+		return $this->single();
 	}
 
 	/**
