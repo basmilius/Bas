@@ -14,7 +14,6 @@ namespace Columba;
 
 use Columba\Util\FileSystemUtil;
 use Columba\Util\StringUtil;
-use const DIRECTORY_SEPARATOR;
 use function dirname;
 use function is_dir;
 use function realpath;
@@ -24,12 +23,13 @@ use function spl_autoload_unregister;
 use function str_replace;
 use function strlen;
 use function substr;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Class Autoloader
  *
- * @package Columba
  * @author Bas Milius <bas@mili.us>
+ * @package Columba
  * @since 1.0.0
  */
 final class Autoloader
@@ -52,9 +52,9 @@ final class Autoloader
 	/**
 	 * Adds a directory to {@see Autoloader}.
 	 *
-	 * @param string      $directory
+	 * @param string $directory
 	 * @param string|null $namespace
-	 * @param bool        $isVirtualNamespace
+	 * @param bool $isVirtualNamespace
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
@@ -69,7 +69,7 @@ final class Autoloader
 	 * subdirectories will also be loaded.
 	 *
 	 * @param string $dir
-	 * @param bool   $recursive
+	 * @param bool $recursive
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
@@ -158,6 +158,7 @@ final class Autoloader
 
 			/** @noinspection PhpIncludeInspection */
 			require $file;
+
 			return true;
 		}
 
@@ -167,10 +168,10 @@ final class Autoloader
 	/**
 	 * Returns the file path or NULL if it's not a real path.
 	 *
-	 * @param string      $directory
+	 * @param string $directory
 	 * @param string|null $namespace
-	 * @param bool        $isVirtualNamespace
-	 * @param string      $object
+	 * @param bool $isVirtualNamespace
+	 * @param string $object
 	 *
 	 * @return string|null
 	 * @author Bas Milius <bas@mili.us>

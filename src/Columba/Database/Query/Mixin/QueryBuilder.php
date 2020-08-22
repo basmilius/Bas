@@ -15,9 +15,9 @@ namespace Columba\Database\Query\Mixin;
 /**
  * Trait QueryBuilder
  *
+ * @author Bas Milius <bas@mili.us>
  * @package Columba\Database\Query\Mixin
  *
- * @author Bas Milius <bas@mili.us>
  * @since 1.6.0
  */
 trait QueryBuilder

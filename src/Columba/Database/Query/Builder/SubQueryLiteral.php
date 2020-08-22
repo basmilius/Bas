@@ -28,7 +28,7 @@ class SubQueryLiteral extends ComparatorAwareLiteral implements IAfterPiece
 	/**
 	 * SubQueryLiteral constructor.
 	 *
-	 * @param Base   $query
+	 * @param Base $query
 	 * @param string $clause
 	 *
 	 * @author Bas Milius <bas@mili.us>

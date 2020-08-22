@@ -32,7 +32,7 @@ final class RuleValidate extends AbstractRule
 	 * RuleValidate constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
+	 * @param Term $term
 	 * @param Closure $predicate
 	 *
 	 * @author Bas Milius <bas@mili.us>

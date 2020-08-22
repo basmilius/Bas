@@ -33,8 +33,8 @@ final class RuleLength extends AbstractRule
 	 * RuleLength constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
-	 * @param int      $length
+	 * @param Term $term
+	 * @param int $length
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

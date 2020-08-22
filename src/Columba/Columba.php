@@ -15,8 +15,8 @@ namespace Columba;
 /**
  * Class Columba
  *
- * @package Columba
  * @author Bas Milius <bas@mili.us>
+ * @package Columba
  * @since 1.2.0
  */
 final class Columba

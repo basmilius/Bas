@@ -31,8 +31,8 @@ final class RuleInstanceOf extends AbstractRule
 	 * RuleInstanceOf constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
-	 * @param string   $className
+	 * @param Term $term
+	 * @param string $className
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

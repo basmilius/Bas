@@ -29,7 +29,7 @@ final class BuilderUtil
 	 * Repeats the given string for the given amount.
 	 *
 	 * @param string $str
-	 * @param int    $amount
+	 * @param int $amount
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>

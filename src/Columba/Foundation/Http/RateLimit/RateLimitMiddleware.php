@@ -35,7 +35,7 @@ class RateLimitMiddleware extends AbstractMiddleware
 	/**
 	 * RateLimitMiddleware constructor.
 	 *
-	 * @param Router    $router
+	 * @param Router $router
 	 * @param RateLimit $rateLimit
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -79,7 +79,7 @@ class RateLimitMiddleware extends AbstractMiddleware
 	/**
 	 * Makes the response clients get when the rate limit is exceeded.
 	 *
-	 * @param Context                    $context
+	 * @param Context $context
 	 * @param RateLimitExceededException $err
 	 *
 	 * @author Bas Milius <bas@mili.us>

@@ -26,8 +26,8 @@ use function sort;
 /**
  * Class ColorCutQuantizer
  *
- * @package Columba\Palette
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Palette
  * @since 1.1.0
  */
 final class ColorCutQuantizer
@@ -53,7 +53,7 @@ final class ColorCutQuantizer
 	 * ColorCutQuantizer constructor.
 	 *
 	 * @param ColorHistogram $colorHistogram
-	 * @param int            $maxColors
+	 * @param int $maxColors
 	 *
 	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
@@ -280,7 +280,7 @@ final class ColorCutQuantizer
 	 * Splits the vboxes.
 	 *
 	 * @param Vbox[] $vboxes
-	 * @param int    $maxSize
+	 * @param int $maxSize
 	 *
 	 * @throws Exception
 	 * @author Bas Milius <bas@mili.us>
@@ -308,7 +308,7 @@ final class ColorCutQuantizer
 	 * Create self from image.
 	 *
 	 * @param Image $image
-	 * @param int   $maxColors
+	 * @param int $maxColors
 	 *
 	 * @return ColorCutQuantizer
 	 * @throws Exception

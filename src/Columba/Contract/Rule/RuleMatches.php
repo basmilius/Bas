@@ -34,8 +34,8 @@ final class RuleMatches extends AbstractRule
 	 * RuleMatches constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
-	 * @param string   $pattern
+	 * @param Term $term
+	 * @param string $pattern
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

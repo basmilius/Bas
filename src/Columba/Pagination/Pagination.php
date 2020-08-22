@@ -19,8 +19,8 @@ use function min;
 /**
  * Class Pagination
  *
- * @package Columba\Pagination
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Pagination
  * @since 1.0.0
  */
 final class Pagination

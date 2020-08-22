@@ -22,8 +22,8 @@ use function min;
 /**
  * Class Palette
  *
- * @package Columba\Palette
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Palette
  * @since 1.1.0
  */
 final class Palette
@@ -231,8 +231,8 @@ final class Palette
 	 * @param float $targetSaturation
 	 * @param float $luma
 	 * @param float $targetLuma
-	 * @param int   $population
-	 * @param int   $highestPopulaiton
+	 * @param int $population
+	 * @param int $highestPopulaiton
 	 *
 	 * @return float
 	 * @author Bas Milius <bas@mili.us>
@@ -247,7 +247,7 @@ final class Palette
 	 * Generates a {@see Palette} from {@see Image}.
 	 *
 	 * @param Image $image
-	 * @param int   $numColors
+	 * @param int $numColors
 	 *
 	 * @return Palette
 	 * @throws Exception

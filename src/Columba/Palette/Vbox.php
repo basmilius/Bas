@@ -20,8 +20,8 @@ use function round;
 /**
  * Class Vbox
  *
- * @package Columba\Palette
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Palette
  * @since 1.1.0
  */
 final class Vbox
@@ -41,8 +41,8 @@ final class Vbox
 	 * Vbox constructor.
 	 *
 	 * @param ColorCutQuantizer $quantizer
-	 * @param int               $lowerIndex
-	 * @param int               $upperIndex
+	 * @param int $lowerIndex
+	 * @param int $upperIndex
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0

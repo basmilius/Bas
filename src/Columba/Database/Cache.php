@@ -30,7 +30,7 @@ class Cache
 	/**
 	 * Gets a cached result.
 	 *
-	 * @param mixed  $primaryKey
+	 * @param mixed $primaryKey
 	 * @param string $modelClass
 	 *
 	 * @return Model|null
@@ -45,7 +45,7 @@ class Cache
 	/**
 	 * Returns all cached results matching ids.
 	 *
-	 * @param array  $primaryKeys
+	 * @param array $primaryKeys
 	 * @param string $modelClass
 	 *
 	 * @return Model[]
@@ -65,7 +65,7 @@ class Cache
 	/**
 	 * Returns TRUE if a model is cached.
 	 *
-	 * @param mixed  $primaryKey
+	 * @param mixed $primaryKey
 	 * @param string $modelClass
 	 *
 	 * @return bool
@@ -91,7 +91,7 @@ class Cache
 	/**
 	 * Removes a model from cache.
 	 *
-	 * @param mixed  $primaryKey
+	 * @param mixed $primaryKey
 	 * @param string $modelClass
 	 *
 	 * @author Bas Milius <bas@mili.us>

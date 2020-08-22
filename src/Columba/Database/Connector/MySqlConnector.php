@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Database\Connector;
 
-use Columba\Foundation\Preferences\Preferences;
 use Columba\Database\Error\ConnectionException;
+use Columba\Foundation\Preferences\Preferences;
 
 /**
  * Class MySqlConnector
@@ -28,12 +28,12 @@ class MySqlConnector extends Connector
 	/**
 	 * MySqlConnector constructor.
 	 *
-	 * @param string      $host
-	 * @param string      $database
+	 * @param string $host
+	 * @param string $database
 	 * @param string|null $username
 	 * @param string|null $password
-	 * @param int         $port
-	 * @param array       $options
+	 * @param int $port
+	 * @param array $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

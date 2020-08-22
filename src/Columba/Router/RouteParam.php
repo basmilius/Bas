@@ -17,8 +17,8 @@ use function intval;
 /**
  * Class RouteParam
  *
- * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router
  * @since 1.3.0
  */
 final class RouteParam
@@ -36,8 +36,8 @@ final class RouteParam
 	 *
 	 * @param string $name
 	 * @param string $type
-	 * @param bool   $allowsNull
-	 * @param mixed  $defaultValue
+	 * @param bool $allowsNull
+	 * @param mixed $defaultValue
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 2.3.0

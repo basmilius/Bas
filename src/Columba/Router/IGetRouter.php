@@ -15,8 +15,8 @@ namespace Columba\Router;
 /**
  * Interface IGetRouter
  *
- * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router
  * @since 1.3.0
  */
 interface IGetRouter

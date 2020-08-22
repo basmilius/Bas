@@ -33,8 +33,8 @@ class Many extends Relation
 	 * Many constructor.
 	 *
 	 * @param Model|string $referenceModel
-	 * @param string|null  $referenceKey
-	 * @param string|null  $selfKey
+	 * @param string|null $referenceKey
+	 * @param string|null $selfKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

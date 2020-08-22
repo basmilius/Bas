@@ -12,13 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Security\JWT;
 
-use const JSON_BIGINT_AS_STRING;
-use const JSON_ERROR_CTRL_CHAR;
-use const JSON_ERROR_DEPTH;
-use const JSON_ERROR_NONE;
-use const JSON_ERROR_STATE_MISMATCH;
-use const JSON_ERROR_SYNTAX;
-use const JSON_ERROR_UTF8;
 use function array_shift;
 use function base64_decode;
 use function base64_encode;
@@ -41,6 +34,13 @@ use function str_replace;
 use function strlen;
 use function strtr;
 use function time;
+use const JSON_BIGINT_AS_STRING;
+use const JSON_ERROR_CTRL_CHAR;
+use const JSON_ERROR_DEPTH;
+use const JSON_ERROR_NONE;
+use const JSON_ERROR_STATE_MISMATCH;
+use const JSON_ERROR_SYNTAX;
+use const JSON_ERROR_UTF8;
 
 /**
  * Class JWT
@@ -66,9 +66,9 @@ final class JWT
 	/**
 	 * Decodes a JWT string into an array.
 	 *
-	 * @param string   $jwt
+	 * @param string $jwt
 	 * @param string[] $keys
-	 * @param array    $allowedAlgorithms
+	 * @param array $allowedAlgorithms
 	 *
 	 * @return array
 	 * @throws JWTException
@@ -141,11 +141,11 @@ final class JWT
 	/**
 	 * Converts and signs an array into a JWT string.
 	 *
-	 * @param array  $payload
+	 * @param array $payload
 	 * @param string $key
 	 * @param string $algorithmName
-	 * @param null   $keyId
-	 * @param array  $headers
+	 * @param null $keyId
+	 * @param array $headers
 	 *
 	 * @return string
 	 * @throws JWTException

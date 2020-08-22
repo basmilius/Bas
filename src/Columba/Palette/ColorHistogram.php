@@ -19,8 +19,8 @@ use function sort;
 /**
  * Class ColorHistogram
  *
- * @package Columba\Palette
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Palette
  * @since 1.1.0
  */
 final class ColorHistogram

@@ -49,8 +49,8 @@ class Domain implements Debuggable
 	 * Domain constructor.
 	 *
 	 * @param Internationalization $i18n
-	 * @param Locale               $locale
-	 * @param string               $path
+	 * @param Locale $locale
+	 * @param string $path
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -119,7 +119,7 @@ class Domain implements Debuggable
 	 * Translates the given key and applies the given arguments.
 	 *
 	 * @param string $key
-	 * @param mixed  ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @return string|null
 	 * @author Bas Milius <bas@mili.us>
@@ -147,7 +147,7 @@ class Domain implements Debuggable
 	/**
 	 * Converts the strings.
 	 *
-	 * @param array  $strings
+	 * @param array $strings
 	 * @param string $prefix
 	 *
 	 * @author Bas Milius <bas@mili.us>

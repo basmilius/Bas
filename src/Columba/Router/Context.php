@@ -22,8 +22,8 @@ use function array_merge;
 /**
  * Class Context
  *
- * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router
  * @since 1.3.0
  */
 final class Context
@@ -102,8 +102,8 @@ final class Context
 	 * Redirects our {@see Context} to something else.
 	 *
 	 * @param string $redirectPath
-	 * @param int    $responseCode
-	 * @param mixed  $returnValue
+	 * @param int $responseCode
+	 * @param mixed $returnValue
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
@@ -211,7 +211,7 @@ final class Context
 	 * Sets the response.
 	 *
 	 * @param AbstractResponse $responseClass
-	 * @param mixed            $responseValue
+	 * @param mixed $responseValue
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
@@ -254,7 +254,7 @@ final class Context
 	 * Adds a custom param.
 	 *
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
@@ -268,7 +268,7 @@ final class Context
 	 * Gets a {@see AbstractRoute} param.
 	 *
 	 * @param string $name
-	 * @param bool   $includeParent
+	 * @param bool $includeParent
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>

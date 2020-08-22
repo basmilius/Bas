@@ -21,6 +21,7 @@ use Columba\Database\Query\Builder\Builder;
 use Columba\Database\Query\Statement;
 use Columba\Database\Util\ErrorUtil;
 use PDO;
+use function in_array;
 use function intval;
 use function strval;
 
@@ -360,7 +361,7 @@ abstract class Connection
 		if (!isset($this->tablesWithColumns[$table]))
 			return false;
 
-		return \in_array($column, $this->tablesWithColumns[$table]);
+		return in_array($column, $this->tablesWithColumns[$table]);
 	}
 
 	/**

@@ -44,14 +44,14 @@ class Cookie implements Stringable
 	/**
 	 * Cookie constructor.
 	 *
-	 * @param string      $name
-	 * @param string      $value
-	 * @param int         $expires
+	 * @param string $name
+	 * @param string $value
+	 * @param int $expires
 	 * @param string|null $path
 	 * @param string|null $domain
-	 * @param bool        $isSecure
-	 * @param bool        $isHttpOnly
-	 * @param string      $sameSite
+	 * @param bool $isSecure
+	 * @param bool $isHttpOnly
+	 * @param string $sameSite
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

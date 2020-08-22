@@ -19,8 +19,8 @@ use function count;
 /**
  * Class RequestValidatorResult
  *
- * @package Columba\Request\Validate
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Request\Validate
  * @since 1.2.0
  */
 final class RequestValidatorResult implements ArrayAccess
@@ -46,7 +46,7 @@ final class RequestValidatorResult implements ArrayAccess
 	 * Adds a valid param.
 	 *
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0

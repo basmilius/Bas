@@ -33,8 +33,8 @@ final class RuleCount extends AbstractRule
 	 * RuleCount constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
-	 * @param int      $count
+	 * @param Term $term
+	 * @param int $count
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

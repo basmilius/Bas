@@ -34,9 +34,9 @@ abstract class RateLimit
 	/**
 	 * RateLimit constructor.
 	 *
-	 * @param string          $name
-	 * @param int             $requests
-	 * @param int             $period
+	 * @param string $name
+	 * @param int $requests
+	 * @param int $period
 	 * @param IStorageAdapter $storageAdapter
 	 *
 	 * @author Bas Milius <bas@mili.us>
@@ -54,7 +54,7 @@ abstract class RateLimit
 	 * Returns TRUE if a request is allowed.
 	 *
 	 * @param string $id
-	 * @param int    $use
+	 * @param int $use
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>

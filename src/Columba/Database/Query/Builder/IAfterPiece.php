@@ -15,9 +15,9 @@ namespace Columba\Database\Query\Builder;
 /**
  * Interface IAfterPiece
  *
+ * @author Bas Milius <bas@mili.us>
  * @package Columba\Database\Query\Builder
  *
- * @author Bas Milius <bas@mili.us>
  * @since 1.6.0
  */
 interface IAfterPiece

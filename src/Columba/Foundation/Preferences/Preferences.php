@@ -33,8 +33,8 @@ use function sprintf;
 /**
  * Class Preferences
  *
- * @package Columba\Foundation\Preferences
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Foundation\Preferences
  * @since 1.0.0
  */
 final class Preferences implements IArray, ICountable, IIterator, IJson
@@ -48,7 +48,7 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	/**
 	 * Preferences constructor.
 	 *
-	 * @param array            $data
+	 * @param array $data
 	 * @param Preferences|null $parent
 	 *
 	 * @author Bas Milius <bas@mili.us>

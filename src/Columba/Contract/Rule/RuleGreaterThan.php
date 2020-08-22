@@ -33,8 +33,8 @@ final class RuleGreaterThan extends AbstractRule
 	/**
 	 * RuleGreaterThan constructor.
 	 *
-	 * @param Contract  $contract
-	 * @param Term      $term
+	 * @param Contract $contract
+	 * @param Term $term
 	 * @param float|int $value
 	 *
 	 * @author Bas Milius <bas@mili.us>

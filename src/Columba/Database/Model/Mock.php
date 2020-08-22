@@ -12,6 +12,10 @@ use Columba\Facade\IsSettable;
 use Columba\Facade\Settable;
 use Columba\Facade\Unsettable;
 use Columba\Util\ArrayUtil;
+use function array_keys;
+use function array_search;
+use function in_array;
+use function method_exists;
 
 /**
  * Class Mock
@@ -69,10 +73,10 @@ final class Mock implements IArray, IJson, Debuggable, Gettable, IsSettable, Set
 	{
 		foreach ($columns as $column)
 		{
-			if (($key = \array_search($column, $this->visible)) !== false)
+			if (($key = array_search($column, $this->visible)) !== false)
 				unset($this->visible[$key]);
 
-			if ($this->model->hasColumn($column) && !\in_array($column, $this->hidden))
+			if ($this->model->hasColumn($column) && !in_array($column, $this->hidden))
 				$this->hidden[] = $column;
 		}
 
@@ -92,10 +96,10 @@ final class Mock implements IArray, IJson, Debuggable, Gettable, IsSettable, Set
 	{
 		foreach ($columns as $column)
 		{
-			if (($key = \array_search($column, $this->hidden)) !== false)
+			if (($key = array_search($column, $this->hidden)) !== false)
 				unset($this->hidden[$key]);
 
-			if (!$this->model->hasColumn($column) && !\in_array($column, $this->visible))
+			if (!$this->model->hasColumn($column) && !in_array($column, $this->visible))
 				$this->visible[] = $column;
 		}
 
@@ -128,7 +132,7 @@ final class Mock implements IArray, IJson, Debuggable, Gettable, IsSettable, Set
 	 */
 	public final function __call(string $method, $arguments)
 	{
-		if (!\method_exists($this->model, $method))
+		if (!method_exists($this->model, $method))
 			throw new ModelException(sprintf('Method "%s" does not exist on either this mock or the linked model.', $method), ModelException::ERR_BAD_METHOD_CALL);
 
 		return $this->model->{$method}(...$arguments);
@@ -263,12 +267,12 @@ final class Mock implements IArray, IJson, Debuggable, Gettable, IsSettable, Set
 	 */
 	private final function resolveVisibilityColumns(array &$data): void
 	{
-		foreach (\array_keys($this->macros) as $macro)
-			if (\in_array($macro, $this->visible) || $this->model->hasColumn($macro))
+		foreach (array_keys($this->macros) as $macro)
+			if (in_array($macro, $this->visible) || $this->model->hasColumn($macro))
 				$data[$macro] = $this->model->resolveMacro($macro);
 
-		foreach (\array_keys($this->relationships) as $relation)
-			if (\in_array($relation, $this->visible))
+		foreach (array_keys($this->relationships) as $relation)
+			if (in_array($relation, $this->visible))
 				$data[$relation] = $this->model->getValue($relation);
 
 		foreach ($this->hidden as $column)

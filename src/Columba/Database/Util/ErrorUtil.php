@@ -30,8 +30,8 @@ final class ErrorUtil
 	/**
 	 * Throws one of the {@see DatabaseException} implementations based on the given code.
 	 *
-	 * @param int            $code
-	 * @param string         $message
+	 * @param int $code
+	 * @param string $message
 	 * @param Throwable|null $err
 	 *
 	 * @return DatabaseException

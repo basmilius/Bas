@@ -27,8 +27,8 @@ use const FILTER_VALIDATE_URL;
 /**
  * Class RequestValidatorOption
  *
- * @package Columba\Request\Validate
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Request\Validate
  * @since 1.2.0
  */
 final class RequestValidatorOption
@@ -392,7 +392,7 @@ final class RequestValidatorOption
 	/**
 	 * Creates a {@see RequestValidatorOption}.
 	 *
-	 * @param string      $name
+	 * @param string $name
 	 * @param string|null $fieldName
 	 *
 	 * @return RequestValidatorOption

@@ -33,10 +33,10 @@ class Contract
 	/**
 	 * Terms have been violated, create an error here.
 	 *
-	 * @param Term   $term
-	 * @param int    $reason
+	 * @param Term $term
+	 * @param int $reason
 	 * @param string $message
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>

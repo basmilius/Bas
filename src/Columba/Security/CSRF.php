@@ -62,7 +62,7 @@ class CSRF
 	/**
 	 * Validates the given CSRF token.
 	 *
-	 * @param string     $token
+	 * @param string $token
 	 * @param array|null $payload
 	 *
 	 * @return bool

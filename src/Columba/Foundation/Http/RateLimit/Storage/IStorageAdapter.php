@@ -58,8 +58,8 @@ interface IStorageAdapter
 	 * Sets a key.
 	 *
 	 * @param string $key
-	 * @param float  $value
-	 * @param int    $ttl
+	 * @param float $value
+	 * @param int $ttl
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

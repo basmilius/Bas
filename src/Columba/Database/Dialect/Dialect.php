@@ -116,11 +116,11 @@ class Dialect
 	 * @param Builder $query
 	 *
 	 * @return Builder
-	 * @see Connection::foundRows()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 *
 	 * @noinspection PhpUnusedParameterInspection
+	 * @see Connection::foundRows()
 	 */
 	public function foundRows(Builder $query): Builder
 	{
@@ -130,15 +130,15 @@ class Dialect
 	/**
 	 * Builds an OPTIMIZE TABLE expression for the {@see Builder}.
 	 *
-	 * @param Builder  $query
+	 * @param Builder $query
 	 * @param string[] $tables
 	 *
 	 * @return Builder
-	 * @see Builder::optimizeTable()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 *
 	 * @noinspection PhpUnusedParameterInspection
+	 * @see Builder::optimizeTable()
 	 */
 	public function optimizeTable(Builder $query, array $tables): Builder
 	{
@@ -149,15 +149,15 @@ class Dialect
 	 * Builds a query for checking if the given table exists in the given database.
 	 *
 	 * @param Builder $query
-	 * @param string  $schema
-	 * @param string  $table
+	 * @param string $schema
+	 * @param string $table
 	 *
 	 * @return Builder
-	 * @see Connection::tableExists()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 *
 	 * @noinspection PhpUnusedParameterInspection
+	 * @see Connection::tableExists()
 	 */
 	public function tableExists(Builder $query, string $schema, string $table): Builder
 	{
@@ -170,10 +170,10 @@ class Dialect
 	 * @param string $method
 	 *
 	 * @return DatabaseException
-	 * @see QueryException
-	 * @see QueryException::ERR_NOT_IMPLEMENTED
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see QueryException
+	 * @see QueryException::ERR_NOT_IMPLEMENTED
 	 */
 	protected function notImplemented(string $method): DatabaseException
 	{

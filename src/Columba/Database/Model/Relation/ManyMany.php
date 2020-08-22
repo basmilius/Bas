@@ -34,9 +34,9 @@ class ManyMany extends Relation
 	 * ManyMany constructor.
 	 *
 	 * @param Model|string $referencedModel
-	 * @param string       $linkingTable
-	 * @param string       $selfKey
-	 * @param string       $referenceKey
+	 * @param string $linkingTable
+	 * @param string $selfKey
+	 * @param string $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

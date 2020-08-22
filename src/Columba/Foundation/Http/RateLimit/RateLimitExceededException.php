@@ -29,7 +29,7 @@ final class RateLimitExceededException extends ColumbaException
 	 * RateLimitExceededException constructor.
 	 *
 	 * @param string $message
-	 * @param int    $code
+	 * @param int $code
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

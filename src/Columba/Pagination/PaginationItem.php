@@ -17,8 +17,8 @@ use Columba\Facade\IJson;
 /**
  * Class PaginationItem
  *
- * @package Columba\Pagination
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Pagination
  * @since 1.0.0
  */
 final class PaginationItem implements IJson
@@ -34,11 +34,11 @@ final class PaginationItem implements IJson
 	/**
 	 * PaginationItem constructor.
 	 *
-	 * @param int    $page
-	 * @param bool   $isCurrent
-	 * @param bool   $isDisabled
-	 * @param bool   $isDots
-	 * @param bool   $isNav
+	 * @param int $page
+	 * @param bool $isCurrent
+	 * @param bool $isDisabled
+	 * @param bool $isDots
+	 * @param bool $isNav
 	 * @param string $label
 	 *
 	 * @author Bas Milius <bas@mili.us>

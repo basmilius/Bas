@@ -31,7 +31,7 @@ final class RuleSubcontract extends AbstractRule
 	 * RuleSubcontract constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
+	 * @param Term $term
 	 * @param Contract $other
 	 *
 	 * @author Bas Milius <bas@mili.us>

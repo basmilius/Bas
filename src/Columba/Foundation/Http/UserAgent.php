@@ -106,6 +106,7 @@ class UserAgent
 				$this->platform = $platform;
 				$this->version = $result['version'];
 			}
+
 			return;
 		}
 

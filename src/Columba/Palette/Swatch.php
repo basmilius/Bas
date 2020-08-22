@@ -17,8 +17,8 @@ use Columba\Color\Color;
 /**
  * Class Swatch
  *
- * @package Columba\Palette
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Palette
  * @since 1.1.0
  */
 final class Swatch
@@ -34,7 +34,7 @@ final class Swatch
 	 * Swatch constructor.
 	 *
 	 * @param Color $color
-	 * @param int   $population
+	 * @param int $population
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0

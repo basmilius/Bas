@@ -28,7 +28,7 @@ class Store
 	 * Gets an item or returns {@see $defaultValue} when it's not stored.
 	 *
 	 * @param string $key
-	 * @param mixed  $defaultValue
+	 * @param mixed $defaultValue
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
@@ -42,7 +42,7 @@ class Store
 	/**
 	 * Returns an item or creates it when it's not stored.
 	 *
-	 * @param string   $key
+	 * @param string $key
 	 * @param callable $creator
 	 *
 	 * @return mixed
@@ -75,7 +75,7 @@ class Store
 	 * Sets an item.
 	 *
 	 * @param string $key
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

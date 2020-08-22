@@ -39,8 +39,8 @@ final class RuleBetween extends AbstractRule
 	/**
 	 * RuleBetween constructor.
 	 *
-	 * @param Contract  $contract
-	 * @param Term      $term
+	 * @param Contract $contract
+	 * @param Term $term
 	 * @param float|int $min
 	 * @param float|int $max
 	 *

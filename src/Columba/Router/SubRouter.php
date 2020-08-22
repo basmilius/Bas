@@ -20,8 +20,8 @@ use function array_merge;
 /**
  * Class SubRouter
  *
- * @package Columba\Router
  * @author Bas Milius <bas@mili.us>
+ * @package Columba\Router
  * @since 1.3.0
  */
 class SubRouter extends Router
@@ -39,8 +39,8 @@ class SubRouter extends Router
 	 *
 	 * @param string $name
 	 * @param string $type
-	 * @param bool   $allowsNull
-	 * @param mixed  $defaultValue
+	 * @param bool $allowsNull
+	 * @param mixed $defaultValue
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
@@ -119,7 +119,7 @@ class SubRouter extends Router
 	 * to handle the request yourself. Note that eventual other subrouters with the same
 	 * path will not be executed when you return TRUE.
 	 *
-	 * @param string  $requestPath
+	 * @param string $requestPath
 	 * @param Context $context
 	 *
 	 * @return bool

@@ -32,8 +32,8 @@ final class RuleOneOf extends AbstractRule
 	 * RuleOneOf constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
-	 * @param array    $values
+	 * @param Term $term
+	 * @param array $values
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

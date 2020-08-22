@@ -146,9 +146,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return mixed
-	 * @see Connection::attribute()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::attribute()
 	 */
 	public static function attribute(int $attribute, ?string $id = null)
 	{
@@ -160,9 +160,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return int
-	 * @see Connection::execute()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::execute()
 	 */
 	public static function execute(string $query, ?string $id = null): int
 	{
@@ -173,9 +173,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return int
-	 * @see Connection::foundRows()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::foundRows()
 	 */
 	public static function foundRows(?string $id = null): int
 	{
@@ -187,9 +187,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return string
-	 * @see Connection::lastInsertId()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::lastInsertId()
 	 */
 	public static function lastInsertId(?string $name = null, ?string $id = null): string
 	{
@@ -201,9 +201,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return int
-	 * @see Connection::lastInsertIdInteger()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::lastInsertIdInteger()
 	 */
 	public static function lastInsertIdInteger(?string $name = null, ?string $id = null): int
 	{
@@ -216,9 +216,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return Statement
-	 * @see Connection::prepare()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::prepare()
 	 */
 	public static function prepare(string $query, array $options = [], ?string $id = null): Statement
 	{
@@ -229,9 +229,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return Builder
-	 * @see Connection::query()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::query()
 	 */
 	public static function query(?string $id = null): Builder
 	{
@@ -243,9 +243,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return mixed
-	 * @see Connection::queryColumn()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::queryColumn()
 	 */
 	public static function queryColumn(string $query, ?string $id = null)
 	{
@@ -258,9 +258,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return string
-	 * @see Connection::quote()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::quote()
 	 */
 	public static function quote($value, int $type = PDO::PARAM_STR, ?string $id = null): string
 	{
@@ -273,9 +273,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return bool
-	 * @see Connection::tableExists()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::tableExists()
 	 */
 	public static function tableExists(string $table, ?string $database = null, ?string $id = null): bool
 	{
@@ -289,9 +289,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return array
-	 * @see Connection::wildcard()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::wildcard()
 	 */
 	public static function wildcard(string $value, bool $left = true, bool $right = true, ?string $id = null): array
 	{
@@ -302,9 +302,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return Cache
-	 * @see Connection::getCache()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::getCache()
 	 */
 	public static function cache(?string $id = null): Cache
 	{
@@ -315,9 +315,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return bool
-	 * @see Connection::commit()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::commit()
 	 */
 	public static function commit(?string $id = null): bool
 	{
@@ -328,9 +328,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return bool
-	 * @see Connection::inTransaction()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::inTransaction()
 	 */
 	public static function inTransaction(?string $id = null): bool
 	{
@@ -341,9 +341,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return bool
-	 * @see Connection::rollBack()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::rollBack()
 	 */
 	public static function rollBack(?string $id = null): bool
 	{
@@ -354,9 +354,9 @@ class Db
 	 * @param string|null $id
 	 *
 	 * @return bool
-	 * @see Connection::transaction()
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 * @see Connection::transaction()
 	 */
 	public static function transaction(?string $id = null): bool
 	{

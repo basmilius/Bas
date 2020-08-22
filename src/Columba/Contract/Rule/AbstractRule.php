@@ -33,7 +33,7 @@ abstract class AbstractRule
 	 * AbstractRule constructor.
 	 *
 	 * @param Contract $contract
-	 * @param Term     $term
+	 * @param Term $term
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -48,8 +48,8 @@ abstract class AbstractRule
 	 * Adds an error to the contract result because the given value failed on this rule.
 	 *
 	 * @param string $message
-	 * @param mixed  $value
-	 * @param int    $reason
+	 * @param mixed $value
+	 * @param int $reason
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>

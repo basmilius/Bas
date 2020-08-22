@@ -43,11 +43,11 @@ abstract class Connector
 	/**
 	 * Connector constructor.
 	 *
-	 * @param string      $dsn
-	 * @param string      $database
+	 * @param string $dsn
+	 * @param string $database
 	 * @param string|null $username
 	 * @param string|null $password
-	 * @param array       $options
+	 * @param array $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

@@ -123,7 +123,7 @@ class Internationalization
 	 * Loads the given locale.
 	 *
 	 * @param string $locale
-	 * @param bool   $reload
+	 * @param bool $reload
 	 *
 	 * @return Locale
 	 * @author Bas Milius <bas@mili.us>
@@ -179,7 +179,7 @@ class Internationalization
 	 *
 	 * @param string $domain
 	 * @param string $key
-	 * @param mixed  ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>

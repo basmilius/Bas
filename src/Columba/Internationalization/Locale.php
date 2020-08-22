@@ -48,7 +48,7 @@ class Locale implements Debuggable
 	 * Internationalization constructor.
 	 *
 	 * @param Internationalization $i18n
-	 * @param string               $path
+	 * @param string $path
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -179,7 +179,7 @@ class Locale implements Debuggable
 	 * Loads the given domain.
 	 *
 	 * @param string $domain
-	 * @param bool   $silent
+	 * @param bool $silent
 	 *
 	 * @return Domain|null
 	 * @author Bas Milius <bas@mili.us>
@@ -234,7 +234,7 @@ class Locale implements Debuggable
 	 *
 	 * @param string $domain
 	 * @param string $key
-	 * @param mixed  ...$arguments
+	 * @param mixed ...$arguments
 	 *
 	 * @return string|null
 	 * @author Bas Milius <bas@mili.us>
