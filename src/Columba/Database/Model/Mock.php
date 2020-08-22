@@ -12,6 +12,7 @@ use Columba\Facade\IsSettable;
 use Columba\Facade\Settable;
 use Columba\Facade\Unsettable;
 use Columba\Util\ArrayUtil;
+use stdClass;
 use function array_keys;
 use function array_search;
 use function in_array;
@@ -26,7 +27,7 @@ use function method_exists;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-final class Mock implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
+final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
 {
 
 	private Model $model;

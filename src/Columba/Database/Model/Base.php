@@ -22,6 +22,7 @@ use Columba\Facade\IJson;
 use Columba\Facade\IsSettable;
 use Columba\Facade\Settable;
 use Columba\Facade\Unsettable;
+use stdClass;
 use function in_array;
 use function sprintf;
 
@@ -32,7 +33,7 @@ use function sprintf;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-abstract class Base implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
+abstract class Base extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
 {
 
 	use ArrayAccess;
