@@ -397,7 +397,7 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	 */
 	public function search($value)
 	{
-		return array_search($value, $this->items) ?: null;
+		return ($result = array_search($value, $this->items)) !== false ? $result : null;
 	}
 
 	/**
