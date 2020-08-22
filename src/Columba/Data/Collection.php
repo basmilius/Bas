@@ -28,6 +28,7 @@ use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
+use function array_search;
 use function array_shift;
 use function array_slice;
 use function array_splice;
@@ -383,6 +384,20 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function reverse(): self
 	{
 		return new static(array_reverse($this->items));
+	}
+
+	/**
+	 * Searches the key of the given calue.
+	 *
+	 * @param $value
+	 *
+	 * @return int|string|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function search($value)
+	{
+		return array_search($value, $this->items) ?: null;
 	}
 
 	/**
