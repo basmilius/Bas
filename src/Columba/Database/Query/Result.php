@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Database\Query;
 
-use Columba\Facade\ICountable;
 use Columba\Database\Connection\Connection;
+use Columba\Facade\ICountable;
+use PDO;
 
 /**
  * Class Result
@@ -33,9 +34,9 @@ class Result implements ICountable
 	 * Result constructor.
 	 *
 	 * @param Connection $connection
-	 * @param Statement  $statement
+	 * @param Statement $statement
 	 *
-	 * @param bool       $allowModel
+	 * @param bool $allowModel
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -50,37 +51,43 @@ class Result implements ICountable
 	/**
 	 * Fetches the next element.
 	 *
+	 * @param int $fetchMode
+	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function yield()
+	public final function yield(int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		return $this->fetch();
+		return $this->fetch($fetchMode);
 	}
 
 	/**
 	 * Fetches a single row.
 	 *
+	 * @param int $fetchMode
+	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function fetch()
+	protected function fetch(int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		return $this->statement->fetch($this->allowModel);
+		return $this->statement->fetch($this->allowModel, $fetchMode);
 	}
 
 	/**
 	 * Fetches all rows.
 	 *
+	 * @param int $fetchMode
+	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function fetchAll()
+	protected function fetchAll(int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		return $this->statement->fetchAll($this->allowModel);
+		return $this->statement->fetchAll($this->allowModel, $fetchMode);
 	}
 
 	/**

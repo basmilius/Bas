@@ -87,47 +87,50 @@ class Statement
 	 * Executes the {@see Statement} and returns an array containing all results.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function array(bool $allowModel = true, ?int &$foundRows = null): array
+	public function array(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): array
 	{
 		$this->executeStatement($foundRows);
 
-		return $this->fetchAll($allowModel);
+		return $this->fetchAll($allowModel, $fetchMode);
 	}
 
 	/**
 	 * Executes the {@see Statement} and returns a {@see CollectionResult}.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return Collection
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function collection(bool $allowModel = true, ?int &$foundRows = null): Collection
+	public function collection(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
 	{
 		$this->executeStatement($foundRows);
 
-		return new Collection($this->fetchAll($allowModel));
+		return new Collection($this->fetchAll($allowModel, $fetchMode));
 	}
 
 	/**
 	 * Executes the {@see Statement} and returns a {@see Generator} containing each result.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return Generator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function cursor(bool $allowModel = true, ?int &$foundRows = null): Generator
+	public function cursor(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Generator
 	{
 		$this->executeStatement($foundRows);
 
@@ -152,30 +155,32 @@ class Statement
 	 * Executes the {@see Statement} and returns a single result.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 *
 	 * @return Model|array|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function single(bool $allowModel = true)
+	public function single(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC)
 	{
 		$this->executeStatement();
 
-		return $this->fetch($allowModel);
+		return $this->fetch($allowModel, $fetchMode);
 	}
 
 	/**
 	 * Fetches a single rows.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function fetch(bool $allowModel = true)
+	public function fetch(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		$result = $this->pdoStatement->fetch(PDO::FETCH_ASSOC);
+		$result = $this->pdoStatement->fetch($fetchMode);
 
 		if ($result === false)
 			return null;
@@ -196,14 +201,15 @@ class Statement
 	 * Fetches all rows.
 	 *
 	 * @param bool $allowModel
+	 * @param int $fetchMode
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function fetchAll(bool $allowModel = true): array
+	public function fetchAll(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC): array
 	{
-		$results = $this->pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+		$results = $this->pdoStatement->fetchAll($fetchMode);
 
 		if ($this->modelClass !== null && $allowModel)
 		{

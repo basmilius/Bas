@@ -19,6 +19,7 @@ use Columba\Database\Model\Model;
 use Columba\Database\Query\Statement;
 use Columba\Database\Util\BuilderUtil;
 use Generator;
+use PDO;
 use function count;
 use function implode;
 use function is_array;
@@ -144,10 +145,10 @@ class Base
 	 * Adds an expression.
 	 *
 	 * @param string $clause
-	 * @param mixed  $column
-	 * @param mixed  $comparator
-	 * @param mixed  $value
-	 * @param bool   $addParam
+	 * @param mixed $column
+	 * @param mixed $comparator
+	 * @param mixed $value
+	 * @param bool $addParam
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -231,11 +232,11 @@ class Base
 	/**
 	 * Adds a piece.
 	 *
-	 * @param string      $clause
+	 * @param string $clause
 	 * @param             $data
-	 * @param int         $indentSelf
-	 * @param int         $indent
-	 * @param int         $newLine
+	 * @param int $indentSelf
+	 * @param int $indent
+	 * @param int $newLine
 	 * @param string|null $separator
 	 *
 	 * @return $this
@@ -286,46 +287,49 @@ class Base
 	/**
 	 * Executes the {@see Statement} and returns an array containing all results.
 	 *
-	 * @param array    $options
+	 * @param array $options
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function array(array $options = [], ?int &$foundRows = null): array
+	public function array(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): array
 	{
-		return $this->statement($options)->array(true, $foundRows);
+		return $this->statement($options)->array(true, $fetchMode, $foundRows);
 	}
 
 	/**
 	 * Executes the {@see Statement} and returns a {@see CollectionResult}.
 	 *
-	 * @param array    $options
+	 * @param array $options
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return Collection
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function collection(array $options = [], ?int &$foundRows = null): Collection
+	public function collection(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
 	{
-		return $this->statement($options)->collection(true, $foundRows);
+		return $this->statement($options)->collection(true, $fetchMode, $foundRows);
 	}
 
 	/**
 	 * Executes the {@see Statement} and returns a {@see Generator} containing each result.
 	 *
-	 * @param array    $options
+	 * @param array $options
+	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
 	 * @return Generator
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function cursor(array $options = [], ?int &$foundRows = null): Generator
+	public function cursor(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Generator
 	{
-		yield from $this->statement($options)->cursor(true, $foundRows);
+		yield from $this->statement($options)->cursor(true, $fetchMode, $foundRows);
 	}
 
 	/**
@@ -345,14 +349,15 @@ class Base
 	 * Executes the {@see Statement} and returns a single result.
 	 *
 	 * @param array $options
+	 * @param int $fetchMode
 	 *
 	 * @return Model|array|null|mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function single(array $options = [])
+	public function single(array $options = [], int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		return $this->statement($options)->single();
+		return $this->statement($options)->single(true, $fetchMode);
 	}
 
 	/**
@@ -379,7 +384,7 @@ class Base
 	 * Assigns a model to the query result.
 	 *
 	 * @param string|null $class
-	 * @param array|null  $arguments
+	 * @param array|null $arguments
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -396,7 +401,7 @@ class Base
 	/**
 	 * Runs the given function, only if the given condition is TRUE.
 	 *
-	 * @param bool     $condition
+	 * @param bool $condition
 	 * @param callable $fn
 	 *
 	 * @return $this
@@ -414,7 +419,7 @@ class Base
 	/**
 	 * Runs the given function and wraps it with parenthesis, only if the given condition is TRUE.
 	 *
-	 * @param bool     $condition
+	 * @param bool $condition
 	 * @param callable $fn
 	 *
 	 * @return $this
@@ -447,7 +452,7 @@ class Base
 	 * Merges another {@see Base} builder.
 	 *
 	 * @param Base $other
-	 * @param int  $extraIndent
+	 * @param int $extraIndent
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -470,7 +475,7 @@ class Base
 	 * Wraps the given function with parenthesis.
 	 *
 	 * @param callable $fn
-	 * @param bool     $fixClauses
+	 * @param bool $fixClauses
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -513,8 +518,8 @@ class Base
 	 *
 	 * @param string|null $column
 	 * @param string|null $comparator
-	 * @param null        $value
-	 * @param bool        $addParam
+	 * @param null $value
+	 * @param bool $addParam
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
