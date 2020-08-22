@@ -49,8 +49,8 @@ class Statement
 	 * Statement constructor.
 	 *
 	 * @param Connection $connection
-	 * @param string     $query
-	 * @param array      $options
+	 * @param string $query
+	 * @param array $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -65,8 +65,8 @@ class Statement
 	/**
 	 * Binds the given value.
 	 *
-	 * @param string   $name
-	 * @param mixed    $value
+	 * @param string $name
+	 * @param mixed $value
 	 * @param int|null $type
 	 *
 	 * @return $this
@@ -86,7 +86,7 @@ class Statement
 	/**
 	 * Executes the {@see Statement} and returns an array containing all results.
 	 *
-	 * @param bool     $allowModel
+	 * @param bool $allowModel
 	 * @param int|null $foundRows
 	 *
 	 * @return array
@@ -103,7 +103,7 @@ class Statement
 	/**
 	 * Executes the {@see Statement} and returns a {@see CollectionResult}.
 	 *
-	 * @param bool     $allowModel
+	 * @param bool $allowModel
 	 * @param int|null $foundRows
 	 *
 	 * @return Collection
@@ -120,7 +120,7 @@ class Statement
 	/**
 	 * Executes the {@see Statement} and returns a {@see Generator} containing each result.
 	 *
-	 * @param bool     $allowModel
+	 * @param bool $allowModel
 	 * @param int|null $foundRows
 	 *
 	 * @return Generator
@@ -221,7 +221,7 @@ class Statement
 	 * Assigns a model to the query result.
 	 *
 	 * @param string|null $class
-	 * @param array|null  $arguments
+	 * @param array|null $arguments
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -277,8 +277,8 @@ class Statement
 	 *
 	 * @param int|null $foundRows
 	 *
-	 * @since 1.6.0
 	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
 	 */
 	private function executeStatement(?int &$foundRows = null): void
 	{
@@ -295,7 +295,6 @@ class Statement
 	 * @return DatabaseException
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
-	 * @internal
 	 */
 	private function throwFromErrorInfo(): DatabaseException
 	{
