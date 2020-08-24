@@ -14,6 +14,7 @@ namespace Columba\Database\Connector;
 
 use Columba\Database\Error\DatabaseException;
 use Columba\Database\Util\ErrorUtil;
+use Columba\Facade\Debuggable;
 use PDO;
 use PDOException;
 
@@ -24,7 +25,7 @@ use PDOException;
  * @package Columba\Database\Connector
  * @since 1.6.0
  */
-abstract class Connector
+abstract class Connector implements Debuggable
 {
 
 	private const DEFAULT_OPTIONS = [
@@ -38,7 +39,7 @@ abstract class Connector
 	private string $database;
 	private ?string $username;
 	private ?string $password;
-	private array $options;
+	private array $options = [];
 
 	/**
 	 * Connector constructor.
