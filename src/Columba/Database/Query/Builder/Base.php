@@ -18,6 +18,7 @@ use Columba\Database\Dialect\Dialect;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Statement;
 use Columba\Database\Util\BuilderUtil;
+use Columba\Facade\Debuggable;
 use Generator;
 use PDO;
 use function count;
@@ -32,7 +33,7 @@ use function strlen;
  * @package Columba\Database\Query\Builder
  * @since 1.6.0
  */
-class Base
+class Base implements Debuggable
 {
 
 	private static int $num = 0;
@@ -47,6 +48,7 @@ class Base
 	protected ?array $modelArguments = null;
 
 	private int $indent = 0;
+	private array $eagerLoad = [];
 	private array $params = [];
 
 	/**
@@ -297,7 +299,9 @@ class Base
 	 */
 	public function array(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): array
 	{
-		return $this->statement($options)->array(true, $fetchMode, $foundRows);
+		return $this
+			->statement($options)
+			->array(true, $fetchMode, $foundRows);
 	}
 
 	/**
@@ -313,7 +317,9 @@ class Base
 	 */
 	public function collection(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
 	{
-		return $this->statement($options)->collection(true, $fetchMode, $foundRows);
+		return $this
+			->statement($options)
+			->collection(true, $fetchMode, $foundRows);
 	}
 
 	/**
@@ -329,7 +335,9 @@ class Base
 	 */
 	public function cursor(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Generator
 	{
-		yield from $this->statement($options)->cursor(true, $fetchMode, $foundRows);
+		yield from $this
+			->statement($options)
+			->cursor(true, $fetchMode, $foundRows);
 	}
 
 	/**
@@ -342,7 +350,9 @@ class Base
 	 */
 	public function run(array $options = []): void
 	{
-		$this->statement($options)->run();
+		$this
+			->statement($options)
+			->run();
 	}
 
 	/**
@@ -357,7 +367,9 @@ class Base
 	 */
 	public function single(array $options = [], int $fetchMode = PDO::FETCH_ASSOC)
 	{
-		return $this->statement($options)->single(true, $fetchMode);
+		return $this
+			->statement($options)
+			->single(true, $fetchMode);
 	}
 
 	/**
@@ -373,6 +385,7 @@ class Base
 	{
 		$statement = $this->connection->prepare($this->build(), $options);
 		$statement->model($this->modelClass, $this->modelArguments);
+		$statement->eagerLoad($this->eagerLoad);
 
 		foreach ($this->params as [$name, $param])
 			$statement->bind($name, $param[0], $param[1] ?? null);
@@ -446,6 +459,23 @@ class Base
 	public function custom(string $expression): self
 	{
 		return $this->addPiece($expression, '', 0, 1, 1);
+	}
+
+	/**
+	 * Eager load the given relationships when the query is executed.
+	 *
+	 * @param string[] $relationships
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function eagerLoad(array $relationships): self
+	{
+		foreach ($relationships as $relationship)
+			$this->eagerLoad[] = $relationship;
+
+		return $this;
 	}
 
 	/**

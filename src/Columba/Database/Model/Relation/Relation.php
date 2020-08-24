@@ -27,22 +27,34 @@ abstract class Relation extends Builder
 {
 
 	/** @var Model|string */
-	protected string $referencedModel;
+	protected string $referenceModel;
 	protected ?Model $model = null;
 
 	/**
 	 * Relation constructor.
 	 *
-	 * @param Model|string $referencedModel
+	 * @param Model|string $referenceModel
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $referencedModel)
+	public function __construct(string $referenceModel)
 	{
 		parent::__construct();
 
-		$this->referencedModel = $referencedModel;
+		$this->referenceModel = $referenceModel;
+	}
+
+	/**
+	 * Gets the reference model.
+	 *
+	 * @return Model|string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function getReferenceModel(): string
+	{
+		return $this->referenceModel;
 	}
 
 	/**
@@ -61,8 +73,8 @@ abstract class Relation extends Builder
 		$this->setConnection($this->model->getConnection());
 
 		$this->reset();
-		$this->model($this->referencedModel);
-		$this->merge($this->referencedModel::select());
+		$this->model($this->referenceModel);
+		$this->merge($this->referenceModel::select());
 		$this->buildBaseQuery();
 	}
 
@@ -74,6 +86,18 @@ abstract class Relation extends Builder
 	 * @since 1.6.0
 	 */
 	public abstract function get();
+
+	/**
+	 * Returns relations that should be eager loaded.
+	 *
+	 * @return array|null
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function getEagerLoad(): ?array
+	{
+		return null;
+	}
 
 	/**
 	 * Returns an array with relevant columns.

@@ -17,11 +17,16 @@ use Columba\Database\Connection\Connection;
 use Columba\Database\Error\DatabaseException;
 use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
+use Columba\Database\Model\Relation\Many;
+use Columba\Database\Model\Relation\One;
 use Columba\Database\Util\ErrorUtil;
+use Columba\Util\ArrayUtil;
 use Generator;
 use PDO;
 use PDOStatement;
+use function array_column;
 use function array_map;
+use function Columba\Database\Query\Builder\in;
 use function is_float;
 use function is_int;
 use function is_subclass_of;
@@ -39,6 +44,7 @@ class Statement
 {
 
 	private Connection $connection;
+	private array $eagerLoad = [];
 	private PDOStatement $pdoStatement;
 	private string $query;
 
@@ -114,9 +120,7 @@ class Statement
 	 */
 	public function collection(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
 	{
-		$this->executeStatement($foundRows);
-
-		return new Collection($this->fetchAll($allowModel, $fetchMode));
+		return new Collection($this->array($allowModel, $fetchMode, $foundRows));
 	}
 
 	/**
@@ -136,7 +140,7 @@ class Statement
 
 		$result = new Result($this->connection, $this, $allowModel);
 
-		while ($item = $result->yield())
+		while ($item = $result->yield($fetchMode))
 			yield $item;
 	}
 
@@ -149,6 +153,19 @@ class Statement
 	public function run(): void
 	{
 		$this->executeStatement();
+	}
+
+	/**
+	 * Eager load the given relationships when the query is executed.
+	 *
+	 * @param string[] $relationships
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function eagerLoad(array $relationships): void
+	{
+		$this->eagerLoad = $relationships;
 	}
 
 	/**
@@ -187,11 +204,14 @@ class Statement
 
 		if ($this->modelClass !== null && $allowModel)
 		{
-			/** @var Model $class */
-			$class = $this->modelClass;
+			/** @var Model|string $model */
+			$model = $this->modelClass;
 			$arguments = $this->modelArguments ?? [];
 
-			return $class::instance($result, $arguments);
+			if (!empty($this->eagerLoad))
+				$this->eagerLoadRelations($results, $model);
+
+			return $model::instance($result, $arguments);
 		}
 
 		return $result;
@@ -213,14 +233,141 @@ class Statement
 
 		if ($this->modelClass !== null && $allowModel)
 		{
-			/** @var Model $class */
-			$class = $this->modelClass;
+			/** @var Model|string $model */
+			$model = $this->modelClass;
 			$arguments = $this->modelArguments ?? [];
 
-			return array_map(fn(array $result) => $class::instance($result, $arguments), $results);
+			if (!empty($this->eagerLoad))
+				$this->eagerLoadRelations($results, $model);
+
+			return array_map(fn(array $result) => $model::instance($result, $arguments), $results);
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Eager loads relationships for the given results.
+	 *
+	 * @param array $results
+	 * @param Model|string $model
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function eagerLoadRelations(array &$results, string $model): void
+	{
+		$relations = $model::relations();
+
+		if (empty($relations))
+			return;
+
+		foreach ($this->eagerLoad as $name)
+		{
+			$relation = $relations[$name] ?? null;
+
+			if ($relation === null)
+				continue;
+
+			if ($relation instanceof Many)
+				$this->eagerLoadMany($name, $relation, $results);
+
+			if ($relation instanceof One)
+				$this->eagerLoadOne($name, $relation, $results);
+		}
+	}
+
+	/**
+	 * Eager loads {@see Many} relationships.
+	 *
+	 * @param string $name
+	 * @param Many $many
+	 * @param array $results
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function eagerLoadMany(string $name, Many $many, array &$results): void
+	{
+		$referenceModel = $many->getReferenceModel();
+
+		$referenceKey = $many->getReferenceKey();
+		$selfKey = $many->getSelfKey();
+
+		$referenceKeyTrim = $this->trimKey($referenceKey);
+		$selfKeyTrim = $this->trimKey($selfKey);
+
+		$selfKeys = array_column($results, $many->getSelfKey());
+
+		$query = $referenceModel::select()
+			->model($referenceModel)
+			->where($many->getReferenceKey(), in($selfKeys));
+
+		if (($eagerLoad = $many->getEagerLoad()) !== null)
+			$query->eagerLoad($eagerLoad);
+
+		$others = $query->collection();
+
+		foreach ($results as &$result)
+			if (($other = $others->filter(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim]))->count() > 0)
+				$result['_relations'][$name] = $other->toArray();
+	}
+
+	/**
+	 * Eager loads {@see One} relationships.
+	 *
+	 * @param string $name
+	 * @param One $one
+	 * @param array $results
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function eagerLoadOne(string $name, One $one, array &$results): void
+	{
+		$referenceModel = $one->getReferenceModel();
+
+		$referenceKey = $one->getReferenceKey();
+		$selfKey = $one->getSelfKey();
+
+		$referenceKeyTrim = $this->trimKey($referenceKey);
+		$selfKeyTrim = $this->trimKey($selfKey);
+
+		$selfKeys = array_column($results, $one->getSelfKey());
+
+		$query = $referenceModel::select()
+			->model($referenceModel)
+			->where($one->getReferenceKey(), in($selfKeys))
+			->groupBy($referenceKey);
+
+		if (($eagerLoad = $one->getEagerLoad()) !== null)
+			$query->eagerLoad($eagerLoad);
+
+		$others = $query->collection();
+
+		if ($others->count() === 0)
+			return;
+
+		foreach ($results as &$result)
+			if (($other = $others->first(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim])) !== null)
+				$result['_relations'][$name] = $other;
+	}
+
+	/**
+	 * Trims the given key and returns only the column part.
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private function trimKey(string $key): string
+	{
+		$parts = explode('.', $key);
+		$part = ArrayUtil::last($parts);
+
+		return trim($part, '`');
 	}
 
 	/**
@@ -288,6 +435,9 @@ class Statement
 	 */
 	private function executeStatement(?int &$foundRows = null): void
 	{
+		if ($this->modelClass === null && !empty($this->eagerLoad))
+			throw new QueryException('Eager loading is only available on models.', QueryException::ERR_EAGER_NOT_AVAILABLE);
+
 		$result = $this->pdoStatement->execute();
 		$foundRows = strpos($this->query, 'SQL_CALC_FOUND_ROWS') !== false ? $this->connection->foundRows() : null;
 

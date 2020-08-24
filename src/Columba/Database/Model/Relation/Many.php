@@ -58,6 +58,30 @@ class Many extends Relation
 	}
 
 	/**
+	 * Gets the referenced key.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getReferenceKey(): string
+	{
+		return $this->referenceKey;
+	}
+
+	/**
+	 * Gets the model key.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getSelfKey(): string
+	{
+		return $this->selfKey;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0

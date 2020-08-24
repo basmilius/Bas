@@ -23,9 +23,9 @@ use Columba\Util\ArrayUtil;
 use PDO;
 use function array_key_exists;
 use function array_keys;
-use function array_map;
 use function array_unshift;
-use function implode;
+use function Columba\Database\Query\Builder\in;
+use function Columba\Database\Query\Builder\literal;
 use function in_array;
 use function method_exists;
 
@@ -77,15 +77,12 @@ abstract class Model extends Base
 	 */
 	public function __construct(array $data = null)
 	{
-		if (!isset(static::$initialized[static::class]))
-		{
-			static::define();
+		static::prepareModel();
 
-			static::$casts[static::class] ??= [];
-			static::$macros[static::class] ??= [];
-			static::$macrosToCache[static::class] ??= [];
-			static::$relationships[static::class] ??= [];
-			static::$initialized[static::class] = true;
+		if (isset($data['_relations']))
+		{
+			$this->relationCache = $data['_relations'];
+			unset($data['_relations']);
 		}
 
 		parent::__construct($data);
@@ -278,7 +275,7 @@ abstract class Model extends Base
 			$this->macroCache[$column] = $value;
 
 		if ($value instanceof Relation)
-			return $value->get();
+			return $this->relationCache[$column] = $value->get();
 
 		return $value;
 	}
@@ -420,7 +417,7 @@ abstract class Model extends Base
 
 		foreach (array_keys(static::$relationships[static::class]) as $relation)
 			if (in_array($relation, $this->visible))
-				$data[$relation] = $this->getValue($relation);
+				$data[$relation] = $this->relationCache[$relation] ?? $this->getValue($relation);
 
 		foreach ($this->hidden as $column)
 			unset($data[$column]);
@@ -643,6 +640,9 @@ abstract class Model extends Base
 		if ($cache->has($primarykey, static::class))
 			return true;
 
+		if (is_int($primarykey))
+			$primarykey = literal($primarykey);
+
 		return static::select([1])
 				->where(self::column(static::$primaryKey), $primarykey)
 				->model(null)
@@ -663,10 +663,7 @@ abstract class Model extends Base
 		if (empty($primaryKeys))
 			return [];
 
-		$connection = static::connection();
-		$primaryKeys = array_map(fn($primaryKey) => $connection->quote($primaryKey, static::$primaryKeyType), $primaryKeys);
-
-		return static::where(static::column(static::$primaryKey), 'IN', '(' . implode(', ', $primaryKeys) . ')', false)
+		return static::where(static::column(static::$primaryKey), in($primaryKeys))
 			->orderBy(static::$orderBy . ' ' . static::$order)
 			->array();
 	}
@@ -686,6 +683,9 @@ abstract class Model extends Base
 
 		if ($cache->has($primaryKey, static::class))
 			return $cache->get($primaryKey, static::class);
+
+		if (is_int($primaryKey))
+			$primaryKey = literal($primaryKey);
 
 		return static::where(self::column(static::$primaryKey), $primaryKey)
 			->single();
@@ -973,6 +973,27 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * Prepares the model before it's used.
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 * @internal
+	 */
+	public static function prepareModel(): void
+	{
+		if (!isset(static::$initialized[static::class]))
+		{
+			static::define();
+
+			static::$casts[static::class] ??= [];
+			static::$macros[static::class] ??= [];
+			static::$macrosToCache[static::class] ??= [];
+			static::$relationships[static::class] ??= [];
+			static::$initialized[static::class] = true;
+		}
+	}
+
+	/**
 	 * Defines a relationship.
 	 *
 	 * @param string $name
@@ -984,6 +1005,21 @@ abstract class Model extends Base
 	public static function relation(string $name, Relation $relation): void
 	{
 		static::$relationships[static::class][$name] = $relation;
+	}
+
+	/**
+	 * Gets all defined relationships of the model.
+	 *
+	 * @return Relation[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 * @internal
+	 */
+	public static function relations(): array
+	{
+		static::prepareModel();
+
+		return static::$relationships[static::class] ?? [];
 	}
 
 	/**

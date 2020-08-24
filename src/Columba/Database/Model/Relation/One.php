@@ -31,19 +31,19 @@ class One extends Relation
 	/**
 	 * One constructor.
 	 *
-	 * @param Model|string $referencedModel
+	 * @param Model|string $referenceModel
 	 * @param string|null $selfKey
 	 * @param string|null $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $referencedModel, ?string $selfKey = null, ?string $referenceKey = null)
+	public function __construct(string $referenceModel, ?string $selfKey = null, ?string $referenceKey = null)
 	{
-		parent::__construct($referencedModel);
+		parent::__construct($referenceModel);
 
-		$this->referenceKey = $referenceKey ?? $referencedModel::column('id');
-		$this->selfKey = $selfKey ?? $referencedModel::table() . '_id';
+		$this->referenceKey = $referenceKey ?? $referenceModel::column('id');
+		$this->selfKey = $selfKey ?? $referenceModel::table() . '_id';
 	}
 
 	/**
@@ -53,16 +53,43 @@ class One extends Relation
 	 */
 	public function get(): ?Model
 	{
-		if ($this->referencedModel::column($this->referencedModel::primaryKey()) === $this->referenceKey)
+		if ($this->referenceModel::column($this->referenceModel::primaryKey()) === $this->referenceKey)
 		{
-			$cache = $this->referencedModel::connection()->getCache();
+			$cache = $this->referenceModel::connection()->getCache();
 			$key = $this->model->getValue($this->selfKey);
 
-			if ($cache->has($key, $this->referencedModel))
-				return $cache->get($key, $this->referencedModel);
+			if ($key === 0)
+				return null;
+
+			if ($cache->has($key, $this->referenceModel))
+				return $cache->get($key, $this->referenceModel);
 		}
 
 		return $this->single();
+	}
+
+	/**
+	 * Gets the referenced key.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getReferenceKey(): string
+	{
+		return $this->referenceKey;
+	}
+
+	/**
+	 * Gets the model key.
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function getSelfKey(): string
+	{
+		return $this->selfKey;
 	}
 
 	/**

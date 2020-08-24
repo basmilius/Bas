@@ -33,21 +33,21 @@ class ManyMany extends Relation
 	/**
 	 * ManyMany constructor.
 	 *
-	 * @param Model|string $referencedModel
+	 * @param Model|string $referenceModel
 	 * @param string $linkingTable
-	 * @param string $selfKey
-	 * @param string $referenceKey
+	 * @param string|null $selfKey
+	 * @param string|null $referenceKey
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(string $referencedModel, string $linkingTable, ?string $selfKey = null, ?string $referenceKey = null)
+	public function __construct(string $referenceModel, string $linkingTable, ?string $selfKey = null, ?string $referenceKey = null)
 	{
-		parent::__construct($referencedModel);
+		parent::__construct($referenceModel);
 
 		$this->linkingTable = $linkingTable;
-		$this->referenceKey = $referenceKey ?? $referencedModel::table() . '.id';
-		$this->selfKey = $selfKey ?? $referencedModel::table() . '_id';
+		$this->referenceKey = $referenceKey ?? $referenceModel::table() . '.id';
+		$this->selfKey = $selfKey ?? $referenceModel::table() . '_id';
 	}
 
 	/**
@@ -79,7 +79,7 @@ class ManyMany extends Relation
 	{
 		return $this
 			->leftJoin($this->linkingTable, fn(Builder $query) => $query
-				->on(Model::column($this->referenceKey, $this->linkingTable), '=', $this->referencedModel::column($this->referencedModel::primaryKey())))
+				->on(Model::column($this->referenceKey, $this->linkingTable), '=', $this->referenceModel::column($this->referenceModel::primaryKey())))
 			->where(Model::column($this->selfKey, $this->linkingTable), '=', $this->model[$this->model::primaryKey()]);
 	}
 
