@@ -100,7 +100,7 @@ class Db
 	 *
 	 * @param string|null $id
 	 *
-	 * @return Connection|null
+	 * @return Connection
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
