@@ -14,11 +14,13 @@ namespace Columba\Data;
 
 use Closure;
 use Columba\Database\Model\Model;
+use Columba\Facade\Debuggable;
 use Columba\Facade\IArray;
 use Columba\Facade\ICountable;
 use Columba\Facade\IIterator;
 use Columba\Facade\IJson;
 use Columba\Util\ArrayUtil;
+use Serializable;
 use Traversable;
 use function array_chunk;
 use function array_column;
@@ -39,7 +41,9 @@ use function in_array;
 use function is_array;
 use function is_null;
 use function iterator_to_array;
+use function serialize;
 use function shuffle;
+use function unserialize;
 use function usort;
 
 /**
@@ -49,7 +53,7 @@ use function usort;
  * @package Columba\Data
  * @since 1.4.0
  */
-class Collection implements IArray, ICountable, IIterator, IJson
+class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Serializable
 {
 
 	private array $items;
@@ -634,6 +638,26 @@ class Collection implements IArray, ICountable, IIterator, IJson
 	public function valid(): bool
 	{
 		return isset($this->items[$this->position]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function serialize(): string
+	{
+		return serialize($this->items);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function unserialize($serialized): void
+	{
+		$this->items = unserialize($serialized);
 	}
 
 	/**
