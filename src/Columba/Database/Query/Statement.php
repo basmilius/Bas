@@ -19,13 +19,16 @@ use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
 use Columba\Database\Model\Relation\Many;
 use Columba\Database\Model\Relation\One;
+use Columba\Database\Model\Relation\Relation;
+use Columba\Database\Util\BuilderUtil;
 use Columba\Database\Util\ErrorUtil;
-use Columba\Util\ArrayUtil;
 use Generator;
 use PDO;
 use PDOStatement;
 use function array_column;
+use function array_filter;
 use function array_map;
+use function array_unique;
 use function Columba\Database\Query\Builder\in;
 use function is_float;
 use function is_int;
@@ -191,11 +194,11 @@ class Statement
 	 * @param bool $allowModel
 	 * @param int $fetchMode
 	 *
-	 * @return mixed
+	 * @return Model|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function fetch(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC)
+	public function fetch(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC): ?Model
 	{
 		$result = $this->pdoStatement->fetch($fetchMode);
 
@@ -209,7 +212,7 @@ class Statement
 			$arguments = $this->modelArguments ?? [];
 
 			if (!empty($this->eagerLoad))
-				$this->eagerLoadRelations($results, $model);
+				$this->loadEagerLoadRelations($results, $model);
 
 			return $model::instance($result, $arguments);
 		}
@@ -238,12 +241,73 @@ class Statement
 			$arguments = $this->modelArguments ?? [];
 
 			if (!empty($this->eagerLoad))
-				$this->eagerLoadRelations($results, $model);
+				$this->loadEagerLoadRelations($results, $model);
 
 			return array_map(fn(array $result) => $model::instance($result, $arguments), $results);
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Prepares {@see One} and {@see Many} relations.
+	 *
+	 * @param Relation $relation
+	 * @param array $results
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	private function findEagerLoadKeys(Relation $relation, array $results): array
+	{
+		if (!($relation instanceof Many) && !($relation instanceof One))
+			throw new QueryException('Not a One or Many relation.', QueryException::ERR_EAGER_NOT_AVAILABLE);
+
+		$referenceKey = $relation->getReferenceKey();
+		$selfKey = $relation->getSelfKey();
+
+		$referenceKeyTrim = BuilderUtil::trimKey($referenceKey);
+		$selfKeyTrim = BuilderUtil::trimKey($selfKey);
+
+		$selfKeys = array_column($results, $relation->getSelfKey());
+		$selfKeys = array_filter($selfKeys, fn($val) => $val !== null && $val !== 0);
+		$selfKeys = array_unique($selfKeys);
+
+		return [
+			$selfKeys,
+			$referenceKeyTrim,
+			$selfKeyTrim,
+			$referenceKey,
+			$selfKey
+		];
+	}
+
+	/**
+	 * Finds instances of the given model and filters them from the given keys array.
+	 *
+	 * @param Model|string $model
+	 * @param array $keys
+	 * @param array|null $results
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	private function findLoadedInstancesByKeys(string $model, array &$keys, ?array &$results): void
+	{
+		$results = new Collection();
+
+		foreach ($keys as $index => $key)
+		{
+			$instance = $model::connection()->getCache()->get($key, $model);
+
+			if ($instance === null)
+				continue;
+
+			unset($keys[$index]);
+
+			$results->append($instance);
+		}
 	}
 
 	/**
@@ -255,7 +319,7 @@ class Statement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	private function eagerLoadRelations(array &$results, string $model): void
+	private function loadEagerLoadRelations(array &$results, string $model): void
 	{
 		$relations = $model::relations();
 
@@ -270,10 +334,10 @@ class Statement
 				continue;
 
 			if ($relation instanceof Many)
-				$this->eagerLoadMany($name, $relation, $results);
+				$this->loadEagerLoadMany($name, $relation, $results);
 
 			if ($relation instanceof One)
-				$this->eagerLoadOne($name, $relation, $results);
+				$this->loadEagerLoadOne($name, $relation, $results);
 		}
 	}
 
@@ -287,30 +351,28 @@ class Statement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	private function eagerLoadMany(string $name, Many $many, array &$results): void
+	private function loadEagerLoadMany(string $name, Many $many, array &$results): void
 	{
 		$referenceModel = $many->getReferenceModel();
+		[$selfKeys, $referenceKeyTrim, $selfKeyTrim] = $this->findEagerLoadKeys($many, $results);
 
-		$referenceKey = $many->getReferenceKey();
-		$selfKey = $many->getSelfKey();
+		$this->findLoadedInstancesByKeys($referenceModel, $selfKeys, $instances);
 
-		$referenceKeyTrim = $this->trimKey($referenceKey);
-		$selfKeyTrim = $this->trimKey($selfKey);
+		if (!empty($selfKeys))
+		{
+			$query = $referenceModel::select()
+				->model($referenceModel)
+				->where($many->getReferenceKey(), in($selfKeys));
 
-		$selfKeys = array_column($results, $many->getSelfKey());
+			if (($eagerLoad = $many->getEagerLoad()) !== null)
+				$query->eagerLoad($eagerLoad);
 
-		$query = $referenceModel::select()
-			->model($referenceModel)
-			->where($many->getReferenceKey(), in($selfKeys));
-
-		if (($eagerLoad = $many->getEagerLoad()) !== null)
-			$query->eagerLoad($eagerLoad);
-
-		$others = $query->collection();
+			$instances->merge($query->collection());
+		}
 
 		foreach ($results as &$result)
-			if (($other = $others->filter(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim]))->count() > 0)
-				$result['_relations'][$name] = $other->toArray();
+			if (($instance = $instances->filter(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim]))->count() > 0)
+				$result['_relations'][$name] = $instance;
 	}
 
 	/**
@@ -323,51 +385,32 @@ class Statement
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	private function eagerLoadOne(string $name, One $one, array &$results): void
+	private function loadEagerLoadOne(string $name, One $one, array &$results): void
 	{
 		$referenceModel = $one->getReferenceModel();
+		[$selfKeys, $referenceKeyTrim, $selfKeyTrim, $referenceKey] = $this->findEagerLoadKeys($one, $results);
 
-		$referenceKey = $one->getReferenceKey();
-		$selfKey = $one->getSelfKey();
+		$this->findLoadedInstancesByKeys($referenceModel, $selfKeys, $instances);
 
-		$referenceKeyTrim = $this->trimKey($referenceKey);
-		$selfKeyTrim = $this->trimKey($selfKey);
+		if (!empty($selfKeys))
+		{
+			$query = $referenceModel::select()
+				->model($referenceModel)
+				->where($one->getReferenceKey(), in($selfKeys))
+				->groupBy($referenceKey);
 
-		$selfKeys = array_column($results, $one->getSelfKey());
+			if (($eagerLoad = $one->getEagerLoad()) !== null)
+				$query->eagerLoad($eagerLoad);
 
-		$query = $referenceModel::select()
-			->model($referenceModel)
-			->where($one->getReferenceKey(), in($selfKeys))
-			->groupBy($referenceKey);
+			$instances->merge($query->collection());
+		}
 
-		if (($eagerLoad = $one->getEagerLoad()) !== null)
-			$query->eagerLoad($eagerLoad);
-
-		$others = $query->collection();
-
-		if ($others->count() === 0)
+		if ($instances->count() === 0)
 			return;
 
 		foreach ($results as &$result)
-			if (($other = $others->first(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim])) !== null)
-				$result['_relations'][$name] = $other;
-	}
-
-	/**
-	 * Trims the given key and returns only the column part.
-	 *
-	 * @param string $key
-	 *
-	 * @return string
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	private function trimKey(string $key): string
-	{
-		$parts = explode('.', $key);
-		$part = ArrayUtil::last($parts);
-
-		return trim($part, '`');
+			if (($instance = $instances->first(fn($v) => $v[$referenceKeyTrim] === $result[$selfKeyTrim])) !== null)
+				$result['_relations'][$name] = $instance;
 	}
 
 	/**

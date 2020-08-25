@@ -58,7 +58,7 @@ class One extends Relation
 			$cache = $this->referenceModel::connection()->getCache();
 			$key = $this->model->getValue($this->selfKey);
 
-			if ($key === 0)
+			if ($key === null || $key === 0)
 				return null;
 
 			if ($cache->has($key, $this->referenceModel))

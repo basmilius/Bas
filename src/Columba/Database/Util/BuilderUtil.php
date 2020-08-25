@@ -12,8 +12,11 @@ declare(strict_types=1);
 
 namespace Columba\Database\Util;
 
+use Columba\Util\ArrayUtil;
+use function explode;
 use function max;
 use function str_repeat;
+use function trim;
 
 /**
  * Class BuilderUtil
@@ -38,6 +41,23 @@ final class BuilderUtil
 	public static function repeat(string $str, int $amount): string
 	{
 		return str_repeat($str, max(0, $amount)) ?? '';
+	}
+
+	/**
+	 * Trims the given key and returns only the column part.
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function trimKey(string $key): string
+	{
+		$parts = explode('.', $key);
+		$part = ArrayUtil::last($parts);
+
+		return trim($part, '`');
 	}
 
 }
