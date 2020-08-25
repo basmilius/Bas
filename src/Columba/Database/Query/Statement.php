@@ -194,11 +194,11 @@ class Statement
 	 * @param bool $allowModel
 	 * @param int $fetchMode
 	 *
-	 * @return Model|null
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function fetch(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC): ?Model
+	public function fetch(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC)
 	{
 		$result = $this->pdoStatement->fetch($fetchMode);
 
