@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace Columba\Cache\Redis;
 
+use function array_merge;
+use function array_unshift;
+use function implode;
+use function max;
+use function sha1;
+
 /**
  * Class RedisTaggedCache
  *
@@ -33,7 +39,7 @@ class RedisTaggedCache
 
 		$this->cache = $cache;
 		$this->tags = $tags;
-		$this->scope = \implode('|', $this->tags);
+		$this->scope = implode('|', $this->tags);
 	}
 
 	/**
@@ -83,7 +89,7 @@ class RedisTaggedCache
 	 */
 	public function key(string $key): string
 	{
-		return $this->keyRaw(\sha1($this->scope), $key);
+		return $this->keyRaw(sha1($this->scope), $key);
 	}
 
 	/**
@@ -97,9 +103,9 @@ class RedisTaggedCache
 	 */
 	public function keyRaw(string ...$parts): string
 	{
-		\array_unshift($parts, $this->cache->getPrefix());
+		array_unshift($parts, $this->cache->getPrefix());
 
-		return \implode(':', $parts);
+		return implode(':', $parts);
 	}
 
 	/**
@@ -116,7 +122,7 @@ class RedisTaggedCache
 		foreach ($this->tags as $tag)
 		{
 			$tagKey = $this->keyRaw('tag', $tag, 'keys');
-			$setTtl = \max($this->cache->ttl($tagKey), $ttl);
+			$setTtl = max($this->cache->ttl($tagKey), $ttl);
 
 			if ($setTtl < 0)
 				$setTtl = null;
@@ -158,7 +164,7 @@ class RedisTaggedCache
 			$members = $this->cache->smembers($tagKey);
 			$members[] = $tagKey; // Also remove the set as well.
 
-			$remove = \array_merge($remove, $members);
+			$remove = array_merge($remove, $members);
 		}
 
 		foreach ($remove as $key)
