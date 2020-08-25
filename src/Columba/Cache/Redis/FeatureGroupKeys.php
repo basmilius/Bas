@@ -59,7 +59,7 @@ trait FeatureGroupKeys
 	 */
 	public function exists(string $key): bool
 	{
-		return $this->connection->exists($key);
+		return $this->connection->exists($key) > 0;
 	}
 
 	/**

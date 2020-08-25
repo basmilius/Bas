@@ -12,11 +12,14 @@ use Columba\Facade\IsSettable;
 use Columba\Facade\Settable;
 use Columba\Facade\Unsettable;
 use Columba\Util\ArrayUtil;
+use Serializable;
 use stdClass;
 use function array_keys;
 use function array_search;
 use function in_array;
 use function method_exists;
+use function serialize;
+use function unserialize;
 
 /**
  * Class Mock
@@ -27,7 +30,7 @@ use function method_exists;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
+final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Serializable, Settable, Unsettable
 {
 
 	private Model $model;
@@ -226,7 +229,7 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 	 */
 	public final function toArray(): array
 	{
-		$data = $this->mockCall('toArray');
+		$data = $this->model->toArray();
 
 		$this->resolveVisibilityColumns($data);
 
@@ -240,12 +243,47 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 	 */
 	public final function jsonSerialize(): array
 	{
-		$data = $this->mockCall('toArray');
+		$data = $this->model->jsonSerialize();
 
-		$this->model->mockCall('publish', $data);
 		$this->resolveVisibilityColumns($data);
 
+		foreach ($data as &$field)
+			if ($field instanceof IJson)
+				$field = $field->jsonSerialize();
+
 		return $data;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function serialize(): string
+	{
+		return serialize($this->model);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public final function unserialize($serialized): void
+	{
+		/** @var Model $model */
+		$model = unserialize($serialized);
+		$model::prepareModel();
+
+		$mock = $model->mock();
+
+		$this->model = $mock->model;
+		$this->hidden = $mock->hidden;
+		$this->visible = $mock->visible;
+		$this->macros = $mock->macros;
+		$this->relationships = $mock->relationships;
+
+		unset($mock);
 	}
 
 	/**

@@ -22,9 +22,12 @@ use Columba\Facade\IJson;
 use Columba\Facade\IsSettable;
 use Columba\Facade\Settable;
 use Columba\Facade\Unsettable;
+use Serializable;
 use stdClass;
 use function in_array;
+use function serialize;
 use function sprintf;
+use function unserialize;
 
 /**
  * Class Base
@@ -33,7 +36,7 @@ use function sprintf;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-abstract class Base extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Settable, Unsettable
+abstract class Base extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Serializable, Settable, Unsettable
 {
 
 	use ArrayAccess;
@@ -222,6 +225,26 @@ abstract class Base extends stdClass implements IArray, IJson, Debuggable, Getta
 	protected abstract function publish(array &$data): void;
 
 	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function serialize(): string
+	{
+		return serialize($this->data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function unserialize($serialized): void
+	{
+		$this->data = unserialize($serialized);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
@@ -230,6 +253,10 @@ abstract class Base extends stdClass implements IArray, IJson, Debuggable, Getta
 	{
 		$data = $this->data;
 		$this->publish($data);
+
+		foreach ($data as &$field)
+			if ($field instanceof IJson)
+				$field = $field->jsonSerialize();
 
 		return $data;
 	}
