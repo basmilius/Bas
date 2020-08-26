@@ -57,6 +57,21 @@ function subQuery(Builder $query): Literal
 }
 
 /**
+ * Returns a "$query" {@see Literal} instance as variable.
+ *
+ * @param string $name
+ * @param Builder $query
+ *
+ * @return Literal
+ * @author Bas Milius <bas@mili.us>
+ * @since 1.6.0
+ */
+function subQueryVariable(string $name, Builder $query): Literal
+{
+	return new SubQueryLiteral($query, '@' . $name . ' := ');
+}
+
+/**
  * Returns a "x ASC" {@see Literal} instance.
  *
  * @param string $column

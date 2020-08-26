@@ -388,7 +388,7 @@ class Statement
 	private function loadEagerLoadOne(string $name, One $one, array &$results): void
 	{
 		$referenceModel = $one->getReferenceModel();
-		[$selfKeys, $referenceKeyTrim, $selfKeyTrim, $referenceKey] = $this->findEagerLoadKeys($one, $results);
+		[$selfKeys, $referenceKeyTrim, $selfKeyTrim] = $this->findEagerLoadKeys($one, $results);
 
 		$this->findLoadedInstancesByKeys($referenceModel, $selfKeys, $instances);
 
@@ -396,8 +396,7 @@ class Statement
 		{
 			$query = $referenceModel::select()
 				->model($referenceModel)
-				->where($one->getReferenceKey(), in($selfKeys))
-				->groupBy($referenceKey);
+				->where($one->getReferenceKey(), in($selfKeys));
 
 			if (($eagerLoad = $one->getEagerLoad()) !== null)
 				$query->eagerLoad($eagerLoad);

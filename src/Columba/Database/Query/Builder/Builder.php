@@ -14,6 +14,7 @@ namespace Columba\Database\Query\Builder;
 
 use Columba\Database\Error\QueryException;
 use Columba\Util\ArrayUtil;
+use PDO;
 use function array_keys;
 use function array_map;
 use function array_values;
@@ -31,6 +32,24 @@ use function strpos;
  */
 class Builder extends Base
 {
+
+	public function paginate(int $limit = 20): array
+	{
+		$page = max(1, intval($_GET['page'] ?? '1'));
+		$offset = ($page - 1) * $limit;
+
+		if ($this->pieces[0][0] === 'SELECT')
+			$this->pieces[0][0] = 'SELECT SQL_CALC_FOUND_ROWS';
+
+		$this->limit($limit, $offset);
+
+		return [
+			'offset' => $offset,
+			'limit' => $limit,
+			'data' => $this->array([], PDO::FETCH_ASSOC, $foundRows),
+			'total' => $foundRows
+		];
+	}
 
 	/**
 	 * Adds an AND clause.
@@ -818,6 +837,14 @@ class Builder extends Base
 					$sql = $expression->build();
 
 					$result[] = '(' . $sql . ') AS ' . $this->dialect->escapeColumn($alias);
+				}
+				else if ($expression instanceof IAfterPiece)
+				{
+					$query = new self($this->connection);
+
+					$expression->after($query);
+
+					$result[] = $query->build() . ' AS ' . $this->dialect->escapeColumn($alias);
 				}
 				else
 				{
