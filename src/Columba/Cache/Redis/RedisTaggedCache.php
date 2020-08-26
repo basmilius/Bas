@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Columba\Cache\Redis;
 
+use function array_map;
 use function array_merge;
 use function array_unshift;
 use function implode;
@@ -130,6 +131,22 @@ class RedisTaggedCache
 			$this->cache->sadd($tagKey, $key);
 			$this->cache->expire($tagKey, $setTtl);
 		}
+	}
+
+	/**
+	 * Deletes the given keys from the cache.
+	 *
+	 * @param string ...$keys
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function del(string ...$keys): bool
+	{
+		$keys = array_map(fn(string $key) => $this->key($key), $keys);
+
+		return $this->cache->del(...$keys);
 	}
 
 	/**
