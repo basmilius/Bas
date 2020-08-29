@@ -20,7 +20,6 @@ use function array_map;
 use function array_values;
 use function count;
 use function is_array;
-use function str_replace;
 use function strpos;
 
 /**
@@ -255,21 +254,53 @@ class Builder extends Base
 	 */
 	public function orderBy(...$orders): self
 	{
-		$orders = array_map(function ($field): string
+		$orders = array_map(function ($column): string
 		{
-			if ($field instanceof Literal)
-				return $field->value($this);
+			if ($column instanceof Literal)
+				return $column->value($this);
 
-			if (strpos($field, ' ASC'))
-				return $this->dialect->escapeColumn(str_replace(' ASC', '', $field)) . ' ASC';
+			if (strpos($column, ' ASC'))
+				return $this->dialect->escapeColumn(substr($column, 0, -4)) . ' ASC';
 
-			if (strpos($field, ' DESC'))
-				return $this->dialect->escapeColumn(str_replace(' DESC', '', $field)) . ' DESC';
+			if (strpos($column, ' DESC'))
+				return $this->dialect->escapeColumn(substr($column, 0, -5)) . ' DESC';
 
-			return $this->dialect->escapeColumn($field);
+			return $this->dialect->escapeColumn($column);
 		}, $orders);
 
 		return $this->addPiece('ORDER BY', $orders, 0, 1, 1, $this->dialect->columnSeparator);
+	}
+
+	/**
+	 * Adds a ORDER BY $column ASC clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function orderByAsc(string $column): self
+	{
+		$column = $this->dialect->escapeColumn($column);
+
+		return $this->addPiece('ORDER BY', asc($column)->value($this), 0, 1, 1, $this->dialect->columnSeparator);
+	}
+
+	/**
+	 * Adds a ORDER BY $column DESC clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public function orderByDesc(string $column): self
+	{
+		$column = $this->dialect->escapeColumn($column);
+
+		return $this->addPiece('ORDER BY', desc($column)->value($this), 0, 1, 1, $this->dialect->columnSeparator);
 	}
 
 	/**
@@ -828,15 +859,17 @@ class Builder extends Base
 
 			foreach ($columns as $alias => $expression)
 			{
+				$alias = $this->dialect->escapeColumn($alias);
+
 				if (is_bool($expression))
 				{
-					$result[] = $this->dialect->escapeColumn($alias);
+					$result[] = $alias;
 				}
 				else if ($expression instanceof Base)
 				{
 					$sql = $expression->build();
 
-					$result[] = '(' . $sql . ') AS ' . $this->dialect->escapeColumn($alias);
+					$result[] = '(' . $sql . ') AS ' . $alias;
 				}
 				else if ($expression instanceof IAfterPiece)
 				{
@@ -844,11 +877,15 @@ class Builder extends Base
 
 					$expression->after($query);
 
-					$result[] = $query->build() . ' AS ' . $this->dialect->escapeColumn($alias);
+					$result[] = $query->build() . ' AS ' . $alias;
+				}
+				else if ($expression instanceof Value)
+				{
+					$result[] = $expression->value($this) . ' AS ' . $alias;
 				}
 				else
 				{
-					$result[] = $this->dialect->escapeColumn($expression) . ' AS ' . $this->dialect->escapeColumn($alias);
+					$result[] = $this->dialect->escapeColumn($expression) . ' AS ' . $alias;
 				}
 			}
 
@@ -863,6 +900,9 @@ class Builder extends Base
 
 				if (is_numeric($column))
 					return (string)$column;
+
+				if ($column instanceof Value)
+					return $column->value($this);
 
 				return $this->dialect->escapeColumn((string)$column);
 			}, $columns);
