@@ -211,8 +211,9 @@ class Statement
 			$model = $this->modelClass;
 			$arguments = $this->modelArguments ?? [];
 
-			if (!empty($this->eagerLoad))
-				$this->loadEagerLoadRelations($results, $model);
+			// todo(bas): figure out if this is necessary
+			// if (!empty($this->eagerLoad))
+			// 	$this->loadEagerLoadRelations($results, $model);
 
 			return $model::instance($result, $arguments);
 		}
