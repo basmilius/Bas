@@ -32,7 +32,17 @@ use function strpos;
 class Builder extends Base
 {
 
-	public function paginate(int $limit = 20): array
+	/**
+	 * Paginates the result.
+	 *
+	 * @param int $limit
+	 * @param callable|null $withCollection
+	 *
+	 * @return array
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function paginate(int $limit = 20, ?callable $withCollection = null): array
 	{
 		$page = max(1, intval($_GET['page'] ?? '1'));
 		$offset = ($page - 1) * $limit;
@@ -42,10 +52,15 @@ class Builder extends Base
 
 		$this->limit($limit, $offset);
 
+		$result = $this->collection([], PDO::FETCH_ASSOC, $foundRows);
+
+		if ($withCollection !== null)
+			$result = $result->map($withCollection);
+
 		return [
 			'offset' => $offset,
 			'limit' => $limit,
-			'data' => $this->array([], PDO::FETCH_ASSOC, $foundRows),
+			'data' => $result,
 			'total' => $foundRows
 		];
 	}
