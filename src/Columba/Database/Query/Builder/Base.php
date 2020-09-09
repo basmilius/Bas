@@ -15,6 +15,7 @@ namespace Columba\Database\Query\Builder;
 use Columba\Data\Collection;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Dialect\Dialect;
+use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Statement;
 use Columba\Database\Util\BuilderUtil;
@@ -370,6 +371,27 @@ class Base implements Debuggable
 		return $this
 			->statement($options)
 			->single(true, $fetchMode);
+	}
+
+	/**
+	 * Executes the {@see Statement} and returns a single result. Throws a {@see QueryException} when
+	 * no row was returned from the database server.
+	 *
+	 * @param array $options
+	 * @param int $fetchMode
+	 *
+	 * @return array|Model|mixed
+	 * @author Bas Milius <bas@glybe.nl>
+	 * @since 2.0.0
+	 */
+	public function singleOrFail(array $options = [], int $fetchMode = PDO::FETCH_ASSOC)
+	{
+		$result = $this->single($options, $fetchMode);
+
+		if ($result === null)
+			throw new QueryException('No row was found.', QueryException::ERR_NO_RESULT);
+
+		return $result;
 	}
 
 	/**

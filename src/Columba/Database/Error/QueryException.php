@@ -27,5 +27,6 @@ class QueryException extends DatabaseException
 	public const ERR_INVALID_MODEL = 4;
 	public const ERR_NOT_IMPLEMENTED = 8;
 	public const ERR_EAGER_NOT_AVAILABLE = 16;
+	public const ERR_NO_RESULT = 32;
 
 }
