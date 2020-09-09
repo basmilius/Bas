@@ -58,13 +58,41 @@ class Builder extends Base
 	 * @param mixed $value
 	 * @param bool $addParam
 	 *
-	 * @return Builder
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function and($column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function and($column = null, $comparator = null, $value = null, bool $addParam = true): self
 	{
 		return $this->addExpression('AND', $column, $comparator, $value, $addParam);
+	}
+
+	/**
+	 * Adds a AND $column IS NOT NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function andNotNull(string $column): self
+	{
+		return $this->and($column, isNotNull());
+	}
+
+	/**
+	 * Adds a AND $column IS NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function andNull(string $column): self
+	{
+		return $this->and($column, isNull());
 	}
 
 	/**
@@ -135,11 +163,11 @@ class Builder extends Base
 	 * @param mixed $value
 	 * @param bool $addParam
 	 *
-	 * @return Builder
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function having($column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function having($column = null, $comparator = null, $value = null, bool $addParam = true): self
 	{
 		return $this->addExpression('HAVING', $column, $comparator, $value, $addParam);
 	}
@@ -234,13 +262,41 @@ class Builder extends Base
 	 * @param mixed $value
 	 * @param bool $addParam
 	 *
-	 * @return Builder
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function or($column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function or($column = null, $comparator = null, $value = null, bool $addParam = true): self
 	{
 		return $this->addExpression('OR', $column, $comparator, $value, $addParam);
+	}
+
+	/**
+	 * Adds a OR $column IS NOT NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function orNotNull(string $column): self
+	{
+		return $this->or($column, isNotNull());
+	}
+
+	/**
+	 * Adds a OR $column IS NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function orNull(string $column): self
+	{
+		return $this->or($column, isNull());
 	}
 
 	/**
@@ -449,13 +505,41 @@ class Builder extends Base
 	 * @param mixed $value
 	 * @param bool $addParam
 	 *
-	 * @return Builder
+	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function where($column = null, $comparator = null, $value = null, bool $addParam = true)
+	public function where($column = null, $comparator = null, $value = null, bool $addParam = true): self
 	{
 		return $this->addExpression($this->hasClause('WHERE') ? 'AND' : 'WHERE', $column, $comparator, $value, $addParam);
+	}
+
+	/**
+	 * Adds a WHERE $column IS NOT NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function whereNotNull(string $column): self
+	{
+		return $this->where($column, isNotNull());
+	}
+
+	/**
+	 * Adds a WHERE $column IS NULL clause.
+	 *
+	 * @param string $column
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function whereNull(string $column): self
+	{
+		return $this->where($column, isNull());
 	}
 
 	/**
