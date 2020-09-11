@@ -26,6 +26,7 @@ use function array_keys;
 use function array_unshift;
 use function Columba\Database\Query\Builder\in;
 use function Columba\Database\Query\Builder\literal;
+use function Columba\Util\dumpDie;
 use function in_array;
 use function method_exists;
 
@@ -499,6 +500,21 @@ abstract class Model extends Base
 	 */
 	public function setValue(string $column, $value): void
 	{
+		$isMacroMock = isset(static::$macros[static::class][$column]) && $value instanceof Mock;
+		$isRelationMock = isset(static::$relationships[static::class][$column]) && $value instanceof Mock;
+
+		if ($isMacroMock)
+		{
+			$this->macroCache[$column] = $value;
+			return;
+		}
+
+		if ($isRelationMock)
+		{
+			$this->relationCache[$column] = $value;
+			return;
+		}
+
 		$this->checkImmutable($column);
 		$this->checkRelations($column);
 
