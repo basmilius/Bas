@@ -258,7 +258,7 @@ class Statement
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
 	private function findEagerLoadKeys(Relation $relation, array $results): array
 	{
@@ -271,7 +271,7 @@ class Statement
 		$referenceKeyTrim = BuilderUtil::trimKey($referenceKey);
 		$selfKeyTrim = BuilderUtil::trimKey($selfKey);
 
-		$selfKeys = array_column($results, $relation->getSelfKey());
+		$selfKeys = array_column($results, $selfKeyTrim);
 		$selfKeys = array_filter($selfKeys, fn($val) => $val !== null && $val !== 0);
 		$selfKeys = array_unique($selfKeys);
 
@@ -289,12 +289,12 @@ class Statement
 	 *
 	 * @param Model|string $model
 	 * @param array $keys
-	 * @param array|null $results
+	 * @param Collection|null $results
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
-	private function findLoadedInstancesByKeys(string $model, array &$keys, ?array &$results): void
+	private function findLoadedInstancesByKeys(string $model, array &$keys, ?Collection &$results): void
 	{
 		$results = new Collection();
 

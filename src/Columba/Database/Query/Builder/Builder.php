@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 use Columba\Database\Error\QueryException;
+use Columba\Database\Model\Model;
+use Columba\Facade\IArray;
 use Columba\Util\ArrayUtil;
 use PDO;
 use function array_keys;
@@ -56,6 +58,9 @@ class Builder extends Base
 
 		if ($withCollection !== null)
 			$result = $result->map($withCollection);
+
+		if ($this->isModelQuery())
+			$result = $result->map(fn(IArray $arrayable) => $arrayable->toArray());
 
 		return [
 			'offset' => $offset,

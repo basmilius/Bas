@@ -416,6 +416,18 @@ class Base implements Debuggable
 	}
 
 	/**
+	 * Returns TRUE when a model is associated.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function isModelQuery(): bool
+	{
+		return $this->modelClass !== null;
+	}
+
+	/**
 	 * Assigns a model to the query result.
 	 *
 	 * @param string|null $class

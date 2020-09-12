@@ -261,7 +261,11 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 	 */
 	public final function serialize(): string
 	{
-		return serialize($this->model);
+		return serialize([
+			$this->model,
+			$this->hidden,
+			$this->visible
+		]);
 	}
 
 	/**
@@ -272,14 +276,16 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 	public final function unserialize($serialized): void
 	{
 		/** @var Model $model */
-		$model = unserialize($serialized);
+		/** @var array $hidden */
+		/** @var array $visible */
+		[$model, $hidden, $visible] = unserialize($serialized);
 		$model::prepareModel();
 
 		$mock = $model->mock();
 
 		$this->model = $mock->model;
-		$this->hidden = $mock->hidden;
-		$this->visible = $mock->visible;
+		$this->hidden = $hidden;
+		$this->visible = $visible;
 		$this->macros = $mock->macros;
 		$this->relationships = $mock->relationships;
 
