@@ -56,7 +56,7 @@ class One extends Relation
 		if ($this->referenceModel::column($this->referenceModel::primaryKey()) === $this->referenceKey)
 		{
 			$cache = $this->referenceModel::connection()->getCache();
-			$key = $this->model->getValue($this->selfKey);
+			$key = $this->model->getValue($this->simpleKey($this->selfKey));
 
 			if ($key === null || $key === 0)
 				return null;
@@ -109,7 +109,7 @@ class One extends Relation
 	 */
 	protected function buildBaseQuery(): Builder
 	{
-		return $this->where($this->referenceKey, $this->model->getValue($this->selfKey) ?? 0);
+		return $this->where($this->referenceKey, $this->model->getValue($this->simpleKey($this->selfKey)) ?? 0);
 	}
 
 }

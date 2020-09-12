@@ -117,4 +117,25 @@ abstract class Relation extends Builder
 	 */
 	protected abstract function buildBaseQuery(): Builder;
 
+	/**
+	 * Returns the last part of a key.
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function simpleKey(string $key): string
+	{
+		if (strstr($key, '`'))
+		{
+			$parts = explode('.', $key);
+			$part = $parts[count($parts) - 1];
+			$key = trim($part, '`');
+		}
+
+		return $key;
+	}
+
 }
