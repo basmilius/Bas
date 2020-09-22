@@ -13,8 +13,6 @@ declare(strict_types=1);
 namespace Columba\Util;
 
 use ArrayAccess;
-use Columba\Database\AbstractDatabaseDriver;
-use Columba\Database\DatabaseException;
 use function array_reduce;
 use function ceil;
 use function floor;

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
+use Columba\Facade\Stringable;
 use function array_intersect;
 use function array_map;
 use function array_search;
@@ -39,7 +40,7 @@ use const PREG_PATTERN_ORDER;
  * @package Columba\Foundation\Http
  * @since 1.6.0
  */
-class UserAgent
+class UserAgent implements Stringable
 {
 
 	protected string $userAgent;

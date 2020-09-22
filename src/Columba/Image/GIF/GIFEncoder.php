@@ -117,20 +117,21 @@ class GIFEncoder
 		switch (ord($imgData[0]))
 		{
 			case 0x21:
-				$gce = substr($imgData, 0, 8);
-				$gcePackedFields = $gce[3];
-				$gceTransparencyFlag = (ord($gcePackedFields) & 0x01) == 0x01;
-				$gceTransparencyIndex = ord($gce[6]);
+//				$gce = substr($imgData, 0, 8);
+//				$gcePackedFields = $gce[3];
+//				$gceTransparencyFlag = (ord($gcePackedFields) & 0x01) == 0x01;
+//				$gceTransparencyIndex = ord($gce[6]);
 				$imgDescriptor = substr($imgData, 8, 10);
 				$imgData = substr($imgData, 18);
 				break;
+
 			case 0x2C:
 				$imgDescriptor = substr($imgData, 0, 10);
 				$imgData = substr($imgData, 10);
 				break;
+
 			default:
 				throw new GIFException('Unexpected input.', GIFException::ERR_UNEXPECTED);
-				break;
 		}
 
 		$this->output->writeString($localGCE->getContents());

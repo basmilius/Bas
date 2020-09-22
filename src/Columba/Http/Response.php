@@ -202,11 +202,11 @@ final class Response
 	/**
 	 * Gets the download size in bytes.
 	 *
-	 * @return int
+	 * @return float
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getDownloadSize(): int
+	public final function getDownloadSize(): float
 	{
 		return $this->downloadSize;
 	}
@@ -214,11 +214,11 @@ final class Response
 	/**
 	 * Gets the download speed in bytes/s.
 	 *
-	 * @return int
+	 * @return float
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getDownloadSpeed(): int
+	public final function getDownloadSpeed(): float
 	{
 		return $this->downloadSpeed;
 	}
@@ -322,11 +322,11 @@ final class Response
 	/**
 	 * Gets the transaction time.
 	 *
-	 * @return int
+	 * @return float
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getTransactionTime(): int
+	public final function getTransactionTime(): float
 	{
 		return $this->transactionTime;
 	}
@@ -334,11 +334,11 @@ final class Response
 	/**
 	 * Gets the upload size in bytes.
 	 *
-	 * @return int
+	 * @return float
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getUploadSize(): int
+	public final function getUploadSize(): float
 	{
 		return $this->uploadSize;
 	}
@@ -346,11 +346,11 @@ final class Response
 	/**
 	 * Gets the upload speed in bytes/s.
 	 *
-	 * @return int
+	 * @return float
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.2.0
 	 */
-	public final function getUploadSpeed(): int
+	public final function getUploadSpeed(): float
 	{
 		return $this->uploadSpeed;
 	}

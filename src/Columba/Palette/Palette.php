@@ -254,7 +254,7 @@ final class Palette
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function generate(Image $image, int $numColors = self::DEFAULT_CALCULATE_COLORS): self
+	public static function generate(Image $image, int $numColors = self::DEFAULT_CALCULATE_COLORS): ?self
 	{
 		$image = self::scaleImageDown($image);
 		$quantizer = ColorCutQuantizer::fromImage($image, $numColors);

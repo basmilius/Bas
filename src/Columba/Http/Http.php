@@ -14,7 +14,6 @@ namespace Columba\Http;
 
 use function curl_init;
 use function curl_setopt;
-use const CURLOPT_BINARYTRANSFER;
 use const CURLOPT_CUSTOMREQUEST;
 use const CURLOPT_ENCODING;
 use const CURLOPT_FOLLOWLOCATION;
@@ -169,7 +168,7 @@ final class Http
 	 * Performs a PUT request.
 	 *
 	 * @param string $url
-	 * @param string $body
+	 * @param string|null $body
 	 * @param callable|null $manipulator
 	 *
 	 * @return Response
@@ -204,7 +203,6 @@ final class Http
 	{
 		$handle = curl_init();
 
-		curl_setopt($handle, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $request->getRequestMethod());
 		curl_setopt($handle, CURLOPT_ENCODING, 'gzip');
 		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, true);

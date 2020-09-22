@@ -23,7 +23,6 @@ final class RequestValidator
 {
 
 	private array $options = [];
-	private array $params = [];
 
 	/**
 	 * Validates {@see $params} with our options.
@@ -36,8 +35,6 @@ final class RequestValidator
 	 */
 	public final function toValidate(array $params): RequestValidatorResult
 	{
-		$this->params = $params;
-
 		$result = new RequestValidatorResult();
 
 		foreach ($this->options as $option)
@@ -46,7 +43,7 @@ final class RequestValidator
 
 			try
 			{
-				$value = $this->params[$name] ?? null;
+				$value = $params[$name] ?? null;
 
 				$option->validate($value);
 				$result->addParam($name, $value);

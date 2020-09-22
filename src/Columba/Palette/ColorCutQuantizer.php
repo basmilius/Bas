@@ -85,7 +85,7 @@ final class ColorCutQuantizer
 			$this->colors[$validColorCount++] = $color;
 		}
 
-		if (true || $validColorCount <= $maxColors)
+		if ($validColorCount <= $maxColors)
 		{
 			$this->quantizedColors = [];
 

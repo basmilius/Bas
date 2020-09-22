@@ -128,7 +128,7 @@ final class RequestValidatorOption
 	/**
 	 * Ensures that {@see $value} is greater than {@see $num}.
 	 *
-	 * @param int|float|double $num
+	 * @param int|float $num
 	 *
 	 * @return RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
@@ -150,7 +150,7 @@ final class RequestValidatorOption
 	/**
 	 * Ensures that {@see $value} is greater or equal to {@see $num}.
 	 *
-	 * @param int|float|double $num
+	 * @param int|float $num
 	 *
 	 * @return RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
@@ -172,7 +172,7 @@ final class RequestValidatorOption
 	/**
 	 * Ensures that {@see $value} is lower than {@see $num}.
 	 *
-	 * @param int|float|double $num
+	 * @param int|float $num
 	 *
 	 * @return RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>
@@ -194,7 +194,7 @@ final class RequestValidatorOption
 	/**
 	 * Ensures that {@see $value} is lower or equal to {@see $num}.
 	 *
-	 * @param int|float|double $num
+	 * @param int|float $num
 	 *
 	 * @return RequestValidatorOption
 	 * @author Bas Milius <bas@mili.us>

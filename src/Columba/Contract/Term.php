@@ -38,6 +38,7 @@ use Columba\Contract\Rule\RuleOneOf;
 use Columba\Contract\Rule\RuleString;
 use Columba\Contract\Rule\RuleSubcontract;
 use Columba\Contract\Rule\RuleValidate;
+use Columba\Facade\Debuggable;
 
 /**
  * Class Term
@@ -46,7 +47,7 @@ use Columba\Contract\Rule\RuleValidate;
  * @package Columba\Contract
  * @since 1.6.0
  */
-class Term
+class Term implements Debuggable
 {
 
 	protected Contract $contract;

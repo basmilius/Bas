@@ -15,6 +15,7 @@ namespace Columba\Contract\Rule;
 use Columba\Contract\Contract;
 use Columba\Contract\ContractBreachException;
 use Columba\Contract\Term;
+use Columba\Facade\Debuggable;
 
 /**
  * Class AbstractRule
@@ -23,7 +24,7 @@ use Columba\Contract\Term;
  * @package Columba\Contract\Rule
  * @since 1.6.0
  */
-abstract class AbstractRule
+abstract class AbstractRule implements Debuggable
 {
 
 	protected Contract $contract;

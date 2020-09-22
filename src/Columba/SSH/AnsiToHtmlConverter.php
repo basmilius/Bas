@@ -168,7 +168,7 @@ final class AnsiToHtmlConverter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	private function tokenize($str): array
+	private function tokenize(string $str): array
 	{
 		$tokens = [];
 		$offset = 0;

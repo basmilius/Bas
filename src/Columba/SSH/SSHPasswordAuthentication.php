@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\SSH;
 
+use Columba\Facade\Debuggable;
 use function ssh2_auth_password;
 
 /**
@@ -21,7 +22,7 @@ use function ssh2_auth_password;
  * @package Columba\SSH
  * @since 1.3.0
  */
-final class SSHPasswordAuthentication extends SSHAuthentication
+final class SSHPasswordAuthentication extends SSHAuthentication implements Debuggable
 {
 
 	private string $username;
@@ -60,7 +61,7 @@ final class SSHPasswordAuthentication extends SSHAuthentication
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function __debugInfo()
+	public final function __debugInfo(): array
 	{
 		return [];
 	}

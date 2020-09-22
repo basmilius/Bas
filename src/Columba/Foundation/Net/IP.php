@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Net;
 
+use Columba\Facade\Stringable;
 use JsonSerializable;
 use function filter_var;
 
@@ -22,7 +23,7 @@ use function filter_var;
  * @package Columba\Foundation\Net
  * @since 1.6.0
  */
-class IP implements JsonSerializable
+class IP implements JsonSerializable, Stringable
 {
 
 	public const V4 = 1;
