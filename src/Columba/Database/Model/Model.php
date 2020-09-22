@@ -29,6 +29,7 @@ use function Columba\Database\Query\Builder\in;
 use function Columba\Database\Query\Builder\literal;
 use function get_class;
 use function in_array;
+use function is_array;
 use function method_exists;
 use function sprintf;
 
@@ -1103,7 +1104,7 @@ abstract class Model extends Base
 
 		$data['_meta']['casts'] = static::$casts[static::class];
 		$data['_meta']['connection_id'] = static::$connectionId;
-		$data['_meta']['macros'] = array_map(fn($macro) => get_class($macro), static::$macros[static::class]);
+		$data['_meta']['macros'] = array_map(fn($macro) => is_array($macro) ? sprintf('%s::%s', $macro[0], $macro[1]) : get_class($macro), static::$macros[static::class]);
 		$data['_meta']['macros_to_cache'] = static::$macrosToCache[static::class];
 		$data['_meta']['relationships'] = array_map(fn($relation) => get_class($relation), static::$relationships[static::class]);
 		$data['_meta']['relationships_resolved'] = array_keys($this->relationCache);
