@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Debuggable;
+use Columba\Facade\Jsonable;
 use function sprintf;
 
 /**
@@ -22,7 +23,7 @@ use function sprintf;
  * @package Columba\Error
  * @since 1.4.0
  */
-class TraceInfo implements IJson
+class TraceInfo implements Debuggable, Jsonable
 {
 
 	private ExceptionInfo $exceptionInfo;

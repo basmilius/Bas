@@ -52,21 +52,11 @@ abstract class Connection
 	 */
 	public function __construct(Connector $connector)
 	{
+		require_once __DIR__ . '/../Query/Builder/functions.php';
+
 		$this->cache = new Cache();
 		$this->connector = $connector;
 		$this->dialect = $this->createDialectInstance();
-	}
-
-	/**
-	 * Creates the {@see Dialect} instance.
-	 *
-	 * @return Dialect
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	protected function createDialectInstance(): Dialect
-	{
-		return new Dialect();
 	}
 
 	/**
@@ -140,7 +130,7 @@ abstract class Connection
 	 */
 	public function foundRows(): int
 	{
-		return $this->queryColumn($this->dialect->foundRows($this->query())->build());
+		return $this->queryColumn($this->dialect->foundRows($this->query())->toSql());
 	}
 
 	/**
@@ -237,23 +227,14 @@ abstract class Connection
 	 * Checks if the given table exists in the current database.
 	 *
 	 * @param string $table
-	 * @param string|null $database
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function tableExists(string $table, ?string $database = null): bool
+	public function tableExists(string $table): bool
 	{
-		$database ??= $this->connector->getDatabase();
-
-		$statement = $this->dialect
-			->tableExists(self::query(), $database, $table)
-			->statement();
-
-		$statement->run();
-
-		return $statement->rowCount() > 0;
+		return isset($this->tablesWithColumns[$table]);
 	}
 
 	/**
@@ -363,6 +344,15 @@ abstract class Connection
 
 		return in_array($column, $this->tablesWithColumns[$table]);
 	}
+
+	/**
+	 * Creates the {@see Dialect} instance.
+	 *
+	 * @return Dialect
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected abstract function createDialectInstance(): Dialect;
 
 	/**
 	 * Loads all tables with columns.

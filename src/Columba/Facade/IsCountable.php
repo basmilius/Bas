@@ -12,25 +12,25 @@ declare(strict_types=1);
 
 namespace Columba\Facade;
 
+use Countable;
+
 /**
- * Interface IsSettable
+ * Interface IsCountable
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Facade
  * @since 1.6.0
  */
-interface IsSettable
+interface IsCountable extends Countable
 {
 
 	/**
-	 * Gets if the given name exists as a property, that isn't really a property.
+	 * Returns the amount of elements in an object.
 	 *
-	 * @param string $name
-	 *
-	 * @return bool
+	 * @return int
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __isset(string $name): bool;
+	public function count(): int;
 
 }

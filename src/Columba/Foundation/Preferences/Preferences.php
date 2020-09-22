@@ -12,10 +12,11 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Preferences;
 
-use Columba\Facade\IArray;
-use Columba\Facade\ICountable;
-use Columba\Facade\IIterator;
-use Columba\Facade\IJson;
+use Columba\Facade\Arrayable;
+use Columba\Facade\Debuggable;
+use Columba\Facade\IsCountable;
+use Columba\Facade\Jsonable;
+use Columba\Facade\Loopable;
 use Columba\Util\ArrayUtil;
 use function array_combine;
 use function array_keys;
@@ -37,7 +38,7 @@ use function sprintf;
  * @package Columba\Foundation\Preferences
  * @since 1.0.0
  */
-final class Preferences implements IArray, ICountable, IIterator, IJson
+final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable, Jsonable
 {
 
 	private ?Preferences $parent;
@@ -217,18 +218,6 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
-	 */
-	public final function __debugInfo(): array
-	{
-		return [
-			'data' => '** Hidden for security reasons. **'
-		];
-	}
-
-	/**
 	 * Finds an index in an array.
 	 *
 	 * @param array $array
@@ -266,6 +255,18 @@ final class Preferences implements IArray, ICountable, IIterator, IJson
 			throw new PreferencesException(sprintf('"%s" must be a valid JSON file!', $fileName), PreferencesException::ERR_INVALID_ARGUMENT);
 
 		return new static($data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.0.0
+	 */
+	public final function __debugInfo(): array
+	{
+		return [
+			'data' => '** Hidden for security reasons. **'
+		];
 	}
 
 }

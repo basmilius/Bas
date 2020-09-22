@@ -146,25 +146,6 @@ class Dialect
 	}
 
 	/**
-	 * Builds a query for checking if the given table exists in the given database.
-	 *
-	 * @param Builder $query
-	 * @param string $schema
-	 * @param string $table
-	 *
-	 * @return Builder
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 *
-	 * @noinspection PhpUnusedParameterInspection
-	 * @see Connection::tableExists()
-	 */
-	public function tableExists(Builder $query, string $schema, string $table): Builder
-	{
-		throw $this->notImplemented(__METHOD__);
-	}
-
-	/**
 	 * Throws a not implemented {@see QueryException}.
 	 *
 	 * @param string $method

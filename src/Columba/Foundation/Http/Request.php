@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Jsonable;
 use Columba\Foundation\Net\IP;
 use Columba\Foundation\Store;
 use Columba\Http\HttpUtil;
@@ -41,7 +41,7 @@ use function tmpfile;
  * @package Columba\Foundation\Http
  * @since 1.5.0
  */
-class Request implements IJson
+class Request implements Jsonable
 {
 
 	protected Store $localStorage;

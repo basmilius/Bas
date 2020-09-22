@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\OAuth2;
 
-use Columba\Facade\IArray;
-use Columba\Facade\IJson;
+use Columba\Facade\Arrayable;
+use Columba\Facade\Jsonable;
 
 /**
  * Class OAuth2Object
@@ -22,7 +22,7 @@ use Columba\Facade\IJson;
  * @package Columba\OAuth2
  * @since
  */
-class OAuth2Object implements IArray, IJson
+class OAuth2Object implements Arrayable, Jsonable
 {
 
 	protected array $data;

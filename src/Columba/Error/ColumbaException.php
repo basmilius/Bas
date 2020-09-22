@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Jsonable;
 use Columba\Util\ExceptionUtil;
 use Exception;
 use Throwable;
@@ -24,7 +24,7 @@ use Throwable;
  * @package Columba\Error
  * @since 1.6.0
  */
-abstract class ColumbaException extends Exception implements IJson
+abstract class ColumbaException extends Exception implements Jsonable
 {
 
 	/**

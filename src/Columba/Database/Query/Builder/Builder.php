@@ -13,8 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 use Columba\Database\Error\QueryException;
-use Columba\Database\Model\Model;
-use Columba\Facade\IArray;
+use Columba\Facade\Arrayable;
 use Columba\Util\ArrayUtil;
 use PDO;
 use function array_keys;
@@ -60,7 +59,7 @@ class Builder extends Base
 			$result = $result->map($withCollection);
 
 		if ($this->isModelQuery())
-			$result = $result->map(fn(IArray $arrayable) => $arrayable->toArray());
+			$result = $result->map(fn(Arrayable $arrayable) => $arrayable->toArray());
 
 		return [
 			'offset' => $offset,
@@ -971,7 +970,7 @@ class Builder extends Base
 				}
 				else if ($expression instanceof Base)
 				{
-					$sql = $expression->build();
+					$sql = $expression->toSql();
 
 					$result[] = '(' . $sql . ') AS ' . $alias;
 				}
@@ -981,7 +980,7 @@ class Builder extends Base
 
 					$expression->after($query);
 
-					$result[] = $query->build() . ' AS ' . $alias;
+					$result[] = $query->toSql() . ' AS ' . $alias;
 				}
 				else if ($expression instanceof Value)
 				{

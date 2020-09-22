@@ -64,9 +64,6 @@ class Base implements Debuggable
 	{
 		++static::$num;
 
-		if (static::$num === 1)
-			require_once __DIR__ . '/functions.php';
-
 		if ($connection !== null)
 			$this->setConnection($connection);
 	}
@@ -80,7 +77,7 @@ class Base implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function build(bool $pretty = false): string
+	public function toSql(bool $pretty = false): string
 	{
 		$query = [];
 
@@ -405,7 +402,7 @@ class Base implements Debuggable
 	 */
 	public function statement(array $options = []): Statement
 	{
-		$statement = $this->connection->prepare($this->build(), $options);
+		$statement = $this->connection->prepare($this->toSql(), $options);
 		$statement->model($this->modelClass, $this->modelArguments);
 		$statement->eagerLoad($this->eagerLoad);
 
@@ -645,7 +642,7 @@ class Base implements Debuggable
 	public function __debugInfo(): array
 	{
 		return [
-			'query' => $this->build()
+			'query' => $this->toSql()
 		];
 	}
 

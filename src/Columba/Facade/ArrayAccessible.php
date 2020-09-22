@@ -1,29 +1,24 @@
 <?php
-/**
- * Copyright (c) 2019 - 2020 - Bas Milius <bas@mili.us>
- *
- * This file is part of the Columba package.
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
-namespace Columba\Database\Model\Mixin;
+namespace Columba\Facade;
 
 /**
- * Trait ArrayAccess
+ * Trait ArrayAccessible
  *
  * @author Bas Milius <bas@mili.us>
- * @package Columba\Database\Model\Mixin
+ * @package Columba\Facade
  * @since 1.6.0
  */
-trait ArrayAccess
+trait ArrayAccessible
 {
 
 	/**
-	 * {@inheritDoc}
+	 * Returns TRUE if the given field exists.
+	 *
+	 * @param mixed $field
+	 *
+	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -33,7 +28,11 @@ trait ArrayAccess
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the value of the given field.
+	 *
+	 * @param mixed $field
+	 *
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -43,7 +42,11 @@ trait ArrayAccess
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Sets the given field with the given value.
+	 *
+	 * @param mixed $field
+	 * @param mixed $value
+	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -53,7 +56,10 @@ trait ArrayAccess
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Unsets the given field.
+	 *
+	 * @param mixed $field
+	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */

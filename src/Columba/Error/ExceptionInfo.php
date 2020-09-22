@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Columba\Error;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Debuggable;
+use Columba\Facade\Jsonable;
 use Columba\Util\ExceptionUtil;
 use Throwable;
 use function array_map;
@@ -25,7 +26,7 @@ use function get_class;
  * @package Columba\Error
  * @since 1.4.0
  */
-class ExceptionInfo implements IJson
+class ExceptionInfo implements Debuggable, Jsonable
 {
 
 	private Throwable $err;

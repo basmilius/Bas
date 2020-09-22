@@ -25,7 +25,7 @@ interface ICast
 {
 
 	/**
-	 * Deserializes the data before using it in the model.
+	 * Decodes the data before using it in the model.
 	 *
 	 * @param Model $model
 	 * @param string $key
@@ -36,10 +36,10 @@ interface ICast
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function get(Model $model, string $key, $value, array $data);
+	public function decode(Model $model, string $key, $value, array $data);
 
 	/**
-	 * Serializes the data before storing it back in the database.
+	 * Encodes the data before storing it back in the database.
 	 *
 	 * @param Model $model
 	 * @param string $key
@@ -50,6 +50,6 @@ interface ICast
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function set(Model $model, string $key, $value, array $data);
+	public function encode(Model $model, string $key, $value, array $data);
 
 }

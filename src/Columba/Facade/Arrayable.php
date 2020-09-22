@@ -15,13 +15,13 @@ namespace Columba\Facade;
 use ArrayAccess;
 
 /**
- * Interface IArray
+ * Interface Arrayable
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Facade
- * @since 1.4.0
+ * @since 1.6.0
  */
-interface IArray extends ArrayAccess
+interface Arrayable extends ArrayAccess
 {
 
 	/**
@@ -31,7 +31,7 @@ interface IArray extends ArrayAccess
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function offsetExists($field): bool;
 
@@ -42,7 +42,7 @@ interface IArray extends ArrayAccess
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function offsetGet($field);
 
@@ -53,7 +53,7 @@ interface IArray extends ArrayAccess
 	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function offsetSet($field, $value): void;
 
@@ -63,7 +63,7 @@ interface IArray extends ArrayAccess
 	 * @param mixed $field
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function offsetUnset($field): void;
 
@@ -72,7 +72,7 @@ interface IArray extends ArrayAccess
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function toArray(): array;
 

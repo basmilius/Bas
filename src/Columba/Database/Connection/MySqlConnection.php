@@ -62,7 +62,7 @@ class MySqlConnection extends Connection
 			->select(['TABLE_NAME', 'COLUMN_NAME'])
 			->from('information_schema.COLUMNS')
 			->where('TABLE_SCHEMA', stringLiteral($this->getConnector()->getDatabase()))
-			->collection();
+			->array();
 
 		foreach ($result as ['TABLE_NAME' => $table, 'COLUMN_NAME' => $column])
 		{

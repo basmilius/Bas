@@ -269,7 +269,6 @@ class Db
 
 	/**
 	 * @param string $table
-	 * @param string|null $database
 	 * @param string|null $id
 	 *
 	 * @return bool
@@ -277,9 +276,10 @@ class Db
 	 * @since 1.6.0
 	 * @see Connection::tableExists()
 	 */
-	public static function tableExists(string $table, ?string $database = null, ?string $id = null): bool
+	public static function tableExists(string $table, ?string $id = null): bool
 	{
-		return self::getOrFail($id)->tableExists($table, $database);
+		return self::getOrFail($id)
+			->tableExists($table);
 	}
 
 	/**

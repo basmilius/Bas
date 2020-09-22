@@ -15,13 +15,13 @@ namespace Columba\Facade;
 use Iterator;
 
 /**
- * Interface IIterator
+ * Interface Loopable
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Facade
- * @since 1.4.0
+ * @since 1.6.0
  */
-interface IIterator extends Iterator
+interface Loopable extends Iterator
 {
 
 	/**
@@ -29,7 +29,7 @@ interface IIterator extends Iterator
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function current();
 
@@ -38,7 +38,7 @@ interface IIterator extends Iterator
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function key();
 
@@ -46,7 +46,7 @@ interface IIterator extends Iterator
 	 * Move to the next item.
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function next(): void;
 
@@ -54,7 +54,7 @@ interface IIterator extends Iterator
 	 * Rewind to the first item.
 	 *
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function rewind(): void;
 
@@ -63,7 +63,7 @@ interface IIterator extends Iterator
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	public function valid(): bool;
 

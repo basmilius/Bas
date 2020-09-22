@@ -14,11 +14,11 @@ namespace Columba\Data;
 
 use Closure;
 use Columba\Database\Model\Model;
+use Columba\Facade\Arrayable;
 use Columba\Facade\Debuggable;
-use Columba\Facade\IArray;
-use Columba\Facade\ICountable;
-use Columba\Facade\IIterator;
-use Columba\Facade\IJson;
+use Columba\Facade\IsCountable;
+use Columba\Facade\Jsonable;
+use Columba\Facade\Loopable;
 use Columba\Util\ArrayUtil;
 use Serializable;
 use Traversable;
@@ -53,7 +53,7 @@ use function usort;
  * @package Columba\Data
  * @since 1.4.0
  */
-class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Serializable
+class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggable, Serializable
 {
 
 	private array $items;
@@ -194,7 +194,7 @@ class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Se
 	/**
 	 * Diff the collection.
 	 *
-	 * @param array|IArray|self $items
+	 * @param array|Arrayable|self $items
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -319,7 +319,7 @@ class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Se
 	/**
 	 * Merges the collection with other items.
 	 *
-	 * @param array|IArray|self $items
+	 * @param array|Arrayable|self $items
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -673,7 +673,7 @@ class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Se
 	/**
 	 * Ensures an array for various functions.
 	 *
-	 * @param array|IArray|self $items
+	 * @param array|Arrayable|self $items
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
@@ -684,7 +684,7 @@ class Collection implements IArray, ICountable, IIterator, IJson, Debuggable, Se
 		if ($items instanceof self)
 			return $items->all();
 
-		if ($items instanceof IArray)
+		if ($items instanceof Arrayable)
 			return $items->toArray();
 
 		return $items;

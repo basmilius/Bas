@@ -47,19 +47,4 @@ class MySqlDialect extends Dialect
 			->addPiece('OPTIMIZE TABLE', $tables, 0, 1, 1, $this->columnSeparator);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public function tableExists(Builder $query, string $schema, string $table): Builder
-	{
-		return $query
-			->select(['table_name'])
-			->from('information_schema.tables')
-			->where('table_schema', $schema)
-			->and('table_name', $table)
-			->and('table_type', 'BASE TABLE');
-	}
-
 }

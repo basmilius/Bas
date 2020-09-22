@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database\Query;
 
 use Columba\Database\Connection\Connection;
-use Columba\Facade\ICountable;
+use Columba\Facade\IsCountable;
 use PDO;
 
 /**
@@ -23,7 +23,7 @@ use PDO;
  * @package Columba\Database\Query
  * @since 1.6.0
  */
-class Result implements ICountable
+class Result implements IsCountable
 {
 
 	protected Connection $connection;

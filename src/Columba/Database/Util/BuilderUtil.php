@@ -40,6 +40,9 @@ final class BuilderUtil
 	 */
 	public static function repeat(string $str, int $amount): string
 	{
+		if ($amount === 0)
+			return '';
+
 		return str_repeat($str, max(0, $amount)) ?? '';
 	}
 

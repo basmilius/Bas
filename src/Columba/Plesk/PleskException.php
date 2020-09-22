@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Plesk;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Jsonable;
 use Exception;
 use Throwable;
 
@@ -23,7 +23,7 @@ use Throwable;
  * @package Columba\Plesk
  * @since 1.4.0
  */
-final class PleskException extends Exception implements IJson
+final class PleskException extends Exception implements Jsonable
 {
 
 	/**

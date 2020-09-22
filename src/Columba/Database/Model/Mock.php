@@ -4,13 +4,11 @@ declare(strict_types=1);
 namespace Columba\Database\Model;
 
 use Columba\Database\Error\ModelException;
+use Columba\Facade\Arrayable;
+use Columba\Facade\ArrayAccessible;
 use Columba\Facade\Debuggable;
-use Columba\Facade\Gettable;
-use Columba\Facade\IArray;
-use Columba\Facade\IJson;
-use Columba\Facade\IsSettable;
-use Columba\Facade\Settable;
-use Columba\Facade\Unsettable;
+use Columba\Facade\Jsonable;
+use Columba\Facade\ObjectAccessible;
 use Columba\Util\ArrayUtil;
 use Serializable;
 use stdClass;
@@ -30,8 +28,11 @@ use function unserialize;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Serializable, Settable, Unsettable
+final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Serializable
 {
+
+	use ArrayAccessible;
+	use ObjectAccessible;
 
 	private Model $model;
 
@@ -143,83 +144,58 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Gets a value.
+	 *
+	 * @param string $column
+	 *
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function __get(string $name)
+	public function getValue(string $column)
 	{
-		return $this->model->__get($name);
+		return $this->getValue($column);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Returns TRUE if a value exists.
+	 *
+	 * @param string $column
+	 *
+	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function __isset(string $name): bool
+	public function hasValue(string $column): bool
 	{
-		return $this->model->__isset($name);
+		return $this->model->hasValue($column);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Sets a value.
+	 *
+	 * @param string $column
+	 * @param mixed $value
+	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function __set(string $name, $value): void
+	public function setValue(string $column, $value): void
 	{
-		$this->model->__set($name, $value);
+		$this->model->setValue($column, $value);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Unsets a value.
+	 *
+	 * @param string $column
+	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public final function __unset(string $name): void
+	public function unsetValue(string $column): void
 	{
-		$this->model->__unset($name);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public final function offsetExists($field): bool
-	{
-		return $this->model->offsetExists($field);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public final function offsetGet($field)
-	{
-		return $this->model->offsetGet($field);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public final function offsetSet($field, $value): void
-	{
-		$this->model->offsetSet($field, $value);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public final function offsetUnset($field): void
-	{
-		$this->model->offsetUnset($field);
+		$this->model->unsetValue($column);
 	}
 
 	/**
@@ -248,7 +224,7 @@ final class Mock extends stdClass implements IArray, IJson, Debuggable, Gettable
 		$this->resolveVisibilityColumns($data);
 
 		foreach ($data as &$field)
-			if ($field instanceof IJson)
+			if ($field instanceof Jsonable)
 				$field = $field->jsonSerialize();
 
 		return $data;

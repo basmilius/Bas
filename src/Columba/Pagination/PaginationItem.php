@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Pagination;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Jsonable;
 
 /**
  * Class PaginationItem
@@ -21,7 +21,7 @@ use Columba\Facade\IJson;
  * @package Columba\Pagination
  * @since 1.0.0
  */
-final class PaginationItem implements IJson
+final class PaginationItem implements Jsonable
 {
 
 	private int $page;

@@ -12,11 +12,14 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
-use Columba\Facade\GetHasSetUnset;
-use Columba\Facade\IArray;
-use Columba\Facade\ICountable;
-use Columba\Facade\IIterator;
-use Columba\Facade\IJson;
+use Columba\Facade\Arrayable;
+use Columba\Facade\ArrayAccessible;
+use Columba\Facade\Debuggable;
+use Columba\Facade\EasyAccessible;
+use Columba\Facade\IsCountable;
+use Columba\Facade\Jsonable;
+use Columba\Facade\Loopable;
+use Columba\Facade\ObjectAccessible;
 use function array_keys;
 use function count;
 
@@ -27,10 +30,12 @@ use function count;
  * @package Columba\Foundation\Http
  * @since 1.5.0
  */
-class Parameters implements IArray, ICountable, IIterator, IJson
+class Parameters implements Arrayable, Debuggable, IsCountable, Loopable, Jsonable
 {
 
-	use GetHasSetUnset;
+	use ArrayAccessible;
+	use EasyAccessible;
+	use ObjectAccessible;
 
 	protected array $data;
 	protected int $position = 0;
@@ -49,13 +54,58 @@ class Parameters implements IArray, ICountable, IIterator, IJson
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Gets a value.
+	 *
+	 * @param string $field
+	 *
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
+	 * @since 1.6.0
 	 */
-	public final function toArray(): array
+	public function getValue(string $field)
 	{
-		return $this->data;
+		return $this->data[$field] ?? null;
+	}
+
+	/**
+	 * Returns TRUE if a value exists.
+	 *
+	 * @param string $field
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function hasValue(string $field): bool
+	{
+		return isset($this->data[$field]);
+	}
+
+	/**
+	 * Sets a value.
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function setValue(string $field, $value): void
+	{
+		$this->data[$field] = $value;
+	}
+
+	/**
+	 * Unsets a value.
+	 *
+	 * @param string $field
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function unsetValue(string $field): void
+	{
+		$this->data[$field] = null;
 	}
 
 	/**
@@ -149,44 +199,10 @@ class Parameters implements IArray, ICountable, IIterator, IJson
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
-	 * @internal
 	 */
-	public final function offsetExists($field): bool
+	public final function toArray(): array
 	{
-		return isset($this->data[$field]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
-	 * @internal
-	 */
-	public final function offsetGet($field)
-	{
-		return $this->data[$field] ?? null;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
-	 * @internal
-	 */
-	public final function offsetSet($field, $value): void
-	{
-		$this->data[$field] = $value;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.5.0
-	 * @internal
-	 */
-	public final function offsetUnset($field): void
-	{
-		unset($this->data[$field]);
+		return $this->data;
 	}
 
 	/**

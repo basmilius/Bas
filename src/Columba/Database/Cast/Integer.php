@@ -27,9 +27,9 @@ class Integer implements ICast
 	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
-	public function get(Model $model, string $key, $value, array $data)
+	public function decode(Model $model, string $key, $value, array $data)
 	{
 		return intval($value);
 	}
@@ -37,9 +37,9 @@ class Integer implements ICast
 	/**
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
-	public function set(Model $model, string $key, $value, array $data)
+	public function encode(Model $model, string $key, $value, array $data)
 	{
 		return $value;
 	}

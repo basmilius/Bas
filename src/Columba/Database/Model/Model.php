@@ -21,14 +21,16 @@ use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
 use Columba\Util\ArrayUtil;
 use PDO;
-use function array_key_exists;
 use function array_keys;
+use function array_map;
 use function array_unshift;
+use function class_exists;
 use function Columba\Database\Query\Builder\in;
 use function Columba\Database\Query\Builder\literal;
-use function Columba\Util\dumpDie;
+use function get_class;
 use function in_array;
 use function method_exists;
+use function sprintf;
 
 /**
  * Class Model
@@ -72,11 +74,12 @@ abstract class Model extends Base
 	 * Model constructor.
 	 *
 	 * @param array|null $data
+	 * @param bool $isNew
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(array $data = null)
+	public function __construct(array $data = null, bool $isNew = true)
 	{
 		static::prepareModel();
 
@@ -88,6 +91,7 @@ abstract class Model extends Base
 
 		parent::__construct($data);
 
+		$this->isNew = $isNew;
 		$this->cache();
 	}
 
@@ -102,7 +106,9 @@ abstract class Model extends Base
 		if ($this->isNew)
 			return;
 
-		static::connection()->getCache()->set($this->getValue(static::$primaryKey), $this);
+		static::connection()
+			->getCache()
+			->set($this->getValue(static::$primaryKey), $this);
 	}
 
 	/**
@@ -113,7 +119,9 @@ abstract class Model extends Base
 	 */
 	public function cacheRemove(): void
 	{
-		static::connection()->getCache()->remove($this[static::$primaryKey], static::class);
+		static::connection()
+			->getCache()
+			->remove($this[static::$primaryKey], static::class);
 	}
 
 	/**
@@ -296,13 +304,11 @@ abstract class Model extends Base
 		{
 			$value = $this->getValue($column);
 
-			if (array_key_exists($column, $casters))
+			if (isset($casters[$column]))
 			{
-				/** @var ICast $cast */
 				$castClass = $casters[$column];
-				$cast = self::$castInstances[$castClass] ?? self::$castInstances[$castClass] = new $castClass();
-
-				$value = $cast->set($this, $column, $value, $this->modified);
+				$value = static::caster($castClass)
+					->encode($this, $column, $value, $this->modified);
 			}
 
 			$columnsAndValues[$column] = $value;
@@ -380,7 +386,8 @@ abstract class Model extends Base
 	 */
 	public function hasColumn(string $column): bool
 	{
-		return static::connection()->tableHasColumn(static::table(), $column);
+		return static::connection()
+			->tableHasColumn(static::table(), $column);
 	}
 
 	/**
@@ -392,13 +399,11 @@ abstract class Model extends Base
 	{
 		foreach (static::$casts[static::class] as $key => $caster)
 		{
-			if (!array_key_exists($key, $data))
+			if (!isset($data[$key]))
 				continue;
 
-			/** @var ICast $cast */
-			$cast = self::$castInstances[$caster] ??= new $caster();
-
-			$data[$key] = $cast->get($this, $key, $data[$key], $data);
+			$data[$key] = static::caster($caster)
+				->decode($this, $key, $data[$key], $data);
 		}
 	}
 
@@ -506,12 +511,14 @@ abstract class Model extends Base
 		if ($isMacroMock)
 		{
 			$this->macroCache[$column] = $value;
+
 			return;
 		}
 
 		if ($isRelationMock)
 		{
 			$this->relationCache[$column] = $value;
+
 			return;
 		}
 
@@ -591,6 +598,23 @@ abstract class Model extends Base
 			->orderBy(static::$orderBy . ' ' . static::$order)
 			->limit($limit, $offset)
 			->collection();
+	}
+
+	/**
+	 * Returns the instance of the given caster class.
+	 *
+	 * @param string $castClass
+	 *
+	 * @return ICast
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	private static function caster(string $castClass): ICast
+	{
+		if (!class_exists($castClass))
+			throw new ModelException(sprintf('Caster class %s not found.', $castClass), ModelException::ERR_CASTER_NOT_FOUND);
+
+		return self::$castInstances[$castClass] ??= new $castClass;
 	}
 
 	/**
@@ -833,7 +857,8 @@ abstract class Model extends Base
 	 */
 	public static function transaction(): bool
 	{
-		return static::connection()->transaction();
+		return static::connection()
+			->transaction();
 	}
 
 	/**
@@ -845,7 +870,8 @@ abstract class Model extends Base
 	 */
 	public static function transactionCommit(): bool
 	{
-		return static::connection()->commit();
+		return static::connection()
+			->commit();
 	}
 
 	/**
@@ -857,7 +883,8 @@ abstract class Model extends Base
 	 */
 	public static function transactionRollBack(): bool
 	{
-		return static::connection()->rollBack();
+		return static::connection()
+			->rollBack();
 	}
 
 	/**
@@ -907,14 +934,15 @@ abstract class Model extends Base
 	 */
 	public static function instance(array $data, ?array $arguments = null): self
 	{
-		$cache = static::connection()->getCache();
+		$cache = static::connection()
+			->getCache();
 
 		if ($cache->has($data[static::$primaryKey], static::class))
 			return $cache->get($data[static::$primaryKey], static::class);
 
 		$arguments ??= [];
 
-		array_unshift($arguments, $data);
+		array_unshift($arguments, $data, false);
 
 		return new static(...$arguments);
 	}
@@ -997,16 +1025,16 @@ abstract class Model extends Base
 	 */
 	public static function prepareModel(): void
 	{
-		if (!isset(static::$initialized[static::class]))
-		{
-			static::define();
+		if (isset(static::$initialized[static::class]))
+			return;
 
-			static::$casts[static::class] ??= [];
-			static::$macros[static::class] ??= [];
-			static::$macrosToCache[static::class] ??= [];
-			static::$relationships[static::class] ??= [];
-			static::$initialized[static::class] = true;
-		}
+		static::define();
+
+		static::$casts[static::class] ??= [];
+		static::$macros[static::class] ??= [];
+		static::$macrosToCache[static::class] ??= [];
+		static::$relationships[static::class] ??= [];
+		static::$initialized[static::class] = true;
 	}
 
 	/**
@@ -1062,6 +1090,25 @@ abstract class Model extends Base
 	 */
 	protected static function define(): void
 	{
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function __debugInfo(): array
+	{
+		$data = parent::__debugInfo();
+
+		$data['_meta']['casts'] = static::$casts[static::class];
+		$data['_meta']['connection_id'] = static::$connectionId;
+		$data['_meta']['macros'] = array_map(fn($macro) => get_class($macro), static::$macros[static::class]);
+		$data['_meta']['macros_to_cache'] = static::$macrosToCache[static::class];
+		$data['_meta']['relationships'] = array_map(fn($relation) => get_class($relation), static::$relationships[static::class]);
+		$data['_meta']['relationships_resolved'] = array_keys($this->relationCache);
+
+		return $data;
 	}
 
 }

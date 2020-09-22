@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Color;
 
-use Columba\Facade\IJson;
+use Columba\Facade\Jsonable;
 
 /**
  * Class Color
@@ -21,7 +21,7 @@ use Columba\Facade\IJson;
  * @package Columba\Color
  * @since 1.1.0
  */
-class Color implements IJson
+class Color implements Jsonable
 {
 
 	protected int $r;

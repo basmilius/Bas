@@ -13,15 +13,11 @@ declare(strict_types=1);
 namespace Columba\Database\Model;
 
 use Columba\Database\Error\ModelException;
-use Columba\Database\Model\Mixin\ArrayAccess;
-use Columba\Database\Model\Mixin\ObjectAccess;
+use Columba\Facade\Arrayable;
+use Columba\Facade\ArrayAccessible;
 use Columba\Facade\Debuggable;
-use Columba\Facade\Gettable;
-use Columba\Facade\IArray;
-use Columba\Facade\IJson;
-use Columba\Facade\IsSettable;
-use Columba\Facade\Settable;
-use Columba\Facade\Unsettable;
+use Columba\Facade\Jsonable;
+use Columba\Facade\ObjectAccessible;
 use Serializable;
 use stdClass;
 use function in_array;
@@ -36,11 +32,11 @@ use function unserialize;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-abstract class Base extends stdClass implements IArray, IJson, Debuggable, Gettable, IsSettable, Serializable, Settable, Unsettable
+abstract class Base extends stdClass implements Arrayable, Jsonable, Debuggable, Serializable
 {
 
-	use ArrayAccess;
-	use ObjectAccess;
+	use ArrayAccessible;
+	use ObjectAccessible;
 
 	protected bool $isNew;
 	protected array $modified = [];
@@ -255,7 +251,7 @@ abstract class Base extends stdClass implements IArray, IJson, Debuggable, Getta
 		$this->publish($data);
 
 		foreach ($data as &$field)
-			if ($field instanceof IJson)
+			if ($field instanceof Jsonable)
 				$field = $field->jsonSerialize();
 
 		return $data;
@@ -278,7 +274,18 @@ abstract class Base extends stdClass implements IArray, IJson, Debuggable, Getta
 	 */
 	public function __debugInfo(): array
 	{
-		return $this->toArray();
+		$data = [
+			'_meta' => [
+				'type' => static::class,
+				'immutable' => static::$isImmutable,
+				'immutable_columns' => static::$immutable,
+				'is_new' => $this->isNew
+			]
+		];
+		$data = array_merge($data, $this->data);
+		$this->publish($data);
+
+		return $data;
 	}
 
 }

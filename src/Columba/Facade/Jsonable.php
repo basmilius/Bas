@@ -12,25 +12,25 @@ declare(strict_types=1);
 
 namespace Columba\Facade;
 
-use Countable;
+use JsonSerializable;
 
 /**
- * Interface ICountable
+ * Interface Jsonable
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Facade
- * @since 1.4.0
+ * @since 1.6.0
  */
-interface ICountable extends Countable
+interface Jsonable extends JsonSerializable
 {
 
 	/**
-	 * Returns the amount of elements in an object.
+	 * Returns which data should be available in json.
 	 *
-	 * @return int
+	 * @return array
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
-	public function count(): int;
+	public function jsonSerialize(): array;
 
 }
