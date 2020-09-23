@@ -154,7 +154,7 @@ final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Se
 	 */
 	public function getValue(string $column)
 	{
-		return $this->getValue($column);
+		return $this->model->getValue($column);
 	}
 
 	/**
