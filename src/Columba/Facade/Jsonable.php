@@ -27,10 +27,10 @@ interface Jsonable extends JsonSerializable
 	/**
 	 * Returns which data should be available in json.
 	 *
-	 * @return array
+	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function jsonSerialize(): array;
+	public function jsonSerialize();
 
 }

@@ -17,6 +17,8 @@ use Columba\Database\Cast\ICast;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
 use Columba\Database\Error\ModelException;
+use Columba\Database\Model\Event\AbstractEventListener;
+use Columba\Database\Model\Event\CallablesEventListener;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Query\Builder\Builder;
 use Columba\Util\ArrayUtil;
@@ -50,6 +52,11 @@ abstract class Model extends Base
 	private static array $casts = [];
 	private static array $macros = [];
 	private static array $macrosToCache = [];
+
+	/** @var CallablesEventListener[] */
+	private static array $listener = [];
+	/** @var AbstractEventListener[][] */
+	private static array $listeners = [];
 
 	protected static string $connectionId = 'default';
 
@@ -133,7 +140,8 @@ abstract class Model extends Base
 	 */
 	public function destroy(): void
 	{
-		self::delete($this[static::$primaryKey]);
+		static::delete($this[static::$primaryKey]);
+		static::trigger(fn(AbstractEventListener $listener) => $listener->onDeleted($this));
 	}
 
 	/**
@@ -219,7 +227,7 @@ abstract class Model extends Base
 	 *
 	 * @return static|Mock
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
 	public function makeHidden(array $columns): Mock
 	{
@@ -235,7 +243,7 @@ abstract class Model extends Base
 	 *
 	 * @return static|Mock
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
 	public function makeVisible(array $columns): Mock
 	{
@@ -328,12 +336,15 @@ abstract class Model extends Base
 			$this->initialize();
 			$this->cache();
 
+			static::trigger(fn(AbstractEventListener $listener) => $listener->onInserted($this));
+
 			$this->macroCache = [];
 			$this->relationCache = [];
 		}
 		else
 		{
 			static::update($this->getValue(static::$primaryKey), $columnsAndValues);
+			static::trigger(fn(AbstractEventListener $listener) => $listener->onUpdated($this));
 		}
 
 		$this->modified = [];
@@ -615,7 +626,7 @@ abstract class Model extends Base
 		if (!class_exists($castClass))
 			throw new ModelException(sprintf('Caster class %s not found.', $castClass), ModelException::ERR_CASTER_NOT_FOUND);
 
-		return self::$castInstances[$castClass] ??= new $castClass;
+		return static::$castInstances[$castClass] ??= new $castClass;
 	}
 
 	/**
@@ -638,7 +649,7 @@ abstract class Model extends Base
 	}
 
 	/**
-	 * Gets the {@see Connection} instance based on our {@see self::$connectionId}.
+	 * Gets the {@see Connection} instance based on our {@see static::$connectionId}.
 	 *
 	 * @return Connection
 	 * @author Bas Milius <bas@mili.us>
@@ -659,7 +670,7 @@ abstract class Model extends Base
 	 */
 	public static function delete($primaryKey): void
 	{
-		self::query()
+		static::query()
 			->deleteFrom(static::$table)
 			->where(static::$primaryKey, $primaryKey)
 			->run();
@@ -685,7 +696,7 @@ abstract class Model extends Base
 			$primarykey = literal($primarykey);
 
 		return static::select([1])
-				->where(self::column(static::$primaryKey), $primarykey)
+				->where(static::column(static::$primaryKey), $primarykey)
 				->model(null)
 				->single() !== null;
 	}
@@ -728,7 +739,7 @@ abstract class Model extends Base
 		if (is_int($primaryKey))
 			$primaryKey = literal($primaryKey);
 
-		return static::where(self::column(static::$primaryKey), $primaryKey)
+		return static::where(static::column(static::$primaryKey), $primaryKey)
 			->single();
 	}
 
@@ -1032,6 +1043,8 @@ abstract class Model extends Base
 		static::define();
 
 		static::$casts[static::class] ??= [];
+		static::$listener[static::class] ??= new CallablesEventListener();
+		static::$listeners[static::class] ??= [static::$listener[static::class]];
 		static::$macros[static::class] ??= [];
 		static::$macrosToCache[static::class] ??= [];
 		static::$relationships[static::class] ??= [];
@@ -1065,6 +1078,76 @@ abstract class Model extends Base
 		static::prepareModel();
 
 		return static::$relationships[static::class] ?? [];
+	}
+
+	/**
+	 * Adds the given listener instance to the model.
+	 *
+	 * @param AbstractEventListener $listener
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function on(AbstractEventListener $listener): void
+	{
+		static::prepareModel();
+		static::$listeners[static::class][] = $listener;
+	}
+
+	/**
+	 * Executes the given function when a model instance is deleted.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function onDeleted(callable $fn): void
+	{
+		static::prepareModel();
+		static::$listener[static::class]->addDeletedListener($fn);
+	}
+
+	/**
+	 * Executes the given function when a model instance is inserted.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function onInserted(callable $fn): void
+	{
+		static::prepareModel();
+		static::$listener[static::class]->addInsertedListener($fn);
+	}
+
+	/**
+	 * Executes the given function when a model instance is updated.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public static function onUpdated(callable $fn): void
+	{
+		static::prepareModel();
+		static::$listener[static::class]->addUpdatedListener($fn);
+	}
+
+	/**
+	 * Executes the given function on all listeners.
+	 *
+	 * @param callable $fn
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected static function trigger(callable $fn): void
+	{
+		foreach (static::$listeners[static::class] as $listener)
+			$fn($listener);
 	}
 
 	/**
