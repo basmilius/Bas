@@ -34,7 +34,7 @@ class PlainResponse extends AbstractResponse
 	 */
 	public function respond(Context $context, $value): string
 	{
-		$this->addHeader('Content-Type: text/plain');
+		$this->addHeader('Content-Type', 'text/plain');
 
 		if (!is_scalar($value))
 			throw new RouterException('Response value needs to be scalar.', RouterException::ERR_INVALID_RESPONSE_VALUE);

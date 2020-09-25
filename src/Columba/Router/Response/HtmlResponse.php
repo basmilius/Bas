@@ -34,7 +34,7 @@ class HtmlResponse extends AbstractResponse
 	 */
 	protected function respond(Context $context, $value): string
 	{
-		$this->addHeader('Content-Type: text/html; charset=utf-8');
+		$this->addHeader('Content-Type', 'text/html; charset=utf-8');
 
 		if (!is_scalar($value))
 			throw new RouterException('Response value needs to be scalar.', RouterException::ERR_INVALID_RESPONSE_VALUE);
