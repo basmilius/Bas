@@ -81,7 +81,7 @@ final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Se
 			if (($key = array_search($column, $this->visible)) !== false)
 				unset($this->visible[$key]);
 
-			if ($this->model->hasColumn($column) && !in_array($column, $this->hidden))
+			if (!in_array($column, $this->hidden))
 				$this->hidden[] = $column;
 		}
 
@@ -104,7 +104,7 @@ final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Se
 			if (($key = array_search($column, $this->hidden)) !== false)
 				unset($this->hidden[$key]);
 
-			if (!$this->model->hasColumn($column) && !in_array($column, $this->visible))
+			if (!in_array($column, $this->visible))
 				$this->visible[] = $column;
 		}
 
