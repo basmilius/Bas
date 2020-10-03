@@ -151,4 +151,16 @@ class RedisCache
 		return new RedisTaggedCache($this, $tags);
 	}
 
+    /**
+     * Returns a {@see Redis} instance
+     *
+     * @return Redis
+     * @author Rien Bijl <me@rienbijl.nl>
+     * @since 1.6.0
+     */
+    public function getConnection(): Redis
+    {
+        return $this->connection;
+    }
+
 }
