@@ -378,8 +378,8 @@ class Base implements Debuggable
 	 * @param int $fetchMode
 	 *
 	 * @return array|Model|mixed
-	 * @author Bas Milius <bas@glybe.nl>
-	 * @since 2.0.0
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
 	 */
 	public function singleOrFail(array $options = [], int $fetchMode = PDO::FETCH_ASSOC)
 	{
