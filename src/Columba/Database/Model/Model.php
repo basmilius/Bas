@@ -451,7 +451,7 @@ abstract class Model extends Base
 	 */
 	private function checkImmutable(string $column): void
 	{
-		if (isset(static::$macros[static::class][$column]))
+		if (isset(static::$macros[static::class][$column]) && !$this->hasColumn($column))
 			throw new ModelException(sprintf('%s is a macro and is therefore immutable.', $column), ModelException::ERR_IMMUTABLE);
 
 		if (isset(static::$relationships[static::class][$column]))

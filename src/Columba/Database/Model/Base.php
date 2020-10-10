@@ -99,7 +99,7 @@ abstract class Base extends stdClass implements Arrayable, Jsonable, Debuggable,
 	 */
 	public function getOriginalValue(string $column)
 	{
-		return $this->data[$column];
+		return $this->data[$column] ?? null;
 	}
 
 	/**
