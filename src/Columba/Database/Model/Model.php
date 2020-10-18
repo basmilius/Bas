@@ -573,6 +573,9 @@ abstract class Model extends Base
 			if (in_array($relation, $this->visible))
 				$data[$relation] = $this->getValue($relation);
 
+		foreach ($this->hidden as $column)
+			unset($data[$column]);
+
 		return $data;
 	}
 
