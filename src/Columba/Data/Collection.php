@@ -26,6 +26,7 @@ use function array_chunk;
 use function array_column;
 use function array_diff;
 use function array_filter;
+use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_pop;
@@ -36,6 +37,7 @@ use function array_slice;
 use function array_splice;
 use function array_sum;
 use function array_unshift;
+use function array_values;
 use function count;
 use function in_array;
 use function is_array;
@@ -285,6 +287,18 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	}
 
 	/**
+	 * Returns all the keys of the collection, as a collection.
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function keys(): self
+	{
+		return new self(array_keys($this->items));
+	}
+
+	/**
 	 * Returns the last element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
@@ -503,6 +517,18 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 		$this->items = array_map($fn, $this->items);
 
 		return $this;
+	}
+
+	/**
+	 * Returns all the values of the current collection, as a collection.
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function values(): self
+	{
+		return new self(array_values($this->items));
 	}
 
 	/**
