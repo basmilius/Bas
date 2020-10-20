@@ -429,17 +429,51 @@ abstract class Model extends Base
 		if ($this->isMockCall)
 			return;
 
-		foreach (static::$macros[static::class] as $macro => $fn)
-			if (in_array($macro, $this->visible) || $this->hasColumn($macro))
-				$data[$macro] = $this->resolveMacro($macro);
-
-		foreach (array_keys(static::$relationships[static::class]) as $relation)
-			if (in_array($relation, $this->visible))
-				$data[$relation] = $this->relationCache[$relation] ?? $this->getValue($relation);
+		$this->applyMacrosAndRelations($data);
 
 		foreach ($this->hidden as $column)
 			unset($data[$column]);
 	}
+
+    /**
+     * Applies registered macros and relationships to the given data.
+     *
+     * @param array $data
+     *
+     * @author Bas Milius <bas@mili.us>
+     * @since 1.6.0
+     */
+	private function applyMacrosAndRelations(array &$data): void
+    {
+        $did = [];
+
+        $macros = array_keys(static::$macros[static::class]);
+        $relationships = array_keys(static::$relationships[static::class]);
+
+        foreach ($macros as $macro)
+        {
+            if (in_array($macro, $did))
+                continue;
+
+            if (in_array($macro, $this->visible) || $this->hasColumn($macro))
+            {
+                $data[$macro] = $this->resolveMacro($macro);
+                $did[] = $macro;
+            }
+        }
+
+        foreach ($relationships as $relation)
+        {
+            if (in_array($relation, $did))
+                continue;
+
+            if (in_array($relation, $this->visible))
+            {
+                $data[$relation] = $this->relationCache[$relation] ??= $this->getValue($relation);
+                $did[] = $relation;
+            }
+        }
+    }
 
 	/**
 	 * Throws an exception when the given column name is immutable.
@@ -565,13 +599,7 @@ abstract class Model extends Base
 		if ($this->isMockCall)
 			return $data;
 
-		foreach (array_keys(static::$macros[static::class]) as $macro)
-			if (in_array($macro, $this->visible) || $this->hasColumn($macro))
-				$data[$macro] = $this->resolveMacro($macro);
-
-		foreach (array_keys(static::$relationships[static::class]) as $relation)
-			if (in_array($relation, $this->visible))
-				$data[$relation] = $this->getValue($relation);
+		$this->applyMacrosAndRelations($data);
 
 		foreach ($this->hidden as $column)
 			unset($data[$column]);
