@@ -11,7 +11,6 @@ use Columba\Facade\Jsonable;
 use Columba\Facade\ObjectAccessible;
 use Columba\Util\ArrayUtil;
 use Serializable;
-use stdClass;
 use function array_keys;
 use function array_search;
 use function in_array;
@@ -28,7 +27,7 @@ use function unserialize;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Serializable
+final class Mock implements Arrayable, Jsonable, Debuggable, Serializable
 {
 
 	use ArrayAccessible;
@@ -70,7 +69,7 @@ final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Se
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return $this
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
@@ -93,7 +92,7 @@ final class Mock extends stdClass implements Arrayable, Jsonable, Debuggable, Se
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return $this
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */

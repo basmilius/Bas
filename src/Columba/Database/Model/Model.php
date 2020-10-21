@@ -161,21 +161,35 @@ abstract class Model extends Base
 	 *
 	 * @param string $name
 	 *
-	 * @return Relation|null
+	 * @return Relation
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function getRelation(string $name): ?Relation
+	public function getRelation(string $name): Relation
 	{
 		/** @var Relation $relationship */
 		$relationship = static::$relationships[static::class][$name] ?? null;
 
 		if ($relationship === null)
-			return null;
+			throw new ModelException(sprintf('The relation %s does not exist on %s.', $name, static::class), ModelException::ERR_RELATION_NOT_FOUND);
 
 		$relationship->setModel($this);
 
 		return $relationship;
+	}
+
+	/**
+	 * Returns TRUE if the given relation exists.
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function hasRelation(string $name): bool
+	{
+		return isset(static::$relationships[static::class][$name]);
 	}
 
 	/**
@@ -435,45 +449,45 @@ abstract class Model extends Base
 			unset($data[$column]);
 	}
 
-    /**
-     * Applies registered macros and relationships to the given data.
-     *
-     * @param array $data
-     *
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.6.0
-     */
+	/**
+	 * Applies registered macros and relationships to the given data.
+	 *
+	 * @param array $data
+	 *
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
 	private function applyMacrosAndRelations(array &$data): void
-    {
-        $did = [];
+	{
+		$did = [];
 
-        $macros = array_keys(static::$macros[static::class]);
-        $relationships = array_keys(static::$relationships[static::class]);
+		$macros = array_keys(static::$macros[static::class]);
+		$relationships = array_keys(static::$relationships[static::class]);
 
-        foreach ($macros as $macro)
-        {
-            if (in_array($macro, $did))
-                continue;
+		foreach ($macros as $macro)
+		{
+			if (in_array($macro, $did))
+				continue;
 
-            if (in_array($macro, $this->visible) || $this->hasColumn($macro))
-            {
-                $data[$macro] = $this->resolveMacro($macro);
-                $did[] = $macro;
-            }
-        }
+			if (in_array($macro, $this->visible) || $this->hasColumn($macro))
+			{
+				$data[$macro] = $this->resolveMacro($macro);
+				$did[] = $macro;
+			}
+		}
 
-        foreach ($relationships as $relation)
-        {
-            if (in_array($relation, $did))
-                continue;
+		foreach ($relationships as $relation)
+		{
+			if (in_array($relation, $did))
+				continue;
 
-            if (in_array($relation, $this->visible))
-            {
-                $data[$relation] = $this->relationCache[$relation] ??= $this->getValue($relation);
-                $did[] = $relation;
-            }
-        }
-    }
+			if (in_array($relation, $this->visible))
+			{
+				$data[$relation] = $this->relationCache[$relation] ??= $this->getValue($relation);
+				$did[] = $relation;
+			}
+		}
+	}
 
 	/**
 	 * Throws an exception when the given column name is immutable.
@@ -517,13 +531,8 @@ abstract class Model extends Base
 		if (isset(static::$macros[static::class][$column]))
 			return $this->resolveMacro($column);
 
-		if (isset($this->relationCache[$column]))
-			return $this->relationCache[$column];
-
-		$relation = $this->getRelation($column);
-
-		if ($relation !== null)
-			return $this->relationCache[$column] = $relation->get();
+		if ($this->hasRelation($column))
+			return $this->relationCache[$column] ??= $this->getRelation($column)->get();
 
 		return parent::getValue($column);
 	}

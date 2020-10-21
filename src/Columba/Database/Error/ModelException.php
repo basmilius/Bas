@@ -26,5 +26,6 @@ class ModelException extends DatabaseException
 	public const ERR_NOT_FOUND = 2;
 	public const ERR_BAD_METHOD_CALL = 4;
 	public const ERR_CASTER_NOT_FOUND = 8;
+	public const ERR_RELATION_NOT_FOUND = 16;
 
 }

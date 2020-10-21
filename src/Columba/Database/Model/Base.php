@@ -19,7 +19,6 @@ use Columba\Facade\Debuggable;
 use Columba\Facade\Jsonable;
 use Columba\Facade\ObjectAccessible;
 use Serializable;
-use stdClass;
 use function in_array;
 use function serialize;
 use function sprintf;
@@ -32,7 +31,7 @@ use function unserialize;
  * @package Columba\Database\Model
  * @since 1.6.0
  */
-abstract class Base extends stdClass implements Arrayable, Jsonable, Debuggable, Serializable
+abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 {
 
 	use ArrayAccessible;

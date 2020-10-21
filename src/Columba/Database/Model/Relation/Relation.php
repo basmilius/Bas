@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database\Model\Relation;
 
 use Columba\Data\Collection;
+use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Builder\Builder;
 
@@ -81,18 +82,35 @@ abstract class Relation extends Builder
 	/**
 	 * Returns the referenced object(s).
 	 *
-	 * @return Collection<Model>|Model|Model[]|null
+	 * @return Collection|Model|Model[]|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
 	public abstract function get();
 
 	/**
+	 * Returns the referenced object(s) or throws an exception when the result was null.
+	 *
+	 * @return Collection|Model|Model[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function getOrFail()
+	{
+		$result = $this->get();
+
+		if ($result === null)
+			throw new QueryException('No row was found.', QueryException::ERR_NO_RESULT);
+
+		return $result;
+	}
+
+	/**
 	 * Returns relations that should be eager loaded.
 	 *
-	 * @return array|null
+	 * @return string[]|null
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
 	public function getEagerLoad(): ?array
 	{
