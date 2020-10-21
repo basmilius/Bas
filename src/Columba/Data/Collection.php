@@ -51,6 +51,8 @@ use function usort;
 /**
  * Class Collection
  *
+ * @template T
+ *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Data
  * @since 1.4.0
@@ -64,7 +66,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Collection constructor.
 	 *
-	 * @param array $items
+	 * @param array<T> $items
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -77,7 +79,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Returns all items.
 	 *
-	 * @return array
+	 * @return array<T>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -103,7 +105,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Appends an item to the collection.
 	 *
-	 * @param $item
+	 * @param T $item
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -118,7 +120,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 *
 	 * @param int $size
 	 *
-	 * @return $this
+	 * @return static<$this>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -179,7 +181,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Returns TRUE if an item exists in the collection.
 	 *
-	 * @param $value
+	 * @param T $value
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
@@ -210,7 +212,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Executes a callable over each item.
 	 *
-	 * @param callable $fn
+	 * @param callable(T):void $fn
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -226,7 +228,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Filters the collection.
 	 *
-	 * @param callable $fn
+	 * @param callable(T):bool $fn
 	 *
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
@@ -241,9 +243,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * Returns the first element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
-	 * @param mixed $default
+	 * @param T|null $default
 	 *
-	 * @return mixed|null
+	 * @return T|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -258,9 +260,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Groups the data with the given predicate.
 	 *
-	 * @param callable $fn
+	 * @param callable(T):string|int|bool $fn
 	 *
-	 * @return $this
+	 * @return static<$this>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -302,9 +304,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * Returns the last element of the {@see Collection}. When {@see $fn} is given, it's used as a truth check.
 	 *
 	 * @param callable|null $fn
-	 * @param mixed $default
+	 * @param T|null $default
 	 *
-	 * @return mixed|null
+	 * @return T|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -319,9 +321,11 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Maps a callable over each item in the collection.
 	 *
-	 * @param callable $fn
+	 * @template Y
 	 *
-	 * @return $this
+	 * @param callable(T):Y $fn
+	 *
+	 * @return static<Y>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
@@ -382,7 +386,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Prepends an item to the collection.
 	 *
-	 * @param $item
+	 * @param T $item
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
@@ -421,7 +425,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	/**
 	 * Returns and removes the first element in the collection.
 	 *
-	 * @return mixed
+	 * @return T
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
