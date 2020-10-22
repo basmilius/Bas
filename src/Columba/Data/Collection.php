@@ -36,6 +36,7 @@ use function array_shift;
 use function array_slice;
 use function array_splice;
 use function array_sum;
+use function array_unique;
 use function array_unshift;
 use function array_values;
 use function count;
@@ -521,6 +522,18 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 		$this->items = array_map($fn, $this->items);
 
 		return $this;
+	}
+
+	/**
+	 * Returns all unique values in the collection.
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function unique(): self
+	{
+		return new self(array_values(array_unique($this->items)));
 	}
 
 	/**

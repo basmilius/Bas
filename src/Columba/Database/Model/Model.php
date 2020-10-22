@@ -32,7 +32,6 @@ use function Columba\Database\Query\Builder\literal;
 use function get_class;
 use function in_array;
 use function is_array;
-use function method_exists;
 use function sprintf;
 
 /**
@@ -76,18 +75,17 @@ abstract class Model extends Base
 	private array $macroCache = [];
 	private array $relationCache = [];
 
-	private bool $isMockCall = false;
-
 	/**
 	 * Model constructor.
 	 *
 	 * @param array|null $data
 	 * @param bool $isNew
+	 * @param static|null $copyOf
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function __construct(array $data = null, bool $isNew = true)
+	public function __construct(array $data = null, bool $isNew = true, ?self $copyOf = null)
 	{
 		static::prepareModel();
 
@@ -97,9 +95,8 @@ abstract class Model extends Base
 			unset($data['_relations']);
 		}
 
-		parent::__construct($data);
+		parent::__construct($data, $isNew, $copyOf);
 
-		$this->isNew = $isNew;
 		$this->cache();
 	}
 
@@ -111,7 +108,7 @@ abstract class Model extends Base
 	 */
 	public function cache(): void
 	{
-		if ($this->isNew)
+		if ($this->isNew || !$this->hasValue(static::$primaryKey))
 			return;
 
 		static::connection()
@@ -193,61 +190,30 @@ abstract class Model extends Base
 	}
 
 	/**
-	 * Returns a new {@see Mock} object.
-	 *
-	 * @return static|Mock
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 */
-	public final function mock(): Mock
-	{
-		return new Mock(
-			$this,
-			$this->hidden,
-			$this->visible,
-			static::$macros[static::class],
-			static::$relationships[static::class]
-		);
-	}
-
-	/**
-	 * Calls a protected or private function on the model from a {@see Mock}.
-	 *
-	 * @param string $method
-	 * @param $data
-	 * @param mixed ...$remaining
-	 *
-	 * @return mixed
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
-	 * @internal
-	 */
-	public final function mockCall(string $method, &$data = null, ...$remaining)
-	{
-		if (!method_exists($this, $method))
-			throw new ModelException(sprintf('Method "%s" does not exist on this model.', $method), ModelException::ERR_BAD_METHOD_CALL);
-
-		$this->isMockCall = true;
-		$result = $this->{$method}($data, ...$remaining);
-		$this->isMockCall = false;
-
-		return $result;
-	}
-
-	/**
 	 * Marks the given columns as hidden.
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return static|Mock
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function makeHidden(array $columns): Mock
+	public function makeHidden(array $columns): self
 	{
-		return $this
-			->mock()
-			->makeHidden($columns);
+		return $this->copyWith(function (self $model) use ($columns): void
+		{
+			$model->hidden = $this->hidden;
+			$model->visible = $this->visible;
+
+			foreach ($columns as $column)
+			{
+				if (($key = array_search($column, $model->visible)) !== false)
+					unset($model->visible[$key]);
+
+				if (!in_array($column, $model->hidden))
+					$model->hidden[] = $column;
+			}
+		});
 	}
 
 	/**
@@ -255,15 +221,26 @@ abstract class Model extends Base
 	 *
 	 * @param string[] $columns
 	 *
-	 * @return static|Mock
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function makeVisible(array $columns): Mock
+	public function makeVisible(array $columns): self
 	{
-		return $this
-			->mock()
-			->makeVisible($columns);
+		return $this->copyWith(function (self $model) use ($columns): void
+		{
+			$model->hidden = $this->hidden;
+			$model->visible = $this->visible;
+
+			foreach ($columns as $column)
+			{
+				if (($key = array_search($column, $model->hidden)) !== false)
+					unset($model->hidden[$key]);
+
+				if (!in_array($column, $model->visible))
+					$model->visible[] = $column;
+			}
+		});
 	}
 
 	/**
@@ -423,6 +400,9 @@ abstract class Model extends Base
 	 */
 	protected function prepare(array &$data): void
 	{
+		if ($this->copyOf !== null)
+			return;
+
 		foreach (static::$casts[static::class] as $key => $caster)
 		{
 			if (!isset($data[$key]))
@@ -440,13 +420,6 @@ abstract class Model extends Base
 	 */
 	protected function publish(array &$data): void
 	{
-		if ($this->isMockCall)
-			return;
-
-		$this->applyMacrosAndRelations($data);
-
-		foreach ($this->hidden as $column)
-			unset($data[$column]);
 	}
 
 	/**
@@ -560,23 +533,6 @@ abstract class Model extends Base
 	 */
 	public function setValue(string $column, $value): void
 	{
-		$isMacroMock = isset(static::$macros[static::class][$column]) && $value instanceof Mock;
-		$isRelationMock = isset(static::$relationships[static::class][$column]) && $value instanceof Mock;
-
-		if ($isMacroMock)
-		{
-			$this->macroCache[$column] = $value;
-
-			return;
-		}
-
-		if ($isRelationMock)
-		{
-			$this->relationCache[$column] = $value;
-
-			return;
-		}
-
 		$this->checkImmutable($column);
 		$this->checkRelations($column);
 
@@ -605,9 +561,6 @@ abstract class Model extends Base
 	{
 		$data = parent::toArray();
 
-		if ($this->isMockCall)
-			return $data;
-
 		$this->applyMacrosAndRelations($data);
 
 		foreach ($this->hidden as $column)
@@ -617,12 +570,42 @@ abstract class Model extends Base
 	}
 
 	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function serialize(): string
+	{
+		return serialize([
+			$this->data,
+			$this->hidden,
+			$this->visible,
+			$this->macroCache
+		]);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function unserialize($serialized): void
+	{
+		[
+			$this->data,
+			$this->hidden,
+			$this->visible,
+			$this->macroCache
+		] = unserialize($serialized);
+	}
+
+	/**
 	 * Returns all rows.
 	 *
 	 * @param int $offset
 	 * @param int $limit
 	 *
-	 * @return $this[]
+	 * @return static[]
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -746,7 +729,7 @@ abstract class Model extends Base
 	 *
 	 * @param array $primaryKeys
 	 *
-	 * @return $this[]
+	 * @return static[]
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -765,7 +748,7 @@ abstract class Model extends Base
 	 *
 	 * @param string|int $primaryKey
 	 *
-	 * @return $this|null
+	 * @return static|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -788,7 +771,7 @@ abstract class Model extends Base
 	 *
 	 * @param string|int $primaryKey
 	 *
-	 * @return $this
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -1231,6 +1214,10 @@ abstract class Model extends Base
 		$data['_meta']['macros_to_cache'] = static::$macrosToCache[static::class];
 		$data['_meta']['relationships'] = array_map(fn($relation) => get_class($relation), static::$relationships[static::class]);
 		$data['_meta']['relationships_resolved'] = array_keys($this->relationCache);
+		$data['_meta']['visibility'] = [
+			'hidden' => $this->hidden,
+			'visible' => $this->visible
+		];
 
 		return $data;
 	}

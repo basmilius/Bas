@@ -37,25 +37,33 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	use ArrayAccessible;
 	use ObjectAccessible;
 
-	protected bool $isNew;
-	protected array $modified = [];
-	private array $data;
-
 	protected static array $immutable = [];
 	protected static bool $isImmutable = false;
+
+	protected ?self $copyOf = null;
+	protected array $data;
+	protected bool $isNew;
+	protected array $modified = [];
 
 	/**
 	 * Base constructor.
 	 *
 	 * @param array|null $data
+	 * @param bool $isNew
+	 * @param static|null $copyOf
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function __construct(?array $data = null)
+	protected function __construct(?array $data = null, bool $isNew = true, ?self $copyOf = null)
 	{
-		$this->data = $data ?? [];
-		$this->isNew = $data === null;
+		$this->copyOf = $copyOf;
+		$this->isNew = $isNew;
+
+		if ($copyOf !== null)
+			$this->data = &$copyOf->data;
+		else
+			$this->data = $data ?? [];
 
 		$this->initialize();
 	}
@@ -88,6 +96,24 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	}
 
 	/**
+	 * Copies our model and binds it to this instance.
+	 *
+	 * @param callable $fn
+	 *
+	 * @return static
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	protected function copyWith(callable $fn): self
+	{
+		$copy = new static(null, $this->isNew, $this);
+
+		$fn($copy);
+
+		return $copy;
+	}
+
+	/**
 	 * Gets a value.
 	 *
 	 * @param string $column
@@ -112,7 +138,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function getValue(string $column)
 	{
-		return $this->data[$column];
+		return $this->data[$column] ?? null;
 	}
 
 	/**
@@ -246,7 +272,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function jsonSerialize(): array
 	{
-		$data = $this->data;
+		$data = $this->toArray();
 		$this->publish($data);
 
 		foreach ($data as &$field)
@@ -281,7 +307,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 				'is_new' => $this->isNew
 			]
 		];
-		$data = array_merge($data, $this->data);
+		$data = array_merge($data, $this->toArray());
 		$this->publish($data);
 
 		return $data;
