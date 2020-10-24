@@ -239,7 +239,7 @@ class Db
 	}
 
 	/**
-	 * @param string $query
+	 * @param Builder|string $query
 	 * @param string|null $id
 	 *
 	 * @return mixed
@@ -247,7 +247,7 @@ class Db
 	 * @since 1.6.0
 	 * @see Connection::queryColumn()
 	 */
-	public static function queryColumn(string $query, ?string $id = null)
+	public static function queryColumn($query, ?string $id = null)
 	{
 		return self::getOrFail($id)->queryColumn($query);
 	}

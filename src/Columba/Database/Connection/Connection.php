@@ -196,14 +196,17 @@ abstract class Connection
 	/**
 	 * Executes the given query and returns the first column.
 	 *
-	 * @param string $query
+	 * @param Builder|string $query
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function queryColumn(string $query)
+	public function queryColumn($query)
 	{
+		if ($query instanceof Builder)
+			$query = $query->toSql();
+
 		return $this->pdo->query($query)->fetchColumn();
 	}
 
