@@ -623,7 +623,7 @@ abstract class Model extends Base
 	 * @param int $offset
 	 * @param int $limit
 	 *
-	 * @return Collection|$this[]
+	 * @return Collection<static>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
