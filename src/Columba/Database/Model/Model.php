@@ -89,13 +89,13 @@ abstract class Model extends Base
 	{
 		static::prepareModel();
 
-		if (isset($data['_relations']))
-		{
-			$this->relationCache = $data['_relations'];
-			unset($data['_relations']);
-		}
+        parent::__construct($data, $isNew, $copyOf);
 
-		parent::__construct($data, $isNew, $copyOf);
+		if (isset($this->data['_relations']))
+		{
+			$this->relationCache = $this->data['_relations'];
+			unset($this->data['_relations']);
+		}
 
 		$this->cache();
 	}
