@@ -41,7 +41,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	protected static bool $isImmutable = false;
 
 	protected ?self $copyOf = null;
-	protected array $data;
+	protected array $modelData;
 	protected bool $isNew;
 	protected array $modified = [];
 
@@ -61,9 +61,9 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 		$this->isNew = $isNew;
 
 		if ($copyOf !== null)
-			$this->data = &$copyOf->data;
+			$this->modelData = &$copyOf->modelData;
 		else
-			$this->data = $data ?? [];
+			$this->modelData = $data ?? [];
 
 		$this->initialize();
 	}
@@ -79,7 +79,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 		if ($this->isNew)
 			return;
 
-		$this->prepare($this->data);
+		$this->prepare($this->modelData);
 	}
 
 	/**
@@ -90,9 +90,9 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function setData(array $data): void
+	protected function setModelData(array $data): void
 	{
-		$this->data = $data;
+		$this->modelData = $data;
 	}
 
 	/**
@@ -124,7 +124,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function getOriginalValue(string $column)
 	{
-		return $this->data[$column] ?? null;
+		return $this->modelData[$column] ?? null;
 	}
 
 	/**
@@ -138,7 +138,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function getValue(string $column)
 	{
-		return $this->data[$column] ?? null;
+		return $this->modelData[$column] ?? null;
 	}
 
 	/**
@@ -152,7 +152,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function hasValue(string $column): bool
 	{
-		return isset($this->data[$column]);
+		return isset($this->modelData[$column]);
 	}
 
 	/**
@@ -172,7 +172,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 		if ($this->isImmutable($column))
 			throw new ModelException(sprintf('The column %s on model %s is immutable.', $column, static::class), ModelException::ERR_IMMUTABLE);
 
-		$this->data[$column] = $value;
+		$this->modelData[$column] = $value;
 
 		if ($this->hasColumn($column))
 			$this->modified[] = $column;
@@ -194,7 +194,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 		if ($this->isImmutable($column))
 			throw new ModelException(sprintf('The column %s on model %s is immutable.', $column, static::class), ModelException::ERR_IMMUTABLE);
 
-		$this->data[$column] = null;
+		$this->modelData[$column] = null;
 
 		if ($this->hasColumn($column))
 			$this->modified[] = $column;
@@ -252,7 +252,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function serialize(): string
 	{
-		return serialize($this->data);
+		return serialize($this->modelData);
 	}
 
 	/**
@@ -262,7 +262,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function unserialize($serialized): void
 	{
-		$this->data = unserialize($serialized);
+		$this->modelData = unserialize($serialized);
 	}
 
 	/**
@@ -289,7 +289,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function toArray(): array
 	{
-		return $this->data;
+		return $this->modelData;
 	}
 
 	/**

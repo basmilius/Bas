@@ -89,12 +89,12 @@ abstract class Model extends Base
 	{
 		static::prepareModel();
 
-        parent::__construct($data, $isNew, $copyOf);
+		parent::__construct($data, $isNew, $copyOf);
 
-		if (isset($this->data['_relations']))
+		if (isset($this->modelData['_relations']))
 		{
-			$this->relationCache = $this->data['_relations'];
-			unset($this->data['_relations']);
+			$this->relationCache = $this->modelData['_relations'];
+			unset($this->modelData['_relations']);
 		}
 
 		$this->cache();
@@ -375,7 +375,7 @@ abstract class Model extends Base
 	 */
 	protected function afterInsert(int $newPrimaryKey): void
 	{
-		$this->setData(
+		$this->setModelData(
 			static::where(static::column(static::$primaryKey), $newPrimaryKey)
 				->model(null)
 				->single()
@@ -577,7 +577,7 @@ abstract class Model extends Base
 	public function serialize(): string
 	{
 		return serialize([
-			$this->data,
+			$this->modelData,
 			$this->hidden,
 			$this->visible,
 			$this->macroCache
@@ -592,7 +592,7 @@ abstract class Model extends Base
 	public function unserialize($serialized): void
 	{
 		[
-			$this->data,
+			$this->modelData,
 			$this->hidden,
 			$this->visible,
 			$this->macroCache
