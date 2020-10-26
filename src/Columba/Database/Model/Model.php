@@ -302,7 +302,7 @@ abstract class Model extends Base
 
 		foreach ($this->modified as $column)
 		{
-			$value = $this->getValue($column);
+			$value = $this->modelData[$column] ?? $this->getValue($column);
 
 			if (isset($casters[$column]))
 			{
@@ -347,7 +347,7 @@ abstract class Model extends Base
 	 * @param string $column
 	 * @param callable $fn
 	 *
-	 * @return Model
+	 * @return static
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
