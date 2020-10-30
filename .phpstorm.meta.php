@@ -115,3 +115,7 @@ expectedReturnValues(\Columba\Router\Context::getResponseCode(), argumentsSet('c
 override(\Columba\Database\Db::create(), type(0));
 override(\Columba\Util\ArrayUtil::first(), elementType(0));
 override(\Columba\Util\ArrayUtil::last(), elementType(0));
+
+override(\Columba\Collection\ArrayList::as(), map([
+	'' => '@'
+]));
