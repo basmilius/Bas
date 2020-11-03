@@ -59,11 +59,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	{
 		$this->copyOf = $copyOf;
 		$this->isNew = $isNew;
-
-		if ($copyOf !== null)
-			$this->modelData = &$copyOf->modelData;
-		else
-			$this->modelData = $data ?? [];
+		$this->modelData = $data ?? [];
 
 		$this->initialize();
 	}
@@ -107,6 +103,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	protected function copyWith(callable $fn): self
 	{
 		$copy = new static(null, $this->isNew, $this);
+		$copy->modelData = &$this->modelData;
 
 		$fn($copy);
 
