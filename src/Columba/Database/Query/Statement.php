@@ -300,7 +300,9 @@ class Statement
 
 		foreach ($keys as $index => $key)
 		{
-			$instance = $model::connection()->getCache()->get($key, $model);
+			$instance = $model::connection()
+				->getCache()
+				->get($key, $model);
 
 			if ($instance === null)
 				continue;

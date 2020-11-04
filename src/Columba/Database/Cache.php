@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Columba\Database;
 
 use Columba\Database\Model\Model;
+use function array_filter;
 use function get_class;
 
 /**
@@ -59,7 +60,7 @@ class Cache
 		foreach ($primaryKeys as $primaryKey)
 			$results[] = self::get($primaryKey, $modelClass);
 
-		return $results;
+		return array_filter($results, fn($value) => $value !== null);
 	}
 
 	/**
@@ -75,6 +76,20 @@ class Cache
 	public function has($primaryKey, string $modelClass): bool
 	{
 		return isset($this->cache[$modelClass][$primaryKey]);
+	}
+
+	/**
+	 * Returns all the keys for the given model.
+	 *
+	 * @param string $modelClass
+	 *
+	 * @return string[]
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function keys(string $modelClass): array
+	{
+		return \array_keys($this->cache[$modelClass] ?? []);
 	}
 
 	/**
