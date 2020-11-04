@@ -101,7 +101,7 @@ class Request implements Jsonable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function bodyMultiPart()
+	public final function bodyMultiPart(): ?array
 	{
 		return $this->localStorage->getOrCreate(__METHOD__, function (): ?array
 		{

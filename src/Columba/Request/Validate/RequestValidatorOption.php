@@ -224,10 +224,10 @@ final class RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
-			if ($value || $value === '1' || $value === 1 || $value === 'true')
+			if ($value === true || $value === '1' || $value === 1 || $value === 'true')
 				return [true, null];
 
-			if (!$value || $value === '0' || $value === 0 || $value === 'false')
+			if ($value === false || $value === '0' || $value === 0 || $value === 'false')
 				return [false, null];
 
 			return [null, RequestValidatorException::ERR_NEEDS_TO_BE_BOOLEAN];

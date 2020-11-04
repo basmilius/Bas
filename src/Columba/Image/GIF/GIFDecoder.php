@@ -361,6 +361,8 @@ class GIFDecoder
 	 * @return int
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 *
+	 * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
 	 */
 	protected function toUnsignedShort(array &$buffer, int $offset): int
 	{

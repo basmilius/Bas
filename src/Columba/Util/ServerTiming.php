@@ -83,7 +83,7 @@ class ServerTiming
 		if (!isset(static::$timings[$id]))
 			return;
 
-		Stopwatch::stop($id, $time, Stopwatch::UNIT_NANOSECONDS);
+		Stopwatch::stop($id, $time);
 
 		static::$timings[$id][2] = $time * 1e-6;
 

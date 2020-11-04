@@ -74,10 +74,29 @@ class CallbackRoute extends AbstractRoute
 				$arguments[] = null;
 		}
 
-		if (!$reflection->hasReturnType() || $reflection->getReturnType()->getName() !== 'void')
+		if ($reflection->hasReturnType())
+		{
+			$returnType = $reflection->getReturnType();
+
+			if ($returnType instanceof ReflectionNamedType && $returnType->getName() !== 'void')
+			{
+				$this->respond($reflection->invoke(...$arguments));
+
+				return;
+			}
+			else
+			{
+				$reflection->invoke(...$arguments);
+			}
+		}
+		else if (!$reflection->hasReturnType())
+		{
 			$this->respond($reflection->invoke(...$arguments));
+		}
 		else
+		{
 			$reflection->invoke(...$arguments);
+		}
 	}
 
 	/**

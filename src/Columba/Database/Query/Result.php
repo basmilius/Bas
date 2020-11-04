@@ -85,7 +85,7 @@ class Result implements IsCountable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	protected function fetchAll(int $fetchMode = PDO::FETCH_ASSOC)
+	protected function fetchAll(int $fetchMode = PDO::FETCH_ASSOC): array
 	{
 		return $this->statement->fetchAll($this->allowModel, $fetchMode);
 	}

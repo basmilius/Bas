@@ -29,7 +29,7 @@ class Boolean implements ICast
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function decode(Model $model, string $key, $value, array $data)
+	public function decode(Model $model, string $key, $value, array $data): bool
 	{
 		return $value === 1;
 	}
@@ -39,7 +39,7 @@ class Boolean implements ICast
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function encode(Model $model, string $key, $value, array $data)
+	public function encode(Model $model, string $key, $value, array $data): int
 	{
 		return $value ? 1 : 0;
 	}

@@ -79,7 +79,7 @@ final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable,
 			if (!is_array($this->values[$index]) || ArrayUtil::isSequentialArray($this->values[$index]))
 				continue;
 
-			$this->values[$index] = new static($this->values[$index], $this);
+			$this->values[$index] = new self($this->values[$index], $this);
 		}
 	}
 
@@ -148,7 +148,7 @@ final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable,
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetGet($offset)
+	public final function offsetGet($offset): ?Preferences
 	{
 		if ($offset === -1)
 			return $this->parent;
@@ -254,7 +254,7 @@ final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable,
 		if ($data === null && json_last_error() !== JSON_ERROR_NONE)
 			throw new PreferencesException(sprintf('"%s" must be a valid JSON file!', $fileName), PreferencesException::ERR_INVALID_ARGUMENT);
 
-		return new static($data);
+		return new self($data);
 	}
 
 	/**

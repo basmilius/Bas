@@ -518,7 +518,6 @@ class Base implements Debuggable
 	 * @return $this
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
-	 * @internal
 	 * @codeCoverageIgnore
 	 */
 	public function merge(self $other, int $extraIndent = 0): self
@@ -571,7 +570,7 @@ class Base implements Debuggable
 	{
 		$this->outdent();
 
-		return $this->addPiece(')', '', 0);
+		return $this->addPiece(')', '');
 	}
 
 	/**
@@ -586,7 +585,7 @@ class Base implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function parenthesisOpen(?string $column = null, ?string $comparator = null, $value = null, bool $addParam = true)
+	public function parenthesisOpen(?string $column = null, ?string $comparator = null, $value = null, bool $addParam = true): self
 	{
 		$this->addExpression('(', $column, $comparator, $value, $addParam);
 		$this->indent();

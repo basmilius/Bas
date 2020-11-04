@@ -27,45 +27,45 @@ interface Arrayable extends ArrayAccess
 	/**
 	 * Returns TRUE if an field exists.
 	 *
-	 * @param mixed $field
+	 * @param mixed $offset
 	 *
 	 * @return bool
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetExists($field): bool;
+	public function offsetExists($offset): bool;
 
 	/**
 	 * Returns a field.
 	 *
-	 * @param mixed $field
+	 * @param mixed $offset
 	 *
 	 * @return mixed
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetGet($field);
+	public function offsetGet($offset);
 
 	/**
 	 * Sets a field.
 	 *
-	 * @param mixed $field
+	 * @param mixed $offset
 	 * @param mixed $value
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetSet($field, $value): void;
+	public function offsetSet($offset, $value): void;
 
 	/**
 	 * Unsets a field.
 	 *
-	 * @param mixed $field
+	 * @param mixed $offset
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetUnset($field): void;
+	public function offsetUnset($offset): void;
 
 	/**
 	 * Returns an array representation of the object.

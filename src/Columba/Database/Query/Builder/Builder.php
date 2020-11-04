@@ -932,7 +932,7 @@ class Builder extends Base
 	 */
 	private function baseJoin(string $clause, string $table, ?callable $fn = null): self
 	{
-		$this->addPiece($clause, $this->dialect->escapeTable($table), 1, 0, 0, null);
+		$this->addPiece($clause, $this->dialect->escapeTable($table), 1);
 
 		$this->indent();
 

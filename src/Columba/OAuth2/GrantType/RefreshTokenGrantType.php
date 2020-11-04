@@ -67,7 +67,7 @@ final class RefreshTokenGrantType implements IGrantType
 		$accessToken = TokenGenerator::generateSimpleToken();
 		$oldAccessToken = $this->oAuth2->getTokenFactory()->getAccessTokenByRefreshToken($client['client_id'], $refreshToken['token']);
 
-		$this->oAuth2->getTokenFactory()->saveAccessToken($client['client_id'], $oldAccessToken['owner_id'], $oldAccessToken['scope'], $accessToken, $refreshToken['token'], 3600);
+		$this->oAuth2->getTokenFactory()->saveAccessToken($client['client_id'], $oldAccessToken['owner_id'], $oldAccessToken['scope'], $accessToken, $refreshToken['token']);
 		$this->oAuth2->getTokenFactory()->expireToken($client['client_id'], 'access_token', $oldAccessToken['token']);
 
 		return [

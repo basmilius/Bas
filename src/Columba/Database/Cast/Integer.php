@@ -29,7 +29,7 @@ class Integer implements ICast
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function decode(Model $model, string $key, $value, array $data)
+	public function decode(Model $model, string $key, $value, array $data): int
 	{
 		return intval($value);
 	}

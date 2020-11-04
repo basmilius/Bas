@@ -65,6 +65,8 @@ abstract class OAuth2Middleware extends AbstractMiddleware
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
+	 *
+	 * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
 	 */
 	public function forContext(AbstractRoute $route, Context $context, bool &$isValid): void
 	{

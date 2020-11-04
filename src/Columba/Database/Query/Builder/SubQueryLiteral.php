@@ -50,7 +50,7 @@ class SubQueryLiteral extends ComparatorAwareLiteral implements IAfterPiece
 	public function after(Base $query): void
 	{
 		if ($this->clause !== '')
-			$query->addPiece($this->clause, '', 0, 0, 0);
+			$query->addPiece($this->clause, '');
 
 		$query->parenthesis(fn(Base $query) => $query->merge($this->query, 1), false);
 	}

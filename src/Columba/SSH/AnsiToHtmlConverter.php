@@ -74,7 +74,7 @@ final class AnsiToHtmlConverter
 	{
 		$str = preg_replace('#\e\[(K|s|u|2J|2K|\d+([ABCDEFGJKST])|\d+;\d+([Hf]))#', '', $str);
 		$str = preg_replace('#\e([()])(A|B|[0-2])#', '', $str);
-		$str = htmlspecialchars($str, PHP_VERSION_ID >= 50400 ? ENT_QUOTES | ENT_SUBSTITUTE : ENT_QUOTES, 'UTF-8');
+		$str = htmlspecialchars($str, PHP_VERSION_ID >= 50400 ? ENT_QUOTES | ENT_SUBSTITUTE : ENT_QUOTES);
 		$str = preg_replace('#^.*\r(?!\n)#m', '', $str);
 
 		$tokens = $this->tokenize($str);

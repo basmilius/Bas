@@ -49,7 +49,7 @@ use const JSON_ERROR_UTF8;
  * @package Columba\Security\JWT
  * @since 1.5.0
  */
-final class JWT
+class JWT
 {
 
 	public static ?int $currentTime = null;

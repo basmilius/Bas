@@ -271,7 +271,7 @@ class Router implements Debuggable
 	 */
 	public function execute(string $path, string $requestMethod): void
 	{
-		ServerTiming::start(Router::class, 'Router: Resolve Time', 'cpu');
+		ServerTiming::start(Router::class, 'Router: Resolve Time');
 
 		if (($route = $this->find($path, $requestMethod)) !== null)
 			$route->execute();

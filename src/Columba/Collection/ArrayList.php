@@ -617,9 +617,9 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetExists($field): bool
+	public function offsetExists($offset): bool
 	{
-		return isset($this->items[$field]);
+		return isset($this->items[$offset]);
 	}
 
 	/**
@@ -627,9 +627,9 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetGet($field)
+	public function offsetGet($offset)
 	{
-		return $this->items[$field];
+		return $this->items[$offset];
 	}
 
 	/**
@@ -637,9 +637,9 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetSet($field, $value): void
+	public function offsetSet($offset, $value): void
 	{
-		$this->items[$field] = $value;
+		$this->items[$offset] = $value;
 	}
 
 	/**
@@ -647,9 +647,9 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function offsetUnset($field): void
+	public function offsetUnset($offset): void
 	{
-		unset($this->items[$field]);
+		unset($this->items[$offset]);
 	}
 
 	/**

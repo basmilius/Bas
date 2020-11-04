@@ -208,6 +208,8 @@ class GIFEncoder
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 *
+	 * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
 	 */
 	protected function checkAnimated(string &$bytes, int $index): void
 	{

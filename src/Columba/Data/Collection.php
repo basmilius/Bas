@@ -585,9 +585,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function offsetExists($field): bool
+	public function offsetExists($offset): bool
 	{
-		return isset($this->items[$field]);
+		return isset($this->items[$offset]);
 	}
 
 	/**
@@ -595,9 +595,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function offsetGet($field)
+	public function offsetGet($offset)
 	{
-		return $this->items[$field] ?? null;
+		return $this->items[$offset] ?? null;
 	}
 
 	/**
@@ -605,12 +605,12 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function offsetSet($field, $value): void
+	public function offsetSet($offset, $value): void
 	{
-		if ($field === null)
+		if ($offset === null)
 			$this->items[] = $value;
 		else
-			$this->items[$field] = $value;
+			$this->items[$offset] = $value;
 	}
 
 	/**
@@ -618,9 +618,9 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function offsetUnset($field): void
+	public function offsetUnset($offset): void
 	{
-		array_splice($this->items, $field, 1);
+		array_splice($this->items, $offset, 1);
 	}
 
 	/**
@@ -648,7 +648,7 @@ class Collection implements Arrayable, IsCountable, Loopable, Jsonable, Debuggab
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function key()
+	public function key(): int
 	{
 		return $this->position;
 	}

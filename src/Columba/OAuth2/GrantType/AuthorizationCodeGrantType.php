@@ -80,7 +80,7 @@ final class AuthorizationCodeGrantType implements IGrantType
 		$refreshToken = TokenGenerator::generateSimpleToken();
 
 		$this->oAuth2->getTokenFactory()->saveRefreshToken($client['client_id'], $authorizationCode['owner_id'], $authorizationCode['scope'], $refreshToken);
-		$this->oAuth2->getTokenFactory()->saveAccessToken($client['client_id'], $authorizationCode['owner_id'], $authorizationCode['scope'], $accessToken, $refreshToken, 3600);
+		$this->oAuth2->getTokenFactory()->saveAccessToken($client['client_id'], $authorizationCode['owner_id'], $authorizationCode['scope'], $accessToken, $refreshToken);
 		$this->oAuth2->getTokenFactory()->expireToken($client['client_id'], 'authorization_code', $authorizationCode['token']);
 
 		return [

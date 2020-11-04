@@ -563,7 +563,7 @@ class Image
 	public static function fromFile(string $fileName): self
 	{
 		if (!is_file($fileName))
-			new InvalidArgumentException(sprintf('The file "%s" does not exists.', $fileName));
+			throw new InvalidArgumentException(sprintf('The file "%s" does not exists.', $fileName));
 
 		return new static(imagecreatefromstring(file_get_contents($fileName)));
 	}

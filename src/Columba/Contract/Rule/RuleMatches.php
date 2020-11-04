@@ -51,6 +51,8 @@ final class RuleMatches extends AbstractRule
 	 * {@inheritdoc}
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
+	 *
+	 * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
 	 */
 	public final function met(&$value): bool
 	{
