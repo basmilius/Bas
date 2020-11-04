@@ -85,11 +85,11 @@ class TypedCollection extends Collection
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public function offsetSet($field, $value): void
+	public function offsetSet($offset, $value): void
 	{
 		$this->validateItem($value);
 
-		parent::offsetSet($field, $value);
+		parent::offsetSet($offset, $value);
 	}
 
 	/**
