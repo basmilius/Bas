@@ -88,6 +88,13 @@ registerArgumentsSet(
 );
 
 registerArgumentsSet(
+	'columba_route_param_type',
+	'string',
+	'int',
+	'bool'
+);
+
+registerArgumentsSet(
 	'columba_stopwatch_units',
 	\Columba\Util\Stopwatch::UNIT_MICROSECONDS,
 	\Columba\Util\Stopwatch::UNIT_MILLISECONDS,
@@ -105,6 +112,7 @@ expectedArguments(\Columba\Http\Request::setRequestMethod(), 0, argumentsSet('co
 expectedArguments(\Columba\Http\ResponseCode::getMessage(), 0, argumentsSet('columba_response_codes'));
 expectedArguments(\Columba\Router\Context::setResponseCode(), 0, argumentsSet('columba_response_codes'));
 expectedArguments(\Columba\Router\Router::addFromArguments(), 0, argumentsSet('columba_request_methods'));
+expectedArguments(\Columba\Router\SubRouter::addParam(), 1, argumentsSet('columba_route_param_type'));
 
 expectedReturnValues(\Columba\Http\Request::getRequestMethod(), argumentsSet('columba_request_methods'));
 expectedReturnValues(\Columba\Http\Response::getResponseCode(), argumentsSet('columba_response_codes'));
