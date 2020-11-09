@@ -19,6 +19,7 @@ use Columba\Facade\Debuggable;
 use Columba\Facade\Jsonable;
 use Columba\Facade\ObjectAccessible;
 use Serializable;
+use function array_key_exists;
 use function in_array;
 use function serialize;
 use function sprintf;
@@ -33,6 +34,8 @@ use function unserialize;
  */
 abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 {
+
+	protected static bool $extendedDebugInformation = true;
 
 	use ArrayAccessible;
 	use ObjectAccessible;
@@ -103,7 +106,11 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	protected function copyWith(callable $fn): self
 	{
 		$copy = new static(null, $this->isNew, $this);
-		$copy->modelData = &$this->modelData;
+
+		if ($this->copyOf !== null)
+			$copy->modelData = &$this->copyOf->modelData;
+		else
+			$copy->modelData = &$this->modelData;
 
 		$fn($copy);
 
@@ -149,7 +156,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function hasValue(string $column): bool
 	{
-		return isset($this->modelData[$column]);
+		return array_key_exists($column, $this->modelData);
 	}
 
 	/**
@@ -296,14 +303,18 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	 */
 	public function __debugInfo(): array
 	{
-		$data = [
-			'_meta' => [
+		$data = [];
+
+		if (static::$extendedDebugInformation)
+		{
+			$data['_meta'] = [
 				'type' => static::class,
 				'immutable' => static::$isImmutable,
 				'immutable_columns' => static::$immutable,
 				'is_new' => $this->isNew
-			]
-		];
+			];
+		}
+
 		$data = array_merge($data, $this->toArray());
 		$this->publish($data);
 

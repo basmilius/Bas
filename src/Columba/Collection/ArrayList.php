@@ -45,7 +45,7 @@ use function usort;
  * Class ArrayList
  *
  * @template T
- * @implements \IteratorAggregate<int, T>
+ * @template-implements IteratorAggregate<int, T>
  *
  * @author Bas Milius <bas@mili.us>
  * @package Columba\Collection
@@ -408,6 +408,25 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	}
 
 	/**
+	 * Maps all the items in the ArrayList to the returned value of the given predicate, but
+	 * updates the current instance instead of creating a new one.
+	 *
+	 * @template Y
+	 *
+	 * @param callable(T):Y $predicate
+	 *
+	 * @return $this
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function mapTransform(callable $predicate): self
+	{
+		$this->items = array_map($predicate, $this->items);
+
+		return $this;
+	}
+
+	/**
 	 * Merges the ArrayList with the given iterable.
 	 *
 	 * @param iterable $items
@@ -654,6 +673,7 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 
 	/**
 	 * {@inheritdoc}
+	 * @return array<T>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */

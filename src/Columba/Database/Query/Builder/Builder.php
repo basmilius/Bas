@@ -37,14 +37,13 @@ class Builder extends Base
 	 * Paginates the result.
 	 *
 	 * @param int $limit
-	 * @param callable|null $withItem
-	 * @param callable|null $withCollection
+	 * @param callable|null $withItems
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function paginate(int $limit = 20, ?callable $withItem = null, ?callable $withCollection = null): array
+	public function paginate(int $limit = 20, ?callable $withItems = null): array
 	{
 		$page = max(1, intval($_GET['page'] ?? '1'));
 		$offset = ($page - 1) * $limit;
@@ -54,21 +53,20 @@ class Builder extends Base
 
 		$this->limit($limit, $offset);
 
-		$result = $this->collection([], PDO::FETCH_ASSOC, $foundRows);
+		$results = $this
+			->arrayList([], PDO::FETCH_ASSOC, $foundRows);
 
-		if ($withCollection !== null)
-			$withCollection($result);
-
-		if ($withItem !== null)
-			$result = $result->map($withItem);
+		if ($withItems !== null)
+			$withItems($results);
 
 		if ($this->isModelQuery())
-			$result = $result->map(fn(Arrayable $arrayable) => $arrayable->toArray());
+			$results = $results
+				->map(fn(Arrayable $model) => $model->toArray());
 
 		return [
-			'offset' => $offset,
+			'data' => $results,
 			'limit' => $limit,
-			'data' => $result,
+			'offset' => $offset,
 			'total' => $foundRows
 		];
 	}

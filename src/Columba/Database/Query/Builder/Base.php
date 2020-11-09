@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Database\Query\Builder;
 
-use Columba\Data\Collection;
+use Columba\Collection\ArrayList;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Dialect\Dialect;
 use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
+use Columba\Database\Model\ModelArrayList;
 use Columba\Database\Query\Statement;
 use Columba\Database\Util\BuilderUtil;
 use Columba\Facade\Debuggable;
@@ -303,21 +304,21 @@ class Base implements Debuggable
 	}
 
 	/**
-	 * Executes the {@see Statement} and returns a {@see CollectionResult}.
+	 * Executes the query and returns an {@see ArrayList}.
 	 *
 	 * @param array $options
 	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
-	 * @return Collection
+	 * @return ModelArrayList|ArrayList
 	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.6.0
+	 * @since 1.0.0
 	 */
-	public function collection(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
+	public function arrayList(array $options = [], int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): ArrayList
 	{
 		return $this
 			->statement($options)
-			->collection(true, $fetchMode, $foundRows);
+			->arrayList(true, $fetchMode, $foundRows);
 	}
 
 	/**

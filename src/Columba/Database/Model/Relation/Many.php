@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model\Relation;
 
-use Columba\Data\Collection;
+use Columba\Collection\ArrayList;
 use Columba\Database\Model\Model;
 use Columba\Database\Query\Builder\Builder;
 
@@ -52,9 +52,9 @@ class Many extends Relation
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function get(): Collection
+	public function get(): ArrayList
 	{
-		return $this->collection();
+		return $this->arrayList();
 	}
 
 	/**

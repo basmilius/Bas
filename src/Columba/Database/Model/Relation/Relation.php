@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model\Relation;
 
-use Columba\Data\Collection;
 use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
+use Columba\Database\Model\ModelArrayList;
 use Columba\Database\Query\Builder\Builder;
 
 /**
@@ -82,7 +82,7 @@ abstract class Relation extends Builder
 	/**
 	 * Returns the referenced object(s).
 	 *
-	 * @return Collection|Model|Model[]|null
+	 * @return ModelArrayList|Model|Model[]|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
@@ -91,7 +91,7 @@ abstract class Relation extends Builder
 	/**
 	 * Returns the referenced object(s) or throws an exception when the result was null.
 	 *
-	 * @return Collection|Model|Model[]
+	 * @return ModelArrayList|Model|Model[]
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */

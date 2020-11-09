@@ -14,6 +14,7 @@ namespace Columba\Database;
 
 use Columba\Database\Model\Model;
 use function array_filter;
+use function array_keys;
 use function get_class;
 
 /**
@@ -89,7 +90,7 @@ class Cache
 	 */
 	public function keys(string $modelClass): array
 	{
-		return \array_keys($this->cache[$modelClass] ?? []);
+		return array_keys($this->cache[$modelClass] ?? []);
 	}
 
 	/**

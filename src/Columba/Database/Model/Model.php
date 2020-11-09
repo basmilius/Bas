@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model;
 
-use Columba\Data\Collection;
 use Columba\Database\Cast\ICast;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Db;
@@ -618,21 +617,21 @@ abstract class Model extends Base
 	}
 
 	/**
-	 * Returns all rows as a {@see Collection}.
+	 * Returns all rows as a {@see ModelArrayList}.
 	 *
 	 * @param int $offset
 	 * @param int $limit
 	 *
-	 * @return Collection<static>
+	 * @return ModelArrayList<static>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public static function allCollection(int $offset = 0, int $limit = 20): Collection
+	public static function allModelArrayList(int $offset = 0, int $limit = 20): ModelArrayList
 	{
 		return static::select()
 			->orderBy(static::$orderBy . ' ' . static::$order)
 			->limit($limit, $offset)
-			->collection();
+			->arrayList();
 	}
 
 	/**
@@ -1208,16 +1207,19 @@ abstract class Model extends Base
 	{
 		$data = parent::__debugInfo();
 
-		$data['_meta']['casts'] = static::$casts[static::class];
-		$data['_meta']['connection_id'] = static::$connectionId;
-		$data['_meta']['macros'] = array_map(fn($macro) => is_array($macro) ? sprintf('%s::%s', $macro[0], $macro[1]) : get_class($macro), static::$macros[static::class]);
-		$data['_meta']['macros_to_cache'] = static::$macrosToCache[static::class];
-		$data['_meta']['relationships'] = array_map(fn($relation) => get_class($relation), static::$relationships[static::class]);
-		$data['_meta']['relationships_resolved'] = array_keys($this->relationCache);
-		$data['_meta']['visibility'] = [
-			'hidden' => $this->hidden,
-			'visible' => $this->visible
-		];
+		if (isset($data['_meta']))
+		{
+			$data['_meta']['casts'] = static::$casts[static::class];
+			$data['_meta']['connection_id'] = static::$connectionId;
+			$data['_meta']['macros'] = array_map(fn($macro) => is_array($macro) ? sprintf('%s::%s', $macro[0], $macro[1]) : get_class($macro), static::$macros[static::class]);
+			$data['_meta']['macros_to_cache'] = static::$macrosToCache[static::class];
+			$data['_meta']['relationships'] = array_map(fn($relation) => get_class($relation), static::$relationships[static::class]);
+			$data['_meta']['relationships_resolved'] = array_keys($this->relationCache);
+			$data['_meta']['visibility'] = [
+				'hidden' => $this->hidden,
+				'visible' => $this->visible
+			];
+		}
 
 		return $data;
 	}

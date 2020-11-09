@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace Columba\Database\Query;
 
-use Columba\Data\Collection;
+use Columba\Collection\ArrayList;
 use Columba\Database\Connection\Connection;
 use Columba\Database\Error\DatabaseException;
 use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
+use Columba\Database\Model\ModelArrayList;
 use Columba\Database\Model\Relation\Many;
 use Columba\Database\Model\Relation\One;
 use Columba\Database\Model\Relation\Relation;
@@ -111,19 +112,34 @@ class Statement
 	}
 
 	/**
-	 * Executes the {@see Statement} and returns a {@see CollectionResult}.
+	 * Executes the {@see Statement} and returns an {@see ArrayList}.
 	 *
 	 * @param bool $allowModel
 	 * @param int $fetchMode
 	 * @param int|null $foundRows
 	 *
-	 * @return Collection
+	 * @return ModelArrayList|ArrayList
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function collection(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): Collection
+	public function arrayList(bool $allowModel = true, int $fetchMode = PDO::FETCH_ASSOC, ?int &$foundRows = null): ArrayList
 	{
-		return new Collection($this->array($allowModel, $fetchMode, $foundRows));
+		$allModels = true;
+		$results = $this->array($allowModel, $fetchMode, $foundRows);
+
+		foreach ($results as $result)
+		{
+			if ($result instanceof Model)
+				continue;
+
+			$allModels = false;
+			break;
+		}
+
+		if ($allModels)
+			return ModelArrayList::of($results);
+
+		return ArrayList::of($results);
 	}
 
 	/**
@@ -289,14 +305,14 @@ class Statement
 	 *
 	 * @param Model|string $model
 	 * @param array $keys
-	 * @param Collection|null $results
+	 * @param ArrayList|null $results
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	private function findLoadedInstancesByKeys(string $model, array &$keys, ?Collection &$results): void
+	private function findLoadedInstancesByKeys(string $model, array &$keys, ?ArrayList &$results): void
 	{
-		$results = new Collection();
+		$results = new ArrayList();
 
 		foreach ($keys as $index => $key)
 		{
@@ -309,7 +325,7 @@ class Statement
 
 			unset($keys[$index]);
 
-			$results->append($instance);
+			$results->add($instance);
 		}
 	}
 
@@ -370,7 +386,7 @@ class Statement
 			if (($eagerLoad = $many->getEagerLoad()) !== null)
 				$query->eagerLoad($eagerLoad);
 
-			$instances->merge($query->collection());
+			$instances->merge($query->arrayList());
 		}
 
 		foreach ($results as &$result)
@@ -404,7 +420,7 @@ class Statement
 			if (($eagerLoad = $one->getEagerLoad()) !== null)
 				$query->eagerLoad($eagerLoad);
 
-			$instances->merge($query->collection());
+			$instances->merge($query->arrayList());
 		}
 
 		if ($instances->count() === 0)
