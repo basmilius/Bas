@@ -14,6 +14,7 @@ namespace Columba\Database\Query;
 
 use Columba\Collection\ArrayList;
 use Columba\Database\Connection\Connection;
+use Columba\Database\Db;
 use Columba\Database\Error\DatabaseException;
 use Columba\Database\Error\QueryException;
 use Columba\Database\Model\Model;
@@ -498,6 +499,9 @@ class Statement
 	{
 		if ($this->modelClass === null && !empty($this->eagerLoad))
 			throw new QueryException('Eager loading is only available on models.', QueryException::ERR_EAGER_NOT_AVAILABLE);
+
+		if (Db::$enableQueryTracking)
+			Db::$trackedQueries[] = $this->query;
 
 		$result = $this->pdoStatement->execute();
 		$foundRows = strpos($this->query, 'SQL_CALC_FOUND_ROWS') !== false ? $this->connection->foundRows() : null;

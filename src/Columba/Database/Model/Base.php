@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Database\Model;
 
+use Columba\Database\Db;
 use Columba\Database\Error\ModelException;
 use Columba\Facade\Arrayable;
 use Columba\Facade\ArrayAccessible;
@@ -34,8 +35,6 @@ use function unserialize;
  */
 abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 {
-
-	protected static bool $extendedDebugInformation = true;
 
 	use ArrayAccessible;
 	use ObjectAccessible;
@@ -305,7 +304,7 @@ abstract class Base implements Arrayable, Jsonable, Debuggable, Serializable
 	{
 		$data = [];
 
-		if (static::$extendedDebugInformation)
+		if (Db::$enableModelDebugInformation)
 		{
 			$data['_meta'] = [
 				'type' => static::class,

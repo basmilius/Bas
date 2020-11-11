@@ -31,6 +31,10 @@ use function sprintf;
 class Db
 {
 
+	public static bool $enableModelDebugInformation = false;
+	public static bool $enableQueryTracking = false;
+	public static array $trackedQueries = [];
+
 	/** @var Connection[] */
 	private static array $connections = [];
 
