@@ -356,6 +356,18 @@ class ArrayList implements Arrayable, Countable, Debuggable, IteratorAggregate, 
 	}
 
 	/**
+	 * Returns TRUE if the ArrayList is not empty.
+	 *
+	 * @return bool
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function isNotEmpty(): bool
+	{
+		return count($this->items) > 0;
+	}
+
+	/**
 	 * Returns all the keys of the ArrayList.
 	 *
 	 * @return self<int>

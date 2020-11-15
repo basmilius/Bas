@@ -59,10 +59,6 @@ class Builder extends Base
 		if ($withItems !== null)
 			$withItems($results);
 
-		if ($this->isModelQuery())
-			$results = $results
-				->map(fn(Arrayable $model) => $model->toArray());
-
 		return [
 			'data' => $results,
 			'limit' => $limit,
