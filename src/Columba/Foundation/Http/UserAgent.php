@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Columba\Foundation\Http;
 
+use Columba\Facade\Jsonable;
 use Columba\Facade\Stringable;
 use function array_intersect;
 use function array_map;
@@ -39,7 +40,7 @@ use function version_compare;
  * @package Columba\Foundation\Http
  * @since 1.6.0
  */
-class UserAgent implements Stringable
+class UserAgent implements Jsonable, Stringable
 {
 
 	protected string $userAgent;
@@ -335,6 +336,21 @@ class UserAgent implements Stringable
 	public final function versionAtLeast(string $version): bool
 	{
 		return version_compare($this->version ?? '0.0.0', $version, '>=');
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @author Bas Milius <bas@mili.us>
+	 * @since 1.6.0
+	 */
+	public function jsonSerialize(): array
+	{
+		return [
+			'user_agent' => $this->userAgent,
+			'browser' => $this->browser,
+			'platform' => $this->platform,
+			'version' => $this->version
+		];
 	}
 
 	/**
