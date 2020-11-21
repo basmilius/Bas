@@ -779,7 +779,7 @@ abstract class Model extends Base
 		$model = static::get($primaryKey);
 
 		if ($model === null)
-			throw new ModelException(sprintf('Model with primary key "%s" not found.', strval($primaryKey)), ModelException::ERR_NOT_FOUND);
+			throw new ModelException(sprintf('Model with primary key "%s" not found.', (string)$primaryKey), ModelException::ERR_NOT_FOUND);
 
 		return $model;
 	}

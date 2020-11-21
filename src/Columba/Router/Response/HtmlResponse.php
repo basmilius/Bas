@@ -15,7 +15,6 @@ namespace Columba\Router\Response;
 use Columba\Router\Context;
 use Columba\Router\RouterException;
 use function is_scalar;
-use function strval;
 
 /**
  * Class HtmlResponse
@@ -39,7 +38,7 @@ class HtmlResponse extends AbstractResponse
 		if (!is_scalar($value))
 			throw new RouterException('Response value needs to be scalar.', RouterException::ERR_INVALID_RESPONSE_VALUE);
 
-		return strval($value);
+		return (string)$value;
 	}
 
 }

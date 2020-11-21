@@ -20,7 +20,6 @@ use function array_shift;
 use function array_walk;
 use function dechex;
 use function fmod;
-use function intval;
 use function ltrim;
 use function max;
 use function min;
@@ -65,9 +64,9 @@ final class ColorUtil
 		$weight2 = 1 - $weight1;
 
 		return [
-			intval(round($color1[0] * $weight1 + $color2[0] * $weight2)),
-			intval(round($color1[1] * $weight1 + $color2[1] * $weight2)),
-			intval(round($color1[2] * $weight1 + $color2[2] * $weight2)),
+			(int)(round($color1[0] * $weight1 + $color2[0] * $weight2)),
+			(int)(round($color1[1] * $weight1 + $color2[1] * $weight2)),
+			(int)(round($color1[2] * $weight1 + $color2[2] * $weight2)),
 			$color1[3] ?? 1
 		];
 	}

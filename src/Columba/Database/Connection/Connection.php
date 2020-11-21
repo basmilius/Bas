@@ -22,8 +22,6 @@ use Columba\Database\Query\Statement;
 use Columba\Database\Util\ErrorUtil;
 use PDO;
 use function in_array;
-use function intval;
-use function strval;
 
 /**
  * Class Connection
@@ -160,7 +158,7 @@ abstract class Connection
 	 */
 	public function lastInsertIdInteger(?string $name = null): int
 	{
-		return intval($this->pdo->lastInsertId($name));
+		return (int)$this->pdo->lastInsertId($name);
 	}
 
 	/**
@@ -223,7 +221,7 @@ abstract class Connection
 	 */
 	public function quote($value, int $type = PDO::PARAM_STR): string
 	{
-		return $this->pdo->quote(strval($value), $type);
+		return $this->pdo->quote((string)$value, $type);
 	}
 
 	/**

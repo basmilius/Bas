@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Contract\Rule;
 
-use function floatval;
 use function is_float;
 use function is_numeric;
 
@@ -39,7 +38,7 @@ final class RuleFloat extends AbstractRule
 		if (!is_numeric($value))
 			return $this->breach('The given value is not numeric.', $value);
 
-		$value = floatval($value);
+		$value = (float)$value;
 
 		return true;
 	}

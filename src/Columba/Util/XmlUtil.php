@@ -21,7 +21,6 @@ use function is_bool;
 use function is_int;
 use function is_string;
 use function strip_tags;
-use function strval;
 use function substr;
 
 /**
@@ -78,7 +77,7 @@ final class XmlUtil
 			}
 			else
 			{
-				$xml->addChild($key, htmlspecialchars(strval($value)));
+				$xml->addChild($key, htmlspecialchars((string)$value));
 			}
 		}
 	}

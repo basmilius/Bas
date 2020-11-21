@@ -7,7 +7,7 @@ use Columba\Collection\ArrayList;
 
 /**
  * Class ModelArrayList
- * 
+ *
  * @template T2 of Model
  * @template-covariant T2
  * @extends ArrayList<T2>

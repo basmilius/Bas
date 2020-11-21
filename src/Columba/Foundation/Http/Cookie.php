@@ -229,7 +229,7 @@ class Cookie implements Stringable
 	 */
 	public static function remove(string $name): void
 	{
-		header(strval(new self($name, '')));
+		header((string)(new self($name, '')));
 	}
 
 	/**
@@ -242,7 +242,7 @@ class Cookie implements Stringable
 	 */
 	public static function set(Cookie $cookie): void
 	{
-		header('Set-Cookie: ' . strval($cookie), false);
+		header('Set-Cookie: ' . (string)$cookie, false);
 	}
 
 }

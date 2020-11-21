@@ -16,7 +16,6 @@ use Columba\Image\Image;
 use Exception;
 use function abs;
 use function count;
-use function intval;
 use function min;
 
 /**
@@ -298,7 +297,10 @@ final class Palette
 
 		$scaleRatio = self::CALCULATE_IMAGE_DIMENSION / $minDimension;
 
-		return $image->resize(intval($image->getWidth() * $scaleRatio), intval($image->getHeight() * $scaleRatio));
+		return $image->resize(
+			(int)($image->getWidth() * $scaleRatio),
+			(int)($image->getHeight() * $scaleRatio)
+		);
 	}
 
 	/**

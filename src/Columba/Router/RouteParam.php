@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Columba\Router;
 
-use function intval;
-
 /**
  * Class RouteParam
  *
@@ -102,7 +100,7 @@ final class RouteParam
 				return $value;
 
 			case 'int':
-				return intval($value);
+				return (int)$value;
 
 			case 'bool':
 				return $value === '1' || $value === 'true';

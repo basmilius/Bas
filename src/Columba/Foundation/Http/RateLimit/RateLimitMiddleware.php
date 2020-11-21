@@ -18,7 +18,6 @@ use Columba\Router\Middleware\AbstractMiddleware;
 use Columba\Router\Response\JsonResponse;
 use Columba\Router\Route\AbstractRoute;
 use Columba\Router\Router;
-use function strval;
 
 /**
  * Class RateLimitMiddleware
@@ -88,7 +87,7 @@ class RateLimitMiddleware extends AbstractMiddleware
 	protected function makeRateLimitExceededResponse(Context $context, RateLimitExceededException $err): void
 	{
 		$response = new JsonResponse(false);
-		$response->addHeader('Retry-After', strval($this->rateLimit->getPeriod()));
+		$response->addHeader('Retry-After', (string)$this->rateLimit->getPeriod());
 
 		$context->setResponseCode(ResponseCode::TOO_MANY_REQUESTS);
 		$context->setResponse($response, $err);

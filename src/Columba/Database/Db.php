@@ -211,7 +211,7 @@ class Db
 	 */
 	public static function lastInsertIdInteger(?string $name = null, ?string $id = null): int
 	{
-		return intval(self::getOrFail($id)->lastInsertId($name));
+		return (int)self::getOrFail($id)->lastInsertId($name);
 	}
 
 	/**

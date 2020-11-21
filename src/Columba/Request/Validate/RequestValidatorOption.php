@@ -13,13 +13,10 @@ declare(strict_types=1);
 namespace Columba\Request\Validate;
 
 use function filter_var;
-use function floatval;
-use function intval;
 use function is_numeric;
 use function is_string;
 use function mb_strlen;
 use function preg_match;
-use function strval;
 use function substr;
 use const FILTER_VALIDATE_EMAIL;
 use const FILTER_VALIDATE_URL;
@@ -248,7 +245,7 @@ final class RequestValidatorOption
 		$this->validators[] = function ($value): array
 		{
 			if (is_numeric($value))
-				return [floatval($value), null];
+				return [(float)$value, null];
 
 			return [null, RequestValidatorException::ERR_NEEDS_TO_BE_FLOAT];
 		};
@@ -267,8 +264,8 @@ final class RequestValidatorOption
 	{
 		$this->validators[] = function ($value): array
 		{
-			if (is_numeric($value) && intval($value) == floatval($value))
-				return [intval($value), null];
+			if (is_numeric($value) && (int)$value == (float)$value)
+				return [(int)$value, null];
 
 			return [null, RequestValidatorException::ERR_NEEDS_TO_BE_INTEGER];
 		};
@@ -290,7 +287,7 @@ final class RequestValidatorOption
 			if (!is_string($value))
 				return [null, RequestValidatorException::ERR_NEEDS_TO_BE_STRING];
 
-			return [strval($value), null];
+			return [(string)$value, null];
 		};
 
 		return $this;

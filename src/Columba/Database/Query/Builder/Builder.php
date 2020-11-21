@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\Database\Query\Builder;
 
 use Columba\Database\Error\QueryException;
-use Columba\Facade\Arrayable;
 use Columba\Util\ArrayUtil;
 use PDO;
 use function array_keys;
@@ -45,7 +44,7 @@ class Builder extends Base
 	 */
 	public function paginate(int $limit = 20, ?callable $withItems = null): array
 	{
-		$page = max(1, intval($_GET['page'] ?? '1'));
+		$page = max(1, (int)($_GET['page'] ?? '1'));
 		$offset = ($page - 1) * $limit;
 
 		if ($this->pieces[0][0] === 'SELECT')

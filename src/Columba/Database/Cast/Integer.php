@@ -31,7 +31,7 @@ class Integer implements ICast
 	 */
 	public function decode(Model $model, string $key, $value, array $data): int
 	{
-		return intval($value);
+		return (int)$value;
 	}
 
 	/**

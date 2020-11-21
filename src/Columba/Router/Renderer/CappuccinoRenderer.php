@@ -126,7 +126,7 @@ class CappuccinoRenderer extends AbstractRenderer
 		{
 			return $this->cappuccino->render($template, $context);
 		}
-		catch (LoaderError|RuntimeError|SyntaxError $err)
+		catch (LoaderError | RuntimeError | SyntaxError $err)
 		{
 			throw $this->error($err);
 		}

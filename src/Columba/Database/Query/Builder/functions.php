@@ -169,7 +169,7 @@ function literal($literal): Literal
 	if (is_bool($literal))
 		$literal = $literal ? 1 : 0;
 
-	return new Literal(strval($literal));
+	return new Literal((string)$literal);
 }
 
 /**

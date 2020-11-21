@@ -14,7 +14,6 @@ namespace Columba\Contract\Rule;
 
 use Columba\Contract\Contract;
 use Columba\Contract\Term;
-use function floatval;
 use function is_float;
 use function is_int;
 use function is_numeric;
@@ -76,7 +75,7 @@ final class RuleBetween extends AbstractRule
 			return $this->breach('The given value is not numeric.', $value);
 
 		if (!is_float($value) && !is_int($value))
-			$value = floatval($value);
+			$value = (float)$value;
 
 		if ($value >= $this->min && $value <= $this->max)
 			return true;

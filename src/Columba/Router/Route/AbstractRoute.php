@@ -328,7 +328,7 @@ abstract class AbstractRoute implements Debuggable
 			$value = $match ?? $param->getDefaultValue();
 
 			if (is_scalar($value))
-				$pathValues = str_replace('$' . $name, strval($value), $pathValues);
+				$pathValues = str_replace('$' . $name, (string)$value, $pathValues);
 		}
 
 		if (isset($matches['wildcard']))
