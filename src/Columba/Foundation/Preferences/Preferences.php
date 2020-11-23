@@ -72,7 +72,7 @@ final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable,
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	private final function loop(): void
+	private function loop(): void
 	{
 		foreach ($this->keys as $index => $key)
 		{

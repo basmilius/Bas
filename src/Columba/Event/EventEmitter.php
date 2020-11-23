@@ -87,7 +87,7 @@ trait EventEmitter
 	 * @since 1.0.0
 	 * @internal
 	 */
-	private final function ensureEventExists(string $eventName): void
+	private function ensureEventExists(string $eventName): void
 	{
 		if (!isset($this->listeners[$eventName]))
 			$this->listeners[$eventName] = [];
