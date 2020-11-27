@@ -35,7 +35,7 @@ final class ExceptionUtil
 	 *
 	 * @param Throwable $err
 	 *
-	 * @return Generator|ExceptionInfo[]
+	 * @return Generator<ExceptionInfo>
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */

@@ -18,7 +18,6 @@ use function count;
 use function explode;
 use function implode;
 use function join;
-use function mb_strlen;
 use function mb_strtolower;
 use function mb_substr;
 use function preg_match_all;
@@ -50,21 +49,6 @@ final class StringUtil
 	public static function commaCommaAnd(string ...$strings): string
 	{
 		return preg_replace('/(.*),/', '$1 &', implode(', ', $strings));
-	}
-
-	/**
-	 * Returns TRUE if {@see $str} ends with {@see $end}.
-	 *
-	 * @param string $str
-	 * @param string $end
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public static function endsWith(string $str, string $end): bool
-	{
-		return mb_substr($str, -mb_strlen($end)) === $end;
 	}
 
 	/**
@@ -120,21 +104,6 @@ final class StringUtil
 	public static function splitSentences(string $str): array
 	{
 		return preg_split('/(?<!\.\.\.)(?<!Dr\.)(?<=[.?!]|\.\)|\.")\s+(?=[a-zA-Z"(])/', $str);
-	}
-
-	/**
-	 * Returns TRUE if {@see $str} starts with {@see $start}.
-	 *
-	 * @param string $str
-	 * @param string $start
-	 *
-	 * @return bool
-	 * @author Bas Milius <bas@mili.us>
-	 * @since 1.4.0
-	 */
-	public static function startsWith(string $str, string $start): bool
-	{
-		return mb_substr($str, 0, mb_strlen($start)) === $start;
 	}
 
 	/**

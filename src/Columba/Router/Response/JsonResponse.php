@@ -34,23 +34,17 @@ class JsonResponse extends AbstractResponse
 
 	public const DEFAULT_OPTIONS = JSON_BIGINT_AS_STRING | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG;
 
-	protected int $options;
-	protected bool $withDefaults;
-
 	/**
 	 * JsonResponse constructor.
 	 *
 	 * @param bool $withDefaults
-	 * @param int $options
+	 * @param int|string $options
 	 *
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(bool $withDefaults = true, int $options = self::DEFAULT_OPTIONS)
+	public function __construct(private bool $withDefaults = true, private int|string $options = self::DEFAULT_OPTIONS)
 	{
-		$this->withDefaults = $withDefaults;
-		$this->options = $options;
-
 		$this->addHeader('Access-Control-Allow-Headers', '*');
 		$this->addHeader('Access-Control-Allow-Methods', 'GET, PUT, PATCH, DELETE, POST, OPTIONS');
 		$this->addHeader('Access-Control-Allow-Origin', '*');
@@ -64,7 +58,7 @@ class JsonResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond(Context $context, $value): string
+	protected function respond(Context $context, mixed $value): string
 	{
 		if ($this->withDefaults)
 		{

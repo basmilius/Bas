@@ -65,20 +65,12 @@ final class Stopwatch
 		if ($unit === self::UNIT_NANOSECONDS)
 			return;
 
-		switch ($unit)
+		$time *= match ($unit)
 		{
-			case self::UNIT_MICROSECONDS:
-				$time *= 1e-3;
-				break;
-
-			case self::UNIT_MILLISECONDS:
-				$time *= 1e-6;
-				break;
-
-			case self::UNIT_SECONDS:
-				$time *= 1e-9;
-				break;
-		}
+			self::UNIT_MICROSECONDS => 1e-3,
+			self::UNIT_MILLISECONDS => 1e-6,
+			self::UNIT_SECONDS => 1e-9,
+		};
 	}
 
 	/**

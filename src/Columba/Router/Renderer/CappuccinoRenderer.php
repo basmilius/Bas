@@ -36,8 +36,6 @@ class CappuccinoRenderer extends AbstractRenderer
 	];
 
 	protected Cappuccino $cappuccino;
-	protected LoaderInterface $loader;
-	protected array $options;
 
 	/**
 	 * CappuccinoRenderer constructor.
@@ -51,7 +49,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(array $options = [], ?LoaderInterface $loader = null)
+	public function __construct(protected array $options = [], protected ?LoaderInterface $loader = null)
 	{
 		$options = array_merge(self::DEFAULT_OPTIONS, $options);
 
@@ -83,7 +81,7 @@ class CappuccinoRenderer extends AbstractRenderer
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function addGlobal(string $name, $value): void
+	public final function addGlobal(string $name, mixed $value): void
 	{
 		$this->cappuccino->addGlobal($name, $value);
 	}

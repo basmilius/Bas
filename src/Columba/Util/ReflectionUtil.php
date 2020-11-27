@@ -42,7 +42,7 @@ final class ReflectionUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function findConstant(string $class, $value, &$constant = null): bool
+	public static function findConstant(string $class, mixed $value, mixed &$constant = null): bool
 	{
 		try
 		{
@@ -58,7 +58,7 @@ final class ReflectionUtil
 				return true;
 			}
 		}
-		catch (ReflectionException $err)
+		catch (ReflectionException)
 		{
 		}
 
@@ -82,7 +82,7 @@ final class ReflectionUtil
 
 			return get_class($ref->getClosureThis()) . '::' . $ref->getName();
 		}
-		catch (ReflectionException $err)
+		catch (ReflectionException)
 		{
 			return '{closure}';
 		}
@@ -110,13 +110,13 @@ final class ReflectionUtil
 	/**
 	 * Gets the type of a value.
 	 *
-	 * @param $value
+	 * @param mixed $value
 	 *
 	 * @return string
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function getType($value): string
+	public static function getType(mixed $value): string
 	{
 		$type = gettype($value);
 

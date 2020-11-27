@@ -27,6 +27,7 @@ use Columba\Router\Route\RedirectRoute;
 use Columba\Router\Route\RouterRoute;
 use Columba\Util\ServerTiming;
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use function array_filter;
@@ -44,7 +45,6 @@ use function is_callable;
 use function is_string;
 use function is_subclass_of;
 use function sprintf;
-use function strpos;
 use function trim;
 
 /**
@@ -58,8 +58,6 @@ class Router implements Debuggable
 {
 
 	private array $globals = [];
-	private ?AbstractRenderer $renderer;
-	private ?AbstractResponse $response;
 	private ?AbstractRoute $currentRoute = null;
 
 	/** @var AbstractMiddleware[] */
@@ -85,10 +83,8 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(?AbstractResponse $response = null, ?AbstractRenderer $renderer = null)
+	public function __construct(private ?AbstractResponse $response = null, private ?AbstractRenderer $renderer = null)
 	{
-		$this->renderer = $renderer;
-		$this->response = $response;
 	}
 
 	/**
@@ -101,7 +97,7 @@ class Router implements Debuggable
 	 */
 	public function add(AbstractRoute $route): void
 	{
-		if (strpos($route->getPath(), '/*') !== false)
+		if (str_contains($route->getPath(), '/*'))
 			array_push($this->routes, $route);
 		else
 			array_unshift($this->routes, $route);
@@ -162,7 +158,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public function define(string $name, $value): void
+	public function define(string $name, mixed $value): void
 	{
 		$this->globals[$name] = $value;
 	}
@@ -216,7 +212,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function use(string $middleware, ...$arguments): void
+	public function use(string $middleware, mixed ...$arguments): void
 	{
 		if (!class_exists($middleware))
 			throw new RouterException(sprintf('Middleware %s not found.', $middleware), RouterException::ERR_MIDDLEWARE_NOT_FOUND);
@@ -312,7 +308,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function respond(string $implementation, $value, ...$options): ResponseWrapper
+	public function respond(string $implementation, mixed $value, mixed ...$options): ResponseWrapper
 	{
 		if (!is_subclass_of($implementation, AbstractResponse::class))
 			throw new RouterException('Invalid response implementation! Needs to extend form AbstractResponse.', 0);
@@ -360,7 +356,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function all(string $path, ...$arguments): AbstractRoute
+	public function all(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([], $path, ...$arguments);
 	}
@@ -377,7 +373,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public function match(array $requestMethods, string $path, ...$arguments): AbstractRoute
+	public function match(array $requestMethods, string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments($requestMethods, $path, ...$arguments);
 	}
@@ -393,7 +389,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function delete(string $path, ...$arguments): AbstractRoute
+	public function delete(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::DELETE], $path, ...$arguments);
 	}
@@ -409,7 +405,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function get(string $path, ...$arguments): AbstractRoute
+	public function get(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::GET], $path, ...$arguments);
 	}
@@ -425,7 +421,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function head(string $path, ...$arguments): AbstractRoute
+	public function head(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::HEAD], $path, ...$arguments);
 	}
@@ -441,7 +437,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function options(string $path, ...$arguments): AbstractRoute
+	public function options(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::OPTIONS], $path, ...$arguments);
 	}
@@ -457,7 +453,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function patch(string $path, ...$arguments): AbstractRoute
+	public function patch(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::PATCH], $path, ...$arguments);
 	}
@@ -473,7 +469,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function post(string $path, ...$arguments): AbstractRoute
+	public function post(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::POST], $path, ...$arguments);
 	}
@@ -489,7 +485,7 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function put(string $path, ...$arguments): AbstractRoute
+	public function put(string $path, mixed ...$arguments): AbstractRoute
 	{
 		return $this->addFromArguments([RequestMethod::PUT], $path, ...$arguments);
 	}
@@ -608,7 +604,7 @@ class Router implements Debuggable
 	/**
 	 * Gets the {@see AbstractResponse}.
 	 *
-	 * @return AbstractResponse
+	 * @return AbstractResponse|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
@@ -622,6 +618,13 @@ class Router implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
+	#[ArrayShape([
+		'globals' => 'array',
+		'renderer' => '\Columba\Router\Renderer\AbstractRenderer|null',
+		'response' => '\Columba\Router\Response\AbstractResponse|null',
+		'middlewares' => '\Columba\Router\Middleware\AbstractMiddleware[]',
+		'routes' => '\Columba\Router\Route\AbstractRoute[]'
+	])]
 	public function __debugInfo(): array
 	{
 		return [

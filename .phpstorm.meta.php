@@ -102,9 +102,6 @@ registerArgumentsSet(
 	\Columba\Util\Stopwatch::UNIT_SECONDS
 );
 
-exitPoint(\Columba\Util\dumpDie());
-exitPoint(\Columba\Util\preDie());
-
 expectedArguments(\Columba\Util\Stopwatch::stop(), 2, argumentsSet('columba_stopwatch_units'));
 
 expectedArguments(\Columba\Http\Request::__construct(), 1, argumentsSet('columba_request_methods'));

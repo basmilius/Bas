@@ -28,8 +28,6 @@ use Columba\Router\RouterException;
 abstract class AbstractMiddleware implements Debuggable
 {
 
-	protected Router $router;
-
 	/**
 	 * AbstractRoute constructor.
 	 *
@@ -38,9 +36,8 @@ abstract class AbstractMiddleware implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(Router $router)
+	public function __construct(protected Router $router)
 	{
-		$this->router = $router;
 	}
 
 	/**

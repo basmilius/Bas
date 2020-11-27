@@ -17,6 +17,7 @@ use Columba\Router\RouteParam;
 use Columba\Router\Router;
 use Columba\Router\RouterException;
 use Columba\Util\ReflectionUtil;
+use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionNamedType;
@@ -156,6 +157,12 @@ class CallbackRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
+	#[ArrayShape([
+		'path' => 'string',
+		'requestMethods' => 'string',
+		'middlewares' => '\Columba\Router\Middleware\AbstractMiddleware[]',
+		'callable' => 'string'
+	])]
 	public function __debugInfo(): array
 	{
 		return array_merge(parent::__debugInfo(), [

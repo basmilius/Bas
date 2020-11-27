@@ -29,7 +29,6 @@ use function array_merge;
 final class Context
 {
 
-	private AbstractRoute $route;
 	private ?ReflectionFunctionAbstract $callback = null;
 	private array $params = [];
 	private ?Context $parent = null;
@@ -40,9 +39,7 @@ final class Context
 	private float $resolutionTime = -1;
 	private ?AbstractResponse $responseClass = null;
 	private int $responseCode = 200;
-
-	/** @var mixed */
-	private $responseValue = null;
+	private mixed $responseValue = null;
 
 	/**
 	 * Context constructor.
@@ -52,9 +49,8 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(AbstractRoute $route)
+	public function __construct(private AbstractRoute $route)
 	{
-		$this->route = $route;
 	}
 
 	/**
@@ -109,7 +105,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function redirect(string $redirectPath, int $responseCode = 302, $returnValue = '')
+	public final function redirect(string $redirectPath, int $responseCode = 302, $returnValue = ''): mixed
 	{
 		$this->setResponseCode($responseCode);
 		$this->redirectPath = $redirectPath;
@@ -216,7 +212,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public final function setResponse(AbstractResponse $responseClass, $responseValue): void
+	public final function setResponse(AbstractResponse $responseClass, mixed $responseValue): void
 	{
 		$this->responseClass = $responseClass;
 		$this->responseValue = $responseValue;
@@ -259,7 +255,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function addParam(string $name, $value): void
+	public final function addParam(string $name, mixed $value): void
 	{
 		$this->params[$name] = $value;
 	}
@@ -274,7 +270,7 @@ final class Context
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getParam(string $name, bool $includeParent = true)
+	public final function getParam(string $name, bool $includeParent = true): mixed
 	{
 		$params = $this->getParams($includeParent);
 

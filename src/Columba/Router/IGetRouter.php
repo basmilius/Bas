@@ -25,10 +25,10 @@ interface IGetRouter
 	/**
 	 * Gets the {@see Router} instance.
 	 *
-	 * @return Router&SubRouter
+	 * @return Router|SubRouter
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function getRouter(): Router;
+	public function getRouter(): Router|SubRouter;
 
 }

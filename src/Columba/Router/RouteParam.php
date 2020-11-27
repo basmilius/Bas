@@ -22,13 +22,6 @@ namespace Columba\Router;
 final class RouteParam
 {
 
-	private bool $allowsNull;
-	private string $name;
-	private string $type;
-
-	/** @var mixed */
-	private $defaultValue;
-
 	/**
 	 * RouteParam constructor.
 	 *
@@ -40,12 +33,8 @@ final class RouteParam
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 2.3.0
 	 */
-	public function __construct(string $name, string $type, bool $allowsNull = false, $defaultValue = null)
+	public function __construct(private string $name, private string $type, private bool $allowsNull = false, private mixed $defaultValue = null)
 	{
-		$this->allowsNull = $allowsNull;
-		$this->defaultValue = $defaultValue;
-		$this->name = $name;
-		$this->type = $type;
 	}
 
 	/**
@@ -88,11 +77,11 @@ final class RouteParam
 	 *
 	 * @param string $value
 	 *
-	 * @return mixed
+	 * @return string|bool|int|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function sanitize(string $value)
+	public final function sanitize(string $value): string|bool|int|null
 	{
 		switch ($this->type)
 		{
@@ -118,7 +107,7 @@ final class RouteParam
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getDefaultValue()
+	public final function getDefaultValue(): mixed
 	{
 		return $this->defaultValue;
 	}

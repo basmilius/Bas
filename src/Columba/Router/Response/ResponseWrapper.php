@@ -22,11 +22,6 @@ namespace Columba\Router\Response;
 final class ResponseWrapper
 {
 
-	private AbstractResponse $response;
-
-	/** @var mixed */
-	private $value;
-
 	/**
 	 * ResponseWrapper constructor.
 	 *
@@ -36,10 +31,8 @@ final class ResponseWrapper
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(AbstractResponse $response, $value)
+	public function __construct(private AbstractResponse $response, private mixed $value)
 	{
-		$this->response = $response;
-		$this->value = $value;
 	}
 
 	/**
@@ -63,7 +56,7 @@ final class ResponseWrapper
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public final function getValue()
+	public final function getValue(): mixed
 	{
 		return $this->value;
 	}
