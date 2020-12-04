@@ -87,12 +87,20 @@ class ServerTiming
 
 		static::$timings[$id][2] = $time * 1e-6;
 
-		$time *= match ($unit)
+		switch ($unit)
 		{
-			Stopwatch::UNIT_MICROSECONDS => 1e-3,
-			Stopwatch::UNIT_MILLISECONDS => 1e-6,
-			Stopwatch::UNIT_SECONDS => 1e-9,
-		};
+			case Stopwatch::UNIT_MICROSECONDS:
+				$time *= 1e-3;
+				break;
+
+			case Stopwatch::UNIT_MILLISECONDS:
+				$time *= 1e-6;
+				break;
+
+			case Stopwatch::UNIT_SECONDS:
+				$time *= 1e-9;
+				break;
+		}
 	}
 
 }

@@ -25,6 +25,9 @@ use Columba\Security\JWT\JWTException;
 class CSRF
 {
 
+	private string $requestId;
+	private string $secret;
+
 	/**
 	 * Csrf constructor.
 	 *
@@ -34,8 +37,10 @@ class CSRF
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public function __construct(private string $requestId, private string $secret)
+	public function __construct(string $requestId, string $secret)
 	{
+		$this->requestId = $requestId;
+		$this->secret = $secret;
 	}
 
 	/**
@@ -75,7 +80,7 @@ class CSRF
 
 			return true;
 		}
-		catch (JWTException)
+		catch (JWTException $err)
 		{
 			$payload = null;
 

@@ -30,6 +30,10 @@ class XmlResponse extends AbstractResponse
 
 	public const ROOT = '<response></response>';
 
+	private bool $prettyPrint;
+	private string $root;
+	private bool $withDefaults;
+
 	/**
 	 * XmlResponse constructor.
 	 *
@@ -40,8 +44,11 @@ class XmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(private bool $withDefaults = true, private bool $prettyPrint = false, private string $root = self::ROOT)
+	public function __construct(bool $withDefaults = true, bool $prettyPrint = false, string $root = self::ROOT)
 	{
+		$this->prettyPrint = $prettyPrint;
+		$this->root = $root;
+		$this->withDefaults = $withDefaults;
 	}
 
 	/**
@@ -49,7 +56,7 @@ class XmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond(Context $context, mixed $value): string
+	protected function respond(Context $context, $value): string
 	{
 		$this->addHeader('Content-Type', 'text/xml; charset=utf-8');
 

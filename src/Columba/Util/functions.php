@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Columba\Util;
 
 use Columba\Foundation\System;
-use JetBrains\PhpStorm\NoReturn;
 use function count;
 use function headers_list;
 
@@ -26,7 +25,7 @@ use function headers_list;
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0
  */
-function _pre(callable $fn, mixed ...$data): void
+function _pre(callable $fn, ...$data)
 {
 	$shouldEcho = !System::isCLI() && !in_array('Content-type: text/plain;charset=UTF-8', headers_list());
 
@@ -51,7 +50,7 @@ function _pre(callable $fn, mixed ...$data): void
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0
  */
-function dump(mixed ...$data): void
+function dump(...$data): void
 {
 	_pre('var_dump', ...$data);
 }
@@ -64,8 +63,7 @@ function dump(mixed ...$data): void
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0
  */
-#[NoReturn]
-function dumpDie(mixed ...$data): void
+function dumpDie(...$data): void
 {
 	_pre('var_dump', ...$data);
 	die;
@@ -79,7 +77,7 @@ function dumpDie(mixed ...$data): void
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0
  */
-function pre(mixed ...$data): void
+function pre(...$data): void
 {
 	_pre('print_r', ...$data);
 }
@@ -92,8 +90,7 @@ function pre(mixed ...$data): void
  * @author Bas Milius <bas@mili.us>
  * @since 1.5.0
  */
-#[NoReturn]
-function preDie(mixed ...$data): void
+function preDie(...$data): void
 {
 	_pre('print_r', ...$data);
 	die;

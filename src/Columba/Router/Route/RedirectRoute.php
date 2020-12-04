@@ -14,7 +14,6 @@ namespace Columba\Router\Route;
 
 use Columba\Router\RouteParam;
 use Columba\Router\Router;
-use JetBrains\PhpStorm\ArrayShape;
 use function count;
 use function preg_match_all;
 use function preg_replace;
@@ -29,6 +28,9 @@ use function str_replace;
  */
 final class RedirectRoute extends AbstractRoute
 {
+
+	private string $destination;
+	private int $responseCode;
 
 	/** @var RouteParam[] */
 	private array $params;
@@ -45,8 +47,11 @@ final class RedirectRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.1
 	 */
-	public function __construct(Router $parent, array $requestMethods, string $path, private string $destination, private int $responseCode)
+	public function __construct(Router $parent, array $requestMethods, string $path, string $destination, int $responseCode)
 	{
+		$this->destination = $destination;
+		$this->responseCode = $responseCode;
+
 		preg_match_all('/\$([a-zA-Z0-9_]+)\((bool|int|string)\)/', $path, $matches);
 
 		$this->params = [];
@@ -89,12 +94,6 @@ final class RedirectRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	#[ArrayShape([
-		'path' => 'string',
-		'requestMethods' => 'string',
-		'middlewares' => '\Columba\Router\Middleware\AbstractMiddleware[]',
-		'destination' => 'string'
-	])]
 	public function __debugInfo(): array
 	{
 		return array_merge(parent::__debugInfo(), [

@@ -39,11 +39,11 @@ final class ArrayUtil
 	 * @param callable|null $fn
 	 * @param mixed $default
 	 *
-	 * @return mixed
+	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.4.0
 	 */
-	public static function first(array $arr, callable $fn = null, mixed $default = null): mixed
+	public static function first(array $arr, callable $fn = null, $default = null)
 	{
 		if (is_null($fn))
 		{
@@ -72,11 +72,11 @@ final class ArrayUtil
 	 * @param callable|null $fn
 	 * @param mixed $default
 	 *
-	 * @return mixed
+	 * @return mixed|null
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	public static function last(array $arr, callable $fn = null, mixed $default = null): mixed
+	public static function last(array $arr, callable $fn = null, $default = null)
 	{
 		$arr = array_reverse($arr);
 
@@ -119,13 +119,13 @@ final class ArrayUtil
 	 * Groups a multidimensional array by key.
 	 *
 	 * @param array $arr
-	 * @param string|int $key
+	 * @param mixed $key
 	 *
 	 * @return array
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function groupBy(array $arr, string|int $key): array
+	public static function groupBy(array $arr, $key): array
 	{
 		$result = [];
 

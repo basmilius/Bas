@@ -14,14 +14,12 @@ namespace Columba;
 
 use Columba\Util\FileSystemUtil;
 use Columba\Util\StringUtil;
-use JetBrains\PhpStorm\Deprecated;
 use function dirname;
 use function is_dir;
 use function realpath;
 use function spl_autoload_call;
 use function spl_autoload_register;
 use function spl_autoload_unregister;
-use function str_ends_with;
 use function str_replace;
 use function strlen;
 use function substr;
@@ -34,7 +32,6 @@ use const DIRECTORY_SEPARATOR;
  * @package Columba
  * @since 1.0.0
  */
-#[Deprecated('Please use the composer autoloader.')]
 final class Autoloader
 {
 
@@ -85,7 +82,7 @@ final class Autoloader
 		{
 			if (is_dir($entry) && $recursive)
 				$this->loadDirectory($entry, true);
-			else if (str_ends_with($entry, '.php'))
+			else if (StringUtil::endsWith($entry, '.php'))
 				$this->loadFile($entry);
 		}
 	}

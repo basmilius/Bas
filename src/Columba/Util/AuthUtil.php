@@ -19,6 +19,7 @@ use function sqrt;
 use function str_shuffle;
 use function str_split;
 use function strlen;
+use function strpos;
 use function substr;
 
 /**
@@ -46,16 +47,16 @@ final class AuthUtil
 	{
 		$sets = [];
 
-		if (str_contains($availableSets, 'l'))
+		if (strpos($availableSets, 'l') !== false)
 			$sets[] = 'abcdefghjkmnpqrstuvwxyz';
 
-		if (str_contains($availableSets, 'u'))
+		if (strpos($availableSets, 'u') !== false)
 			$sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
 
-		if (str_contains($availableSets, 'd'))
+		if (strpos($availableSets, 'd') !== false)
 			$sets[] = '123456789';
 
-		if (str_contains($availableSets, 's'))
+		if (strpos($availableSets, 's') !== false)
 			$sets[] = '!@#$%&*?';
 
 		$all = '';

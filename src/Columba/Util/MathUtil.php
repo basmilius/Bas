@@ -33,15 +33,15 @@ final class MathUtil
 	/**
 	 * Clamps {@see $value} between {@see $min} and {@see $max}.
 	 *
-	 * @param float|int $value
-	 * @param float|int $min
-	 * @param float|int $max
+	 * @param int $value
+	 * @param int $min
+	 * @param int $max
 	 *
-	 * @return float|int
+	 * @return int
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.1.0
 	 */
-	public static function clamp(float|int $value, float|int $min, float|int $max): float|int
+	public static function clamp(int $value, int $min, int $max): int
 	{
 		return max($min, min($max, $value));
 	}
@@ -56,7 +56,7 @@ final class MathUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function ceilStep(float|int $value, int $step = 1): float|int
+	public static function ceilStep($value, int $step = 1)
 	{
 		return ceil($value / $step) * $step;
 	}
@@ -71,7 +71,7 @@ final class MathUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function floorStep(float|int $value, int $step = 1): float|int
+	public static function floorStep($value, int $step = 1)
 	{
 		return floor($value / $step) * $step;
 	}
@@ -86,7 +86,7 @@ final class MathUtil
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function roundStep(float|int $value, int $step = 1): float|int
+	public static function roundStep($value, int $step = 1)
 	{
 		return round($value / $step) * $step;
 	}

@@ -25,7 +25,6 @@ use Columba\Router\SubRouter;
 use Columba\Util\ServerTiming;
 use Columba\Util\Stopwatch;
 use Exception;
-use JetBrains\PhpStorm\ArrayShape;
 use function array_flip;
 use function array_keys;
 use function array_pop;
@@ -59,6 +58,10 @@ abstract class AbstractRoute implements Debuggable
 	private bool $allowSubRoutes = false;
 	private ?Context $context = null;
 	private array $options = [];
+	private string $path;
+
+	/** @var Router&SubRouter */
+	private Router $parent;
 
 	/** @var AbstractMiddleware[] */
 	private array $middlewares = [];
@@ -76,9 +79,11 @@ abstract class AbstractRoute implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function __construct(private Router $parent, array $requestMethods, private string $path)
+	public function __construct(Router $parent, array $requestMethods, string $path)
 	{
 		$this->requestMethods = array_flip($requestMethods);
+		$this->path = $path;
+		$this->parent = $parent;
 	}
 
 	/**
@@ -417,11 +422,6 @@ abstract class AbstractRoute implements Debuggable
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	#[ArrayShape([
-		'path' => 'string',
-		'requestMethods' => 'string',
-		'middlewares' => '\Columba\Router\Middleware\AbstractMiddleware[]'
-	])]
 	public function __debugInfo(): array
 	{
 		return [

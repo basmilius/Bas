@@ -14,7 +14,6 @@ namespace Columba\Router\Route;
 
 use Columba\Router\Router;
 use Columba\Router\SubRouter;
-use JetBrains\PhpStorm\ArrayShape;
 use function array_merge;
 use function mb_strlen;
 use function mb_substr;
@@ -103,12 +102,6 @@ abstract class AbstractRouterRoute extends AbstractRoute
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.6.0
 	 */
-	#[ArrayShape([
-		'path' => 'string',
-		'requestMethods' => 'string',
-		'middlewares' => '\Columba\Router\Middleware\AbstractMiddleware[]',
-		'children' => 'Columba\Router\Route\AbstractRoute[]'
-	])]
 	public function __debugInfo(): array
 	{
 		return array_merge(parent::__debugInfo(), [

@@ -262,7 +262,7 @@ class JWT
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function jsonDecode(string $input): mixed
+	public static function jsonDecode(string $input)
 	{
 		$data = json_decode($input, true, 512, JSON_BIGINT_AS_STRING);
 
@@ -285,7 +285,7 @@ class JWT
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.5.0
 	 */
-	public static function jsonEncode(mixed $data): string
+	public static function jsonEncode($data): string
 	{
 		$json = json_encode($data);
 

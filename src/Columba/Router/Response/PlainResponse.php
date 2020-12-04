@@ -31,7 +31,7 @@ class PlainResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	public function respond(Context $context, mixed $value): string
+	public function respond(Context $context, $value): string
 	{
 		$this->addHeader('Content-Type', 'text/plain');
 

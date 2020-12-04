@@ -59,7 +59,7 @@ trait ResponseMethods
 	 *
 	 * @param mixed $data
 	 * @param bool $withDefaults
-	 * @param int|string $options
+	 * @param int $options
 	 *
 	 * @return ResponseWrapper
 	 * @author Bas Milius <bas@mili.us>
@@ -67,7 +67,7 @@ trait ResponseMethods
 	 *
 	 * @see JsonResponse
 	 */
-	protected final function json(mixed $data, bool $withDefaults = true, int|string $options = JsonResponse::DEFAULT_OPTIONS): ResponseWrapper
+	protected final function json($data, bool $withDefaults = true, int $options = JsonResponse::DEFAULT_OPTIONS): ResponseWrapper
 	{
 		return $this->respond(JsonResponse::class, $data, $withDefaults, $options);
 	}
@@ -83,7 +83,7 @@ trait ResponseMethods
 	 *
 	 * @see PlainResponse
 	 */
-	protected final function plain(mixed $data): ResponseWrapper
+	protected final function plain($data): ResponseWrapper
 	{
 		return $this->respond(PlainResponse::class, $data);
 	}
@@ -99,7 +99,7 @@ trait ResponseMethods
 	 *
 	 * @see SerializeResponse
 	 */
-	protected final function serialize(mixed $data): ResponseWrapper
+	protected final function serialize($data): ResponseWrapper
 	{
 		return $this->respond(SerializeResponse::class, $data);
 	}
@@ -118,7 +118,7 @@ trait ResponseMethods
 	 *
 	 * @see XmlResponse
 	 */
-	protected final function xml(mixed $data, bool $withDefaults = true, bool $prettyPrint = false, string $root = XmlResponse::ROOT): ResponseWrapper
+	protected final function xml($data, bool $withDefaults = true, bool $prettyPrint = false, string $root = XmlResponse::ROOT): ResponseWrapper
 	{
 		return $this->respond(XmlResponse::class, $data, $withDefaults, $prettyPrint, $root);
 	}

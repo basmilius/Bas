@@ -31,7 +31,7 @@ class HtmlResponse extends AbstractResponse
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.3.0
 	 */
-	protected function respond(Context $context, mixed $value): string
+	protected function respond(Context $context, $value): string
 	{
 		$this->addHeader('Content-Type', 'text/html; charset=utf-8');
 
