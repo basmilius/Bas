@@ -148,7 +148,7 @@ final class Preferences implements Arrayable, Debuggable, IsCountable, Loopable,
 	 * @author Bas Milius <bas@mili.us>
 	 * @since 1.0.0
 	 */
-	public final function offsetGet($offset): ?Preferences
+	public final function offsetGet($offset)
 	{
 		if ($offset === -1)
 			return $this->parent;
