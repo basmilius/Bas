@@ -24,6 +24,7 @@ use Columba\Database\Model\Relation\One;
 use Columba\Database\Model\Relation\Relation;
 use Columba\Database\Util\BuilderUtil;
 use Columba\Database\Util\ErrorUtil;
+use Columba\Util\Stopwatch;
 use Generator;
 use PDO;
 use PDOStatement;
@@ -501,10 +502,22 @@ class Statement
 			throw new QueryException('Eager loading is only available on models.', QueryException::ERR_EAGER_NOT_AVAILABLE);
 
 		if (Db::$enableQueryTracking)
-			Db::$trackedQueries[] = $this->query;
+		{
+			Stopwatch::start('query');
+		}
 
 		$result = $this->pdoStatement->execute();
 		$foundRows = strpos($this->query, 'SQL_CALC_FOUND_ROWS') !== false ? $this->connection->foundRows() : null;
+
+		if (Db::$enableQueryTracking)
+		{
+			Stopwatch::stop('query', $time, Stopwatch::UNIT_SECONDS);
+
+			Db::$trackedQueries[] = [
+				'query' => $this->query,
+				'time' => $time
+			];
+		}
 
 		if ($result === false)
 			throw $this->throwFromErrorInfo();
