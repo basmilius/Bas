@@ -811,7 +811,8 @@ abstract class Model extends Base
 	 */
 	public static function query(): Builder
 	{
-		return (new Builder(static::connection()))
+		return static::connection()
+			->query()
 			->model(static::class);
 	}
 
